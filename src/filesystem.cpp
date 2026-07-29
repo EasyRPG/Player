@@ -91,14 +91,12 @@ FilesystemView Filesystem::Create(std::string_view path) const {
 	// When the path doesn't exist check if the path contains a file that can
 	// be handled by another filesystem
 	if (!IsDirectory(path, true)) {
-
 		// Search for the deepest directory
 		std::vector<std::string> components = FileFinder::SplitPathPrefixes(path);
 		// Prepend empty path for the root directory if not present
 		if (components.empty() || components.front() != "") {
 			components.insert(components.begin(), "");
 		}
-
 
 		size_t archive_idx = components.size();
 		for (auto it = components.rbegin(); it != components.rend(); ++it) {
@@ -117,23 +115,24 @@ FilesystemView Filesystem::Create(std::string_view path) const {
 
 		// The next component must be a file
 		// search for known file extensions and "do magic"
-		std::string archive_path = components[archive_idx - 1];
-		std::string archive_name = FileFinder::GetPathAndFilename(components[archive_idx]).second;
-		std::string internal_path = FileFinder::GetPathInsidePath(components[archive_idx], components.back());
+		std::string archive_full_path = components[archive_idx];
+		std::string archive_parent_path = components[archive_idx - 1];
+		std::string archive_name = FileFinder::GetPathAndFilename(archive_full_path).second;
+		std::string internal_path = FileFinder::GetPathInsidePath(archive_full_path, components.back());
 
-		if (!FileFinder::IsSupportedArchiveExtension(archive_name)) {
+		if (!IsFile(archive_full_path) || !FileFinder::IsSupportedArchiveExtension(archive_name)) {
 			// No supported archive type found
 			return {};
 		}
 
-		std::shared_ptr<Filesystem> filesystem = std::make_shared<ZipFilesystem>(archive_name, Subtree(archive_path));
+		std::shared_ptr<Filesystem> filesystem = std::make_shared<ZipFilesystem>(archive_name, Subtree(archive_parent_path));
 #if HAVE_LHASA
 		if (!filesystem->IsValid()) {
-			filesystem = std::make_shared<LzhFilesystem>(archive_name, Subtree(archive_path));
+			filesystem = std::make_shared<LzhFilesystem>(archive_name, Subtree(archive_parent_path));
 		}
 #endif
 		if (!filesystem->IsValid()) {
-			filesystem = std::make_shared<TarFilesystem>(archive_name, Subtree(archive_path));
+			filesystem = std::make_shared<TarFilesystem>(archive_name, Subtree(archive_parent_path));
 		}
 		if (!filesystem->IsValid()) {
 			return {};
