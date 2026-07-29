@@ -50,6 +50,7 @@ namespace leasy::metadata {
     inline Array& add(const Object&);
     inline Object& operator[](size_t pos);
     const Object& operator[](size_t pos) const;
+    inline Array from(const std::vector<Object>&);
   };
 
   class Map {

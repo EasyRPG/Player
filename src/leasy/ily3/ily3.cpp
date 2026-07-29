@@ -53,7 +53,7 @@ leasy.Engine = {})";
       if (i < nargs) oss << '\t';
     }
 
-    io.System.writeln(oss.str());
+    io().System.writeln(oss.str());
 
     return 0;
   }
@@ -69,7 +69,7 @@ leasy.Engine = {})";
       if (i < nargs) oss << '\t';
     }
 
-    io.Warning.writeln(oss.str());
+    io().Warning.writeln(oss.str());
 
     return 0;
   }

@@ -98,7 +98,7 @@ namespace leasy {
     void exit(void) { }
 
     void disable() {
-      io.System.writeln(">>> leasy is disabled ! (You'll need to reboot the engine in order to enable it!)");
+      io().System.writeln(">>> leasy is disabled ! (You'll need to reboot the engine in order to enable it!)");
       leasy_enabled = false;
     }
 

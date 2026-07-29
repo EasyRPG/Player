@@ -35,12 +35,12 @@ namespace leasy::engine {
     try {
       ily3::global::state.call<void>(rname, args...);
     } catch (const ul2::ulexception2 &e) {
-      io.Warning.writeln("error (ul2) during event invocation: ", e.whut());
+      io().Warning.writeln("error (ul2) during event invocation: ", e.whut());
       // Sometimes, it's just because the callback does not exist!
       // So let's just ensure it haha
       ily3::global::state.dostring(rname + " = " + rname + " or function()end");
     } catch (const std::exception &e) {
-      io.Warning.writeln("error (stdc++) during event invocation: ", e.what());
+      io().Warning.writeln("error (stdc++) during event invocation: ", e.what());
     }
   }
 }

@@ -31,132 +31,137 @@
 #include "../iky7/nameof.hpp"
 #include "../kits/utils.hpp"
 #include "metadata.hpp"
+#include "function_base.hpp"
 
 namespace leasy::metadata {
-  class TypeInfo;
+  class Class;
+  template <typename... Fs>
+  inline std::shared_ptr<function_base_t>  make_function(const std::string&, Fs&&...);
 
-  template <typename T>
-  unsigned long long safe_sizeof() {
-    if constexpr (std::is_void_v<T>) return 0;
-    else {
-      return sizeof(T);
-    }
-  }
-
-  extern void _register_metadata_type(const std::type_info &info, const TypeInfo &metadata);
-  
-  class TypeInfo final : public Data {
-    public:
-    using index_type = std::type_index;
-    
-    TypeInfo()
-    : m_index(typeid(void)),
-    m_name("void"),
-    m_implname(typeid(void).name()) {}
-    
-    explicit TypeInfo(const std::type_index& info)
-    : m_index(info),
-    m_name(info.name()),
-    m_implname(info.name()) {}
-    
-    template<typename T>
-    static TypeInfo from() {
-      auto info = TypeInfo(
-        typeid(T),
-        nameof<T>(),
-        typeid(T).name(),
-        safe_sizeof<T>()
-      );
-      
-      _register_metadata_type(typeid(T), info);
-      
-      return info;
-    }
-    
-    template<typename T>
-    TypeInfo(std::in_place_type_t<T>)
-      : TypeInfo(
-          typeid(T),
-          nameof<T>(),
-          typeid(T).name(),
-          safe_sizeof<T>()
-        ) {
-          _register_metadata_type(typeid(T), TypeInfo(typeid(T), nameof<T>(), typeid(T).name(), safe_sizeof<T>()));
-        }
-
-    [[nodiscard]]
-    std::type_index index() const noexcept {
-      return m_index;
-    }
-
-    [[nodiscard]]
-    std::string name() const noexcept {
-      return m_name;
-    }
-
-    [[nodiscard]]
-    std::string implname() const noexcept {
-      return m_implname;
-    }
-
-    [[nodiscard]]
-    std::size_t hash_code() const noexcept {
-      return m_index.hash_code();
-    }
-
-    explicit operator std::type_index() const noexcept {
-      return m_index;
-    }
-
-    friend bool operator==(const TypeInfo &lhs, const TypeInfo &rhs) noexcept {
-      return (lhs.index() == rhs.index());
-    }
-
-    friend bool operator!=(const TypeInfo& lhs, const TypeInfo& rhs) noexcept {
-      return !(lhs.index() == rhs.index());
-    }
-
-    friend bool operator<(const TypeInfo& lhs, const TypeInfo& rhs) noexcept {
-      return lhs.m_index < rhs.m_index;
-    }
-
-    size_t size() const {
-      return m_size;
-    }
-
-    Object dump() const override {
-      return Map().add("name", this->name())
-                    .add("implname", this->implname())
-                    .add("hash", this->hash_code())
-                    .add("size", this->size());
-    }
-
-  private:
-    TypeInfo(
-      const std::type_info& info,
-      std::string_view user_name,
-      std::string_view impl_name,
-      size_t size__ = 0)
-      : m_index(info),
-        m_name(user_name),
-        m_implname(impl_name) {}
-
-    std::type_index m_index;
-    std::string m_name;
-    std::string m_implname;
-    size_t m_size = 0;
-  };
+  template<typename T, typename = void>
+  struct sizeof_or_zero : std::integral_constant<std::size_t, 0> {};
 
   template<typename T>
-  inline const TypeInfo typeinfo_v = TypeInfo::from<T>();
+  struct sizeof_or_zero<T, std::void_t<decltype(sizeof(T))>>
+    : std::integral_constant<std::size_t, sizeof(T)> {};
+
+  template<typename T>
+  constexpr std::size_t safe_sizeof()
+  {
+    return sizeof_or_zero<T>::value;
+  }
+
+  std::shared_ptr<Class> typeidof(const std::type_index&);
+  
+  class Class : public Data {
+  protected:
+    std::type_index _cindex;
+    std::unordered_map<std::string, std::shared_ptr<function_base_t>> _methods;
+    std::vector<std::shared_ptr<Class>> _bases;
+    size_t _size;
+    std::string _fullname;
+
+  public:
+    inline virtual std::any call(const std::string &name, const std::vector<std::any> &args) const {
+      if (_methods.find(name) == _methods.end()) throw std::runtime_error(name + ": method not found in base " + this->_fullname);
+      return _methods.at(name)->call(args);
+    }
+
+    inline virtual std::any activate(const std::vector<std::any> &args) const {
+      return call("activate", args);
+    }
+
+    inline virtual std::string fullname() const { return _fullname; }
+    inline virtual std::unordered_map<std::string, std::shared_ptr<function_base_t>> methods() const { return _methods; }
+    inline virtual std::type_index cindex() const { return _cindex; }
+    inline virtual size_t size() const { return _size; }
+    inline virtual std::vector<std::shared_ptr<Class>> bases() const { return _bases; }
+
+    inline Object dump() const override {
+      return Map()
+        .add("name", _fullname)
+        .add("size", _size)
+        .add("bases", Array(
+          kits::select(this->_bases, [](const std::shared_ptr<Class> &cl) { return cl->dump(); })
+        ))
+        .add("cindex", Map()
+          .add("name", _cindex.name())
+          .add("hashcode", _cindex.hash_code())
+        )
+        .add("methods", Array(kits::select(this->_methods, [](const std::pair<std::string, std::shared_ptr<function_base_t>> &e) {
+          return e.second->dump();
+        })));
+    }
+
+    inline void bind(ul2::lstate &state) const override {
+      for (const auto &[name, func]: this->_methods) {
+        state.bind2(name, func->lua());
+      }
+    }
+
+    inline Class() : _cindex(typeid(void)), _size(0), _fullname("void") {
+      /** Null class creation */
+    }
+
+    template <typename T>
+    inline static std::shared_ptr<Class> from() {
+      return typeidof(typeid(T));
+    }
+  };
+
+  class UnresolvedClass : public Class {
+  public:
+    UnresolvedClass(const std::type_index &poor_data) {
+      _fullname = poor_data.name();
+      _cindex = poor_data;
+    }
+
+    UnresolvedClass(const std::type_index &poor_data, const std::string &ful) {
+      _fullname = ful;
+      _cindex = poor_data;
+    }
+  };
+
+  template <typename T>
+  std::shared_ptr<leasy::metadata::Class> typeidof() {
+    nameof<T>();
+    return typeidof(typeid(T));
+  }
+
+  template <typename T, typename... Bases>
+  class ClassBuilder : public Class {
+  public:
+    inline ClassBuilder() {
+      this->_cindex = typeid(T);
+      this->_fullname = nameof<T>();
+      this->_size = safe_sizeof<T>();
+      this->_bases = {typeidof<Bases>()...};
+    }
+
+    template <typename... Fs>
+    inline ClassBuilder &method(const std::string &name, Fs&&... funcs) {
+      this->_methods[name] = make_function(name, funcs...);
+      return *this;
+    }
+
+    inline std::shared_ptr<Class> done() const {
+      return std::make_shared<ClassBuilder>(*this);
+    }
+  };
+
+  template <typename T, typename... Bases>
+  inline ClassBuilder<T, Bases...> make_class() {
+    return ClassBuilder<T, Bases...>();
+  }
+
+  bool is_same_type(const std::type_index &cindex, const std::shared_ptr<Class> &classptr);
 } // namespace leasy::metadata
 
 template <typename T>
-leasy::metadata::TypeInfo typeidof() {
-  return leasy::metadata::TypeInfo::from<T>();
+std::shared_ptr<leasy::metadata::Class> typeidof() {
+  return leasy::metadata::typeidof(typeid(T));
 }
 
-template <typename T>
-leasy::metadata::TypeInfo typeidof(T &&) {
-  return typeidof<T>();
+inline std::shared_ptr<leasy::metadata::Class> typeidof(const std::type_index &idx) {
+  return leasy::metadata::typeidof(idx);
 }

@@ -348,7 +348,7 @@ static int io_readline (lua_State *L);
 
 
 /*
-** maximum number of arguments to 'f:lines'/'io.lines' (it + 3 must fit
+** maximum number of arguments to 'f:lines'/'io().lines' (it + 3 must fit
 ** in the limit for upvalues of a closure)
 */
 #define MAXARGLINE	250

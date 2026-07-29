@@ -50,7 +50,7 @@ public:
 
 	static std::vector<std::vector<uint8_t>> LoadLogos();
 
-private:
+protected: /* So the Leasy engine would extend this */
 	std::unique_ptr<Sprite> logo;
 	BitmapRef logo_img;
 	int frame_counter;

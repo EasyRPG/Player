@@ -35,6 +35,8 @@
 #include "scene_title.h"
 #include "game_map.h"
 
+#include "leasy/inspections.hpp"
+
 #ifndef NDEBUG
 #define DEBUG_VALIDATE(x) Scene::DebugValidate(x)
 #else
@@ -258,6 +260,7 @@ void Scene::Update() {
 }
 
 void Scene::Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top) {
+	struct {} info;
 	if (pop_stack_top) {
 		old_instances.push_back(instances.back());
 		instances.pop_back();
@@ -267,6 +270,7 @@ void Scene::Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top) {
 	instance = new_scene;
 
 	push_pop_operation = ScenePushed;
+	leasy::io().Debug.writeln(nameof<decltype(info)>(), ": pusing scene ", scene_names[new_scene->type % SceneMax]);
 
 	DEBUG_VALIDATE("Push");
 }

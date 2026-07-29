@@ -43,7 +43,7 @@ namespace leasy::ily3 {
     auto lua_file = p / "leasy.user.lua";
 
     if (!fs::exists(lua_file)) {
-      io.Error.writeln(lua_file, ": file not found! (cannot load any mod!)");
+      io().Error.writeln(lua_file, ": file not found! (cannot load any mod!)");
       return;
     }
 		global::state.dostring(lscripts::set_require);

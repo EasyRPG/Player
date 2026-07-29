@@ -89,6 +89,7 @@
 // leasy
 #include "leasy/leasy.hpp"
 #include "leasy/events.hpp"
+#include "leasy/meta/main.hpp"
 
 #if defined(__ANDROID__) && !defined(USE_LIBRETRO)
 #include "platform/android/android.h"
@@ -213,7 +214,7 @@ void Player::Init(std::vector<std::string> args) {
 void Player::Run() {
 	Instrumentation::Init("EasyRPG-Player");
 
-	Scene::Push(std::make_shared<Scene_Logo>());
+	Scene::Push(leasy::meta2::make_main_scene());
 	Graphics::UpdateSceneCallback();
 
 	reset_flag = false;

@@ -24,6 +24,7 @@
 #pragma once
 
 #include <memory>
+#include <unordered_set>
 
 #include "ily3/ily3.hpp"
 #include "signals.hpp"
@@ -59,7 +60,7 @@ namespace leasy {
     /** @brief This function is called when drawing. (i swear) */
     void draw(Bitmap */* map */);
 
-    void lmain(void);
+    void lmain(const std::vector<std::string>&);
 
     void disable();
     bool is_enabled();

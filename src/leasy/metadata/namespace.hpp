@@ -5,18 +5,18 @@
 
 #include "metadata.hpp"
 #include "function.hpp"
-#include "class.hpp"
+#include "../kits/strings.hpp"
 
 namespace leasy::metadata {
 
   struct NSpace;
   inline NSpace make_namespace(const std::string&);
 
-  struct NSpace : public Data {
+  struct NSpace final : public Data {
     std::string name;
 
-    std::unordered_map<std::string, NativeCallable> functions = {};
-    std::unordered_map<std::string, NativeClass> classes = {};
+    std::unordered_map<std::string, std::shared_ptr<function_base_t>> functions = {};
+    std::unordered_map<std::string, std::shared_ptr<Class>> classes = {};
     std::unordered_map<std::string, NSpace> namespaces = {};
 
     inline NSpace() {}
@@ -31,9 +31,9 @@ namespace leasy::metadata {
       return *this;
     }
 
-    inline NSpace &add(const NativeClass &klass) {
+    inline NSpace &add(const std::shared_ptr<Class> &klass) {
 
-      this->classes[klass.name] = klass;
+      this->classes[klass->fullname()] = klass;
 
       return *this;
     }
@@ -61,12 +61,12 @@ namespace leasy::metadata {
 
       Map functions;
       for (const auto &fn: this->functions) {
-        functions[fn.first] = fn.second.dump();
+        functions[fn.first] = fn.second->dump();
       }
 
       Map classes;
       for (const auto &klass: this->classes) {
-        classes[klass.first] = klass.second.dump();
+        classes[klass.first] = klass.second->dump();
       }
 
       Map namespaces;
@@ -88,7 +88,7 @@ namespace leasy::metadata {
       for (const auto &fn: this->functions) {
         state.bind2(
           prefix + "." + fn.first,
-          fn.second.lua()
+          fn.second->lua()
         );
       }
 
@@ -96,10 +96,10 @@ namespace leasy::metadata {
 
         auto &cl = klass.second;
 
-        for (const auto &method: cl.methods) {
+        for (const auto &method: cl->methods()) {
           state.bind2(
-            prefix + "." + cl.name + "." + method.first,
-            method.second.lua()
+            prefix + "." + cl->fullname() + "." + method.first,
+            method.second->lua()
           );
         }
       }
@@ -109,7 +109,6 @@ namespace leasy::metadata {
       }
     }
   };
-
 
   inline NSpace make_namespace(const std::string &name) {
     return NSpace(name);

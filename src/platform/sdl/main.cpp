@@ -83,9 +83,8 @@ int main(int argc, char* argv[]) {
 #if defined(__ANDROID__)
 	EpAndroid::env = (JNIEnv*)SDL_AndroidGetJNIEnv();
 #endif
-
 	Player::Init(std::move(args));
-	leasy::app::lmain();
+	leasy::app::lmain(std::vector<std::string>(argv, argv + argc));
 	Player::Run();
 
 	// Close

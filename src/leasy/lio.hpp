@@ -448,7 +448,7 @@ private:
 
 namespace leasy {
 
-extern ios::io_system io;
+extern ios::io_system &io();
 
 } // namespace leasy
 

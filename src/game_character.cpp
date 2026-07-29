@@ -44,7 +44,7 @@ using leasy::io;
 Game_Character::Game_Character(Type type, lcf::rpg::SaveMapEventBase* d) :
 	_type(type), _data(d)
 {
-	io.Debug.writeln(here, " constructor ", __func__, " called");
+	io().Debug.writeln(here, " constructor ", __func__, " called");
 	dumpvout(type);
 	dumpvout(TypeToStr(type));
 }

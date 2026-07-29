@@ -517,7 +517,8 @@ add_library(${PROJECT_NAME} OBJECT
 	src/window_varlist.cpp
 	src/window_varlist.h
 	${LEASY_SRC}
-	src/leasy/dec.h
+	src/platform/export.cpp
+	src/leasy/inspections.hpp
 )
 
 # These are actually unused when building in CMake

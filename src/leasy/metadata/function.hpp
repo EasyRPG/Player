@@ -38,38 +38,18 @@
 #include "../lio.hpp"
 
 #include "metadata.hpp"
+#include "type.hpp"
+#include "function_base.hpp"
 
 namespace leasy::metadata {
-
-  class function_base_t : public Data {
-  public:
-    std::string name;
-
-    inline virtual std::pair<bool, std::string> is_callable(const std::vector<std::any>&) const {
-      return {false, "You're trying to call a default-virtual function !"}; 
-    }
-
-    inline virtual std::any call(const std::vector<std::any>&) const {
-      return {}; // I prefer an API that fails over virtual methods rather than making weird pure virtual things.
-    }
-
-    inline virtual std::function<int(lua_State*)> lua() const {
-      return [](lua_State*) -> int {
-        // And making warnings is the best way to debug!
-        io.Warning.writeln(__func__, ": unimplemented binding was called on base ", nameof<decltype(*this)>());
-        return 0;
-      };
-    }
-  };
-
   class function final : public function_base_t {
   private:
     std::function<std::any(const std::vector<std::any>&)> native_bridge;
     std::function<int(lua_State*)> lua_bridge;
 
   public:
-    std::vector<TypeInfo> arguments;
-    TypeInfo return_type;
+    std::vector<std::shared_ptr<Class>> arguments;
+    std::shared_ptr<Class> return_type;
 
     inline std::pair<bool, std::string> is_callable(const std::vector<std::any> &args) const override {
       return kits::is_callable_with(this->arguments, args);
@@ -90,8 +70,8 @@ namespace leasy::metadata {
     inline Object dump() const override {
       return Map()
              .add("name", name)
-             .add("arguments", kits::select(arguments, [](TypeInfo info) { return info.dump(); }))
-             .add("return", return_type.dump());
+             .add("arguments", kits::select(arguments, [](const std::shared_ptr<Class> &info) { return info->dump(); }))
+             .add("return", return_type->dump());
     }
 
     inline function() : arguments({}), return_type(typeidof<void>()) {
@@ -171,69 +151,14 @@ namespace leasy::metadata {
     }
   };
 
-  class NativeCallable : public function_base_t {
-  private:
-    std::shared_ptr<function_base_t> impl;
-
-  public:
-    NativeCallable() = default;
-
-    NativeCallable(function f)
-      : impl(std::make_shared<function>(std::move(f))) {}
-
-    NativeCallable(overload_set o)
-      : impl(std::make_shared<overload_set>(std::move(o))) {}
-
-    function_base_t* operator->() {
-      return impl.get();
-    }
-
-    const function_base_t* operator->() const {
-      return impl.get();
-    }
-
-    function_base_t& operator*() {
-      return *impl;
-    }
-
-    const function_base_t& operator*() const {
-      return *impl;
-    }
-
-    explicit operator bool() const {
-      return static_cast<bool>(impl);
-    }
-
-    inline std::pair<bool, std::string> is_callable(const std::vector<std::any>& args) const override {
-      return impl->is_callable(args);
-    }
-
-    inline std::any call(const std::vector<std::any>& args) const override {
-      return impl->call(args);
-    }
-
-    inline std::function<int(lua_State*)> lua() const override {
-      return impl->lua();
-    }
-
-    inline void bind(ul2::lstate& state) const override {
-      impl->bind(state);
-    }
-
-    inline Object dump() const override {
-      return impl->dump();
-    }
-  };
-
   template <typename... Fs>
-  NativeCallable make_function(const std::string &name, Fs&&... fs) {
+  inline std::shared_ptr<function_base_t>  make_function(const std::string &name, Fs&&... fs) {
     if constexpr (sizeof...(fs) == 0) {
-      return function(name, []() {}); // That one does cleary something. LOL.
+      return std::make_shared<function>(function(name, []() {})); // That one does cleary something. LOL.
     } else if constexpr (sizeof...(fs) == 1) {
-      return function(name, std::forward<Fs>(fs)...);
+      return std::make_shared<function>(function(name, std::forward<Fs>(fs)...));
     } else {
-      return overload_set(name, std::forward<Fs>(fs)...);
+      return std::make_shared<overload_set>(overload_set(name, std::forward<Fs>(fs)...));
     }
   }
 }
-

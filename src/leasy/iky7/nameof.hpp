@@ -23,6 +23,8 @@
 
 #pragma once
 
+#include <string>
+#include <typeindex>
 #include <string_view>
 
 namespace detail {
@@ -63,10 +65,14 @@ constexpr std::string_view parse_type_name(std::string_view wrapped) {
     return wrapped.substr(type_begin, type_end - type_begin);
 }
 
+    extern void _leasy_cache_nameof_this(const std::type_index&, const std::string&);
 } // namespace detail
+
 
 template <typename T>
 constexpr std::string_view nameof() {
-    return detail::parse_type_name(detail::wrapped_type_name<T>());
+    auto name = detail::parse_type_name(detail::wrapped_type_name<T>());
+    detail::_leasy_cache_nameof_this(typeid(T), std::string(name));
+    return name;
 }
 

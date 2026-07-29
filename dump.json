@@ -1,7 +1,47 @@
 {
   "name": "EasyRPGPlayer",
   "functions": {},
-  "classes": {},
+  "classes": {
+    "StdClock": {
+      "name": "StdClock",
+      "bases": [],
+      "cindex": {
+        "hashcode": 249731095417650326,
+        "name": "8StdClock"
+      },
+      "size": 1,
+      "methods": [
+        {
+          "return": {
+            "methods": [],
+            "size": 0,
+            "cindex": {
+              "hashcode": 6615858068,
+              "name": "PKc"
+            },
+            "bases": [],
+            "name": "const char *"
+          },
+          "arguments": [],
+          "name": "Name"
+        },
+        {
+          "return": {
+            "methods": [],
+            "size": 0,
+            "cindex": {
+              "hashcode": 10206583076624963542,
+              "name": "NSt3__16chrono10time_pointINS0_12steady_clockENS0_8durationIxNS_5ratioILl1ELl1000000000EEEEEEE"
+            },
+            "bases": [],
+            "name": "std::chrono::time_point<std::chrono::steady_clock, std::chrono::duration<long long, std::ratio<1, 1000000000>>>"
+          },
+          "arguments": [],
+          "name": "now"
+        }
+      ]
+    }
+  },
   "namespaces": {
     "Algo": {
       "namespaces": {},
@@ -12,64 +52,100 @@
           "overloads": [
             {
               "return": {
+                "methods": [],
                 "size": 0,
-                "hash": 6615858045,
-                "implname": "b",
-                "name": "bool"
+                "cindex": {
+                  "hashcode": 6615858045,
+                  "name": "b"
+                },
+                "bases": [],
+                "name": "b"
               },
               "arguments": [
                 {
+                  "methods": [],
                   "size": 0,
-                  "hash": 4175493968664669524,
-                  "implname": "N3lcf3rpg9SaveActor7RowTypeE",
-                  "name": "lcf::rpg::SaveActor::RowType"
+                  "cindex": {
+                    "hashcode": 4175493968664669524,
+                    "name": "N3lcf3rpg9SaveActor7RowTypeE"
+                  },
+                  "bases": [],
+                  "name": "N3lcf3rpg9SaveActor7RowTypeE"
                 },
                 {
+                  "methods": [],
                   "size": 0,
-                  "hash": 1485114547661566828,
-                  "implname": "N3lcf3rpg6System15BattleConditionE",
-                  "name": "lcf::rpg::System::BattleCondition"
+                  "cindex": {
+                    "hashcode": 1485114547661566828,
+                    "name": "N3lcf3rpg6System15BattleConditionE"
+                  },
+                  "bases": [],
+                  "name": "N3lcf3rpg6System15BattleConditionE"
                 },
                 {
+                  "methods": [],
                   "size": 0,
-                  "hash": 6615858045,
-                  "implname": "b",
-                  "name": "bool"
+                  "cindex": {
+                    "hashcode": 6615858045,
+                    "name": "b"
+                  },
+                  "bases": [],
+                  "name": "b"
                 }
               ],
               "name": "IsRowAdjusted"
             },
             {
               "return": {
+                "methods": [],
                 "size": 0,
-                "hash": 6615858045,
-                "implname": "b",
-                "name": "bool"
+                "cindex": {
+                  "hashcode": 6615858045,
+                  "name": "b"
+                },
+                "bases": [],
+                "name": "b"
               },
               "arguments": [
                 {
+                  "methods": [],
                   "size": 0,
-                  "hash": 4337531473,
-                  "implname": "12Game_Battler",
-                  "name": "const Game_Battler &"
+                  "cindex": {
+                    "hashcode": 4384423049,
+                    "name": "12Game_Battler"
+                  },
+                  "bases": [],
+                  "name": "12Game_Battler"
                 },
                 {
+                  "methods": [],
                   "size": 0,
-                  "hash": 1485114547661566828,
-                  "implname": "N3lcf3rpg6System15BattleConditionE",
-                  "name": "lcf::rpg::System::BattleCondition"
+                  "cindex": {
+                    "hashcode": 1485114547661566828,
+                    "name": "N3lcf3rpg6System15BattleConditionE"
+                  },
+                  "bases": [],
+                  "name": "N3lcf3rpg6System15BattleConditionE"
                 },
                 {
+                  "methods": [],
                   "size": 0,
-                  "hash": 6615858045,
-                  "implname": "b",
-                  "name": "bool"
+                  "cindex": {
+                    "hashcode": 6615858045,
+                    "name": "b"
+                  },
+                  "bases": [],
+                  "name": "b"
                 },
                 {
+                  "methods": [],
                   "size": 0,
-                  "hash": 6615858045,
-                  "implname": "b",
-                  "name": "bool"
+                  "cindex": {
+                    "hashcode": 6615858045,
+                    "name": "b"
+                  },
+                  "bases": [],
+                  "name": "b"
                 }
               ],
               "name": "IsRowAdjusted"
@@ -80,470 +156,730 @@
           "name": "SkillTargetsEnemies",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 4420775708918966150,
-              "implname": "N3lcf3rpg5SkillE",
-              "name": "const lcf::rpg::Skill &"
+              "cindex": {
+                "hashcode": 4420775708918966150,
+                "name": "N3lcf3rpg5SkillE"
+              },
+              "bases": [],
+              "name": "N3lcf3rpg5SkillE"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858045,
-            "implname": "b",
-            "name": "bool"
+            "cindex": {
+              "hashcode": 6615858045,
+              "name": "b"
+            },
+            "bases": [],
+            "name": "b"
           }
         },
         "CalcSelfDestructEffect": {
           "name": "CalcSelfDestructEffect",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 4337531473,
-              "implname": "12Game_Battler",
-              "name": "const Game_Battler &"
+              "cindex": {
+                "hashcode": 4384423049,
+                "name": "12Game_Battler"
+              },
+              "bases": [],
+              "name": "12Game_Battler"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 4337531473,
-              "implname": "12Game_Battler",
-              "name": "const Game_Battler &"
+              "cindex": {
+                "hashcode": 4384423049,
+                "name": "12Game_Battler"
+              },
+              "bases": [],
+              "name": "12Game_Battler"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858045,
-              "implname": "b",
-              "name": "bool"
+              "cindex": {
+                "hashcode": 6615858045,
+                "name": "b"
+              },
+              "bases": [],
+              "name": "b"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858108,
-            "implname": "i",
-            "name": "int"
+            "cindex": {
+              "hashcode": 6615858108,
+              "name": "i"
+            },
+            "bases": [],
+            "name": "i"
           }
         },
         "CalcSkillToHit": {
           "name": "CalcSkillToHit",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 4337531473,
-              "implname": "12Game_Battler",
-              "name": "const Game_Battler &"
+              "cindex": {
+                "hashcode": 4384423049,
+                "name": "12Game_Battler"
+              },
+              "bases": [],
+              "name": "12Game_Battler"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 4337531473,
-              "implname": "12Game_Battler",
-              "name": "const Game_Battler &"
+              "cindex": {
+                "hashcode": 4384423049,
+                "name": "12Game_Battler"
+              },
+              "bases": [],
+              "name": "12Game_Battler"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 4420775708918966150,
-              "implname": "N3lcf3rpg5SkillE",
-              "name": "const lcf::rpg::Skill &"
+              "cindex": {
+                "hashcode": 4420775708918966150,
+                "name": "N3lcf3rpg5SkillE"
+              },
+              "bases": [],
+              "name": "N3lcf3rpg5SkillE"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 1485114547661566828,
-              "implname": "N3lcf3rpg6System15BattleConditionE",
-              "name": "lcf::rpg::System::BattleCondition"
+              "cindex": {
+                "hashcode": 1485114547661566828,
+                "name": "N3lcf3rpg6System15BattleConditionE"
+              },
+              "bases": [],
+              "name": "N3lcf3rpg6System15BattleConditionE"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858045,
-              "implname": "b",
-              "name": "bool"
+              "cindex": {
+                "hashcode": 6615858045,
+                "name": "b"
+              },
+              "bases": [],
+              "name": "b"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858108,
-            "implname": "i",
-            "name": "int"
+            "cindex": {
+              "hashcode": 6615858108,
+              "name": "i"
+            },
+            "bases": [],
+            "name": "i"
           }
         },
         "CalcCriticalHitChance": {
           "name": "CalcCriticalHitChance",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 4337531473,
-              "implname": "12Game_Battler",
-              "name": "const Game_Battler &"
+              "cindex": {
+                "hashcode": 4384423049,
+                "name": "12Game_Battler"
+              },
+              "bases": [],
+              "name": "12Game_Battler"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 4337531473,
-              "implname": "12Game_Battler",
-              "name": "const Game_Battler &"
+              "cindex": {
+                "hashcode": 4384423049,
+                "name": "12Game_Battler"
+              },
+              "bases": [],
+              "name": "12Game_Battler"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 843925990230665840,
-              "implname": "N12Game_Battler6WeaponE",
-              "name": "Game_Battler::Weapon"
+              "cindex": {
+                "hashcode": 843925990230665840,
+                "name": "N12Game_Battler6WeaponE"
+              },
+              "bases": [],
+              "name": "N12Game_Battler6WeaponE"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858108,
-              "implname": "i",
-              "name": "int"
+              "cindex": {
+                "hashcode": 6615858108,
+                "name": "i"
+              },
+              "bases": [],
+              "name": "i"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858108,
-            "implname": "i",
-            "name": "int"
+            "cindex": {
+              "hashcode": 6615858108,
+              "name": "i"
+            },
+            "bases": [],
+            "name": "i"
           }
         },
         "CalcNormalAttackToHit": {
           "name": "CalcNormalAttackToHit",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 4337531473,
-              "implname": "12Game_Battler",
-              "name": "const Game_Battler &"
+              "cindex": {
+                "hashcode": 4384423049,
+                "name": "12Game_Battler"
+              },
+              "bases": [],
+              "name": "12Game_Battler"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 4337531473,
-              "implname": "12Game_Battler",
-              "name": "const Game_Battler &"
+              "cindex": {
+                "hashcode": 4384423049,
+                "name": "12Game_Battler"
+              },
+              "bases": [],
+              "name": "12Game_Battler"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 843925990230665840,
-              "implname": "N12Game_Battler6WeaponE",
-              "name": "Game_Battler::Weapon"
+              "cindex": {
+                "hashcode": 843925990230665840,
+                "name": "N12Game_Battler6WeaponE"
+              },
+              "bases": [],
+              "name": "N12Game_Battler6WeaponE"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 1485114547661566828,
-              "implname": "N3lcf3rpg6System15BattleConditionE",
-              "name": "lcf::rpg::System::BattleCondition"
+              "cindex": {
+                "hashcode": 1485114547661566828,
+                "name": "N3lcf3rpg6System15BattleConditionE"
+              },
+              "bases": [],
+              "name": "N3lcf3rpg6System15BattleConditionE"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858045,
-              "implname": "b",
-              "name": "bool"
+              "cindex": {
+                "hashcode": 6615858045,
+                "name": "b"
+              },
+              "bases": [],
+              "name": "b"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858108,
-            "implname": "i",
-            "name": "int"
+            "cindex": {
+              "hashcode": 6615858108,
+              "name": "i"
+            },
+            "bases": [],
+            "name": "i"
           }
         },
         "CalcNormalAttackEffect": {
           "name": "CalcNormalAttackEffect",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 4337531473,
-              "implname": "12Game_Battler",
-              "name": "const Game_Battler &"
+              "cindex": {
+                "hashcode": 4384423049,
+                "name": "12Game_Battler"
+              },
+              "bases": [],
+              "name": "12Game_Battler"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 4337531473,
-              "implname": "12Game_Battler",
-              "name": "const Game_Battler &"
+              "cindex": {
+                "hashcode": 4384423049,
+                "name": "12Game_Battler"
+              },
+              "bases": [],
+              "name": "12Game_Battler"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 843925990230665840,
-              "implname": "N12Game_Battler6WeaponE",
-              "name": "Game_Battler::Weapon"
+              "cindex": {
+                "hashcode": 843925990230665840,
+                "name": "N12Game_Battler6WeaponE"
+              },
+              "bases": [],
+              "name": "N12Game_Battler6WeaponE"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858045,
-              "implname": "b",
-              "name": "bool"
+              "cindex": {
+                "hashcode": 6615858045,
+                "name": "b"
+              },
+              "bases": [],
+              "name": "b"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858045,
-              "implname": "b",
-              "name": "bool"
+              "cindex": {
+                "hashcode": 6615858045,
+                "name": "b"
+              },
+              "bases": [],
+              "name": "b"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858045,
-              "implname": "b",
-              "name": "bool"
+              "cindex": {
+                "hashcode": 6615858045,
+                "name": "b"
+              },
+              "bases": [],
+              "name": "b"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 1485114547661566828,
-              "implname": "N3lcf3rpg6System15BattleConditionE",
-              "name": "lcf::rpg::System::BattleCondition"
+              "cindex": {
+                "hashcode": 1485114547661566828,
+                "name": "N3lcf3rpg6System15BattleConditionE"
+              },
+              "bases": [],
+              "name": "N3lcf3rpg6System15BattleConditionE"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858045,
-              "implname": "b",
-              "name": "bool"
+              "cindex": {
+                "hashcode": 6615858045,
+                "name": "b"
+              },
+              "bases": [],
+              "name": "b"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858108,
-            "implname": "i",
-            "name": "int"
+            "cindex": {
+              "hashcode": 6615858108,
+              "name": "i"
+            },
+            "bases": [],
+            "name": "i"
           }
         },
         "CalcSkillCost": {
           "name": "CalcSkillCost",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 4420775708918966150,
-              "implname": "N3lcf3rpg5SkillE",
-              "name": "const lcf::rpg::Skill &"
+              "cindex": {
+                "hashcode": 4420775708918966150,
+                "name": "N3lcf3rpg5SkillE"
+              },
+              "bases": [],
+              "name": "N3lcf3rpg5SkillE"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858108,
-              "implname": "i",
-              "name": "int"
+              "cindex": {
+                "hashcode": 6615858108,
+                "name": "i"
+              },
+              "bases": [],
+              "name": "i"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858045,
-              "implname": "b",
-              "name": "bool"
+              "cindex": {
+                "hashcode": 6615858045,
+                "name": "b"
+              },
+              "bases": [],
+              "name": "b"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858108,
-            "implname": "i",
-            "name": "int"
+            "cindex": {
+              "hashcode": 6615858108,
+              "name": "i"
+            },
+            "bases": [],
+            "name": "i"
           }
         },
         "VarianceAdjustEffect": {
           "name": "VarianceAdjustEffect",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858108,
-              "implname": "i",
-              "name": "int"
+              "cindex": {
+                "hashcode": 6615858108,
+                "name": "i"
+              },
+              "bases": [],
+              "name": "i"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858108,
-              "implname": "i",
-              "name": "int"
+              "cindex": {
+                "hashcode": 6615858108,
+                "name": "i"
+              },
+              "bases": [],
+              "name": "i"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858108,
-            "implname": "i",
-            "name": "int"
+            "cindex": {
+              "hashcode": 6615858108,
+              "name": "i"
+            },
+            "bases": [],
+            "name": "i"
           }
         },
         "CalcSkillHpCost": {
           "name": "CalcSkillHpCost",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 4420775708918966150,
-              "implname": "N3lcf3rpg5SkillE",
-              "name": "const lcf::rpg::Skill &"
+              "cindex": {
+                "hashcode": 4420775708918966150,
+                "name": "N3lcf3rpg5SkillE"
+              },
+              "bases": [],
+              "name": "N3lcf3rpg5SkillE"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858108,
-              "implname": "i",
-              "name": "int"
+              "cindex": {
+                "hashcode": 6615858108,
+                "name": "i"
+              },
+              "bases": [],
+              "name": "i"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858108,
-            "implname": "i",
-            "name": "int"
+            "cindex": {
+              "hashcode": 6615858108,
+              "name": "i"
+            },
+            "bases": [],
+            "name": "i"
           }
         },
         "AdjustDamageForDefend": {
           "name": "AdjustDamageForDefend",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858108,
-              "implname": "i",
-              "name": "int"
+              "cindex": {
+                "hashcode": 6615858108,
+                "name": "i"
+              },
+              "bases": [],
+              "name": "i"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 4337531473,
-              "implname": "12Game_Battler",
-              "name": "const Game_Battler &"
+              "cindex": {
+                "hashcode": 4384423049,
+                "name": "12Game_Battler"
+              },
+              "bases": [],
+              "name": "12Game_Battler"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858108,
-            "implname": "i",
-            "name": "int"
+            "cindex": {
+              "hashcode": 6615858108,
+              "name": "i"
+            },
+            "bases": [],
+            "name": "i"
           }
         },
         "CalcSkillEffect": {
           "name": "CalcSkillEffect",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 4337531473,
-              "implname": "12Game_Battler",
-              "name": "const Game_Battler &"
+              "cindex": {
+                "hashcode": 4384423049,
+                "name": "12Game_Battler"
+              },
+              "bases": [],
+              "name": "12Game_Battler"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 4337531473,
-              "implname": "12Game_Battler",
-              "name": "const Game_Battler &"
+              "cindex": {
+                "hashcode": 4384423049,
+                "name": "12Game_Battler"
+              },
+              "bases": [],
+              "name": "12Game_Battler"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 4420775708918966150,
-              "implname": "N3lcf3rpg5SkillE",
-              "name": "const lcf::rpg::Skill &"
+              "cindex": {
+                "hashcode": 4420775708918966150,
+                "name": "N3lcf3rpg5SkillE"
+              },
+              "bases": [],
+              "name": "N3lcf3rpg5SkillE"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858045,
-              "implname": "b",
-              "name": "bool"
+              "cindex": {
+                "hashcode": 6615858045,
+                "name": "b"
+              },
+              "bases": [],
+              "name": "b"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858045,
-              "implname": "b",
-              "name": "bool"
+              "cindex": {
+                "hashcode": 6615858045,
+                "name": "b"
+              },
+              "bases": [],
+              "name": "b"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 1485114547661566828,
-              "implname": "N3lcf3rpg6System15BattleConditionE",
-              "name": "lcf::rpg::System::BattleCondition"
+              "cindex": {
+                "hashcode": 1485114547661566828,
+                "name": "N3lcf3rpg6System15BattleConditionE"
+              },
+              "bases": [],
+              "name": "N3lcf3rpg6System15BattleConditionE"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858045,
-              "implname": "b",
-              "name": "bool"
+              "cindex": {
+                "hashcode": 6615858045,
+                "name": "b"
+              },
+              "bases": [],
+              "name": "b"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858108,
-            "implname": "i",
-            "name": "int"
+            "cindex": {
+              "hashcode": 6615858108,
+              "name": "i"
+            },
+            "bases": [],
+            "name": "i"
           }
         },
         "IsSkillUsable": {
           "name": "IsSkillUsable",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 4420775708918966150,
-              "implname": "N3lcf3rpg5SkillE",
-              "name": "const lcf::rpg::Skill &"
+              "cindex": {
+                "hashcode": 4420775708918966150,
+                "name": "N3lcf3rpg5SkillE"
+              },
+              "bases": [],
+              "name": "N3lcf3rpg5SkillE"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858045,
-              "implname": "b",
-              "name": "bool"
+              "cindex": {
+                "hashcode": 6615858045,
+                "name": "b"
+              },
+              "bases": [],
+              "name": "b"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858045,
-            "implname": "b",
-            "name": "bool"
+            "cindex": {
+              "hashcode": 6615858045,
+              "name": "b"
+            },
+            "bases": [],
+            "name": "b"
           }
         },
         "SkillTargetsOne": {
           "name": "SkillTargetsOne",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 4420775708918966150,
-              "implname": "N3lcf3rpg5SkillE",
-              "name": "const lcf::rpg::Skill &"
+              "cindex": {
+                "hashcode": 4420775708918966150,
+                "name": "N3lcf3rpg5SkillE"
+              },
+              "bases": [],
+              "name": "N3lcf3rpg5SkillE"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858045,
-            "implname": "b",
-            "name": "bool"
+            "cindex": {
+              "hashcode": 6615858045,
+              "name": "b"
+            },
+            "bases": [],
+            "name": "b"
           }
         },
         "IsNormalOrSubskill": {
           "name": "IsNormalOrSubskill",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 4420775708918966150,
-              "implname": "N3lcf3rpg5SkillE",
-              "name": "const lcf::rpg::Skill &"
+              "cindex": {
+                "hashcode": 4420775708918966150,
+                "name": "N3lcf3rpg5SkillE"
+              },
+              "bases": [],
+              "name": "N3lcf3rpg5SkillE"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858045,
-            "implname": "b",
-            "name": "bool"
+            "cindex": {
+              "hashcode": 6615858045,
+              "name": "b"
+            },
+            "bases": [],
+            "name": "b"
           }
         },
         "SkillTargetsAllies": {
           "name": "SkillTargetsAllies",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 4420775708918966150,
-              "implname": "N3lcf3rpg5SkillE",
-              "name": "const lcf::rpg::Skill &"
+              "cindex": {
+                "hashcode": 4420775708918966150,
+                "name": "N3lcf3rpg5SkillE"
+              },
+              "bases": [],
+              "name": "N3lcf3rpg5SkillE"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858045,
-            "implname": "b",
-            "name": "bool"
+            "cindex": {
+              "hashcode": 6615858045,
+              "name": "b"
+            },
+            "bases": [],
+            "name": "b"
           }
         },
         "GetNumberOfAttacks": {
           "name": "GetNumberOfAttacks",
           "arguments": [
             {
+              "methods": [],
               "size": 0,
-              "hash": 6615858108,
-              "implname": "i",
-              "name": "int"
+              "cindex": {
+                "hashcode": 6615858108,
+                "name": "i"
+              },
+              "bases": [],
+              "name": "i"
             },
             {
+              "methods": [],
               "size": 0,
-              "hash": 13549776772121148003,
-              "implname": "N3lcf3rpg4ItemE",
-              "name": "const lcf::rpg::Item &"
+              "cindex": {
+                "hashcode": 13549776772121148003,
+                "name": "N3lcf3rpg4ItemE"
+              },
+              "bases": [],
+              "name": "N3lcf3rpg4ItemE"
             }
           ],
           "return": {
+            "methods": [],
             "size": 0,
-            "hash": 6615858108,
-            "implname": "i",
-            "name": "int"
+            "cindex": {
+              "hashcode": 6615858108,
+              "name": "i"
+            },
+            "bases": [],
+            "name": "i"
           }
         }
       },

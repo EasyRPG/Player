@@ -24,5 +24,8 @@
 #include "lio.hpp"
 
 namespace leasy {
-  ios::io_system io {};
+  ios::io_system &io() {
+    static ios::io_system *system = new ios::io_system();
+    return *system;
+  }
 }
