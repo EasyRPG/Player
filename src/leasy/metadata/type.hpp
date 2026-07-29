@@ -82,7 +82,10 @@ namespace leasy::metadata {
         .add("name", _fullname)
         .add("size", _size)
         .add("bases", Array(
-          kits::select(this->_bases, [](const std::shared_ptr<Class> &cl) { return cl->dump(); })
+          kits::select(this->_bases, [](const std::shared_ptr<Class> &cl) { 
+            if (cl) return cl->dump();
+            return Object("<null-class>");
+          })
         ))
         .add("cindex", Map()
           .add("name", _cindex.name())
@@ -91,6 +94,15 @@ namespace leasy::metadata {
         .add("methods", Array(kits::select(this->_methods, [](const std::pair<std::string, std::shared_ptr<function_base_t>> &e) {
           return e.second->dump();
         })));
+    }
+
+    inline Object minimal_dump() const {
+      return Map()
+        .add("name", _fullname)
+        .add("cindex", Map()
+          .add("name", _cindex.name())
+          .add("hashcode", _cindex.hash_code())
+        );
     }
 
     inline void bind(ul2::lstate &state) const override {
@@ -115,7 +127,7 @@ namespace leasy::metadata {
       _fullname = poor_data.name();
       _cindex = poor_data;
     }
-
+    
     UnresolvedClass(const std::type_index &poor_data, const std::string &ful) {
       _fullname = ful;
       _cindex = poor_data;
@@ -128,10 +140,13 @@ namespace leasy::metadata {
     return typeidof(typeid(T));
   }
 
+  void _make_type(const std::type_index&, const std::shared_ptr<Class>&);
+
+  /** @brief a dynamic class, made at runtime. */
   template <typename T, typename... Bases>
-  class ClassBuilder : public Class {
+  class DynamicClass : public Class {
   public:
-    inline ClassBuilder() {
+    inline DynamicClass() {
       this->_cindex = typeid(T);
       this->_fullname = nameof<T>();
       this->_size = safe_sizeof<T>();
@@ -139,13 +154,41 @@ namespace leasy::metadata {
     }
 
     template <typename... Fs>
-    inline ClassBuilder &method(const std::string &name, Fs&&... funcs) {
-      this->_methods[name] = make_function(name, funcs...);
+    inline DynamicClass &method(const std::string &name, Fs&&... funcs) {
+      this->_methods[name] = make_function(name, std::forward<Fs>(funcs)...);
       return *this;
     }
 
     inline std::shared_ptr<Class> done() const {
-      return std::make_shared<ClassBuilder>(*this);
+      return std::make_shared<DynamicClass>(*this);
+    }
+  };
+
+  /** @brief makes class registration easier, wrapping around a DynamicClass. */
+  template <typename T, typename... Bases>
+  class ClassBuilder {
+  protected:
+    std::shared_ptr<DynamicClass<T, Bases...>> local;
+    
+    static inline std::shared_ptr<DynamicClass<T, Bases...>> alloc_ptr() {
+      std::shared_ptr<DynamicClass<T, Bases...>> p = std::make_shared<DynamicClass<T, Bases...>>();
+      _make_type(typeid(T), p);
+      return p;
+    }
+
+  public:
+    inline ClassBuilder() {
+      this->local = alloc_ptr();
+    }
+
+    template <typename... Fs>
+    inline ClassBuilder<T, Bases...> &method(const std::string &name, Fs&&... funcs) {
+      this->local->method(name, std::forward<Fs>(funcs)...);
+      return *this;
+    }
+
+    inline std::shared_ptr<Class> done() const {
+      return this->local;
     }
   };
 

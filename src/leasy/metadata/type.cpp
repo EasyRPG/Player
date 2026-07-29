@@ -47,7 +47,7 @@ namespace detail {
 }
 
 namespace leasy::metadata {
-  static std::unordered_map<std::type_index, std::shared_ptr<Class>> &registery() {
+  std::unordered_map<std::type_index, std::shared_ptr<Class>> &registery() {
     static std::unordered_map<std::type_index, std::shared_ptr<Class>> m = {};
     return m;
   }
@@ -58,6 +58,11 @@ namespace leasy::metadata {
       return {true, cache[idx]};
     }
     return {false, idx.name()};
+  }
+
+  void _make_type(const std::type_index &idx, const std::shared_ptr<Class> &cls) {
+    // FIXME: add overwrite options?
+    registery()[idx] = cls;
   }
 
   std::shared_ptr<Class> typeidof(const std::type_index &index) {

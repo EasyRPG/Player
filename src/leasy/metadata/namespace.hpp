@@ -17,7 +17,7 @@ namespace leasy::metadata {
 
     std::unordered_map<std::string, std::shared_ptr<function_base_t>> functions = {};
     std::unordered_map<std::string, std::shared_ptr<Class>> classes = {};
-    std::unordered_map<std::string, NSpace> namespaces = {};
+    std::unordered_map<std::string, std::shared_ptr<NSpace>> namespaces = {};
 
     inline NSpace() {}
 
@@ -39,8 +39,7 @@ namespace leasy::metadata {
     }
 
     inline NSpace &add(const NSpace &ns) {
-
-      this->namespaces[ns.name] = ns;
+      this->namespaces[ns.name] = std::make_shared<NSpace>(ns);
 
       return *this;
     }
@@ -48,10 +47,10 @@ namespace leasy::metadata {
     inline NSpace &sub(const std::string &name) {
       
       if (this->namespaces.find(name) == this->namespaces.end()) {
-        this->namespaces[name] = make_namespace(name);
+        this->namespaces[name] = std::make_shared<NSpace>(name);
       }
 
-      return this->namespaces[name];
+      return (*this->namespaces[name]);
     }
 
     inline Object dump() const override {
@@ -71,7 +70,7 @@ namespace leasy::metadata {
 
       Map namespaces;
       for (const auto &ns: this->namespaces) {
-        namespaces[ns.first] = ns.second.dump();
+        namespaces[ns.first] = ns.second->dump();
       }
 
       t.add("functions", functions)
@@ -105,7 +104,7 @@ namespace leasy::metadata {
       }
 
       for (const auto &ns: this->namespaces) {
-        ns.second.bind(state);
+        ns.second->bind(state);
       }
     }
   };

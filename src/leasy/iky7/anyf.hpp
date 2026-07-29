@@ -30,7 +30,7 @@
 #include "../kits/rtt.hpp"
 
 namespace leasy::iky7 {
-  template <typename F, typename Tuple, std::size_t... Is>
+  template <typename Tuple, typename F, std::size_t... Is>
   std::any invoke_from_any_impl(const F& f, const std::vector<std::any>& args, std::index_sequence<Is...>) {
     using tuple = std::remove_reference_t<Tuple>;
     using traits = ul2::function_traits<F>;
@@ -52,15 +52,16 @@ namespace leasy::iky7 {
 
   template <typename Fn>
   auto bridgefunc(const Fn& f) {
-    using traits = ul2::function_traits<std::decay_t<Fn>>;
+    using Callable = std::decay_t<Fn>;
+    using traits = ul2::function_traits<Callable>;
     using args_tuple = typename traits::args_tuple;
 
-    return [&f](const std::vector<std::any>& args) -> std::any {
+    return [f = Callable(f)](const std::vector<std::any>& args) -> std::any {
       auto eval = kits::is_callable_with(kits::tuple_types<args_tuple>(), args);
  
       if (!eval.first) throw std::runtime_error(eval.second);
  
-      return invoke_from_any_impl<std::decay_t<decltype(f)>, args_tuple>(
+      return invoke_from_any_impl<args_tuple>(
         f,
         args,
         std::make_index_sequence<std::tuple_size_v<args_tuple>>{}

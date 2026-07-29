@@ -263,11 +263,12 @@ namespace leasy::ul2 {
 
     template <typename F>
     static std::function<int(lua_State*)> bridge(const F& f) {
-      using traits = function_traits<std::decay_t<F>>;
-      return std::function<int(lua_State*)>([&f](lua_State *L) mutable -> int {
+      using Callable = std::decay_t<F>;
+      using traits = function_traits<Callable>;
+
+      return std::function<int(lua_State*)>([f = Callable(f)](lua_State *L) -> int {
         return invoke_stdfn<
           typename traits::return_type,
-          F, 
           typename traits::args_tuple
         >(f, L, std::make_index_sequence<traits::arity>{});
       });
@@ -275,11 +276,11 @@ namespace leasy::ul2 {
 
     template<typename F>
     void bind(const std::string& name, F&& fn) {
-      bind2(name, bridge(fn));
+      bind2(name, bridge(std::forward<F>(fn)));
     }
 
   private:
-    template <typename R, typename Callable, typename Tuple, size_t... I>
+    template <typename R, typename Tuple, typename Callable, size_t... I>
     static int invoke_stdfn(const Callable &fn, lua_State *L, std::index_sequence<I...>) {
       if constexpr (std::is_void_v<R>) {
         std::invoke(fn, lua_stack<std::tuple_element_t<I, Tuple>>::get(L, I + 1)...);

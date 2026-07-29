@@ -70,8 +70,10 @@ namespace leasy::metadata {
     inline Object dump() const override {
       return Map()
              .add("name", name)
-             .add("arguments", kits::select(arguments, [](const std::shared_ptr<Class> &info) { return info->dump(); }))
-             .add("return", return_type->dump());
+             .add("arguments", kits::select(arguments, [](const std::shared_ptr<Class> &info) { 
+                return info->minimal_dump();
+              }))
+             .add("return", return_type->minimal_dump());
     }
 
     inline function() : arguments({}), return_type(typeidof<void>()) {
@@ -83,8 +85,8 @@ namespace leasy::metadata {
     inline function(const std::string &name, const Fn &f) {
       this->name = name;
       using traits = ul2::function_traits<Fn>;
-      this->native_bridge = iky7::bridgefunc<Fn>(f);
-      this->lua_bridge = ul2::lstate::bridge<Fn>(f);
+      this->native_bridge = iky7::bridgefunc(f);
+      this->lua_bridge = ul2::lstate::bridge(f);
       this->arguments = kits::tuple_types<typename traits::args_tuple>();
       this->return_type = typeidof<typename traits::return_type>();
     }
@@ -152,7 +154,7 @@ namespace leasy::metadata {
   };
 
   template <typename... Fs>
-  inline std::shared_ptr<function_base_t>  make_function(const std::string &name, Fs&&... fs) {
+  inline std::shared_ptr<function_base_t> make_function(const std::string &name, Fs&&... fs) {
     if constexpr (sizeof...(fs) == 0) {
       return std::make_shared<function>(function(name, []() {})); // That one does cleary something. LOL.
     } else if constexpr (sizeof...(fs) == 1) {

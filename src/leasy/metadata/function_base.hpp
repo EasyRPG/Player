@@ -57,5 +57,7 @@ namespace leasy::metadata {
         return 0;
       };
     }
+
+    virtual ~function_base_t() = default;
   };
 }
