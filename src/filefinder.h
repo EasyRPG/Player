@@ -265,6 +265,16 @@ namespace FileFinder {
 	std::vector<std::string> SplitPath(std::string_view path);
 
 	/**
+	 * Constructs a list of all the paths leading to the file.
+	 * e.g. for /a/b/c/d it creates
+	 * ["/a", "/a/b", "/a/b/c", "/a/b/c/d"]
+	 *
+	 * @param path Path to build prefixes from
+	 * @return all path prefixes
+	 */
+	std::vector<std::string> SplitPathPrefixes(std::string_view path);
+
+	/**
 	 * Splits a path into path and filename.
 	 *
 	 * @param path Path to split

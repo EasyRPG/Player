@@ -456,9 +456,11 @@ RETRO_API bool retro_load_game(const struct retro_game_info* game) {
 	game_path = Utils::ReplaceAll(game_path, ".easyrpg#", ".easyrpg/");
 	game_path = FileFinder::MakeCanonical(game_path, 0);
 
+	log_cb(RETRO_LOG_INFO, "Loading Game %s\n", game_path.c_str());
 	auto fs = FileFinder::Root().Create(game_path);
 	if (!fs) {
 		std::tie(game_path, std::ignore) = FileFinder::GetPathAndFilename(game_path);
+		log_cb(RETRO_LOG_INFO, "Loading Game %s\n", game_path.c_str());
 		fs = FileFinder::Root().Create(game_path);
 		if (!fs || !FileFinder::IsValidProject(fs)) {
 			log_cb(RETRO_LOG_ERROR, "Unsupported game %s\n", game_path.c_str());

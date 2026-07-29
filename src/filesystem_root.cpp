@@ -58,7 +58,7 @@ FilesystemView RootFilesystem::Create(std::string_view path) const {
 
 	const auto& fs = FilesystemForPath(path);
 	// Strip namespace from path except for libretro which expects them
-#ifdef USE_LIBRETRO
+#ifndef USE_LIBRETRO
 	auto ns_pos = path.find("://");
 	if (ns_pos != std::string::npos) {
 		path = path.substr(ns_pos + 3);

@@ -105,7 +105,9 @@ FilesystemView FileFinder::Save() {
 				std::reverse(comps.begin(), comps.end());
 				std::string save_path = MakePath(lcf::MakeSpan(comps));
 				if (!parent.IsDirectory(save_path, true)) {
-					parent.MakeDirectory(save_path, true);
+					if (!parent.MakeDirectory(save_path, true)) {
+						Output::Debug("Save FS: MakeDirectory {} Failed", save_path);
+					}
 				}
 				redir = parent.Subtree(save_path);
 
@@ -223,6 +225,49 @@ std::vector<std::string> FileFinder::SplitPath(std::string_view path) {
 		return t == escape_char_back || t == escape_char_forward;
 	};
 	return Utils::Tokenize(path, f);
+}
+
+std::vector<std::string> FileFinder::SplitPathPrefixes(std::string_view path) {
+	// Check if the path contains a namespace and save it
+	std::string ns;
+	auto ns_pos = path.find("://");
+	if (ns_pos != std::string::npos) {
+		ns = path.substr(0, ns_pos + 3);
+		path = path.substr(ns_pos + 3);
+	}
+
+	auto components = FileFinder::SplitPath(path);
+	std::string cur_path;
+	if (StartsWith(path, "/")) {
+		cur_path += "/";
+	}
+
+	// Create all the subpaths
+	// This will create e.g. for /a/b/c/d:
+	// ["/a", "/a/b", "/a/b/c", "/a/b/c/d"]
+	std::vector<std::string> full_paths;
+	for (const auto& comp : components) {
+		if (comp.empty() || comp == ".") {
+			continue;
+		}
+
+		cur_path = FileFinder::MakePath(cur_path, comp);
+		full_paths.push_back(cur_path);
+	}
+
+	if (EndsWith(path, "/")) {
+		full_paths.back() += "/";
+	}
+
+	// Prepend namespace to all paths
+	if (!ns.empty()) {
+		for (auto& s : full_paths) {
+			s = ns + s;
+		}
+		full_paths.insert(full_paths.begin(), ns);
+	}
+
+	return full_paths;
 }
 
 std::pair<std::string, std::string> FileFinder::GetPathAndFilename(std::string_view path) {

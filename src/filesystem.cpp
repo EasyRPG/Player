@@ -91,62 +91,49 @@ FilesystemView Filesystem::Create(std::string_view path) const {
 	// When the path doesn't exist check if the path contains a file that can
 	// be handled by another filesystem
 	if (!IsDirectory(path, true)) {
-		std::string dir_of_file;
-		std::string path_prefix;
-		std::vector<std::string> components = FileFinder::SplitPath(path);
 
-		// TODO this should probably move to a static function in the FS classes
 		// Search for the deepest directory
-		int i = 0;
-		for (const auto& comp : components) {
-			// Do not check stuff that looks like drives, such as C:, ux0: or sd:
-			// Some systems do not consider them directories
-			if (i > 0 || (!comp.empty() && comp.back() != ':')) {
-				if (!IsDirectory(FileFinder::MakePath(dir_of_file, comp), true)) {
-					break;
-				}
-			}
-			dir_of_file += comp + "/";
-			++i;
+		std::vector<std::string> components = FileFinder::SplitPathPrefixes(path);
+		// Prepend empty path for the root directory if not present
+		if (components.empty() || components.front() != "") {
+			components.insert(components.begin(), "");
 		}
 
-		if (!dir_of_file.empty()) {
-			dir_of_file.pop_back();
+
+		size_t archive_idx = components.size();
+		for (auto it = components.rbegin(); it != components.rend(); ++it) {
+			const std::string& p = *it;
+			// Do not check stuff that looks like drives, such as C:, ux0: or sd:
+			// Some systems do not consider them directories
+			if (archive_idx > 1 || (!p.empty() && p.back() != ':')) {
+				if (IsDirectory(p, true)) {
+					break;
+				}
+			} else {
+				break;
+			}
+			--archive_idx;
 		}
 
 		// The next component must be a file
 		// search for known file extensions and "do magic"
-		std::string internal_path;
-		bool handle_internal = false;
-		for (const auto& comp : lcf::MakeSpan(components).subspan(i)) {
-			if (handle_internal) {
-				internal_path += comp + "/";
-			} else {
-				path_prefix += comp + "/";
-				if (FileFinder::IsSupportedArchiveExtension(comp)) {
-					path_prefix.pop_back();
-					handle_internal = true;
-				}
-			}
-		}
+		std::string archive_path = components[archive_idx - 1];
+		std::string archive_name = FileFinder::GetPathAndFilename(components[archive_idx]).second;
+		std::string internal_path = FileFinder::GetPathInsidePath(components[archive_idx], components.back());
 
-		if (!handle_internal) {
+		if (!FileFinder::IsSupportedArchiveExtension(archive_name)) {
 			// No supported archive type found
 			return {};
 		}
 
-		if (!internal_path.empty()) {
-			internal_path.pop_back();
-		}
-
-		std::shared_ptr<Filesystem> filesystem = std::make_shared<ZipFilesystem>(path_prefix, Subtree(dir_of_file));
+		std::shared_ptr<Filesystem> filesystem = std::make_shared<ZipFilesystem>(archive_name, Subtree(archive_path));
 #if HAVE_LHASA
 		if (!filesystem->IsValid()) {
-			filesystem = std::make_shared<LzhFilesystem>(path_prefix, Subtree(dir_of_file));
+			filesystem = std::make_shared<LzhFilesystem>(archive_name, Subtree(archive_path));
 		}
 #endif
 		if (!filesystem->IsValid()) {
-			filesystem = std::make_shared<TarFilesystem>(path_prefix, Subtree(dir_of_file));
+			filesystem = std::make_shared<TarFilesystem>(archive_name, Subtree(archive_path));
 		}
 		if (!filesystem->IsValid()) {
 			return {};
@@ -189,24 +176,7 @@ bool Filesystem::MakeDirectory(std::string_view path, bool follow_symlinks) cons
 		return true;
 	}
 
-	auto components = FileFinder::SplitPath(path);
-	std::string cur_path;
-	if (StartsWith(path, "/")) {
-		cur_path += "/";
-	}
-
-	// Create all the subpaths
-	// This will create e.g. for /a/b/c/d:
-	// ["/a", "/a/b", "/a/b/c", "/a/b/c/d"]
-	std::vector<std::string> full_paths;
-	for (const auto& comp : components) {
-		if (comp.empty() || comp == ".") {
-			continue;
-		}
-
-		cur_path = FileFinder::MakePath(cur_path, comp);
-		full_paths.push_back(cur_path);
-	}
+	auto full_paths = FileFinder::SplitPathPrefixes(path);
 
 	if (full_paths.empty()) {
 		return true;
@@ -237,9 +207,10 @@ bool Filesystem::MakeDirectory(std::string_view path, bool follow_symlinks) cons
 		to_create.push_back(p);
 	}
 
-	// (*) These paths will be created hereZ
+	// (*) These paths will be created here
 	for (auto it = to_create.rbegin(); it != to_create.rend(); ++it) {
 		if (!vMakeDirectory(*it, follow_symlinks)) {
+			Output::Debug("MakeDirectory {} failed", *it);
 			return false;
 		}
 	}

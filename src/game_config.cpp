@@ -347,7 +347,6 @@ Filesystem_Stream::OutputStream& Game_Config::GetLogFileOutput() {
 			return noop_stream;
 		}
 
-		// Make Directory not supported on Android, assume the path exists
 		if (!FileFinder::Root().MakeDirectory(FileFinder::GetPathAndFilename(path).first, true)) {
 			print_err();
 			return noop_stream;
