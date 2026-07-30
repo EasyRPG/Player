@@ -1,365 +1,560 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EasyRPG Player</title>
-  <style>
-    :root {
-      --color-gray: hsl(0, 0%, 55%);
-      --controls-size: 10vh;
-    }
-
-    @media (orientation: landscape) {
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#000000" />
+    <title>EasyRPG Player</title>
+    <style>
       :root {
-        --controls-size: 20vh;
+        --color-gray: hsl(0 0% 55%);
+        --controls-size: clamp(3.5rem, 20vmin, 5.5rem);
+        --controls-opacity: 0.4;
+        --controls-fade: 80ms;
       }
-    }
 
-    html {
-      touch-action: none;
-    }
+      html {
+        touch-action: none;
+      }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-      margin: 0;
-      color: white;
-      background: black;
-    }
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        color: white;
+        background: black;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
 
-    .unselectable {
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      user-select: none;
-    }
+      #boot {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        font-family: ui-monospace, monospace;
+        text-align: center;
+        background: black;
+        pointer-events: none;
+        transition:
+          opacity 300ms ease,
+          visibility 300ms ease;
+      }
 
-    #status {
-      font-size: 1.5rem;
-      color: var(--color-gray);
-      text-align: center;
-    }
+      #boot.done {
+        visibility: hidden;
+        opacity: 0;
+      }
 
-    #controls {
-      position: relative;
-      text-align: right;
-      z-index: 10;
-    }
+      #status {
+        font-size: 0.875rem;
+        color: var(--color-gray);
+      }
 
-    #controls button {
-      -webkit-appearance: button;
-      appearance: button;
-      display: inline-flex;
-      background: transparent;
-      border: 0;
-      color: white;
-      font-family: inherit;
-      font-size: 1em;
-      line-height: inherit;
-      cursor: pointer;
-      padding: 0.5rem;
-    }
+      #controls {
+        position: fixed;
+        top: calc(env(safe-area-inset-top) + 0.5rem);
+        right: calc(env(safe-area-inset-right) + 0.5rem);
+        z-index: 10;
+        display: flex;
+        gap: 0.25rem;
+      }
 
-    #controls svg {
-      pointer-events: none;
-    }
+      #controls button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.35rem;
+        color: white;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity 80ms ease;
+      }
 
-    #canvas {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100vw !important;
-      height: 100vh !important;
-      border: 0;
-      image-rendering: pixelated;
-      image-rendering: crisp-edges;
-      transform: translate(-50%, -50%);
-    }
+      #controls button[hidden] {
+        display: none;
+      }
 
-    img#canvas {
-      object-fit: contain;
-    }
+      #controls button:focus-visible {
+        opacity: 1;
+      }
 
-    #dpad,
-    #apad {
-      position: fixed;
-      bottom: 1rem;
-    }
+      #viewport:fullscreen #controls-fullscreen .icon-enter,
+      #viewport:not(:fullscreen) #controls-fullscreen .icon-exit {
+        display: none;
+      }
 
-    #dpad {
-      left: 1rem;
-    }
+      #canvas {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        outline: none;
+        image-rendering: pixelated;
+        transform: translate(-50%, -50%);
+      }
 
-    #apad {
-      right: 1rem;
-    }
+      img#canvas {
+        object-fit: contain;
+      }
 
-    #dpad svg {
-      width: calc(2 * var(--controls-size));
-      height: calc(2 * var(--controls-size));
-      fill: var(--color-gray);
-    }
+      /* `!important` beats the inline size SDL writes onto the canvas
+         while it manages its window size, which shrinks the canvas when
+         it measures a zero-height body */
+      #canvas {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+      }
 
-    #dpad svg rect {
-      opacity: 0.4;
-    }
+      @media (hover: none), (pointer: coarse) {
+        #controls button {
+          min-block-size: 44px;
+        }
 
-    #apad > * {
-      width: var(--controls-size);
-      height: var(--controls-size);
-      background-color: var(--color-gray);
-      border-radius: 50%;
-    }
+        #controls {
+          gap: 0.625rem;
+        }
 
-    #apad > :last-child {
-      position: relative;
-      right: var(--controls-size);
-    }
+        #viewport {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100dvh;
+          display: grid;
+          grid-template-areas:
+            "screen screen"
+            "dpad apad";
+          grid-template-rows: minmax(0, 1fr) auto;
+          grid-template-columns: 1fr 1fr;
+        }
 
-    #dpad path:not(.active),
-    #apad > *:not(.active) {
-      opacity: 0.4;
-    }
-  </style>
-</head>
-<body>
-  <div id="controls">
-    <button id="controls-fullscreen" class="unselectable">
-      <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="25" height="25"><path d="M13.5 13.5H10m3.5 0V10m0 3.5l-4-4m.5-8h3.5m0 0V5m0-3.5l-4 4M5 1.5H1.5m0 0V5m0-3.5l4 4m-4 4.5v3.5m0 0H5m-3.5 0l4-4" stroke="currentColor"></path></svg>
-    </button>
-  </div>
+        #canvas {
+          position: static;
+          grid-area: screen;
+          object-fit: contain;
+          transform: none;
+        }
 
-  <div id="status"></div>
+        #dpad,
+        #apad {
+          align-self: center;
+        }
 
-  <div id="viewport">
-    <canvas id="canvas" tabindex="-1" class="unselectable"></canvas>
+        #dpad {
+          grid-area: dpad;
+          padding: 0.75rem 0 calc(0.75rem + env(safe-area-inset-bottom))
+            calc(0.75rem + env(safe-area-inset-left));
+        }
 
-    <div id="dpad" class="unselectable">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
-        <path id="dpad-up" data-key="ArrowUp" d="M48,5.8C48,2.5,45.4,0,42,0H29.9C26.6,0,24,2.4,24,5.8V24h24V5.8z" />
-        <path id="dpad-right" data-key="ArrowRight" d="M66.2,24H48v24h18.2c3.3,0,5.8-2.7,5.8-6V29.9C72,26.5,69.5,24,66.2,24z" />
-        <path id="dpad-down" data-key="ArrowDown" d="M24,66.3c0,3.3,2.6,5.7,5.9,5.7H42c3.3,0,6-2.4,6-5.7V48H24V66.3z" />
-        <path id="dpad-left" data-key="ArrowLeft" d="M5.7,24C2.4,24,0,26.5,0,29.9V42c0,3.3,2.3,6,5.7,6H24V24H5.7z" />
-        <rect id="dpad-center" x="24" y="24" width="24" height="24" />
-      </svg>
+        #apad {
+          grid-area: apad;
+          justify-self: end;
+          padding: 0.75rem calc(0.75rem + env(safe-area-inset-right))
+            calc(0.75rem + env(safe-area-inset-bottom)) 0;
+        }
+
+        @media (orientation: landscape) {
+          #viewport {
+            grid-template-areas: "dpad screen apad";
+            grid-template-rows: minmax(0, 1fr);
+            grid-template-columns: auto minmax(0, 1fr) auto;
+          }
+
+          #dpad {
+            padding: 0 0.75rem 0 calc(0.75rem + env(safe-area-inset-left));
+          }
+
+          #apad {
+            padding: 0 calc(0.75rem + env(safe-area-inset-right)) 0 0.75rem;
+          }
+        }
+      }
+
+      #dpad svg {
+        width: calc(2 * var(--controls-size));
+        height: calc(2 * var(--controls-size));
+        fill: var(--color-gray);
+      }
+
+      #apad > * {
+        width: var(--controls-size);
+        height: var(--controls-size);
+        background-color: var(--color-gray);
+        border-radius: 50%;
+      }
+
+      #apad > :first-child {
+        margin-left: var(--controls-size);
+      }
+
+      #dpad svg > *,
+      #apad > * {
+        opacity: var(--controls-opacity);
+        transition:
+          opacity var(--controls-fade) ease,
+          scale 80ms ease;
+      }
+
+      #dpad path {
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+
+      #dpad path.active,
+      #apad > .active {
+        opacity: 1;
+        scale: 0.94;
+      }
+
+      /* Idle dims the whole deck by flipping the shared opacity var */
+      body.controls-idle {
+        --controls-opacity: 0.2;
+        --controls-fade: 500ms;
+      }
+
+      body.gamepad-connected #dpad,
+      body.gamepad-connected #apad {
+        display: none;
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        #apad,
+        #dpad {
+          display: none;
+        }
+
+        #controls button:hover {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <svg
+      aria-hidden="true"
+      style="position: absolute; width: 0; height: 0; overflow: hidden"
+    >
+      <symbol
+        id="icon-fullscreen-enter"
+        viewBox="0 0 15 15"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path
+          d="M13.5 13.5H10m3.5 0V10m0 3.5l-4-4m.5-8h3.5m0 0V5m0-3.5l-4 4M5 1.5H1.5m0 0V5m0-3.5l4 4m-4 4.5v3.5m0 0H5m-3.5 0l4-4"
+        />
+      </symbol>
+      <symbol
+        id="icon-fullscreen-exit"
+        viewBox="0 0 15 15"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path
+          d="M9.5 9.5H13m-3.5 0V13m0-3.5l4 4M13 5.5H9.5m0 0V2m0 3.5l4-4M2 5.5h3.5m0 0V2m0 3.5l-4-4M5.5 13V9.5m0 0H2m3.5 0l-4 4"
+        />
+      </symbol>
+    </svg>
+
+    <div id="boot">
+      <div id="status"></div>
     </div>
 
-    <div id="apad" class="unselectable">
-      <div id="apad-escape" data-key="Escape"></div>
-      <div id="apad-enter" data-key="Enter"></div>
+    <!-- The controls live inside #viewport so they keep rendering when
+         it enters element fullscreen -->
+    <div id="viewport">
+      <div id="controls">
+        <button
+          id="controls-fullscreen"
+          type="button"
+          aria-label="Enter fullscreen"
+          title="Enter fullscreen"
+        >
+          <svg class="icon-enter" width="18" height="18" aria-hidden="true">
+            <use href="#icon-fullscreen-enter" />
+          </svg>
+          <svg class="icon-exit" width="18" height="18" aria-hidden="true">
+            <use href="#icon-fullscreen-exit" />
+          </svg>
+        </button>
+      </div>
+
+      <canvas id="canvas" tabindex="-1"></canvas>
+
+      <div id="dpad" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
+          <path
+            id="dpad-up"
+            data-key="ArrowUp"
+            d="M48,5.8C48,2.5,45.4,0,42,0H29.9C26.6,0,24,2.4,24,5.8V24h24V5.8z"
+          />
+          <path
+            id="dpad-right"
+            data-key="ArrowRight"
+            d="M66.2,24H48v24h18.2c3.3,0,5.8-2.7,5.8-6V29.9C72,26.5,69.5,24,66.2,24z"
+          />
+          <path
+            id="dpad-down"
+            data-key="ArrowDown"
+            d="M24,66.3c0,3.3,2.6,5.7,5.9,5.7H42c3.3,0,6-2.4,6-5.7V48H24V66.3z"
+          />
+          <path
+            id="dpad-left"
+            data-key="ArrowLeft"
+            d="M5.7,24C2.4,24,0,26.5,0,29.9V42c0,3.3,2.3,6,5.7,6H24V24H5.7z"
+          />
+          <rect id="dpad-center" x="24" y="24" width="24" height="24" />
+        </svg>
+      </div>
+
+      <div id="apad" aria-hidden="true">
+        <div id="apad-enter" data-key="Enter"></div>
+        <div id="apad-escape" data-key="Escape"></div>
+      </div>
     </div>
-  </div>
 
-{{{ SCRIPT }}}
+    {{{ SCRIPT }}}
 
-<script>
-const hasTouchscreen = window.matchMedia('(hover: none), (pointer: coarse)').matches;
-const preventNativeKeys = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft', ' ', 'F12'];
-const keys = new Map();
-const keysDown = new Map();
-const canvas = document.getElementById('canvas');
-let easyrpgPlayer;
-let lastTouchedId;
+    <script type="module">
+      const gameId = new URLSearchParams(location.search).get("game");
+      if (gameId) {
+        document.title = `${gameId} – EasyRPG Player`;
+      }
 
-// Launch the Player and configure it
-window.addEventListener('load', (event) => {
-    createEasyRpgPlayer({
-      game: undefined,
-      saveFs: undefined
-    }).then(function(Module) {
-      // Module is ready
-      easyrpgPlayer = Module;
-      easyrpgPlayer.initApi();
-      canvas.focus();
+      const hasTouchscreen = window.matchMedia(
+        "(hover: none), (pointer: coarse)",
+      ).matches;
+      const preventNativeKeys = [
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowRight",
+        "ArrowLeft",
+        " ",
+        "F1",
+        "F3",
+        "F5",
+        "F7",
+        "F12",
+      ];
+      /** @type {Map<string, string>} */
+      const keyByControlId = new Map();
+      /**
+       * Pointers that started on a control and may slide between them
+       * @type {Set<number>}
+       */
+      const engagedPointers = new Set();
+      /**
+       * Control element id currently pressed by each engaged pointer
+       * @type {Map<number, string>}
+       */
+      const pressedControls = new Map();
+      const viewport = document.getElementById("viewport");
+      const canvas = document.getElementById("canvas");
+      /** @type {Set<number>} */
+      const connectedGamepads = new Set();
+      let controlsIdleTimeoutId;
+      let player;
 
-      // Custom code here
-    });
-});
+      // Launch the Player; it reads the game from the query string itself
+      window.addEventListener("load", async () => {
+        player = await createEasyRpgPlayer({
+          game: undefined,
+          saveFs: undefined,
+        });
+        player.initApi();
+        canvas.focus();
+        document.getElementById("boot").classList.add("done");
+      });
 
-// Make EasyRPG player embeddable
-canvas.addEventListener('mouseenter', () => canvas.focus());
-canvas.addEventListener('click', () => canvas.focus());
+      // Focus the canvas on hover/click so keyboard input reaches the game
+      // (e.g. when embedded in another page)
+      canvas.addEventListener("mouseenter", () => canvas.focus());
+      canvas.addEventListener("click", () => canvas.focus());
 
-// Handle clicking on the fullscreen button
-document.querySelector('#controls-fullscreen').addEventListener('click', () => {
-  const viewport = document.getElementById('viewport');
-  if (viewport.requestFullscreen) {
-    viewport.requestFullscreen();
-  }
-});
+      // Buttons grab focus when clicked and would swallow the arrow keys;
+      // hand it back so keyboard input keeps reaching the game
+      document
+        .getElementById("controls")
+        .addEventListener("click", () => canvas.focus({ preventScroll: true }));
 
-/**
- * Simulate a keyboard event on the emscripten canvas
- *
- * @param {string} eventType Type of the keyboard event
- * @param {string} key Key to simulate
- */
-function simulateKeyboardEvent(eventType, key) {
-  const event = new Event(eventType, { bubbles: true });
-  event.code = key;
-
-  canvas.dispatchEvent(event);
-}
-
-/**
- * Simulate a keyboard input from `keydown` to `keyup`
- *
- * @param {string} key Key to simulate
- */
-function simulateKeyboardInput(key) {
-  simulateKeyboardEvent('keydown', key);
-  window.setTimeout(() => {
-    simulateKeyboardEvent('keyup', key);
-  }, 100);
-}
-
-/**
- * Bind a node by a specific key to simulate on touch
- *
- * @param {*} node The node to bind a key to
- * @param {string} key Key to simulate
- */
-function bindKey(node, key) {
-  keys.set(node.id, key);
-
-  node.addEventListener('touchstart', event => {
-    event.preventDefault();
-    simulateKeyboardEvent('keydown', key);
-    keysDown.set(event.target.id, node.id);
-    node.classList.add('active');
-  });
-
-  node.addEventListener('touchend', event => {
-    event.preventDefault();
-
-    const pressedKey = keysDown.get(event.target.id);
-    if (pressedKey && keys.has(pressedKey)) {
-      const key = keys.get(pressedKey);
-      simulateKeyboardEvent('keyup', key);
-    }
-
-    keysDown.delete(event.target.id);
-    node.classList.remove('active');
-
-    if (lastTouchedId) {
-      document.getElementById(lastTouchedId).classList.remove('active');
-    }
-  });
-
-  // Inspired by https://github.com/pulsejet/mkxp-web/blob/262a2254b684567311c9f0e135ee29f6e8c3613e/extra/js/dpad.js
-  node.addEventListener('touchmove', event => {
-    const { target, clientX, clientY } = event.changedTouches[0];
-    const origTargetId = keysDown.get(target.id);
-    const nextTargetId = document.elementFromPoint(clientX, clientY).id;
-    if (origTargetId === nextTargetId) return;
-
-    if (origTargetId) {
-      const key = keys.get(origTargetId);
-      simulateKeyboardEvent('keyup', key);
-      keysDown.delete(target.id);
-      document.getElementById(origTargetId).classList.remove('active');
-    }
-
-    if (keys.has(nextTargetId)) {
-      const key = keys.get(nextTargetId);
-      simulateKeyboardEvent('keydown', key);
-      keysDown.set(target.id, nextTargetId);
-      lastTouchedId = nextTargetId;
-      document.getElementById(nextTargetId).classList.add('active');
-    }
-  })
-}
-
-/** @type {{[key: number]: Gamepad}} */
-let gamepads = {};
-const haveEvents = 'ongamepadconnected' in window;
-
-function addGamepad(gamepad) {
-  if (gamepad == undefined) {
-    return;
-  }
-  gamepads[gamepad.index] = gamepad;
-  updateTouchControlsVisibility();
-}
-
-function removeGamepad(gamepad) {
-  if (gamepad == undefined) {
-    return;
-  }
-  delete gamepads[gamepad.index];
-  updateTouchControlsVisibility();
-}
-
-/** @returns {Gamepad[]} */
-function getGamepads() {
-  var pads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
-  return pads;
-}
-
-function scanGamePads() {
-  var pads = getGamepads();
-  for (var i = 0; i < pads.length; i++) {
-    if (pads[i]) {
-      if (pads[i].index in gamepads) {
-        gamepads[pads[i].index] = pads[i];
+      // Element fullscreen is unavailable in some browsers, e.g. iPhone Safari
+      const fullscreenButton = document.getElementById("controls-fullscreen");
+      if (document.fullscreenEnabled) {
+        fullscreenButton.addEventListener("click", () => {
+          if (document.fullscreenElement) {
+            document.exitFullscreen();
+          } else {
+            viewport.requestFullscreen();
+          }
+        });
       } else {
-        addGamepad(pads[i]);
+        fullscreenButton.hidden = true;
       }
-    }
-  }
-}
 
-if (!haveEvents) {
-  setInterval(scanGamePads, 500);
-}
+      document.addEventListener("fullscreenchange", () => {
+        canvas.focus({ preventScroll: true });
+        // The icon swaps via the :fullscreen CSS rule; only the label, which
+        // CSS cannot set, has to follow the state here
+        const label = document.fullscreenElement
+          ? "Exit fullscreen"
+          : "Enter fullscreen";
+        fullscreenButton.setAttribute("aria-label", label);
+        fullscreenButton.title = label;
+      });
 
-window.addEventListener('gamepadconnected', function(e) {
-  addGamepad(e.gamepad);
-});
+      if (hasTouchscreen) {
+        for (const button of document.querySelectorAll("[data-key]")) {
+          bindKey(button, button.dataset.key);
+        }
+        wakeTouchControls();
+      } else {
+        // Stop the browser's default for keys the game uses
+        window.addEventListener("keydown", (event) => {
+          if (preventNativeKeys.includes(event.key)) {
+            event.preventDefault();
+          }
+        });
 
-window.addEventListener('gamepaddisconnected', function(e) {
-  removeGamepad(e.gamepad);
-})
+        canvas.addEventListener("contextmenu", (event) => {
+          event.preventDefault();
+        });
+      }
 
-function updateTouchControlsVisibility() {
-  if (hasTouchscreen && Object.keys(gamepads).length === 0) {
-    for (const elem of document.querySelectorAll('#dpad, #apad')) {
-      elem.style.display = '';
-    }
-  } else {
-    // If we don't have a touch screen, OR any gamepads are connected...
-    for (const elem of document.querySelectorAll('#dpad, #apad')) {
-      // Hide the touch controls
-      elem.style.display = 'none';
-    }
-  }
-}
+      window.addEventListener("gamepadconnected", (event) => {
+        connectedGamepads.add(event.gamepad.index);
+        updateTouchControlsVisibility();
+      });
+      window.addEventListener("gamepaddisconnected", (event) => {
+        connectedGamepads.delete(event.gamepad.index);
+        updateTouchControlsVisibility();
+      });
 
-// Bind all elements providing a `data-key` attribute with the
-// given key on touch-based devices
-if (hasTouchscreen) {
-  for (const button of document.querySelectorAll('[data-key]')) {
-    bindKey(button, button.dataset.key);
-  }
-} else {
-  // Prevent scrolling when pressing specific keys
-  window.addEventListener('keydown', event => {
-    if (preventNativeKeys.includes(event.key)) {
-      event.preventDefault();
-    }
-  });
+      /**
+       * Simulate a physical keyboard event on the Emscripten canvas
+       *
+       * @param {string} eventType "keydown" or "keyup"
+       * @param {string} code Physical key code to simulate (e.g. "ArrowUp")
+       */
+      function simulateKeyboardEvent(eventType, code) {
+        canvas.dispatchEvent(
+          new KeyboardEvent(eventType, { code, bubbles: true }),
+        );
+      }
 
-  canvas.addEventListener('contextmenu', event => {
-    event.preventDefault();
-    // simulateKeyboardInput('Escape', 27);
-  });
+      /**
+       * Bind a touch control element to the key it simulates
+       *
+       * @param {HTMLElement} element
+       * @param {string} key Key code to dispatch, e.g. "ArrowUp"
+       */
+      function bindKey(element, key) {
+        keyByControlId.set(element.id, key);
 
-  // canvas.addEventListener('click', () => {
-  //   simulateKeyboardInput('Enter', 13);
-  // });
-}
+        element.addEventListener("pointerdown", (event) => {
+          event.preventDefault();
+          engagedPointers.add(event.pointerId);
+          pressControl(event.pointerId, element.id);
 
-updateTouchControlsVisibility();
-</script>
+          // Touch input captures implicitly; mouse and pen need an
+          // explicit capture so the gesture keeps firing on this element
+          try {
+            element.setPointerCapture(event.pointerId);
+          } catch {}
+        });
 
-</body>
+        // Slide between controls without lifting the pointer
+        element.addEventListener("pointermove", (event) => {
+          if (!engagedPointers.has(event.pointerId)) return;
+
+          const targetId = document.elementFromPoint(
+            event.clientX,
+            event.clientY,
+          )?.id;
+          if (targetId === pressedControls.get(event.pointerId)) return;
+
+          if (targetId && keyByControlId.has(targetId)) {
+            pressControl(event.pointerId, targetId);
+          } else {
+            releaseControl(event.pointerId);
+          }
+        });
+
+        for (const eventType of ["pointerup", "pointercancel"]) {
+          element.addEventListener(eventType, (event) => {
+            engagedPointers.delete(event.pointerId);
+            releaseControl(event.pointerId);
+          });
+        }
+      }
+
+      /**
+       * Press a control, releasing whatever the pointer held before
+       *
+       * @param {number} pointerId Pointer pressing the control
+       * @param {string} elementId Element id of the control to press
+       */
+      function pressControl(pointerId, elementId) {
+        releaseControl(pointerId);
+        wakeTouchControls();
+
+        pressedControls.set(pointerId, elementId);
+        simulateKeyboardEvent("keydown", keyByControlId.get(elementId));
+        document.getElementById(elementId).classList.add("active");
+      }
+
+      /**
+       * Release the control held by a pointer, unless another pointer
+       * still presses the same control
+       *
+       * @param {number} pointerId Pointer to release
+       */
+      function releaseControl(pointerId) {
+        const elementId = pressedControls.get(pointerId);
+        if (!elementId) return;
+
+        wakeTouchControls();
+        pressedControls.delete(pointerId);
+        if ([...pressedControls.values()].includes(elementId)) return;
+
+        simulateKeyboardEvent("keyup", keyByControlId.get(elementId));
+        document.getElementById(elementId).classList.remove("active");
+      }
+
+      function updateTouchControlsVisibility() {
+        document.body.classList.toggle(
+          "gamepad-connected",
+          connectedGamepads.size > 0,
+        );
+      }
+
+      /**
+       * Light up the touch controls and dim them again after a few
+       * seconds without input
+       */
+      function wakeTouchControls() {
+        document.body.classList.remove("controls-idle");
+        clearTimeout(controlsIdleTimeoutId);
+        controlsIdleTimeoutId = setTimeout(() => {
+          // Keep the controls lit while something is still pressed
+          if (pressedControls.size > 0) {
+            wakeTouchControls();
+            return;
+          }
+          document.body.classList.add("controls-idle");
+        }, 3000);
+      }
+    </script>
+  </body>
 </html>
