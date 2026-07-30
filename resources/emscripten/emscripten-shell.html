@@ -441,6 +441,15 @@
         updateTouchControlsVisibility();
       });
 
+      // The wake lock is released whenever the tab gets hidden, so it has
+      // to be re-requested every time the player becomes visible again
+      requestWakeLock();
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+          requestWakeLock();
+        }
+      });
+
       /**
        * Simulate a physical keyboard event on the Emscripten canvas
        *
@@ -554,6 +563,12 @@
           }
           document.body.classList.add("controls-idle");
         }, 3000);
+      }
+
+      async function requestWakeLock() {
+        try {
+          await navigator.wakeLock?.request("screen");
+        } catch {}
       }
     </script>
   </body>
