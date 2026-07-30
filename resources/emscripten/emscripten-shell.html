@@ -369,13 +369,19 @@
 
       // Launch the Player; it reads the game from the query string itself
       window.addEventListener("load", async () => {
-        player = await createEasyRpgPlayer({
-          game: undefined,
-          saveFs: undefined,
-        });
-        player.initApi();
-        canvas.focus();
-        document.getElementById("boot").classList.add("done");
+        try {
+          player = await createEasyRpgPlayer({
+            game: undefined,
+            saveFs: undefined,
+          });
+          player.initApi();
+          canvas.focus();
+          document.getElementById("boot").classList.add("done");
+        } catch (error) {
+          document.getElementById("status").textContent =
+            "Failed to start – please reload the page";
+          throw error;
+        }
       });
 
       // Focus the canvas on hover/click so keyboard input reaches the game
