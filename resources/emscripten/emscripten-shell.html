@@ -15,6 +15,10 @@
         --controls-size: clamp(3.5rem, 20vmin, 5.5rem);
         --controls-opacity: 0.4;
         --controls-fade: 80ms;
+
+        --save-fill: rgb(255 255 255 / 0.05);
+        --save-fill-hover: rgb(255 255 255 / 0.09);
+        --save-line: rgb(255 255 255 / 0.09);
       }
 
       html {
@@ -118,8 +122,13 @@
       }
 
       @media (hover: none), (pointer: coarse) {
-        #controls button {
+        #controls button,
+        .save-button {
           min-block-size: 44px;
+        }
+
+        .save-button-icon {
+          min-inline-size: 44px;
         }
 
         #controls {
@@ -239,6 +248,204 @@
           opacity: 1;
         }
       }
+
+      #save-dialog {
+        position: fixed;
+        inset: 0;
+        margin: auto;
+        width: min(20rem, calc(100vw - 2rem));
+        padding: 1.05rem 1.1rem 1.1rem;
+        color: white;
+        background: hsl(0 0% 10%);
+        border: 1px solid var(--save-line);
+        border-radius: 0.75rem;
+        box-shadow: 0 1rem 3rem hsl(0 0% 0% / 0.5);
+        opacity: 0;
+        scale: 0.98;
+        transition:
+          opacity 150ms ease-out,
+          scale 150ms ease-out,
+          overlay 150ms ease-out allow-discrete,
+          display 150ms ease-out allow-discrete;
+      }
+
+      #save-dialog[open] {
+        opacity: 1;
+        scale: 1;
+      }
+
+      @starting-style {
+        #save-dialog[open] {
+          opacity: 0;
+          scale: 0.98;
+        }
+      }
+
+      #save-dialog::backdrop {
+        background: hsl(0 0% 0% / 0.6);
+        backdrop-filter: blur(2px);
+        opacity: 0;
+        transition:
+          opacity 150ms ease-out,
+          overlay 150ms ease-out allow-discrete,
+          display 150ms ease-out allow-discrete;
+      }
+
+      #save-dialog[open]::backdrop {
+        opacity: 1;
+      }
+
+      @starting-style {
+        #save-dialog[open]::backdrop {
+          opacity: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #save-dialog,
+        #save-dialog::backdrop {
+          transition: none;
+        }
+      }
+
+      .save-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.85rem;
+      }
+
+      .save-title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      #save-list {
+        padding: 0.1rem 0.6rem;
+        background: var(--save-fill);
+        border-radius: 0.5rem;
+      }
+
+      .save-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0;
+      }
+
+      .save-row + .save-row {
+        border-top: 1px solid var(--save-line);
+      }
+
+      .save-name {
+        flex: 1;
+        min-width: 0;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .save-age {
+        color: var(--color-gray);
+        font-weight: 400;
+      }
+
+      .save-age::before {
+        content: " · ";
+      }
+
+      .save-empty {
+        margin: 0.4rem 0.1rem;
+        font-size: 0.9375rem;
+        color: var(--color-gray);
+      }
+
+      .save-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        color: white;
+        background: transparent;
+        border: 0;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.9375rem;
+        transition:
+          background-color 120ms ease,
+          opacity 120ms ease;
+      }
+
+      .save-button:hover:not(:disabled),
+      .save-button:focus-visible {
+        background: var(--save-fill-hover);
+      }
+
+      .save-button:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
+
+      .save-button svg {
+        flex: none;
+      }
+
+      .save-button-icon {
+        justify-content: center;
+        padding: 0.45rem;
+      }
+
+      .save-button-block {
+        width: 100%;
+        padding: 0.6rem 0.65rem;
+        text-align: left;
+      }
+
+      .save-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        margin-top: 0.6rem;
+      }
+
+      #save-toast {
+        position: fixed;
+        bottom: calc(1rem + env(safe-area-inset-bottom));
+        left: 50%;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        max-width: calc(100vw - 2rem);
+        padding: 0.6rem 0.9rem;
+        font: inherit;
+        font-size: 0.875rem;
+        text-align: left;
+        color: white;
+        background: hsl(0 0% 12%);
+        border: 1px solid hsl(0 0% 25%);
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1.5rem hsl(0 0% 0% / 0.5);
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transform: translate(-50%, 1rem);
+        transition:
+          opacity 200ms ease,
+          transform 200ms ease,
+          visibility 200ms ease;
+      }
+
+      #save-toast svg {
+        flex: none;
+      }
+
+      #save-toast.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, 0);
+      }
     </style>
   </head>
   <body>
@@ -246,6 +453,16 @@
       aria-hidden="true"
       style="position: absolute; width: 0; height: 0; overflow: hidden"
     >
+      <symbol
+        id="icon-save"
+        viewBox="0 0 15 15"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path
+          d="M4.5 14.5V11.5C4.5 10.9477 4.94772 10.5 5.5 10.5H9.5C10.0523 10.5 10.5 10.9477 10.5 11.5V14.5M13.5 14.5H1.5C0.947716 14.5 0.5 14.0523 0.5 13.5V1.5C0.5 0.947716 0.947715 0.5 1.5 0.5H10.0858C10.351 0.5 10.6054 0.605357 10.7929 0.792893L14.2071 4.20711C14.3946 4.39464 14.5 4.649 14.5 4.91421V13.5C14.5 14.0523 14.0523 14.5 13.5 14.5Z"
+        />
+      </symbol>
       <symbol
         id="icon-fullscreen-enter"
         viewBox="0 0 15 15"
@@ -266,16 +483,54 @@
           d="M9.5 9.5H13m-3.5 0V13m0-3.5l4 4M13 5.5H9.5m0 0V2m0 3.5l4-4M2 5.5h3.5m0 0V2m0 3.5l-4-4M5.5 13V9.5m0 0H2m3.5 0l-4 4"
         />
       </symbol>
+      <symbol
+        id="icon-close"
+        viewBox="0 0 15 15"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path d="M1.5 1.5L13.5 13.5M1.5 13.5L13.5 1.5" />
+      </symbol>
+      <symbol
+        id="icon-upload"
+        viewBox="0 0 15 15"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path
+          d="M7.5 1.5L10.75 4.5M7.5 1.5L4.5 4.5M7.5 1.5V11M13.5 7V13.5H1.5V7"
+        />
+      </symbol>
+      <symbol
+        id="icon-download"
+        viewBox="0 0 15 15"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path
+          d="M7.5 10.5L4.25 7.5M7.5 10.5L10.5 7.5M7.5 10.5V1M13.5 7V13.5H1.5V7"
+        />
+      </symbol>
     </svg>
 
     <div id="boot">
       <div id="status"></div>
     </div>
 
-    <!-- The controls live inside #viewport so they keep rendering when
-         it enters element fullscreen -->
+    <!-- Controls and the save UI live inside #viewport so they keep
+         rendering when it enters element fullscreen -->
     <div id="viewport">
       <div id="controls">
+        <button
+          id="controls-saves"
+          type="button"
+          aria-label="Manage saves"
+          title="Manage saves"
+        >
+          <svg width="18" height="18" aria-hidden="true">
+            <use href="#icon-save" />
+          </svg>
+        </button>
         <button
           id="controls-fullscreen"
           type="button"
@@ -292,6 +547,44 @@
       </div>
 
       <canvas id="canvas" tabindex="-1"></canvas>
+
+      <dialog id="save-dialog" aria-labelledby="save-title">
+        <div class="save-header">
+          <h2 id="save-title" class="save-title">Saves</h2>
+          <button
+            id="save-close"
+            class="save-button save-button-icon"
+            type="button"
+            aria-label="Close"
+          >
+            <svg width="18" height="18" aria-hidden="true">
+              <use href="#icon-close" />
+            </svg>
+          </button>
+        </div>
+
+        <div id="save-list"></div>
+
+        <div class="save-actions">
+          <button
+            id="save-import"
+            class="save-button save-button-block"
+            type="button"
+          >
+            <svg width="18" height="18" aria-hidden="true">
+              <use href="#icon-upload" />
+            </svg>
+            Import save file…
+          </button>
+        </div>
+      </dialog>
+
+      <button id="save-toast" type="button">
+        <svg width="16" height="16" aria-hidden="true">
+          <use href="#icon-save" />
+        </svg>
+        <span>Game saved – tap to back up</span>
+      </button>
 
       <div id="dpad" aria-hidden="true">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
@@ -362,6 +655,7 @@
       const pressedControls = new Map();
       const viewport = document.getElementById("viewport");
       const canvas = document.getElementById("canvas");
+      const saveDialog = document.getElementById("save-dialog");
       /** @type {Set<number>} */
       const connectedGamepads = new Set();
       let controlsIdleTimeoutId;
@@ -375,6 +669,7 @@
             saveFs: undefined,
           });
           player.initApi();
+          setupSaveManager();
           canvas.focus();
           document.getElementById("boot").classList.add("done");
         } catch (error) {
@@ -428,6 +723,11 @@
       } else {
         // Stop the browser's default for keys the game uses
         window.addEventListener("keydown", (event) => {
+          // While the save panel is open it owns the keyboard, so leave
+          // its Space/arrow/Tab navigation alone. The game engine reads
+          // keys only from #canvas, which has lost focus to the dialog
+          // anyway, so there is nothing to suppress here.
+          if (saveDialog.open) return;
           if (preventNativeKeys.includes(event.key)) {
             event.preventDefault();
           }
@@ -575,6 +875,305 @@
         try {
           await navigator.wakeLock?.request("screen");
         } catch {}
+      }
+
+      // RPG Maker 2000/2003 caps save games at 15 slots (Save01..Save15.lsd)
+      const saveSlotCount = 15;
+      const saveHintStorageKey = "easyrpg-player-save-hint-seen";
+      const iconDownload = `<svg width="18" height="18" aria-hidden="true"><use href="#icon-download"/></svg>`;
+      const iconUpload = `<svg width="18" height="18" aria-hidden="true"><use href="#icon-upload"/></svg>`;
+      /**
+       * Save slots captured at the first poll – the baseline a later write is compared against
+       * @type {Map<number, number> | undefined}
+       */
+      let saveSlotBaseline;
+      let saveHintPollId = 0;
+      let saveWatchId = 0;
+      const relativeTimeFormatter = new Intl.RelativeTimeFormat("en", {
+        numeric: "auto",
+      });
+
+      /**
+       * Wire up the save panel and its one-time backup hint
+       */
+      function setupSaveManager() {
+        const savesButton = document.getElementById("controls-saves");
+        savesButton.addEventListener("click", (event) => {
+          // Don't let #controls' click handler yank focus back to the canvas
+          event.stopPropagation();
+          openSaveDialog();
+        });
+
+        document
+          .getElementById("save-close")
+          .addEventListener("click", () => saveDialog.close());
+
+        saveDialog.addEventListener("click", (event) => {
+          if (event.target === saveDialog) saveDialog.close();
+        });
+
+        // Hand the keyboard back to the game whenever the panel closes
+        saveDialog.addEventListener("close", () =>
+          canvas.focus({ preventScroll: true }),
+        );
+
+        setupSaveHint();
+      }
+
+      function openSaveDialog() {
+        if (saveDialog.open) return;
+        renderSaveSlots();
+        saveDialog.showModal();
+      }
+
+      /**
+       * Absolute path of the IDBFS-backed save directory, mounted at `Save`
+       * inside the running game's working directory
+       */
+      function getSavePath() {
+        return `${player.FS.cwd()}/Save`;
+      }
+
+      /**
+       * Map each populated save slot to its modification time in ms. An
+       * empty or not-yet-mounted directory yields an empty map.
+       *
+       * @returns {Map<number, number>}
+       */
+      function readSaveSlots() {
+        const slots = new Map();
+        try {
+          const savePath = getSavePath();
+          for (const entry of player.FS.readdir(savePath)) {
+            const match = /^Save(\d{2})\.lsd$/i.exec(entry);
+            if (!match) continue;
+            const { mtime } = player.FS.stat(`${savePath}/${entry}`);
+            slots.set(Number(match[1]), mtime.getTime());
+          }
+        } catch {
+          // The save directory does not exist until the first save
+        }
+        return slots;
+      }
+
+      /**
+       * Rebuild the slot list: a download/replace row per existing save,
+       * with the import button pointed at the lowest free slot
+       */
+      function renderSaveSlots() {
+        const slots = readSaveSlots();
+        const usedSlots = [...slots.keys()].sort((a, b) => a - b);
+        const saveList = document.getElementById("save-list");
+        saveList.replaceChildren();
+
+        if (usedSlots.length === 0) {
+          const emptyMessage = document.createElement("p");
+          emptyMessage.className = "save-empty";
+          emptyMessage.textContent =
+            "No saves yet. Save inside the game first.";
+          saveList.append(emptyMessage);
+        } else {
+          for (const slot of usedSlots) {
+            saveList.append(createSaveRow(slot, slots.get(slot)));
+          }
+        }
+
+        const freeSlot = firstFreeSlot(usedSlots);
+        const importButton = document.getElementById("save-import");
+        importButton.disabled = freeSlot === undefined;
+        importButton.title =
+          freeSlot === undefined
+            ? "All 15 slots are full – replace one instead"
+            : `Import into file ${freeSlot}`;
+        // Reassigned, not addEventListener: this runs on every open, and the
+        // import button persists across renders, so listeners would stack up
+        importButton.onclick =
+          freeSlot === undefined ? null : () => uploadToSlot(freeSlot);
+      }
+
+      /**
+       * Build one slot row with download and replace controls
+       *
+       * @param {number} slot 1-based save slot
+       * @param {number} modifiedAt Slot modification time in ms
+       */
+      function createSaveRow(slot, modifiedAt) {
+        const row = document.createElement("div");
+        row.className = "save-row";
+
+        const name = document.createElement("span");
+        name.className = "save-name";
+        name.textContent = `File ${slot}`;
+
+        const age = document.createElement("span");
+        age.className = "save-age";
+        age.textContent = formatSaveAge(modifiedAt);
+        name.append(age);
+
+        row.append(
+          name,
+          createSaveButton(iconDownload, `Download file ${slot}`, () =>
+            player.api.downloadSavegame(slot),
+          ),
+          createSaveButton(iconUpload, `Replace file ${slot}`, () =>
+            uploadToSlot(slot),
+          ),
+        );
+        return row;
+      }
+
+      /**
+       * Icon-only button whose label doubles as aria-label and tooltip
+       */
+      function createSaveButton(icon, label, onClick) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "save-button save-button-icon";
+        button.setAttribute("aria-label", label);
+        button.title = label;
+        button.innerHTML = icon;
+        button.addEventListener("click", onClick);
+        return button;
+      }
+
+      /**
+       * Lowest unoccupied slot, or `undefined` when every slot is taken
+       *
+       * @param {number[]} usedSlots Occupied slot numbers
+       * @returns {number | undefined}
+       */
+      function firstFreeSlot(usedSlots) {
+        for (let slot = 1; slot <= saveSlotCount; slot++) {
+          if (!usedSlots.includes(slot)) return slot;
+        }
+        return undefined;
+      }
+
+      /**
+       * Friendly relative age of a save, e.g. "just now" or "2 days ago".
+       * Relies on IDBFS persisting each slot's mtime across sessions.
+       *
+       * @param {number} timestamp Modification time in ms
+       */
+      function formatSaveAge(timestamp) {
+        const ageSeconds = (Date.now() - timestamp) / 1000;
+        const units = [
+          ["year", 31536000],
+          ["month", 2592000],
+          ["day", 86400],
+          ["hour", 3600],
+          ["minute", 60],
+        ];
+        for (const [unit, secondsPerUnit] of units) {
+          if (ageSeconds >= secondsPerUnit) {
+            return relativeTimeFormatter.format(
+              -Math.floor(ageSeconds / secondsPerUnit),
+              unit,
+            );
+          }
+        }
+        return "just now";
+      }
+
+      /**
+       * Hand a slot to the engine's upload picker, then refresh the list.
+       * The picker writes straight into the in-memory FS, but its hidden
+       * <input> is detached from the document, so no change event reaches us –
+       * poll the directory until the slot actually lands instead.
+       *
+       * @param {number} slot 1-based slot to write the chosen file into
+       */
+      function uploadToSlot(slot) {
+        player.api.uploadSavegame(slot);
+        watchForSaveChange();
+      }
+
+      /**
+       * Poll until the picked file lands, then refresh the list. Gives up after
+       * a minute or once the panel closes – the user dismissed the picker
+       * without choosing a file.
+       */
+      function watchForSaveChange() {
+        clearInterval(saveWatchId);
+        const slotsBeforeUpload = readSaveSlots();
+        let elapsedMs = 0;
+        saveWatchId = setInterval(() => {
+          elapsedMs += 500;
+          if (slotsChanged(slotsBeforeUpload, readSaveSlots())) {
+            renderSaveSlots();
+            clearInterval(saveWatchId);
+          } else if (elapsedMs >= 60000 || !saveDialog.open) {
+            clearInterval(saveWatchId);
+          }
+        }, 500);
+      }
+
+      /**
+       * Whether a later slot read differs – a slot appeared or was overwritten
+       */
+      function slotsChanged(previousSlots, currentSlots) {
+        if (previousSlots.size !== currentSlots.size) return true;
+        for (const [slot, mtime] of currentSlots) {
+          if (previousSlots.get(slot) !== mtime) return true;
+        }
+        return false;
+      }
+
+      /**
+       * Watch for the first save write and, once it lands, reveal a
+       * one-time hint that saves can be backed up. Skipped entirely if the
+       * hint was already shown in an earlier session.
+       */
+      function setupSaveHint() {
+        const toast = document.getElementById("save-toast");
+        toast.querySelector("span").textContent =
+          `Game saved – ${hasTouchscreen ? "tap" : "click"} to back up`;
+        toast.addEventListener("click", () => {
+          hideSaveToast();
+          openSaveDialog();
+        });
+
+        let alreadySeen = false;
+        try {
+          alreadySeen = Boolean(localStorage.getItem(saveHintStorageKey));
+        } catch {}
+        if (alreadySeen) return;
+
+        saveHintPollId = setInterval(pollForNewSave, 4000);
+      }
+
+      /**
+       * Compare the current slots against the first observed snapshot; a
+       * new or freshly overwritten slot reveals the hint once
+       */
+      function pollForNewSave() {
+        const currentSlots = readSaveSlots();
+        if (saveSlotBaseline === undefined) {
+          // The first read is the baseline, never itself a "new save"
+          saveSlotBaseline = currentSlots;
+          return;
+        }
+        for (const [slot, mtime] of currentSlots) {
+          const previousMtime = saveSlotBaseline.get(slot);
+          if (previousMtime === undefined || mtime > previousMtime) {
+            revealSaveHint();
+            return;
+          }
+        }
+        saveSlotBaseline = currentSlots;
+      }
+
+      function revealSaveHint() {
+        clearInterval(saveHintPollId);
+        try {
+          localStorage.setItem(saveHintStorageKey, "1");
+        } catch {}
+        document.getElementById("save-toast").classList.add("visible");
+        setTimeout(hideSaveToast, 6000);
+      }
+
+      function hideSaveToast() {
+        document.getElementById("save-toast").classList.remove("visible");
       }
     </script>
   </body>
