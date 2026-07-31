@@ -153,6 +153,7 @@ int Game_Pictures::GetPictureCount() const {
 }
 
 Game_Pictures::Picture& Game_Pictures::GetPicture(int id) {
+	assert(id > 0);
 	if (EP_UNLIKELY(id > static_cast<int>(pictures.size()))) {
 		pictures.reserve(id);
 		while (static_cast<int>(pictures.size()) < id) {
@@ -163,7 +164,7 @@ Game_Pictures::Picture& Game_Pictures::GetPicture(int id) {
 }
 
 Game_Pictures::Picture* Game_Pictures::GetPicturePtr(int id) {
-	return id <= static_cast<int>(pictures.size())
+	return id > 0 && id <= static_cast<int>(pictures.size())
 		? &pictures[id - 1] : nullptr;
 }
 
@@ -472,6 +473,9 @@ void Game_Pictures::Picture::ApplyOrigin(bool is_move) {
 	}
 	data.finish_x = x;
 	data.finish_y = y;
+
+	// Origin was applied, prevent applying again in later calls
+	origin = 0;
 }
 
 void Game_Pictures::Picture::OnMapScrolled(int dx16, int dy16) {
@@ -787,115 +791,75 @@ int Game_Pictures::Picture::NumSpriteSheetFrames() const {
 	return data.spritesheet_cols * data.spritesheet_rows;
 }
 
-void Game_Pictures::MovePictureId(int src_id, int dst_id) {
-	auto& pictures = *this;
-	auto& windows = *Main_Data::game_windows;
-
-	// Ensure existence in vectors to avoid reference invalidation during assignments
-	int max_id = std::max(src_id, dst_id);
-	pictures.GetPicture(max_id);
-	windows.GetWindow(max_id);
-
-	auto& src_pic = pictures.GetPicture(src_id);
-	auto& dst_pic = pictures.GetPicture(dst_id);
-
-	// If source is empty, erase destination
-	if (!src_pic.Exists() && !src_pic.IsWindowAttached()) {
-		dst_pic.Erase();
+void Game_Pictures::MovePicture(int src_id, int dst_id) {
+	if (src_id == dst_id) {
 		return;
 	}
 
-	// Handle Window Data (String Pictures)
-	if (src_pic.IsWindowAttached()) {
-		auto& src_win = windows.GetWindow(src_id);
-		auto& dst_win = windows.GetWindow(dst_id);
-		dst_win.data = src_win.data;
-		dst_win.data.ID = dst_id;
-		src_win.Erase();
-	}
-	else {
-		// If overwriting a window picture with a normal one, clear the old window data
-		windows.GetWindow(dst_id).Erase();
+	// Delete the destination, then swap
+	if (dst_id > 0) {
+		auto& dst_pic = GetPicture(dst_id);
+		dst_pic.Erase();
 	}
 
-	// Handle Picture Data
-	BitmapRef src_bmp = src_pic.sprite ? src_pic.sprite->GetBitmap() : nullptr;
-	auto request_id = src_pic.request_id;
-	src_pic.request_id = nullptr; // Prevent cancellation on Erase
-
-	dst_pic.data = src_pic.data;
-	dst_pic.data.ID = dst_id;
-	dst_pic.request_id = request_id;
-
-	src_pic.Erase();
-
-	// Refresh Sprite
-	if (dst_pic.IsWindowAttached()) {
-		bool async;
-		windows.GetWindow(dst_id).Refresh(async);
-	}
-	else if (!dst_pic.data.name.empty()) {
-		if (!dst_pic.sprite) dst_pic.CreateSprite();
-		if (src_bmp) {
-			dst_pic.sprite->SetBitmap(src_bmp);
-			dst_pic.sprite->OnPictureShow();
-			dst_pic.sprite->SetVisible(true);
-		}
-	}
-	else {
-		dst_pic.sprite.reset();
-	}
+	SwapPicture(src_id, dst_id);
 }
 
-void Game_Pictures::SwapPictureId(int id1, int id2) {
-	auto& pictures = *this;
-	auto& windows = *Main_Data::game_windows;
+void Game_Pictures::SwapPicture(int id1, int id2) {
+	if (id1 == id2 || (id1 <= 0 && id2 <= 0)) {
+		return;
+	}
 
-	// Ensure existence in vectors to avoid reference invalidation during assignments
-	int max_id = std::max(id1, id2);
-	pictures.GetPicture(max_id);
-	windows.GetWindow(max_id);
+	auto max_id = std::max(id1, id2);
+	GetPicture(max_id); // Preallocate to ensure references are stable
 
-	auto& p1 = pictures.GetPicture(id1);
-	auto& p2 = pictures.GetPicture(id2);
+	Picture bad_pic{0}; // Sentinel when one of the pictures is invalid
 
-	// Swap Window Data
-	auto& w1 = windows.GetWindow(id1);
-	auto& w2 = windows.GetWindow(id2);
-	std::swap(w1.data, w2.data);
-	w1.data.ID = id1;
-	w2.data.ID = id2;
+	auto* src_pic = &bad_pic;
+	auto* dst_pic = &bad_pic;
 
-	// Swap Picture Data
-	BitmapRef b1 = p1.sprite ? p1.sprite->GetBitmap() : nullptr;
-	BitmapRef b2 = p2.sprite ? p2.sprite->GetBitmap() : nullptr;
+	if (id1 > 0) {
+		src_pic = &GetPicture(id1);
+	} else {
+		bad_pic = Picture(id1);
+	}
 
-	using std::swap;
-	swap(p1.data, p2.data);
-	swap(p1.request_id, p2.request_id);
+	if (id2 > 0) {
+		dst_pic = &GetPicture(id2);
+	} else {
+		bad_pic = Picture(id2);
+	}
 
-	p1.data.ID = id1;
-	p2.data.ID = id2;
+	// Handle Window Data (String Pictures)
+	if (src_pic->IsWindowAttached() || dst_pic->IsWindowAttached()) {
+		Main_Data::game_windows->SwapWindow(id1, id2);
+	}
 
-	// Rebuild each picture's visual with the other's bitmap
-	auto refresh = [&](Picture& p, BitmapRef bmp) {
-		if (p.IsWindowAttached()) {
-			bool async;
-			windows.GetWindow(p.data.ID).Refresh(async);
+	std::swap(src_pic->data.ID, dst_pic->data.ID);
+	if (src_pic->sprite) {
+		if (id2 <= 0) {
+			src_pic->sprite.reset();
+		} else {
+			src_pic->sprite->SetPictureId(id2);
 		}
-		else if (!p.data.name.empty()) {
-			if (!p.sprite) p.CreateSprite();
-			if (bmp) {
-				p.sprite->SetBitmap(bmp);
-				p.sprite->OnPictureShow();
-				p.sprite->SetVisible(true);
-			}
+	}
+	if (dst_pic->sprite) {
+		if (id1 <= 0) {
+			dst_pic->sprite.reset();
+		} else {
+			dst_pic->sprite->SetPictureId(id1);
 		}
-		else {
-			p.sprite.reset();
-		}
-	};
+	}
 
-	refresh(p1, b2);
-	refresh(p2, b1);
+	// Cancel pending requests and restart them
+	if (src_pic->IsRequestPending()) {
+		RequestPictureSprite(*src_pic);
+	}
+
+	if (dst_pic->IsRequestPending()) {
+		RequestPictureSprite(*dst_pic);
+	}
+
+	// Must be last (invalidates references)
+	std::swap(*src_pic, *dst_pic);
 }

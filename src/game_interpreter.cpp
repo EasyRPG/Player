@@ -5174,10 +5174,16 @@ bool Game_Interpreter::CommandManiacChangePictureId(lcf::rpg::EventCommand const
 		return true;
 	}
 
-	int operation = com.parameters[0];
-	int target1 = ValueOrVariableBitfield(com, 1, 0, 2);
+	enum class Op {
+		Move,
+		Swap,
+		Slide
+	};
+
+	int op = com.parameters[0];
+	int from_id = ValueOrVariableBitfield(com, 1, 0, 2);
 	int size = ValueOrVariableBitfield(com, 1, 1, 3);
-	int arg3 = ValueOrVariableBitfield(com, 1, 2, 4); // Target 2 or Distance
+	int arg = ValueOrVariableBitfield(com, 1, 2, 4); // Target 2 or Distance
 
 	bool ignore_error = com.parameters.size() > 5 && com.parameters[5] != 0;
 
@@ -5187,95 +5193,62 @@ bool Game_Interpreter::CommandManiacChangePictureId(lcf::rpg::EventCommand const
 
 	auto& pictures = *Main_Data::game_pictures;
 
-	auto isValidId = [](int id) {
-		return id > 0;
-		};
+	auto checkValidId = [&](int id, const char* msg) {
+		bool valid = id > 0;
 
-	if (operation == 0 || operation == 2) {
-		// Move (0) or Slide (2)
-		int target2 = (operation == 0) ? arg3 : (target1 + arg3);
+		if (!valid) {
+			auto outmsg = fmt::format("Maniac ChangePictureId {}: Invalid Picture ID {}", msg, id);
+			if (ignore_error) {
+				Output::DebugStr(outmsg);
+			} else {
+				Output::WarningStr(outmsg);
+			}
+		}
 
-		int start = 0;
-		int end = size;
-		int step = 1;
+		return valid;
+	};
+
+	if (op < 0 || op > 2) {
+		Output::Warning("Maniac ChangePictureId: Unknown operation {}", op);
+		return true;
+	}
+
+	auto operation = static_cast<Op>(op);
+
+	if (operation == Op::Slide) {
+		arg = from_id + arg;
+	}
+
+	auto func = (operation == Op::Swap)
+		? &Game_Pictures::SwapPicture
+		: &Game_Pictures::MovePicture;
+
+	for (int i = 0; i < size; ++i) {
+		int idx = i;
 
 		// Handle overlapping ranges
-		if (target2 > target1) {
-			start = size - 1;
-			end = -1;
-			step = -1;
+		if (arg > from_id) {
+			idx = size - 1 - i;
 		}
 
-		for (int i = start; i != end; i += step) {
-			int src_id = target1 + i;
-			int dst_id = target2 + i;
+		int src_id = from_id + idx;
+		int dst_id = arg + idx;
 
-			if (!isValidId(src_id)) {
-				if (!ignore_error) {
-					Output::Warning("Maniac ChangePictureId {}: Invalid Picture ID {}", (operation == 0 ? "Move (Source)" : "Slide (Source)"), src_id);
-					return true;
+		if (!checkValidId(src_id, (
+			operation == Op::Move ? "Move (Source)" :
+			operation == Op::Swap ? "Swap (Source)" : "Slide (Source)"))) {
+				if (operation == Op::Swap) {
+					// Based on tests swapping with an invalid src is a no-op
+					continue;
 				}
-				continue;
-			}
-
-			if (!isValidId(dst_id)) {
-				if (!ignore_error) {
-					Output::Warning("Maniac ChangePictureId {}: Invalid Picture ID {}", (operation == 0 ? "Move (Dest)" : "Slide (Dest)"), dst_id);
-					return true;
-				}
-
-				// "If you use the "Ignore out-of-range errors" setting, moving from/to an out-of-range ID will be replaced by a simple delete operation."
-				// If destination is invalid, delete source.
-				auto& src_pic = pictures.GetPicture(src_id);
-				if (src_pic.Exists() || src_pic.IsWindowAttached()) {
-					pictures.Erase(src_id);
-				}
-				continue;
-			}
-
-			if (src_id != dst_id) {
-				pictures.MovePictureId(src_id, dst_id);
-			}
 		}
+
+		checkValidId(dst_id, (
+			operation == Op::Move ? "Move (Dest)" :
+			operation == Op::Swap ? "Swap (Dest)" : "Slide (Dest)"));
+
+		(pictures.*func)(src_id, dst_id);
 	}
-	else if (operation == 1) {
-		// Swap
-		int target2 = arg3;
-
-		for (int i = 0; i < size; ++i) {
-			int id1 = target1 + i;
-			int id2 = target2 + i;
-
-			bool valid1 = isValidId(id1);
-			bool valid2 = isValidId(id2);
-
-			if (!valid1 && !ignore_error) {
-				Output::Warning("Maniac ChangePictureId Swap: Invalid Picture ID {}", id1);
-				return true;
-			}
-			if (!valid2 && !ignore_error) {
-				Output::Warning("Maniac ChangePictureId Swap: Invalid Picture ID {}", id2);
-				return true;
-			}
-
-			if (valid1 && valid2) {
-				pictures.SwapPictureId(id1, id2);
-			}
-			else if (valid1 && !valid2) {
-				// Valid swap with invalid -> erase valid
-				pictures.Erase(id1);
-			}
-			else if (!valid1 && valid2) {
-				// Invalid swap with valid -> erase valid
-				pictures.Erase(id2);
-			}
-		}
-	}
-	else {
-		Output::Warning("Maniac ChangePictureId: Unknown operation {}", operation);
-	}
-
-	Game_Map::SetNeedRefresh(true);
 
 	return true;
 }

@@ -135,7 +135,16 @@ public:
 		bool IsCanvas() const;
 	};
 
+	/**
+	 * @param id Picture ID
+	 * @return Reference to a picture (allocates when necessary). Passing an invalid ID will abort!
+	 */
 	Picture& GetPicture(int id);
+
+	/**
+	 * @param id Picture ID
+	 * @return Pointer to an existing picture or nullptr if its an unused picture slot
+	 */
 	Picture* GetPicturePtr(int id);
 
 	/**
@@ -144,7 +153,7 @@ public:
 	 * @param src_id Source ID to move from
 	 * @param dst_id Destination ID to move to
 	 */
-	void MovePictureId(int src_id, int dst_id);
+	void MovePicture(int src_id, int dst_id);
 
 	/**
 	 * Swaps picture data between two IDs
@@ -152,7 +161,7 @@ public:
 	 * @param id1 First ID to swap with
 	 * @param id2 Second ID to swap with
 	 */
-	void SwapPictureId(int id1, int id2);
+	void SwapPicture(int id1, int id2);
 
 private:
 	void RequestPictureSprite(Picture& pic);
