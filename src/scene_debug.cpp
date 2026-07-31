@@ -323,7 +323,7 @@ void Scene_Debug::PushUiPictureView() {
 	}
 
 	auto* pic = Main_Data::game_pictures->GetPicturePtr(pic_id);
-	if (!pic || (!pic->Exists() && !pic->IsWindowAttached())) {
+	if (!pic || (!pic->Exists())) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		return;
 	}

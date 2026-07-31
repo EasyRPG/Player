@@ -125,7 +125,7 @@ void Window_VarList::DrawItemValue(int index){
 		break;
 		case ePicture: {
 			auto* pic = Main_Data::game_pictures->GetPicturePtr(first_var + index);
-			if (pic && (pic->Exists() || pic->IsWindowAttached())) {
+			if (pic && (pic->Exists())) {
 				auto pos_str = fmt::format("{:.0f},{:.0f}", pic->data.current_x, pic->data.current_y);
 				contents->TextDraw(GetWidth() - 16, y, Font::ColorHeal, pos_str, Text::AlignRight);
 			} else {

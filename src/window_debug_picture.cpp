@@ -99,7 +99,7 @@ void Window_DebugPictureInfo::Refresh() {
 	}
 
 	bool is_str = pic->IsWindowAttached();
-	if (!pic->Exists() && !is_str) {
+	if (!pic->Exists()) {
 		contents->TextDraw(0, 0, Font::ColorDisabled, "Empty");
 		return;
 	}
