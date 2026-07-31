@@ -329,9 +329,9 @@ void Game_Pictures::Picture::Erase() {
 		sprite->SetBitmap(nullptr);
 	}
 	if (IsWindowAttached()) {
-		data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_default;
 		Main_Data::game_windows->Erase(data.ID);
 	}
+	data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_default;
 }
 
 void Game_Pictures::Erase(int id) {
@@ -349,7 +349,7 @@ void Game_Pictures::EraseAll() {
 
 bool Game_Pictures::Picture::Exists() const {
 	// Incompatible with the Yume2kki edge-case that uses empty filenames
-	return !data.name.empty();
+	return !data.name.empty() || !IsNormalPicture();
 }
 
 void Game_Pictures::Picture::CreateSprite() {
