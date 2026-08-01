@@ -61,6 +61,7 @@ public:
 		Teleport,
 		Settings,
 		LanguageMenu,
+		Meta2,
 		SceneMax
 	};
 

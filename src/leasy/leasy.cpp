@@ -20,10 +20,6 @@
  * 
  * **********************************************************************/
 
-#warning TODO: leasy.errors[] ~ classes that make errors better. (can unpromote them as warnings etc)
-#warning TODO: leasy.settings?
-#warning TODO: leasy.globals?
-
 #include <chrono>
 #include <string>
 #include <fstream>
@@ -40,8 +36,11 @@
 
 #include "metadata/namespace.hpp"
 #include "metadata/json.hpp"
+#include "metadata/lua.hpp"
 
 #include "signals.hpp"
+
+#include "kits/ps7k.hpp"
 
 namespace leasy {
   namespace ily3 {
@@ -65,12 +64,23 @@ namespace leasy {
       should_exit = true;
     }
 
+    void initex(const std::vector<std::string> &args) {
+      if (compat::contains(args, "--Xdump-lua")) {
+        std::ofstream out("dump.lua");
+        metadata::lua::write(out, metadata::EasyRPG().dump());
+      }
+
+      if (compat::contains(args, "--Xdump-json")) {
+        std::ofstream out("dump.json");
+        metadata::json::write(out, metadata::EasyRPG().dump());
+      }
+    }
+
     void ready(void) {
       if (! leasy_enabled) return;
       leasy::ready.emit();
+      metadata::EasyRPG().bind(ily3::global::state);
       ily3::global::state.call<void>("leasy.User.ready");
-      std::ofstream of("dump.json");
-      metadata::json::write(of, metadata::EasyRPG().dump());
     }
     
     void process() {

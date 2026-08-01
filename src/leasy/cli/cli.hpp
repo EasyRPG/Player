@@ -22,31 +22,23 @@
 
 #pragma once
 
-#include "scene.h"
-#include "bitmap.h"
+#include <string>
+#include <functional>
+#include <unordered_map>
 
-namespace leasy::meta2 {
-  class Scene_Meta : public Scene {  
-  public:
-    inline Scene_Meta(bool) {
-      this->type = SceneType::Meta2;
-    }
+namespace leasy::cli {
+  using CliArgs = std::unordered_map<std::string, std::string>;
+  using CliFunc = std::function<void(CliArgs)>;
+  using CliMap  = std::unordered_map<std::string, CliFunc>;
 
-    inline Scene_Meta() {
-      this->type = SceneType::Meta2;
-      Scene::Push(std::make_shared<Scene_Meta>(false));
-    }
-
-    inline void Start() override {
-
-    }
-
-    inline void vUpdate() override {
-
-    }
-
-    inline void DrawBackground(Bitmap &map) override {
-
-    }
+  struct CliParseResult {
+    bool success = false;
+    CliArgs args;
+    std::string error;
+    std::size_t pattern_pos = 0;
+    std::size_t input_pos = 0;
   };
+
+  void addcli(const std::string&, const CliFunc&);
+  void cli(const std::vector<std::string>&);
 }

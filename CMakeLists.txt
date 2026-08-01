@@ -520,6 +520,11 @@ add_library(${PROJECT_NAME} OBJECT
 	src/platform/export.cpp
 	src/leasy/inspections.hpp
 	src/leasy/meta/node/node.hpp
+	src/leasy/cli/cli.hpp
+	src/leasy/cli/cli.cpp
+	src/leasy/metadata/dumper.cpp
+	src/leasy/metadata/option.hpp
+	src/leasy/settings/settings.hpp
 )
 
 # These are actually unused when building in CMake
@@ -1218,8 +1223,7 @@ if(PLAYER_BUILD_EXECUTABLE AND ${PLAYER_TARGET_PLATFORM} MATCHES "^SDL.*$" AND N
 			set_target_properties(${EXE_NAME} PROPERTIES OUTPUT_NAME "EasyRPG Player")
 		else()
 			set(EXE_NAME easyrpg-player)
-			add_executable(${EXE_NAME} "src/platform/sdl/main.cpp"
-				src/leasy/metadata/builtins.cpp)
+			add_executable(${EXE_NAME} "src/platform/sdl/main.cpp")
 		endif()
 	else()
 		set(EXE_NAME ${PROJECT_NAME}_exe)

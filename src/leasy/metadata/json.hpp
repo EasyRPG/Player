@@ -28,13 +28,9 @@
 #include <cstdio>
 #include "object.hpp"
 
-namespace leasy::metadata::json {
-  struct  options {
-    size_t  indent      = 2;
-    bool    newlines    = true;
-    bool    space_colon = true;
-  };
+#include "option.hpp"
 
+namespace leasy::metadata::json {
   void  write(std::ostream&, const Object&, const options& = {});
   std::string  dump(const Object&, const options& = {});
 

@@ -33,6 +33,8 @@
 #include "async_handler.h"
 #include "filesystem_stream.h"
 
+#include "leasy/inspections.hpp"
+
 struct FileRequestResult;
 
 /**
@@ -600,7 +602,7 @@ inline void Game_System::IncFrameCounter() {
 }
 
 inline Color Game_System::GetBackgroundColor() {
-	return bg_color;
+	return Color(0, 0, 0, 0); //bg_color;
 }
 
 inline bool Game_System::GetInvertAnimations() {

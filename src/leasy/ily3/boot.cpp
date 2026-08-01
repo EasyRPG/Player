@@ -41,12 +41,21 @@ namespace leasy::ily3 {
 
   void boot(const fs::path &p) {
     auto lua_file = p / "leasy.user.lua";
+    auto settings_file = p / "leasy.settings.lua";
 
+    global::state.dostring(lscripts::set_require);
+
+    if (!fs::exists(settings_file)) {
+      io().Warning.writeln(settings_file, ": file not found! (default settings will be loaded!)");
+    } else {
+      global::state.dofile(settings_file.string());
+    }
+    
     if (!fs::exists(lua_file)) {
       io().Error.writeln(lua_file, ": file not found! (cannot load any mod!)");
       return;
     }
-		global::state.dostring(lscripts::set_require);
+
     global::state.dofile(lua_file.string());
   }
 }

@@ -22,7 +22,10 @@
 
 #pragma once
 
+#include <cctype>
 #include <string>
+#include <sstream>
+#include <algorithm>
 
 namespace leasy::kits {  
   inline std::string replace(std::string str, const std::string& from, const std::string& to) {
@@ -36,5 +39,28 @@ namespace leasy::kits {
     
     return str;
   }
-}
 
+
+  template <typename T>
+  T from_string_or_default(const std::string& str) {
+    std::istringstream iss(str);
+    T value{};
+
+    if ((iss >> value) && (iss >> std::ws).eof()) return value;
+
+    return T{};
+  }
+
+
+  inline std::string lower(std::string s) {
+    std::transform(s.begin(), s.end(), s.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+    return s;
+  }
+
+  inline std::string upper(std::string s) {
+    std::transform(s.begin(), s.end(), s.begin(),
+                   [](unsigned char c) { return std::toupper(c); });
+    return s;
+  }
+}

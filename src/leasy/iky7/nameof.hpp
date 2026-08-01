@@ -68,11 +68,20 @@ constexpr std::string_view parse_type_name(std::string_view wrapped) {
     extern void _leasy_cache_nameof_this(const std::type_index&, const std::string&);
 } // namespace detail
 
-
 template <typename T>
 constexpr std::string_view nameof() {
-    auto name = detail::parse_type_name(detail::wrapped_type_name<T>());
-    detail::_leasy_cache_nameof_this(typeid(T), std::string(name));
-    return name;
+    if constexpr (std::is_same_v<T, uint8_t>)  return "uint8_t";
+    else if constexpr (std::is_same_v<T, int8_t>)  return "int8_t";
+    else if constexpr (std::is_same_v<T, uint16_t>) return "uint16_t";
+    else if constexpr (std::is_same_v<T, int16_t>)  return "int16_t";
+    else if constexpr (std::is_same_v<T, uint32_t>) return "uint32_t";
+    else if constexpr (std::is_same_v<T, int32_t>)  return "int32_t";
+    else if constexpr (std::is_same_v<T, uint64_t>) return "uint64_t";
+    else if constexpr (std::is_same_v<T, int64_t>)  return "int64_t";
+    else if constexpr (std::is_same_v<T, long double>)  return "ldouble";
+    else {
+        constexpr auto name = detail::parse_type_name(detail::wrapped_type_name<T>());
+        return name;
+    }
 }
 

@@ -37,6 +37,8 @@
 #include <ctime>
 #include <memory>
 
+#include "leasy/meta/main.hpp"
+
 Scene_Logo::Scene_Logo() :
 	frame_counter(0) {
 	type = Scene::Logo;
@@ -114,6 +116,9 @@ void Scene_Logo::vUpdate() {
 				std::string save_name = save.FindFile(ss.str());
 				Player::LoadSavegame(save_name, Player::load_game_id);
 			}
+		}
+		else if (leasy::meta2::is_meta2_enabled) {
+			Scene::Push(leasy::meta2::make_meta2());
 		}
 		else {
 			Scene::Push(std::make_shared<Scene_GameBrowser>(), true);

@@ -71,7 +71,8 @@ const char Scene::scene_names[SceneMax][12] =
 	"GameBrowser",
 	"Teleport",
 	"Settings",
-	"Language"
+	"Language",
+	"Meta2",
 };
 
 enum PushPopOperation {
@@ -83,6 +84,7 @@ int Scene::push_pop_operation = 0;
 
 lcf::rpg::SaveSystem::Scene Scene::rpgRtSceneFromSceneType(SceneType t) {
 	switch (t) {
+		case Meta2: leasy::io().Warning.writeln("saving meta2 scenes is not supported (for now!)");
 		case Null:
 		case GameBrowser:
 		case SceneMax:
@@ -282,6 +284,8 @@ std::shared_ptr<Scene> Scene::Peek() {
 }
 
 void Scene::Pop() {
+	struct {} info;
+	leasy::io().Debug.writeln(nameof<decltype(info)>(), ": poping scene ", scene_names[instances.back()->type % SceneMax]);
 	old_instances.push_back(instances.back());
 	instances.pop_back();
 
@@ -349,25 +353,27 @@ bool Scene::CheckSceneExit(AsyncOp aop) {
 
 
 inline void Scene::DebugValidate(const char* caller) {
-	if (instances.size() <= 1) {
-		// Scene of size 1 happens before graphics stack is up. Which can
-		// cause the following logs to crash.
-		return;
-	}
-	std::bitset<SceneMax> present;
-	for (auto& scene: instances) {
-		if (present[scene->type]) {
-			Output::Debug("Scene Stack after {}:", caller);
-			for (auto& s: instances) {
-				auto fmt =  (s == scene) ? "--> {} <--" : "  {}";
-				Output::Debug(fmt, scene_names[s->type]);
-			}
-			Output::Error("Multiple scenes of type={} in the Scene instances stack!", scene_names[scene->type]);
+	if (leasy::settings::get<bool>("Scene.DebugValidate")) {
+		if (instances.size() <= 1) {
+			// Scene of size 1 happens before graphics stack is up. Which can
+			// cause the following logs to crash.
+			return;
 		}
-		present[scene->type] = true;
-	}
-	if (instances[0]->type != Null) {
-		Output::Error("Scene.instances[0] is of type={} in the Scene instances stack!", scene_names[instances[0]->type]);
+		std::bitset<SceneMax> present;
+		for (auto& scene: instances) {
+			if (present[scene->type]) {
+				Output::Debug("Scene Stack after {}:", caller);
+				for (auto& s: instances) {
+					auto fmt =  (s == scene) ? "--> {} <--" : "  {}";
+					Output::Debug(fmt, scene_names[s->type]);
+				}
+				Output::Error("Multiple scenes of type={} in the Scene instances stack!", scene_names[scene->type]);
+			}
+			present[scene->type] = true;
+		}
+		if (instances[0]->type != Null) {
+			Output::Error("Scene.instances[0] is of type={} in the Scene instances stack!", scene_names[instances[0]->type]);
+		}
 	}
 }
 

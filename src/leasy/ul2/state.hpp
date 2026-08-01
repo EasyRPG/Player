@@ -279,6 +279,49 @@ namespace leasy::ul2 {
       bind2(name, bridge(std::forward<F>(fn)));
     }
 
+    template <typename T>
+    T get(const std::string &name) {
+      auto parts = split(name);
+      push_path(parts, false, true);
+      T value = lua_stack<T>::get(L, -1);
+      lua_pop(L, 1);
+      return value;
+    }
+
+    /**
+     * @brief Sets a global or nested Lua value.
+     *
+     * Works with:
+     *  - "var"
+     *  - "a.b.c"
+     *
+     * Missing parent tables are created automatically blabla
+     *
+     * @tparam T Value type supported by lua_stack.
+     * @param name Destination path.
+     * @param value Value to assign.
+     */
+    template <typename T>
+    inline void set(const std::string& name, const T& value) {
+      auto parts = split(name);
+
+      if (parts.size() == 1) {
+        push_value(value);
+        lua_setglobal(L, parts[0].c_str());
+        return;
+      }
+
+      push_path(parts, true, true);
+
+      if (!lua_istable(L, -1))
+        ulthrow("Target parent is not a table");
+
+      push_value(value);
+      lua_setfield(L, -2, parts.back().c_str());
+
+      lua_pop(L, 1);
+    }
+
   private:
     template <typename R, typename Tuple, typename Callable, size_t... I>
     static int invoke_stdfn(const Callable &fn, lua_State *L, std::index_sequence<I...>) {

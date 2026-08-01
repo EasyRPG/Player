@@ -159,3 +159,4 @@ __pycache__/
 # tools/
 dump/
 tests/
+dump.json

@@ -214,7 +214,7 @@ void Player::Init(std::vector<std::string> args) {
 void Player::Run() {
 	Instrumentation::Init("EasyRPG-Player");
 
-	Scene::Push(leasy::meta2::make_main_scene());
+	Scene::Push(std::make_shared<Scene_Logo>());
 	Graphics::UpdateSceneCallback();
 
 	reset_flag = false;

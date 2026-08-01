@@ -432,8 +432,8 @@ private:
     Warning.timestamp(true);
     Error  .timestamp(true);
 
-    System .color(std::string(ansi::bright_white));
-    Debug  .color(std::string(ansi::bright_black));
+    System .color(std::string(ansi::white));
+    Debug  .color(std::string(ansi::bright_blue));
     Warning.color(std::string(ansi::yellow));
     Error  .color(std::string(ansi::bright_red));
   }

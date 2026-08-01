@@ -123,14 +123,27 @@ namespace leasy::metadata {
 
   class UnresolvedClass : public Class {
   public:
-    UnresolvedClass(const std::type_index &poor_data) {
+    inline UnresolvedClass(const std::type_index &poor_data) {
       _fullname = poor_data.name();
       _cindex = poor_data;
     }
     
-    UnresolvedClass(const std::type_index &poor_data, const std::string &ful) {
+    inline UnresolvedClass(const std::type_index &poor_data, const std::string &ful) {
       _fullname = ful;
       _cindex = poor_data;
+    }
+
+    inline Object dump() const override {
+      auto resolved = typeidof(_cindex);
+
+      if (resolved.get() != this && !std::dynamic_pointer_cast<UnresolvedClass>(resolved)) {
+        return resolved->dump();
+      }
+
+      return Map()
+          .add("name", _fullname)
+          .add("cindex", Map().add("name", _cindex.name()).add("hash", _cindex.hash_code()))
+          .add("resolved", false);
     }
   };
 

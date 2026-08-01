@@ -29,13 +29,9 @@
 #include <cstdio>
 #include "object.hpp"
 
-namespace leasy::metadata::lua {
-  struct  options {
-    size_t  indent      = 2;
-    bool    newlines    = true;
-    bool    space_equal = true;
-  };
+#include "option.hpp"
 
+namespace leasy::metadata::lua {
   void  write(std::ostream&, const Object&, const options& = {});
   std::string  dump(const Object&, const options& = {});
 
@@ -115,6 +111,7 @@ namespace leasy::metadata::lua {
   }
 
   inline void write(std::ostream &os, const Object &obj, const options &opts) {
+    os << "return ";
     detail::emit(os, obj, opts, 0);
   }
 
