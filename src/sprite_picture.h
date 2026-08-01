@@ -34,6 +34,15 @@ public:
 	 */
 	Sprite_Picture(int pic_id, Drawable::Flags flags = Drawable::Flags::Default);
 
+	/**
+	 * Synchronize the Picture state with the Sprite state.
+	 * Called by Draw automatically. Use this when an event command requires
+	 * the current state of a Picture without waiting for a repaint.
+	 *
+	 * @return true when the sprite will draw something, false when e.g. not used on the current map
+	 */
+	bool Refresh();
+
 	void Draw(Bitmap& dst) override;
 
 	void OnPictureShow();

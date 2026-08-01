@@ -61,15 +61,14 @@ void Sprite_Picture::OnPictureShow() {
 	}
 }
 
-
-void Sprite_Picture::Draw(Bitmap& dst) {
+bool Sprite_Picture::Refresh() {
 	const auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
 	const auto& data = pic.data;
 
 	auto& bitmap = GetBitmap();
 
 	if (!bitmap) {
-		return;
+		return false;
 	}
 
 	if (pic.IsWindowAttached()) {
@@ -81,7 +80,7 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 	const bool is_battle = Game_Battle::IsBattleRunning();
 
 	if (is_battle ? !pic.IsOnBattle() : !pic.IsOnMap()) {
-		return;
+		return false;
 	}
 
 	// RPG Maker 2k3 1.12: Spritesheets
@@ -115,7 +114,7 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 				offset_x += (Player::screen_width - map_width) / 2;
 			}
 			SetX(x + offset_x);
-			
+
 			int offset_y = 0;
 			int map_height = Game_Map::GetTilesY() * TILE_SIZE;
 			if (map_height < Player::screen_height) {
@@ -188,8 +187,17 @@ void Sprite_Picture::Draw(Bitmap& dst) {
 
 	// Don't draw anything if zoom is at zero, helps avoid a glitchy rotated sprite in the top left corner
 	if (GetZoomX() <= 0.0 || GetZoomY() <= 0.0) {
+		return false;
+	}
+
+	return true;
+}
+
+void Sprite_Picture::Draw(Bitmap& dst) {
+	if (!Refresh()) {
 		return;
 	}
+
 	Sprite::Draw(dst);
 }
 
