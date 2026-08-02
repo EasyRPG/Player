@@ -105,8 +105,15 @@ public:
 	 */
 	void SetFlashEffect(const Color &color);
 
-	/** Sprite was modified by a draw operation */
-	void MarkDirty();
+	/** @return Whether sprite was modified by a draw operation */
+	bool GetDirty() const;
+
+	/**
+	 * Sprite was modified by a draw operation
+	 *
+	 * @param dirty true: Set dirty flag, false: clear dirty flag
+	 */
+	void SetDirty(bool dirty);
 
 private:
 	BitmapRef bitmap;
@@ -312,8 +319,12 @@ inline void Sprite::SetFlashEffect(const Color &color) {
 	flash_effect = color;
 }
 
-inline void Sprite::MarkDirty() {
-	dirty = true;
+inline bool Sprite::GetDirty() const {
+	return dirty;
+}
+
+inline void Sprite::SetDirty(bool dirty) {
+	this->dirty = dirty;
 }
 
 #endif

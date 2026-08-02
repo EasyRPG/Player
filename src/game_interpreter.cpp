@@ -4828,6 +4828,7 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 	// Type 3: Pixel Data Extraction
 	if (info_type == 3) {
 		auto bitmap = sprite->GetBitmap();
+		// Determine Spritesheet frame
 		auto src_rect = sprite->GetSrcRect();
 
 		// Packing: x pos, y pos, width, height, var_id
@@ -4837,14 +4838,29 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 		int pic_h = ValueOrVariableBitfield(com.parameters[0], 4, com.parameters[7]);
 		int dst_var_id = ValueOrVariableBitfield(com.parameters[0], 5, com.parameters[8]);
 
+		bool apply_effects = (com.parameters[2] & 1) != 0;
 		// Bit 0: Ignore Alpha (return 0x00RRGGBB instead of 0xFFRRGGBB)
 		bool ignore_alpha = (com.parameters[2] & 2) != 0;
 
 		Rect frame_rect = src_rect;
-		frame_rect.x += pic_x;
-		frame_rect.y += pic_y;
 		frame_rect.width = pic_w;
 		frame_rect.height = pic_h;
+
+		if (apply_effects) {
+			// .dynamic: Reflect color tone, flash, and other effects
+			frame_rect.x = pic_x; // Rect is cropped to the subrect
+			frame_rect.y = pic_y;
+
+			auto tone = sprite->GetTone();
+			auto flash = sprite->GetFlashEffect();
+			auto flip_x = sprite->GetFlipX();
+			auto flip_y = sprite->GetFlipY();
+			bitmap = Cache::SpriteEffect(bitmap, src_rect, flip_x, flip_y, tone, flash, sprite->GetDirty());
+			sprite->SetDirty(false);
+		} else {
+			frame_rect.x += pic_x;
+			frame_rect.y += pic_y;
+		}
 
 		if (!ManiacPatch::WritePixelsFromBitmapToVariable(*bitmap, frame_rect, dst_var_id, ignore_alpha, *Main_Data::game_variables)) {
 			return true;
@@ -5547,7 +5563,7 @@ bool Game_Interpreter::CommandManiacEditPicture(lcf::rpg::EventCommand const& co
 	frame_rect.height = pic_h;
 
 	if (ManiacPatch::WritePixelsFromVariableToBitmap(*writable_bitmap, frame_rect, start_var_id, clear_dst, ignore_alpha, *Main_Data::game_variables)) {
-		sprite->MarkDirty();
+		sprite->SetDirty(true);
 	}
 
 	return true;
@@ -5645,7 +5661,8 @@ bool Game_Interpreter::CommandManiacWritePicture(lcf::rpg::EventCommand const& c
 				auto flash = sprite->GetFlashEffect();
 				auto flip_x = sprite->GetFlipX();
 				auto flip_y = sprite->GetFlipY();
-				bitmap = Cache::SpriteEffect(bitmap, src_rect, flip_x, flip_y, tone, flash);
+				bitmap = Cache::SpriteEffect(bitmap, src_rect, flip_x, flip_y, tone, flash, sprite->GetDirty());
+				sprite->SetDirty(false);
 			} else if (src_rect != bitmap->GetRect()) {
 				// .static: Crop specific cell if it's a spritesheet
 				bitmap = Bitmap::Create(*bitmap, src_rect);
