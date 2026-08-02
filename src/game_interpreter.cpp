@@ -4857,15 +4857,13 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 	// Logic for Info Types 0, 1, 2
 	int x = 0;
 	int y = 0;
-	int width = 0;
-	int height = 0;
+	int width = sprite->GetWidth();
+	int height = sprite->GetHeight();
 
 	switch (info_type) {
 		case 0:
 			x = Utils::RoundTo<int>(data.current_x);
 			y = Utils::RoundTo<int>(data.current_y);
-			width = picture->sprite ? picture->sprite->GetWidth() : 0;
-			height = picture->sprite ? picture->sprite->GetHeight() : 0;
 			break;
 		case 1:
 			x = Utils::RoundTo<int>(data.current_x);
@@ -4879,6 +4877,8 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 			width = Utils::RoundTo<int>(width * data.finish_magnify / 100.0);
 			height = Utils::RoundTo<int>(height * data.maniac_finish_magnify_height / 100.0);
 			break;
+		default:
+			Output::Warning("ManiacGetPictureInfo: Unknown info type {}", info_type);
 	}
 
 	switch (com.parameters[2]) {
@@ -4898,6 +4898,8 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 			height += y;
 			break;
 		}
+		default:
+			Output::Warning("ManiacGetPictureInfo: Unknown origin {}", com.parameters[2]);
 	}
 
 	Main_Data::game_variables->Set(com.parameters[4], x);
