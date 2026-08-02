@@ -4274,7 +4274,7 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 			BitmapRef screen = DisplayUi->CaptureScreen();
 			Rect frame_rect{pic_x, pic_y, pic_w, pic_h};
 
-			if (!ManiacPatch::WritePixelsToVariable(*screen, frame_rect, dst_var_id, ignore_alpha, *Main_Data::game_variables)) {
+			if (!ManiacPatch::WritePixelsFromBitmapToVariable(*screen, frame_rect, dst_var_id, ignore_alpha, *Main_Data::game_variables)) {
 				return true;
 			}
 
@@ -4846,7 +4846,7 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 		frame_rect.width = pic_w;
 		frame_rect.height = pic_h;
 
-		if (!ManiacPatch::WritePixelsToVariable(*bitmap, frame_rect, dst_var_id, ignore_alpha, *Main_Data::game_variables)) {
+		if (!ManiacPatch::WritePixelsFromBitmapToVariable(*bitmap, frame_rect, dst_var_id, ignore_alpha, *Main_Data::game_variables)) {
 			return true;
 		}
 
@@ -5515,6 +5515,7 @@ bool Game_Interpreter::CommandManiacEditPicture(lcf::rpg::EventCommand const& co
 	} else {
 		// Must be copied to avoid modifiying the original picture
 		writable_bitmap = Bitmap::Create(*bitmap, bitmap->GetRect(), true);
+		writable_bitmap->SetId(fmt::format("Canvas://{}", bitmap->GetId()));
 		sprite->SetBitmap(writable_bitmap);
 		sprite->SetSrcRect(src_rect);
 	}
@@ -5545,7 +5546,9 @@ bool Game_Interpreter::CommandManiacEditPicture(lcf::rpg::EventCommand const& co
 	frame_rect.width = pic_w;
 	frame_rect.height = pic_h;
 
-	ManiacPatch::ReadPixelsFromVariable(*writable_bitmap, frame_rect, start_var_id, clear_dst, ignore_alpha, *Main_Data::game_variables);
+	if (ManiacPatch::WritePixelsFromVariableToBitmap(*writable_bitmap, frame_rect, start_var_id, clear_dst, ignore_alpha, *Main_Data::game_variables)) {
+		sprite->MarkDirty();
+	}
 
 	return true;
 }

@@ -48,7 +48,7 @@ namespace ManiacPatch {
 	 * @param variables Variable list
 	 * @return true when any pixels were modified, false otherwise
 	 */
-	bool ReadPixelsFromVariable(Bitmap& dst, Rect dst_rect, int start_var_id, bool clear_dst, bool ignore_alpha, Game_Variables& variables);
+	bool WritePixelsFromVariableToBitmap(Bitmap& dst, Rect dst_rect, int start_var_id, bool clear_dst, bool ignore_alpha, Game_Variables& variables);
 
 	/**
 	 * Extracts pixel data out of a bitmap writing it into a range of variables in ARGB format
@@ -60,7 +60,7 @@ namespace ManiacPatch {
 	 * @param variables Variable list
 	 * @return true when any variables were modified, false otherwise
 	 */
-	bool WritePixelsToVariable(const Bitmap& src, Rect src_rect, int start_var_id, bool ignore_alpha, Game_Variables& variables);
+	bool WritePixelsFromBitmapToVariable(const Bitmap& src, Rect src_rect, int start_var_id, bool ignore_alpha, Game_Variables& variables);
 
 	std::string_view GetLcfName(int data_type, int id, bool is_dynamic);
 	std::string_view GetLcfDescription(int data_type, int id, bool is_dynamic);

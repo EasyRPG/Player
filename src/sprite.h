@@ -105,6 +105,9 @@ public:
 	 */
 	void SetFlashEffect(const Color &color);
 
+	/** Sprite was modified by a draw operation */
+	void MarkDirty();
+
 private:
 	BitmapRef bitmap;
 
@@ -127,6 +130,9 @@ private:
 	int waver_effect_depth = 0;
 	double waver_effect_phase = 0.0;
 	Color flash_effect;
+
+	/** Sprite was painted on and requires an update */
+	bool dirty = false;
 
 	BitmapRef bitmap_effects;
 
@@ -304,6 +310,10 @@ inline Color Sprite::GetFlashEffect() const {
 
 inline void Sprite::SetFlashEffect(const Color &color) {
 	flash_effect = color;
+}
+
+inline void Sprite::MarkDirty() {
+	dirty = true;
 }
 
 #endif

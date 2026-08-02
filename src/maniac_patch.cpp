@@ -713,7 +713,7 @@ bool ManiacPatch::CheckString(std::string_view str_l, std::string_view str_r, in
 	return check(str_l, str_r);
 }
 
-bool ManiacPatch::ReadPixelsFromVariable(Bitmap& dst, Rect dst_rect, int start_var_id, bool clear_dst, bool ignore_alpha, Game_Variables& variables) {
+bool ManiacPatch::WritePixelsFromVariableToBitmap(Bitmap& dst, Rect dst_rect, int start_var_id, bool clear_dst, bool ignore_alpha, Game_Variables& variables) {
 	int pic_x = dst_rect.x;
 	int pic_y = dst_rect.y;
 	int pic_w = dst_rect.width;
@@ -788,7 +788,7 @@ bool ManiacPatch::ReadPixelsFromVariable(Bitmap& dst, Rect dst_rect, int start_v
 	return true;
 }
 
-bool ManiacPatch::WritePixelsToVariable(const Bitmap& src, Rect src_rect, int start_var_id, bool ignore_alpha, Game_Variables& variables) {
+bool ManiacPatch::WritePixelsFromBitmapToVariable(const Bitmap& src, Rect src_rect, int start_var_id, bool ignore_alpha, Game_Variables& variables) {
 	// FIXME: Because we use premultiplied alpha the colors of transparent pixels are lost (always 0)
 	// Maniacs appears to preserve them
 	// E.g. when reading a transparent pixel from Chara1 (which was green) then Maniac will read green and we read 0
