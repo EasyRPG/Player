@@ -20,6 +20,7 @@
 #include <ctime>
 #include <iomanip>
 #include <iostream>
+#include <lcf/scope_guard.h>
 #include <regex>
 #include <sstream>
 #include <string>
@@ -4783,6 +4784,23 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 
 	auto* picture = Main_Data::game_pictures->GetPicturePtr(pic_id);
 
+	int info_type = com.parameters[1];
+
+	auto error_handler = lcf::makeScopeGuard([&]() {
+		if (info_type != 3) {
+			// In case of missing image the non-pixel functions set the
+			// output variables to 0
+			Main_Data::game_variables->Set(com.parameters[4], 0);
+			Main_Data::game_variables->Set(com.parameters[5], 0);
+			Main_Data::game_variables->Set(com.parameters[6], 0);
+			Main_Data::game_variables->Set(com.parameters[7], 0);
+
+			for (int i = 4; i <= 7; ++i) {
+				Game_Map::SetNeedRefreshForVarChange(com.parameters[i]);
+			}
+		}
+	});
+
 	if (!picture || !picture->Exists()) {
 		Output::Debug("ManiacGetPictureInfo: Picture {} does not exist", pic_id);
 		return true;
@@ -4800,11 +4818,12 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 		return true;
 	}
 
+	error_handler.Dismiss();
+
 	auto* sprite = picture->sprite.get();
 	sprite->Refresh();
 
 	const auto& data = picture->data;
-	int info_type = com.parameters[1];
 
 	// Type 3: Pixel Data Extraction
 	if (info_type == 3) {
@@ -4886,7 +4905,9 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 	Main_Data::game_variables->Set(com.parameters[6], width);
 	Main_Data::game_variables->Set(com.parameters[7], height);
 
-	Game_Map::SetNeedRefresh(true);
+	for (int i = 4; i <= 7; ++i) {
+		Game_Map::SetNeedRefreshForVarChange(com.parameters[i]);
+	}
 
 	return true;
 }
@@ -5592,7 +5613,7 @@ bool Game_Interpreter::CommandManiacWritePicture(lcf::rpg::EventCommand const& c
 		}
 
 		if (!picture->sprite) {
-			Output::Debug("ManiacWriteImage: Picture {} does not exist", pic_id);
+			Output::Debug("ManiacWriteImage: Picture {} has no sprite", pic_id);
 			return true;
 		}
 
