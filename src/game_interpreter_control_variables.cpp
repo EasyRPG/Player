@@ -429,19 +429,19 @@ int ControlVariables::Binary(int op, int arg1, int arg2) {
 			}
 			break;
 		case 6:
-			result = arg1_64 | arg2_64;
+			result = arg1 | arg2;
 			break;
 		case 7:
-			result = arg1_64 & arg2_64;
+			result = arg1 & arg2;
 			break;
 		case 8:
-			result = arg1_64 ^ arg2_64;
+			result = arg1 ^ arg2;
 			break;
 		case 9:
-			result = arg1_64 << arg2_64;
+			result = static_cast<int64_t>(static_cast<uint32_t>(arg1) << arg2);
 			break;
 		case 10:
-			result = arg1_64 >> arg2_64;
+			result = static_cast<int64_t>(static_cast<uint32_t>(arg1) >> arg2);
 			break;
 		default:
 			Output::Warning("ControlVariables::Binary: Unknown op {}", op);
