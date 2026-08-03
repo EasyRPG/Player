@@ -172,7 +172,7 @@ void Window_DebugPictureInfo::Refresh() {
 	// Common Flags
 	std::vector<FlagInfo> flags = {
 		{ "Fixed", d.fixed_to_map },
-		{ "Chroma", d.use_transparent_color },
+		{ "Transparent", d.use_transparent_color },
 		{ "Tint", d.flags.affected_by_tint },
 		{ "Flash", d.flags.affected_by_flash },
 		{ "Shake", d.flags.affected_by_shake },
@@ -192,7 +192,8 @@ void Window_DebugPictureInfo::Refresh() {
 		y = DrawLine(y, "File", name_str);
 
 		if (d.spritesheet_cols > 1 || d.spritesheet_rows > 1) {
-			std::string cell_str = fmt::format("#{} ({}x{})", d.spritesheet_frame, d.spritesheet_cols, d.spritesheet_rows);
+			// The editor frame number is 1-based so the user should see the expected value here
+			std::string cell_str = fmt::format("#{} ({}x{})", d.spritesheet_frame + 1, d.spritesheet_cols, d.spritesheet_rows);
 			y = DrawLine(y, "Cell", cell_str);
 
 			if (d.spritesheet_speed > 0) {
