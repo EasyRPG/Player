@@ -4821,7 +4821,7 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 	error_handler.Dismiss();
 
 	auto* sprite = picture->sprite.get();
-	sprite->Refresh();
+	sprite->RefreshPictureState();
 
 	const auto& data = picture->data;
 
@@ -4845,21 +4845,12 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 		Rect frame_rect = src_rect;
 		frame_rect.width = pic_w;
 		frame_rect.height = pic_h;
+		frame_rect.x += pic_x;
+		frame_rect.y += pic_y;
 
-		if (apply_effects) {
+		if (apply_effects && sprite->IsSpriteEffectActive()) {
 			// .dynamic: Reflect color tone, flash, and other effects
-			frame_rect.x = pic_x; // Rect is cropped to the subrect
-			frame_rect.y = pic_y;
-
-			auto tone = sprite->GetTone();
-			auto flash = sprite->GetFlashEffect();
-			auto flip_x = sprite->GetFlipX();
-			auto flip_y = sprite->GetFlipY();
-			bitmap = Cache::SpriteEffect(bitmap, src_rect, flip_x, flip_y, tone, flash, sprite->GetDirty());
-			sprite->SetDirty(false);
-		} else {
-			frame_rect.x += pic_x;
-			frame_rect.y += pic_y;
+			bitmap = sprite->RefreshBitmap();
 		}
 
 		if (!ManiacPatch::WritePixelsFromBitmapToVariable(*bitmap, frame_rect, dst_var_id, ignore_alpha, *Main_Data::game_variables)) {
@@ -5511,7 +5502,7 @@ bool Game_Interpreter::CommandManiacEditPicture(lcf::rpg::EventCommand const& co
 	}
 
 	auto* sprite = picture->sprite.get();
-	sprite->Refresh();
+	sprite->RefreshPictureState();
 	Rect src_rect = sprite->GetSrcRect();
 
 	auto bitmap = sprite->GetBitmap();
@@ -5608,9 +5599,12 @@ bool Game_Interpreter::CommandManiacWritePicture(lcf::rpg::EventCommand const& c
 	// Prepare Bitmap
 	BitmapRef bitmap;
 
+	Rect src_rect;
+
 	if (target_type == 0) {
 		// Target: Screen (.screen)
 		bitmap = DisplayUi->CaptureScreen();
+		src_rect = bitmap->GetRect();
 	} else if (target_type == 1) {
 		// Target: Picture (.pic)
 		int pic_id = ValueOrVariableBitfield(com, 0, 0, 2);
@@ -5639,9 +5633,12 @@ bool Game_Interpreter::CommandManiacWritePicture(lcf::rpg::EventCommand const& c
 		}
 
 		auto& sprite = picture->sprite;
-		sprite->Refresh();
+		sprite->RefreshPictureState();
 
 		bitmap = picture->sprite->GetBitmap();
+
+		// Determine Spritesheet frame
+		src_rect = sprite->GetSrcRect();
 
 		// Retrieve bitmap
 		// Cannot change transparency of images that are not reloadable from a file (window and canvas)
@@ -5652,24 +5649,12 @@ bool Game_Interpreter::CommandManiacWritePicture(lcf::rpg::EventCommand const& c
 		}
 
 		if (bitmap) {
-			// Determine Spritesheet frame
-			Rect src_rect = sprite->GetSrcRect();
-
-			if (apply_effects) {
+			if (apply_effects && sprite->IsSpriteEffectActive()) {
 				// .dynamic: Reflect color tone, flash, and other effects
-				auto tone = sprite->GetTone();
-				auto flash = sprite->GetFlashEffect();
-				auto flip_x = sprite->GetFlipX();
-				auto flip_y = sprite->GetFlipY();
-				bitmap = Cache::SpriteEffect(bitmap, src_rect, flip_x, flip_y, tone, flash, sprite->GetDirty());
-				sprite->SetDirty(false);
-			} else if (src_rect != bitmap->GetRect()) {
-				// .static: Crop specific cell if it's a spritesheet
-				bitmap = Bitmap::Create(*bitmap, src_rect);
+				bitmap = sprite->RefreshBitmap();
 			}
 		}
-	}
-	else {
+	} else {
 		Output::Warning("ManiacSaveImage: Unsupported target type {}", target_type);
 		return true;
 	}
@@ -5684,7 +5669,7 @@ bool Game_Interpreter::CommandManiacWritePicture(lcf::rpg::EventCommand const& c
 
 		auto img_out = FileFinder::OpenWrite(filename);
 		if (img_out) {
-			bitmap->WritePNG(img_out);
+			bitmap->WritePNG(img_out, src_rect);
 			// Not ideal but figuring out the exact cache entry is complicated
 			Cache::Invalidate("Picture");
 		} else {

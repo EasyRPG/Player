@@ -41,7 +41,7 @@ public:
 	 *
 	 * @return true when the sprite will draw something, false when e.g. not used on the current map
 	 */
-	bool Refresh();
+	bool RefreshPictureState();
 
 	void Draw(Bitmap& dst) override;
 

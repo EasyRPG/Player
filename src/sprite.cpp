@@ -41,7 +41,7 @@ void Sprite::BlitScreen(Bitmap& dst) {
 	if (!bitmap || (opacity_top_effect <= 0 && opacity_bottom_effect <= 0))
 		return;
 
-	BitmapRef draw_bitmap = Refresh(src_rect_effect);
+	BitmapRef draw_bitmap = RefreshBitmap(true);
 	if (!draw_bitmap) {
 		return;
 	}
@@ -78,8 +78,8 @@ void Sprite::BlitScreenIntern(Bitmap& dst, Bitmap const& draw_bitmap, Rect const
 		waver_effect_depth, waver_effect_phase, static_cast<Bitmap::BlendMode>(blend_type_effect));
 }
 
-BitmapRef Sprite::Refresh(Rect& rect) {
-	if (zoom_x_effect == 1.0 && zoom_y_effect == 1.0 && angle_effect == 0.0 && waver_effect_depth == 0) {
+BitmapRef Sprite::RefreshBitmap(bool check_oob) {
+	if (check_oob && (zoom_x_effect == 1.0 && zoom_y_effect == 1.0 && angle_effect == 0.0 && waver_effect_depth == 0)) {
 		// Prevent effect sprite creation when not in the viewport
 		// TODO: Out of bounds math adjustments for zoom, angle and waver
 		// but even without this will catch most of the cases
@@ -88,18 +88,15 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 		}
 	}
 
-	rect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
+	src_rect_effect.Adjust(bitmap->GetWidth(), bitmap->GetHeight());
 
-	bool no_tone = tone_effect == Tone();
-	bool no_flash = flash_effect.alpha == 0;
-	bool no_flip = !flipx_effect && !flipy_effect;
-	bool no_effects = no_tone && no_flash && no_flip;
+	bool no_effects = !IsSpriteEffectActive();
 	bool effects_changed = tone_effect != current_tone ||
 		flash_effect != current_flash ||
 		flipx_effect != current_flip_x ||
 		flipy_effect != current_flip_y ||
 		dirty;
-	bool effects_rect_changed = rect != bitmap_effects_src_rect;
+	bool effects_rect_changed = src_rect_effect != bitmap_effects_src_rect;
 
 	if (no_effects || effects_changed || effects_rect_changed || bitmap_changed) {
 		bitmap_effects.reset();
@@ -115,13 +112,20 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 		current_flip_x = flipx_effect;
 		current_flip_y = flipy_effect;
 
-		bitmap_effects = Cache::SpriteEffect(bitmap, rect, flipx_effect, flipy_effect, current_tone, current_flash, dirty);
-		bitmap_effects_src_rect = rect;
+		bitmap_effects = Cache::SpriteEffect(bitmap, src_rect_effect, flipx_effect, flipy_effect, tone_effect, flash_effect, dirty);
+		bitmap_effects_src_rect = src_rect_effect;
 
 		dirty = false;
 
 		return bitmap_effects;
 	}
+}
+
+bool Sprite::IsSpriteEffectActive() const {
+	bool tone = tone_effect != Tone();
+	bool flash = flash_effect.alpha != 0;
+	bool flip = flipx_effect || flipy_effect;
+	return tone || flash || flip;
 }
 
 void Sprite::SetBitmap(BitmapRef const& nbitmap) {

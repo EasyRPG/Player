@@ -206,6 +206,15 @@ public:
 	bool WritePNG(std::ostream& os) const;
 
 	/**
+	 * Writes PNG converted bitmap to output stream.
+	 *
+	 * @param os output stream that PNG will be output.
+	 * @param src_rect rect to save.
+	 * @return true if success, otherwise false.
+	 */
+	bool WritePNG(std::ostream& os, Rect const& src_rect) const;
+
+	/**
 	 * Gets the background color
 	 * Bitmap must have been loaded with the Bitmap::System flag
 	 *

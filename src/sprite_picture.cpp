@@ -61,7 +61,7 @@ void Sprite_Picture::OnPictureShow() {
 	}
 }
 
-bool Sprite_Picture::Refresh() {
+bool Sprite_Picture::RefreshPictureState() {
 	const auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
 	const auto& data = pic.data;
 
@@ -194,7 +194,7 @@ bool Sprite_Picture::Refresh() {
 }
 
 void Sprite_Picture::Draw(Bitmap& dst) {
-	if (!Refresh()) {
+	if (!RefreshPictureState()) {
 		return;
 	}
 

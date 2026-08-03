@@ -115,6 +115,15 @@ public:
 	 */
 	void SetDirty(bool dirty);
 
+	/** @return Whether any effect such as Tone is active */
+	bool IsSpriteEffectActive() const;
+
+	/**
+	 * @param check_oob Returns an empty bitmap when the sprite is out of bounds
+	 * @return Either the original bitmap or the effect bitmap when an effect
+	           is active. The effect bitmap is precropped to the spritesheet. */
+	BitmapRef RefreshBitmap(bool check_oob = false);
+
 private:
 	BitmapRef bitmap;
 
@@ -156,7 +165,6 @@ private:
 	void BlitScreen(Bitmap& dst);
 	void BlitScreenIntern(Bitmap& dst, Bitmap const& draw_bitmap,
 							Rect const& src_rect) const;
-	BitmapRef Refresh(Rect& rect);
 };
 
 inline int Sprite::GetWidth() const {
