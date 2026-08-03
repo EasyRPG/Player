@@ -31,11 +31,11 @@ private:
 	void Reset();
 
 	Window_Help window;
-	int time_left = 0;
+	double time_left = 0;
 };
 
 inline bool Game_Quit::ShouldQuit() const {
-	return time_left == 0;
+	return time_left <= 0;
 }
 
 #endif

@@ -52,6 +52,7 @@
 #include "maniac_patch.h"
 #include "memory_management.h"
 #include "pixel_format.h"
+#include "options.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
 #include "scene_gameover.h"
@@ -485,7 +486,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			if (_keyinput.timed) {
 				// 10 per second
 				Main_Data::game_variables->Set(_keyinput.time_variable,
-						(_keyinput.wait_frames * 10) / Game_Clock::GetTargetGameFps());
+						(_keyinput.wait_frames * 10) / DEFAULT_FPS);
 				Game_Map::SetNeedRefreshForVarChange(_keyinput.time_variable);
 				RuntimePatches::OnVariableChanged(_keyinput.time_variable);
 			}
@@ -5177,12 +5178,13 @@ bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const& 
 		return true;
 	}
 	case 1: { // FatalMix: .fatal fps, testPlayMode, fastForwardText
-		const int fps = ValueOrVariable(com.parameters[0], com.parameters[2]);
+		int fps = ValueOrVariable(com.parameters[0], com.parameters[2]); // Game Speed
 		const int test_play_mode = com.parameters[3] & 3; // 0: Keep, 1: Off, 2: On
 		const bool enable_fast_forward_text = (com.parameters[3] & 16) != 0;
 
+		// Implementation difference: We reset the frame rate when the game ends
 		if (fps > 0) {
-			Game_Clock::SetGameSpeedFactor(static_cast<float>(fps) / 60.0f);
+			Game_Clock::SetTargetGameFps(fps);
 		}
 
 		switch (test_play_mode) {
@@ -5194,6 +5196,8 @@ bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const& 
 			break;
 		}
 
+		// Implementation difference: We always enable this while in TestPlay mode
+		// This option only configures the behaviour outside of TestPlay
 		Main_Data::game_system->SetFastForwardText(enable_fast_forward_text);
 		return true;
 	}
@@ -5206,7 +5210,19 @@ bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const& 
 	case 3: { // .fullFrame, .oneFifth, .oneThird, .oneHalf
 		// Frame Skip
 		const int skip_mode = com.parameters[2];
-		Player::SetFrameSkip(skip_mode);
+		int percentage = 100;
+		switch (skip_mode) {
+			case 1:
+				percentage = 20;
+				break; // 1/5
+			case 2:
+				percentage = 33;
+				break; // 1/3
+			case 3:
+				percentage = 50;
+				break; // 1/2
+		}
+		Player::SetFrameSkip(percentage);
 		return true;
 	}
 	case 4: { // .mouse.disableMsgProcession value

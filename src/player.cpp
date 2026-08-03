@@ -136,10 +136,8 @@ namespace Player {
 	Game_ConfigPlayer player_config;
 	Game_ConfigGame game_config;
 
-	namespace {
-		int frame_skip_counter = 0;
-		int frame_skip_rate = 1;
-	}
+	int frame_draw_accumulator = 0;
+	int frame_draw_percentage = 100;
 
 #ifdef __EMSCRIPTEN__
 	std::string emscripten_game_name;
@@ -271,11 +269,7 @@ void Player::MainLoop() {
 		Input::UpdateSystem();
 	}
 
-	frame_skip_counter = (frame_skip_counter + 1) % frame_skip_rate;
-	if (frame_skip_counter == 0) {
-		Player::Draw();
-	}
-
+	Player::Draw();
 
 	Scene::old_instances.clear();
 
@@ -306,15 +300,9 @@ void Player::MainLoop() {
 	}
 }
 
-void Player::SetFrameSkip(int mode) {
-	switch (mode) {
-	case 0: frame_skip_rate = 1; break; // Full
-	case 1: frame_skip_rate = 5; break; // 1/5
-	case 2: frame_skip_rate = 3; break; // 1/3
-	case 3: frame_skip_rate = 2; break; // 1/2
-	default: frame_skip_rate = 1; break;
-	}
-	frame_skip_counter = 0;
+void Player::SetFrameSkip(int percentage) {
+	frame_draw_percentage = percentage;
+	frame_draw_accumulator = 0;
 }
 
 void Player::Pause() {
@@ -412,7 +400,13 @@ void Player::Update(bool update_scene) {
 
 void Player::Draw() {
 	Graphics::Update();
-	Graphics::Draw(*DisplayUi->GetDisplaySurface());
+
+	frame_draw_accumulator += frame_draw_percentage;
+	if (frame_draw_accumulator >= 100) {
+		frame_draw_accumulator -= 100;
+		Graphics::Draw(*DisplayUi->GetDisplaySurface());
+	}
+
 	DisplayUi->UpdateDisplay();
 }
 
@@ -1011,6 +1005,11 @@ void Player::ResetGameObjects() {
 	RuntimePatches::OnResetGameObjects();
 
 	Input::ResetMask();
+
+	// Reset SetGameOption global settings
+	// Differs from Maniac Patch which simply keeps them upon reset
+	Player::SetFrameSkip(100);
+	Game_Clock::SetTargetGameFps(DEFAULT_FPS);
 }
 
 static bool DefaultLmuStartFileExists(const FilesystemView& fs) {
