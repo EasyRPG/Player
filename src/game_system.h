@@ -437,10 +437,10 @@ public:
 	bool IsLoadedThisFrame() const;
 
 	void SetFastForwardText(bool enabled);
-	bool GetFastForwardText() const;
+	bool IsFastForwardText() const;
 
-	void SetMessageMouseDisabled(bool disabled);
-	bool IsMessageMouseDisabled() const;
+	void SetMessageMouseEnabled(bool disabled);
+	bool IsMessageMouseEnabled() const;
 
 	void SetBattleOrigin(int origin);
 	int GetBattleOrigin() const;
@@ -469,7 +469,7 @@ private:
 
 	// Game options that are not saved
 	bool maniac_fast_forward_text = false;
-	bool message_mouse_disabled = false;
+	bool message_mouse = false;
 };
 
 inline bool Game_System::HasSystemGraphic() {
@@ -683,42 +683,37 @@ inline void Game_System::SetFastForwardText(bool enabled) {
 	maniac_fast_forward_text = enabled;
 }
 
-inline bool Game_System::GetFastForwardText() const {
+inline bool Game_System::IsFastForwardText() const {
 	return maniac_fast_forward_text;
 }
 
-inline void Game_System::SetMessageMouseDisabled(bool disabled) {
-	message_mouse_disabled = disabled;
+inline void Game_System::SetMessageMouseEnabled(bool enabled) {
+	message_mouse = enabled;
 }
 
-inline bool Game_System::IsMessageMouseDisabled() const {
-	return message_mouse_disabled;
+inline bool Game_System::IsMessageMouseEnabled() const {
+	return message_mouse;
 }
 
 inline void Game_System::SetBattleOrigin(int origin) {
-	//data.maniac_battle_position = origin;
+	data.maniac_battle_origin = origin;
 }
 
 inline int Game_System::GetBattleOrigin() const {
-	//return data.maniac_battle_position;
-	return 0;
+	return data.maniac_battle_origin;
 }
 
 inline void Game_System::SetMessageFaceSize(int width, int height) {
-	//data.maniac_message_face_width = width;
-	//data.maniac_message_face_height = height;
+	data.maniac_message_face_width = width;
+	data.maniac_message_face_height = height;
 }
 
 inline int Game_System::GetMessageFaceWidth() const {
-	//return data.maniac_message_face_width;
-	return 0;
+	return data.maniac_message_face_width;
 }
 
 inline int Game_System::GetMessageFaceHeight() const {
-	//return data.maniac_message_face_height;
-	return 0;
+	return data.maniac_message_face_height;
 }
-
-
 
 #endif

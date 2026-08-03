@@ -5177,7 +5177,7 @@ bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const& 
 		return true;
 	}
 	case 1: { // FatalMix: .fatal fps, testPlayMode, fastForwardText
-		const int fps = ValueOrVariableBitfield(com, 0, 0, 2);
+		const int fps = ValueOrVariable(com.parameters[0], com.parameters[2]);
 		const int test_play_mode = com.parameters[3] & 3; // 0: Keep, 1: Off, 2: On
 		const bool enable_fast_forward_text = (com.parameters[3] & 16) != 0;
 
@@ -5199,6 +5199,8 @@ bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const& 
 	}
 	case 2: { // .picLimit limit
 		// Change Picture Limit (noop, we support arbitrary amount of pictures)
+		const int pic_limit = ValueOrVariable(com.parameters[0], com.parameters[2]);
+		Output::Debug("Maniac SetGameOption: Picture Limit set to {}", pic_limit);
 		return true;
 	}
 	case 3: { // .fullFrame, .oneFifth, .oneThird, .oneHalf
@@ -5209,8 +5211,8 @@ bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const& 
 	}
 	case 4: { // .mouse.disableMsgProcession value
 		// Left Mouse button can continue messages
-		const bool disable_mouse_for_messages = (ValueOrVariableBitfield(com, 0, 0, 2) != 0);
-		Main_Data::game_system->SetMessageMouseDisabled(disable_mouse_for_messages);
+		const bool enable_mouse_for_messages = (ValueOrVariable(com.parameters[0], com.parameters[2]) == 0);
+		Main_Data::game_system->SetMessageMouseEnabled(enable_mouse_for_messages);
 		return true;
 	}
 	case 5: { // .btlOrigin position
@@ -5219,8 +5221,8 @@ bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const& 
 		// 5: top, 6: bottom, 7: left, 8: right
 		const int battle_origin = com.parameters[2];
 
-		// TODO: Store this value, likely in `Game_System`, and have `Scene_Battle` use it
-		// to adjust the layout of its windows and sprites during initialization.
+		// TODO: This sets the rendering location for the battle scene
+		// Needs modifying all the drawing code in the battle system
 		Output::Warning("Maniac SetGameOption: Reposition Battle UI (position: {}) not implemented.", battle_origin);
 		Main_Data::game_system->SetBattleOrigin(battle_origin);
 		return true;
@@ -5231,12 +5233,12 @@ bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const& 
 		return true;
 	}
 	case 7: { // .winFaceSize width, height
-		const int width = ValueOrVariableBitfield(com, 0, 0, 2);
-		const int height = ValueOrVariableBitfield(com, 0, 1, 3);
+		const int width = ValueOrVariable(com.parameters[0], com.parameters[2]);
+		const int height = ValueOrVariable(com.parameters[0], com.parameters[3]);
 
-		// TODO: Store these values in Game_System (e.g., `message_face_width`/`height`).
-		// `Window_Message::Refresh` must then use these values when drawing the face graphic.
 		Output::Warning("Maniac SetGameOption: Custom WinFaceSize ({}x{}) not implemented.", width, height);
+		// TODO: Values must be used in OnFaceReady. Maniacs appears to not hardcode 4 faces per line so this needs
+		// further testing
 		Main_Data::game_system->SetMessageFaceSize(width, height);
 		return true;
 	}

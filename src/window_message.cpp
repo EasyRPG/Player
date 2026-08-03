@@ -21,6 +21,8 @@
 #include <iterator>
 
 #include "compiler.h"
+#include "input_buttons.h"
+#include "main_data.h"
 #include "utils.h"
 #include "window_message.h"
 #include "game_actors.h"
@@ -133,6 +135,13 @@ Window_Message::~Window_Message() {
 	}
 }
 
+namespace {
+	bool IsDecisionOrMouseTriggered() {
+		return Input::IsTriggered(Input::DECISION) ||
+			(Main_Data::game_system->IsMessageMouseEnabled() && Input::IsTriggered(Input::MOUSE_LEFT));
+	}
+}
+
 void Window_Message::StartMessageProcessing(PendingMessage pm) {
 	text.clear();
 	pending_message = std::move(pm);
@@ -201,22 +210,17 @@ void Window_Message::StartMessageProcessing(PendingMessage pm) {
 void Window_Message::OnFinishPage() {
 	DebugLog("{}: FINISH PAGE");
 
-	if (Player::IsPatchManiac() && Main_Data::game_system->GetFastForwardText()) {
-		if ((text.data() + text.size() - text_index) < 3 && !pending_message.HasNumberInput() && pending_message.GetNumChoices() <= 0) {
-			line_char_counter = 0;
-			SetWait(5);
-			FinishMessageProcessing();
-			return;
-		}
-	}
-
 	if (pending_message.GetNumChoices() > 0) {
 		StartChoiceProcessing();
 	} else if (pending_message.HasNumberInput()) {
 		StartNumberInputProcessing();
 	} else if (!kill_page) {
 		DebugLog("{}: SET PAUSE");
-		SetPause(true);
+
+		if (!((Player::debug_flag || Main_Data::game_system->IsFastForwardText()) &&
+			Input::IsPressed(Input::DEBUG_MESSAGE_FAST_FORWARD))) {
+				SetPause(true);
+		}
 	}
 
 	line_count = 0;
@@ -322,7 +326,6 @@ void Window_Message::InsertNewPage() {
 	}
 
 	if (IsFaceEnabled()) {
-		int face_width = Main_Data::game_system->GetMessageFaceWidth();
 		if (!Main_Data::game_system->IsMessageFaceRightPosition()) {
 			contents_x = LeftMargin + FaceSize + RightFaceMargin;
 			DrawFace(Main_Data::game_system->GetMessageFaceName(), Main_Data::game_system->GetMessageFaceIndex(), LeftMargin, TopMargin, Main_Data::game_system->IsMessageFaceFlipped());
@@ -489,10 +492,10 @@ void Window_Message::UpdateMessage() {
 	// Message Box Show Message rendering loop
 	bool instant_speed_forced = false;
 
-	if ((Player::debug_flag && Input::IsPressed(Input::SHIFT)) ||
-		(Main_Data::game_system->GetFastForwardText() && Input::IsRawKeyPressed(Input::Keys::RSHIFT))) {
-		instant_speed = true;
-		instant_speed_forced = true;
+	if ((Player::debug_flag || Main_Data::game_system->IsFastForwardText()) &&
+		(Input::IsPressed(Input::SHIFT) || Input::IsPressed(Input::DEBUG_MESSAGE_FAST_FORWARD))) {
+			instant_speed = true;
+			instant_speed_forced = true;
 	}
 
 	auto system = Cache::SystemOrBlack();
@@ -821,7 +824,7 @@ void Window_Message::UpdateCursorRect() {
 }
 
 void Window_Message::WaitForInput() {
-	if (Input::IsTriggered(Input::DECISION) ||
+	if (IsDecisionOrMouseTriggered() ||
 			Input::IsTriggered(Input::CANCEL)) {
 		SetPause(false);
 	}
@@ -835,7 +838,7 @@ void Window_Message::InputChoice() {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Cancel));
 			choice_result = pending_message.GetChoiceCancelType() - 1; // Cancel
 		}
-	} else if (Input::IsTriggered(Input::DECISION)) {
+	} else if (IsDecisionOrMouseTriggered()) {
 		if (!pending_message.IsChoiceEnabled(index)) {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 			return;
@@ -856,16 +859,8 @@ void Window_Message::InputChoice() {
 }
 
 void Window_Message::InputNumber() {
-
-	if (Main_Data::game_system->IsMessageMouseDisabled()) {
-		// When mouse is disabled, it shouldn't trigger number input either
-		if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_LEFT) || Input::IsRawKeyTriggered(Input::Keys::MOUSE_RIGHT)) {
-			return;
-		}
-	}
-
 	number_input_window->SetVisible(true);
-	if (Input::IsTriggered(Input::DECISION)) {
+	if (IsDecisionOrMouseTriggered()) {
 		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
 		Main_Data::game_variables->Set(pending_message.GetNumberInputVariable(), number_input_window->GetNumber());
 		Game_Map::SetNeedRefresh(true);

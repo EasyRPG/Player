@@ -665,7 +665,7 @@ void Window_Settings::RefreshButtonList() {
 			break;
 		case 2:
 			buttons = {	Input::DEBUG_MENU, Input::DEBUG_THROUGH, Input::DEBUG_SAVE, Input::DEBUG_ABORT_EVENT,
-				Input::SHOW_LOG };
+				Input::DEBUG_MESSAGE_FAST_FORWARD, Input::SHOW_LOG };
 			break;
 	}
 
