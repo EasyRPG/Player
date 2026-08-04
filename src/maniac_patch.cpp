@@ -153,7 +153,7 @@ struct ProcessAssignmentRet {
 		res.reserve(ids.size());
 		for (size_t i = 0; i < ids.size(); ++i) {
 			int id = ids[i];
-			int val = (i < rhs.size()) ? rhs[i] : (rhs.empty() ? 0 : rhs.back());
+			int val = (i < rhs.size()) ? rhs[i] : 0;
 			switch (op) {
 			case Op::Var:
 				Game_Map::SetNeedRefreshForVarChange(id);
