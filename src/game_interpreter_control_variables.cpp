@@ -512,7 +512,7 @@ int ControlVariables::ArrayMin(int var_id, int length) {
 	if (length <= 0) return 0;
 	int min_val = Main_Data::game_variables->Get(var_id);
 	for (int i = 1; i < length; ++i) {
-		min_val = std::min(min_val, Main_Data::game_variables->Get(var_id + i));
+		min_val = std::min<int>(min_val, Main_Data::game_variables->Get(var_id + i));
 	}
 	return min_val;
 }
@@ -521,7 +521,7 @@ int ControlVariables::ArrayMax(int var_id, int length) {
 	if (length <= 0) return 0;
 	int max_val = Main_Data::game_variables->Get(var_id);
 	for (int i = 1; i < length; ++i) {
-		max_val = std::max(max_val, Main_Data::game_variables->Get(var_id + i));
+		max_val = std::max<int>(max_val, Main_Data::game_variables->Get(var_id + i));
 	}
 	return max_val;
 }

@@ -118,13 +118,6 @@ namespace {
 	bool global_save_opened = false;
 }
 
-namespace ControlVariables {
-	int Lerp(int a, int b, int num, int den);
-	int ArraySum(int var_id, int length);
-	int ArrayMin(int var_id, int length);
-	int ArrayMax(int var_id, int length);
-}
-
 struct ProcessAssignmentRet {
 	Op op = Op::Null;
 	std::vector<int> ids;
@@ -135,13 +128,17 @@ struct ProcessAssignmentRet {
 		for (int id : ids) {
 			switch (op) {
 			case Op::Var:
-				res.push_back(Main_Data::game_variables->Get(id)); break;
+				res.push_back(Main_Data::game_variables->Get(id));
+				break;
 			case Op::Switch:
-				res.push_back(Main_Data::game_switches->GetInt(id)); break;
+				res.push_back(Main_Data::game_switches->GetInt(id));
+				break;
 			case Op::VarIndirect:
-				res.push_back(Main_Data::game_variables->GetIndirect(id)); break;
+				res.push_back(Main_Data::game_variables->GetIndirect(id));
+				break;
 			case Op::SwitchIndirect:
-				res.push_back(Main_Data::game_switches->GetInt(Main_Data::game_variables->Get(id))); break;
+				res.push_back(Main_Data::game_switches->GetInt(Main_Data::game_variables->Get(id)));
+				break;
 			default:
 				Output::Warning("Maniac: Expression assignment {} is not a lvalue", static_cast<int>(op));
 				res.push_back(0);
@@ -233,19 +230,25 @@ std::vector<int> Process(std::vector<int32_t>::iterator& it, std::vector<int32_t
 	auto op = static_cast<Op>(*it);
 	++it;
 
-	auto eval1 = [&]() { auto r = Process(it, end, ip, execute); return r.empty() ? 0 : r[0]; };
+	auto eval1 = [&]() {
+		auto r = Process(it, end, ip, execute);
+		return r.empty() ? 0 : r[0];
+	};
+
 	auto eval2 = [&]() {
 		int a = eval1();
 		int b = eval1();
-		return std::make_pair(a, b);
-		};
+		return std::make_tuple(a, b);
+	};
+
 	auto eval3 = [&]() {
 		int a = eval1();
 		int b = eval1();
 		int c = eval1();
 		return std::make_tuple(a, b, c);
-		};
+	};
 
+	// When entering the switch it is on the first argument
 	switch (op) {
 	case Op::Null:
 		return { 0 };
@@ -275,28 +278,36 @@ std::vector<int> Process(std::vector<int32_t>::iterator& it, std::vector<int32_t
 		auto ids = Process(it, end, ip, execute);
 		std::vector<int> res;
 		res.reserve(ids.size());
-		for (int id : ids) res.push_back(Main_Data::game_variables->Get(id));
+		for (int id : ids) {
+			res.push_back(Main_Data::game_variables->Get(id));
+		}
 		return res;
 	}
 	case Op::Switch: {
 		auto ids = Process(it, end, ip, execute);
 		std::vector<int> res;
 		res.reserve(ids.size());
-		for (int id : ids) res.push_back(Main_Data::game_switches->GetInt(id));
+		for (int id : ids) {
+			res.push_back(Main_Data::game_switches->GetInt(id));
+		}
 		return res;
 	}
 	case Op::VarIndirect: {
 		auto ids = Process(it, end, ip, execute);
 		std::vector<int> res;
 		res.reserve(ids.size());
-		for (int id : ids) res.push_back(Main_Data::game_variables->GetIndirect(id));
+		for (int id : ids) {
+			res.push_back(Main_Data::game_variables->GetIndirect(id));
+		}
 		return res;
 	}
 	case Op::SwitchIndirect: {
 		auto ids = Process(it, end, ip, execute);
 		std::vector<int> res;
 		res.reserve(ids.size());
-		for (int id : ids) res.push_back(Main_Data::game_switches->GetInt(Main_Data::game_variables->Get(id)));
+		for (int id : ids) {
+			res.push_back(Main_Data::game_switches->GetInt(Main_Data::game_variables->Get(id)));
+		}
 		return res;
 	}
 	case Op::Array: {
@@ -316,185 +327,222 @@ std::vector<int> Process(std::vector<int32_t>::iterator& it, std::vector<int32_t
 		return res;
 	}
 	case Op::Range: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		std::vector<int> res;
-		if (p.first <= p.second) {
-			for (int i = p.first; i <= p.second; ++i) res.push_back(i);
-		}
-		else {
-			for (int i = p.first; i >= p.second; --i) res.push_back(i);
+		if (first <= second) {
+			for (int i = first; i <= second; ++i) {
+				res.push_back(i);
+			}
+		} else {
+			for (int i = first; i >= second; --i) {
+				res.push_back(i);
+			}
 		}
 		return res;
 	}
 	case Op::Subscript: {
 		auto arr = Process(it, end, ip, execute);
 		int idx = eval1();
-		if (idx >= 0 && idx < static_cast<int>(arr.size())) return { arr[idx] };
-		return { 0 };
+		if (idx >= 0 && idx < static_cast<int>(arr.size())) {
+			return { arr[idx] };
+		} else {
+			return { 0 };
+		}
 	}
-	case Op::Negate: return { -eval1() };
-	case Op::Not: return { !eval1() ? 1 : 0 };
-	case Op::Flip: return { ~eval1() };
+	case Op::Negate:
+		return { -eval1() };
+	case Op::Not:
+		return { !eval1() ? 1 : 0 };
+	case Op::Flip:
+		return { ~eval1() };
 	case Op::AssignInplace: {
 		auto ret = ProcessAssignment(it, end, ip, execute);
 		auto rhs = Process(it, end, ip, execute);
-		if (execute) return ret.assign(rhs);
+		if (execute) {
+			return ret.assign(rhs);
+		}
 		return rhs;
 	}
 	case Op::AddInplace: {
 		auto ret = ProcessAssignment(it, end, ip, execute);
 		auto rhs = Process(it, end, ip, execute);
-		if (execute) return ret.assign_op(rhs, [](int a, int b) { return static_cast<int32_t>(Utils::Clamp<int64_t>(static_cast<int64_t>(a) + b, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max())); });
+		if (execute) {
+			return ret.assign_op(rhs, [](int a, int b) {
+				return static_cast<int32_t>(Utils::Clamp<int64_t>(static_cast<int64_t>(a) + b, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()));
+			});
+		}
 		return { 0 };
 	}
 	case Op::SubInplace: {
 		auto ret = ProcessAssignment(it, end, ip, execute);
 		auto rhs = Process(it, end, ip, execute);
-		if (execute) return ret.assign_op(rhs, [](int a, int b) { return static_cast<int32_t>(Utils::Clamp<int64_t>(static_cast<int64_t>(a) - b, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max())); });
+		if (execute) {
+			return ret.assign_op(rhs, [](int a, int b) {
+				return static_cast<int32_t>(Utils::Clamp<int64_t>(static_cast<int64_t>(a) - b, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()));
+			});
+		}
 		return { 0 };
 	}
 	case Op::MulInplace: {
 		auto ret = ProcessAssignment(it, end, ip, execute);
 		auto rhs = Process(it, end, ip, execute);
-		if (execute) return ret.assign_op(rhs, [](int a, int b) { return static_cast<int32_t>(Utils::Clamp<int64_t>(static_cast<int64_t>(a) * b, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max())); });
+		if (execute) {
+			return ret.assign_op(rhs, [](int a, int b) {
+				return static_cast<int32_t>(Utils::Clamp<int64_t>(static_cast<int64_t>(a) * b, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()));
+			});
+		}
 		return { 0 };
 	}
 	case Op::DivInplace: {
 		auto ret = ProcessAssignment(it, end, ip, execute);
 		auto rhs = Process(it, end, ip, execute);
-		if (execute) return ret.assign_op(rhs, [](int a, int b) { return b == 0 ? a : a / b; });
+		if (execute) {
+			return ret.assign_op(rhs, [](int a, int b) { return b == 0 ? a : a / b; });
+		}
 		return { 0 };
 	}
 	case Op::ModInplace: {
 		auto ret = ProcessAssignment(it, end, ip, execute);
 		auto rhs = Process(it, end, ip, execute);
-		if (execute) return ret.assign_op(rhs, [](int a, int b) { return b == 0 ? 0 : a % b; });
+		if (execute) {
+			return ret.assign_op(rhs, [](int a, int b) { return b == 0 ? 0 : a % b; });
+		}
 		return { 0 };
 	}
 	case Op::BitOrInplace: {
 		auto ret = ProcessAssignment(it, end, ip, execute);
 		auto rhs = Process(it, end, ip, execute);
-		if (execute) return ret.assign_op(rhs, [](int a, int b) { return a | b; });
+		if (execute) {
+			return ret.assign_op(rhs, [](int a, int b) { return a | b; });
+		}
 		return { 0 };
 	}
 	case Op::BitAndInplace: {
 		auto ret = ProcessAssignment(it, end, ip, execute);
 		auto rhs = Process(it, end, ip, execute);
-		if (execute) return ret.assign_op(rhs, [](int a, int b) { return a & b; });
+		if (execute) {
+			return ret.assign_op(rhs, [](int a, int b) { return a & b; });
+		}
 		return { 0 };
 	}
 	case Op::BitXorInplace: {
 		auto ret = ProcessAssignment(it, end, ip, execute);
 		auto rhs = Process(it, end, ip, execute);
-		if (execute) return ret.assign_op(rhs, [](int a, int b) { return a ^ b; });
+		if (execute) {
+			return ret.assign_op(rhs, [](int a, int b) { return a ^ b; });
+		}
 		return { 0 };
 	}
 	case Op::BitShiftLeftInplace: {
 		auto ret = ProcessAssignment(it, end, ip, execute);
 		auto rhs = Process(it, end, ip, execute);
-		if (execute) return ret.assign_op(rhs, [](int a, int b) { return a << b; });
+		if (execute) {
+			return ret.assign_op(rhs, [](int a, int b) { return a << b; });
+		}
 		return { 0 };
 	}
 	case Op::BitShiftRightInplace: {
 		auto ret = ProcessAssignment(it, end, ip, execute);
 		auto rhs = Process(it, end, ip, execute);
-		if (execute) return ret.assign_op(rhs, [](int a, int b) { return static_cast<int32_t>(static_cast<uint32_t>(a) >> b); });
+		if (execute) {
+			return ret.assign_op(rhs, [](int a, int b) { return static_cast<int32_t>(static_cast<uint32_t>(a) >> b); });
+		}
 		return { 0 };
 	}
 	case Op::Add: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  static_cast <int32_t> (Utils::Clamp < int64_t >(static_cast <int64_t> (p.first) + p.second, std::numeric_limits < int32_t > ::min(), std::numeric_limits < int32_t > ::max()))
+			static_cast<int32_t>(Utils::Clamp<int64_t>(static_cast<int64_t>(first) + second, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()))
 		};
 	}
 	case Op::Sub: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  static_cast <int32_t> (Utils::Clamp < int64_t >(static_cast <int64_t> (p.first) - p.second, std::numeric_limits < int32_t > ::min(), std::numeric_limits < int32_t > ::max()))
+			static_cast<int32_t>(Utils::Clamp<int64_t>(static_cast<int64_t>(first) - second, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()))
 		};
 	}
 	case Op::Mul: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  static_cast <int32_t> (Utils::Clamp < int64_t >(static_cast <int64_t> (p.first) * p.second, std::numeric_limits < int32_t > ::min(), std::numeric_limits < int32_t > ::max()))
+			static_cast<int32_t>(Utils::Clamp<int64_t>(static_cast<int64_t>(first) * second, std::numeric_limits<int32_t>::min(), std::numeric_limits<int32_t>::max()))
 		};
 	}
 	case Op::Div: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  p.second == 0 ? p.first : p.first / p.second
+			second == 0 ? first : first / second
 		};
 	}
 	case Op::Mod: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  p.second == 0 ? 0 : p.first % p.second
+			second == 0 ? 0 : first % second
 		};
 	}
 	case Op::BitOr: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  p.first | p.second
+			first | second
 		};
 	}
 	case Op::BitAnd: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  p.first & p.second
+			first & second
 		};
 	}
 	case Op::BitXor: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  p.first ^ p.second
+			first ^ second
 		};
 	}
 	case Op::BitShiftLeft: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  p.first << p.second
+			first << second
 		};
 	}
 	case Op::BitShiftRight: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  static_cast <int32_t> (static_cast <uint32_t> (p.first) >> p.second)
+			static_cast<int32_t>(static_cast<uint32_t>(first) >> second)
 		};
 	}
 	case Op::Equal: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  p.first == p.second ? 1 : 0
+			first == second ? 1 : 0
 		};
 	}
 	case Op::GreaterEqual: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  p.first >= p.second ? 1 : 0
+			first >= second ? 1 : 0
 		};
 	}
 	case Op::LessEqual: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  p.first <= p.second ? 1 : 0
+			first <= second ? 1 : 0
 		};
 	}
 	case Op::Greater: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  p.first > p.second ? 1 : 0
+			first > second ? 1 : 0
 		};
 	}
 	case Op::Less: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  p.first < p.second ? 1 : 0
+			first < second ? 1 : 0
 		};
 	}
 	case Op::NotEqual: {
-		auto p = eval2();
+		auto [first, second] = eval2();
 		return {
-		  p.first != p.second ? 1 : 0
+			first != second ? 1 : 0
 		};
 	}
 	case Op::Or: {
@@ -530,152 +578,136 @@ std::vector<int> Process(std::vector<int32_t>::iterator& it, std::vector<int32_t
 		switch (static_cast<Fn>(fn)) {
 		case Fn::Rand: {
 			if (argc != 2) return { 0 };
-			auto p = eval2();
-			if (execute) return { ControlVariables::Random(p.first, p.second) };
+			auto [first, second] = eval2();
+			if (execute) {
+				return {
+					ControlVariables::Random(first, second)
+				};
+			}
 			return { 0 };
 		}
 		case Fn::Item: {
-			if (argc != 2) return {
-			  0
-			}; auto p = eval2();
+			if (argc != 2) { return { 0 }; }
+			auto [first, second] = eval2();
 			return {
-			  ControlVariables::Item(p.first, p.second)
+				ControlVariables::Item(first, second)
 			};
 		}
 		case Fn::Event: {
-			if (argc != 2) return {
-			  0
-			}; auto p = eval2();
+			if (argc != 2) { return { 0 }; }
+			auto [first, second] = eval2();
 			return {
-			  ControlVariables::Event(p.first, p.second, ip)
+				ControlVariables::Event(first, second, ip)
 			};
 		}
 		case Fn::Actor: {
-			if (argc != 2) return {
-			  0
-			}; auto p = eval2();
+			if (argc != 2) { return { 0 }; }
+			auto [first, second] = eval2();
 			return {
-			  ControlVariables::Actor(p.first, p.second)
+				ControlVariables::Actor(first, second)
 			};
 		}
 		case Fn::Party: {
-			if (argc != 2) return {
-			  0
-			}; auto p = eval2();
+			if (argc != 2) { return { 0 }; }
+			auto [first, second] = eval2();
 			return {
-			  ControlVariables::Party(p.first, p.second)
+				ControlVariables::Party(first, second)
 			};
 		}
 		case Fn::Enemy: {
-			if (argc != 2) return {
-			  0
-			}; auto p = eval2();
+			if (argc != 2) { return { 0 }; }
+			auto [first, second] = eval2();
 			return {
-			  ControlVariables::Enemy(p.first, p.second)
+				ControlVariables::Enemy(first, second)
 			};
 		}
 		case Fn::Misc: {
-			if (argc != 1) return {
-			  0
-			};
+			if (argc != 1) { return { 0 }; }
 			return {
-			  ControlVariables::Other(eval1())
+				ControlVariables::Other(eval1())
 			};
 		}
 		case Fn::Pow: {
-			if (argc != 2) return {
-			  0
-			}; auto p = eval2();
+			if (argc != 2) { return { 0 }; }
+			auto [first, second] = eval2();
 			return {
-			  ControlVariables::Pow(p.first, p.second)
+				ControlVariables::Pow(first, second)
 			};
 		}
 		case Fn::Sqrt: {
-			if (argc != 2) return {
-			  0
-			}; auto p = eval2();
+			if (argc != 2) { return { 0 }; }
+			auto [first, second] = eval2();
 			return {
-			  ControlVariables::Sqrt(p.first, p.second)
+				ControlVariables::Sqrt(first, second)
 			};
 		}
 		case Fn::Sin: {
-			if (argc != 3) return {
-			  0
-			}; auto t = eval3();
+			if (argc != 3) { return { 0 }; }
+			auto [first, second, third] = eval3();
 			return {
-			  ControlVariables::Sin(std::get < 0 >(t), std::get < 1 >(t), std::get < 2 >(t))
+				ControlVariables::Sin(first, second, third)
 			};
 		}
 		case Fn::Cos: {
-			if (argc != 3) return {
-			  0
-			}; auto t = eval3();
+			if (argc != 3) { return { 0 }; }
+			auto [first, second, third] = eval3();
 			return {
-			  ControlVariables::Cos(std::get < 0 >(t), std::get < 1 >(t), std::get < 2 >(t))
+				ControlVariables::Cos(first, second, third)
 			};
 		}
 		case Fn::Atan2: {
-			if (argc != 3) return {
-			  0
-			}; auto t = eval3();
+			if (argc != 3) { return { 0 }; }
+			auto [first, second, third] = eval3();
 			return {
-			  ControlVariables::Atan2(std::get < 0 >(t), std::get < 1 >(t), std::get < 2 >(t))
+				ControlVariables::Atan2(first, second, third)
 			};
 		}
 		case Fn::Min: {
-			if (argc != 2) return {
-			  0
-			}; auto p = eval2();
+			if (argc != 2) { return { 0 }; }
+			auto [first, second] = eval2();
 			return {
-			  ControlVariables::Min(p.first, p.second)
+				ControlVariables::Min(first, second)
 			};
 		}
 		case Fn::Max: {
-			if (argc != 2) return {
-			  0
-			}; auto p = eval2();
+			if (argc != 2) { return { 0 }; }
+			auto [first, second] = eval2();
 			return {
-			  ControlVariables::Max(p.first, p.second)
+				ControlVariables::Max(first, second)
 			};
 		}
 		case Fn::Abs: {
-			if (argc != 1) return {
-			  0
-			};
+			if (argc != 1) { return { 0 }; }
 			return {
-			  ControlVariables::Abs(eval1())
+				ControlVariables::Abs(eval1())
 			};
 		}
 		case Fn::Clamp: {
-			if (argc != 3) return {
-			  0
-			}; auto t = eval3();
+			if (argc != 3) { return { 0 }; }
+			auto [first, second, third] = eval3();
 			return {
-			  ControlVariables::Clamp(std::get < 0 >(t), std::get < 1 >(t), std::get < 2 >(t))
+				ControlVariables::Clamp(first, second, third)
 			};
 		}
 		case Fn::Muldiv: {
-			if (argc != 3) return {
-			  0
-			}; auto t = eval3();
+			if (argc != 3) { return { 0 }; }
+			auto [first, second, third] = eval3();
 			return {
-			  ControlVariables::Muldiv(std::get < 0 >(t), std::get < 1 >(t), std::get < 2 >(t))
+				ControlVariables::Muldiv(first, second, third)
 			};
 		}
 		case Fn::Divmul: {
-			if (argc != 3) return {
-			  0
-			}; auto t = eval3();
+			if (argc != 3) { return { 0 }; }
+			auto [first, second, third] = eval3();
 			return {
-			  ControlVariables::Divmul(std::get < 0 >(t), std::get < 1 >(t), std::get < 2 >(t))
+				ControlVariables::Divmul(first, second, third)
 			};
 		}
 		case Fn::Between: {
-			if (argc != 3) return {
-			  0
-			}; auto t = eval3();
+			if (argc != 3) { return { 0 }; }
+			auto [first, second, third] = eval3();
 			return {
-			  ControlVariables::Between(std::get < 0 >(t), std::get < 1 >(t), std::get < 2 >(t))
+				ControlVariables::Between(first, second, third)
 			};
 		}
 		case Fn::Lerp: {
@@ -684,30 +716,48 @@ std::vector<int> Process(std::vector<int32_t>::iterator& it, std::vector<int32_t
 			int b = eval1();
 			int num = eval1();
 			int den = eval1();
-			if (execute) return { ControlVariables::Lerp(a, b, num, den) };
+			if (execute) {
+				return {
+					ControlVariables::Lerp(a, b, num, den)
+				};
+			}
 			return { 0 };
 		}
 		case Fn::ArraySum: {
 			if (argc != 2) return { 0 };
-			auto p = eval2();
-			if (execute) return { ControlVariables::ArraySum(p.first, p.second) };
+			auto [first, second] = eval2();
+			if (execute) {
+				return {
+					ControlVariables::ArraySum(first, second)
+				};
+			}
 			return { 0 };
 		}
 		case Fn::ArrayMin: {
 			if (argc != 2) return { 0 };
-			auto p = eval2();
-			if (execute) return { ControlVariables::ArrayMin(p.first, p.second) };
+			auto [first, second] = eval2();
+			if (execute) {
+				return {
+					ControlVariables::ArrayMin(first, second)
+				};
+			}
 			return { 0 };
 		}
 		case Fn::ArrayMax: {
 			if (argc != 2) return { 0 };
-			auto p = eval2();
-			if (execute) return { ControlVariables::ArrayMax(p.first, p.second) };
+			auto [first, second] = eval2();
+			if (execute) {
+				return {
+					ControlVariables::ArrayMax(first, second)
+				};
+			}
 			return { 0 };
 		}
 		default:
 			Output::Warning("Maniac: Expression Unknown Func {}", fn);
-			for (int i = 0; i < argc; ++i) eval1();
+			for (int i = 0; i < argc; ++i) {
+				eval1();
+			}
 			return { 0 };
 		}
 	}
@@ -751,7 +801,9 @@ std::vector<int32_t> ManiacPatch::ParseExpressions(Span<const int32_t> op_codes,
 
 	while (true) {
 		auto res = Process(it, ops.end(), interpreter, true);
-		if (!res.empty()) results.push_back(res[0]);
+		if (!res.empty()) {
+			results.push_back(res[0]);
+		}
 
 		if (it == ops.end() || static_cast<Op>(*it) == Op::Null) {
 			break;
