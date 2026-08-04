@@ -22,10 +22,13 @@
 
 #pragma once
 
-#include <iostream>
-#include "../ul2/state.hpp"
+//#include "../ul2/state.hpp"
 
 #include "object.hpp"
+
+namespace leasy::ul2 {
+  class lstate;
+}
 
 namespace leasy::metadata {
   class Data {

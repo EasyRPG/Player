@@ -58,6 +58,19 @@ leasy.Engine = {})";
     return 0;
   }
 
+  static int lprraw(lua_State* L) {
+    int nargs = lua_gettop(L);
+
+    for (int i = 1; i <= nargs; ++i) {
+      const char* str = lua_tostring(L, i);
+      if (str) {
+        printf(i < nargs ? "%s\t" : "%s\n", str);
+      }
+    }
+
+    return 0;
+  }
+
   static int lwarn(lua_State* L) {
     int nargs = lua_gettop(L);
     std::ostringstream oss;

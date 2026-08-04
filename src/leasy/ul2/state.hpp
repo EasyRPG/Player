@@ -28,31 +28,11 @@
 #include <functional>
 #include <type_traits>
 
-#include "../lua/lua.hpp"
-#include "../ldebug.hpp"
 #include "ulexception2.hpp"
 #include "lua_stack.hpp"
 #include "dispatcher.hpp"
 
 namespace leasy::ul2 {
-  struct function_holder { // damnit, it's for yk destroying idk what func when lua can't blabla
-    std::function<int(lua_State*)> fn;  // I knew lua was boring sometimes... Anyways, it's cute..
-  };
-
-  static int function_dispatch(lua_State* L) {
-    auto* holder = static_cast<function_holder*>(
-        lua_touserdata(L, lua_upvalueindex(1))
-    );
-
-    return holder->fn(L);
-  }
-
-  static int function_gc(lua_State* L) {
-    auto* holder = static_cast<function_holder*>(lua_touserdata(L, 1));
-    holder->~function_holder();
-    return 0;
-  }
-
   /**
    * @class lstate
    * @brief Lua VM babysitter.
@@ -323,18 +303,6 @@ namespace leasy::ul2 {
     }
 
   private:
-    template <typename R, typename Tuple, typename Callable, size_t... I>
-    static int invoke_stdfn(const Callable &fn, lua_State *L, std::index_sequence<I...>) {
-      if constexpr (std::is_void_v<R>) {
-        std::invoke(fn, lua_stack<std::tuple_element_t<I, Tuple>>::get(L, I + 1)...);
-        return 0;
-      } else {
-        auto r = std::invoke(fn, lua_stack<std::tuple_element_t<I, Tuple>>::get(L, I + 1)...);
-        lua_stack<R>::push(L, r);
-        return 1;
-      }
-    }
-
     /**
      * @brief Push helper (generic version).
      *

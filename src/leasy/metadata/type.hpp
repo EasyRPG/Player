@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
 #include <utility>
 #include <typeinfo>
@@ -32,6 +33,7 @@
 #include "../kits/utils.hpp"
 #include "metadata.hpp"
 #include "function_base.hpp"
+#include "leasy/kits/select.hpp"
 
 namespace leasy::metadata {
   class Class;
@@ -62,20 +64,59 @@ namespace leasy::metadata {
     std::string _fullname;
 
   public:
-    inline virtual std::any call(const std::string &name, const std::vector<std::any> &args) const {
-      if (_methods.find(name) == _methods.end()) throw std::runtime_error(name + ": method not found in base " + this->_fullname);
-      return _methods.at(name)->call(args);
+    inline virtual ~Class() {}
+
+    inline virtual std::any call(const std::string &name, std::vector<std::any> &args) const {
+      if (_methods.find(name) != _methods.end()) return _methods.at(name)->call(args);
+      else {
+        std::exception *ex = nullptr;
+        for (const auto &base: _bases) {
+          if (!base) continue;
+
+          try {
+            return base->call(name, args);
+          } catch (const std::exception &e) {
+            *ex = std::move(e);
+          }
+        }
+
+        throw ex ? std::runtime_error(ex->what()) : std::runtime_error(name + ": method not found in base " + _fullname);
+      }
     }
 
-    inline virtual std::any activate(const std::vector<std::any> &args) const {
+    inline std::shared_ptr<function_base_t> get_method(const std::string &name) const {
+      if (const auto it = _methods.find(name); it != _methods.end()) return it->second;
+
+      for (auto &base : _bases) {
+        if (!base) continue;
+
+        auto fn = base->get_method(name);
+        if (fn)
+          return fn;
+      }
+
+      return nullptr;
+    }
+
+    inline virtual std::any activate(std::vector<std::any> &args) const {
       return call("activate", args);
     }
 
     inline virtual std::string fullname() const { return _fullname; }
-    inline virtual std::unordered_map<std::string, std::shared_ptr<function_base_t>> methods() const { return _methods; }
     inline virtual std::type_index cindex() const { return _cindex; }
     inline virtual size_t size() const { return _size; }
     inline virtual std::vector<std::shared_ptr<Class>> bases() const { return _bases; }
+
+    inline virtual std::unordered_map<std::string, std::shared_ptr<function_base_t>> methods() const {
+      auto result = _methods;
+      for (auto &base: _bases) {
+        for (auto &[name, method]: base->methods()) {
+          result.emplace(name, method);
+        }
+      }
+
+      return result;
+    }
 
     inline Object dump() const override {
       return Map()
@@ -91,7 +132,7 @@ namespace leasy::metadata {
           .add("name", _cindex.name())
           .add("hashcode", _cindex.hash_code())
         )
-        .add("methods", Array(kits::select(this->_methods, [](const std::pair<std::string, std::shared_ptr<function_base_t>> &e) {
+        .add("methods", Array(kits::select(this->methods(), [](const std::pair<std::string, std::shared_ptr<function_base_t>> &e) {
           return e.second->dump();
         })));
     }
@@ -105,11 +146,11 @@ namespace leasy::metadata {
         );
     }
 
-    inline void bind(ul2::lstate &state) const override {
-      for (const auto &[name, func]: this->_methods) {
-        state.bind2(name, func->lua());
-      }
-    }
+    //inline void bind(ul2::lstate &state) const override {
+    //  for (const auto &[name, func]: this->_methods) {
+    //    state.bind2(name, func->lua());
+    //  }
+    //}
 
     inline Class() : _cindex(typeid(void)), _size(0), _fullname("void") {
       /** Null class creation */
@@ -148,8 +189,22 @@ namespace leasy::metadata {
   };
 
   template <typename T>
+  inline void _remember_names_please() {
+    using U = kits::flat_t<T>;
+    nameof<U>();
+    nameof<T>(); // hahahaha so it caches everything yk
+    if constexpr (! std::is_void_v<U>) {
+      nameof<U*>();
+      nameof<U&>();
+      nameof<const U>();
+      nameof<const U*>();
+      nameof<const U&>();
+    }
+  }
+
+  template <typename T>
   std::shared_ptr<leasy::metadata::Class> typeidof() {
-    nameof<T>();
+    _remember_names_please<T>();
     return typeidof(typeid(T));
   }
 
@@ -191,7 +246,13 @@ namespace leasy::metadata {
 
   public:
     inline ClassBuilder() {
+      nameof<bool>();
       this->local = alloc_ptr();
+      _remember_names_please<T>();
+      using U = std::remove_reference_t<T>;
+      if constexpr (! std::is_void_v<U>) {
+        this->local->method("ptr", [](U &i) { return &i; });
+      }
     }
 
     template <typename... Fs>

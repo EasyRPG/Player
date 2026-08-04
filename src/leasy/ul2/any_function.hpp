@@ -63,7 +63,7 @@ struct any_function {
     // Pure C++ calling convention. For member functions, args[0] must be
     // a std::any holding a `C*` (the instance) — every other argument
     // follows in declared order.
-    virtual std::any invoke_any(const std::vector<std::any>& args) const = 0;
+    virtual std::any invoke_any(std::vector<std::any>& args) const = 0;
 
     virtual std::size_t arity() const = 0;
     virtual std::type_index return_type() const = 0;

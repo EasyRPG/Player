@@ -31,7 +31,7 @@
 
 namespace leasy::iky7 {
   template <typename Tuple, typename F, std::size_t... Is>
-  std::any invoke_from_any_impl(const F& f, const std::vector<std::any>& args, std::index_sequence<Is...>) {
+  std::any invoke_from_any_impl(const F& f, std::vector<std::any>& args, std::index_sequence<Is...>) {
     using tuple = std::remove_reference_t<Tuple>;
     using traits = ul2::function_traits<F>;
 
@@ -56,7 +56,7 @@ namespace leasy::iky7 {
     using traits = ul2::function_traits<Callable>;
     using args_tuple = typename traits::args_tuple;
 
-    return [f = Callable(f)](const std::vector<std::any>& args) -> std::any {
+    return [f = Callable(f)](std::vector<std::any>& args) -> std::any {
       auto eval = kits::is_callable_with(kits::tuple_types<args_tuple>(), args);
  
       if (!eval.first) throw std::runtime_error(eval.second);

@@ -44,18 +44,18 @@
 namespace leasy::metadata {
   class function final : public function_base_t {
   private:
-    std::function<std::any(const std::vector<std::any>&)> native_bridge;
+    std::function<std::any(std::vector<std::any>&)> native_bridge;
     std::function<int(lua_State*)> lua_bridge;
 
   public:
     std::vector<std::shared_ptr<Class>> arguments;
     std::shared_ptr<Class> return_type;
 
-    inline std::pair<bool, std::string> is_callable(const std::vector<std::any> &args) const override {
+    inline std::pair<bool, std::string> is_callable(std::vector<std::any> &args) const override {
       return kits::is_callable_with(this->arguments, args);
     }
 
-    inline std::any call(const std::vector<std::any> &args) const override {
+    inline std::any call(std::vector<std::any> &args) const override {
       return this->native_bridge(args);
     }
 
@@ -77,7 +77,7 @@ namespace leasy::metadata {
     }
 
     inline function() : arguments({}), return_type(typeidof<void>()) {
-      this->native_bridge = [](const std::vector<std::any>&) -> std::any { return {}; };
+      this->native_bridge = [](std::vector<std::any>&) -> std::any { return {}; };
       this->lua_bridge = [](lua_State*) -> int { return 0; };
     }
 
@@ -99,7 +99,7 @@ namespace leasy::metadata {
 
   public:
 
-    inline std::pair<bool, std::string> is_callable(const std::vector<std::any> &args) const override {
+    inline std::pair<bool, std::string> is_callable(std::vector<std::any> &args) const override {
       size_t i = 0;
       size_t end = funcs.size();
 
@@ -111,7 +111,7 @@ namespace leasy::metadata {
       return {false, "No such overload found"};
     }
 
-    inline std::any call(const std::vector<std::any> &args) const override {
+    inline std::any call(std::vector<std::any> &args) const override {
       size_t i = 0;
       size_t end = funcs.size();
 

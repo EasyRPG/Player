@@ -23,12 +23,10 @@
 
 #include <string>
 #include <utility>
-#include <typeinfo>
 #include <typeindex>
 #include <string_view>
 #include <unordered_map>
 
-#include <bit>
 #include <cmath>
 #include <charconv>
 #include <type_traits>
@@ -95,7 +93,13 @@ namespace leasy::metadata {
 
   NSpace &EasyRPG() {
     static NSpace ns = []() -> NSpace {
-      NSpace n = NSpace("EasyRPGPlayer");
+      auto n = NSpace("leasy");
+      /* FIXME: namespaces are not exported correctly! So if the root name was EasyRPGPlayer,
+       * FIXME: the lua table would contain something like this: _G.EasyRPGPlayer { <some-classes> }
+       * FIXME: and only then, _G.<inner-namespaces-in-EasyRPGPlayer> which breaks the hierarchy.
+       * FIXME: related to #7 on GitHub.
+       */
+      n.add(metadata::make_class<void>().done());
       STATIC_LOCAL::leasy_register_builtins_please_please(n);
       return n;
     }();
@@ -105,7 +109,7 @@ namespace leasy::metadata {
 
 namespace leasy::STATIC_LOCAL {
   template <typename T>
-  inline T parse_numeric(const std::string& s) {
+  static inline T parse_numeric(const std::string& s) {
     if constexpr (std::is_integral_v<T>) {
       T value{};
       auto [ptr, ec] = std::from_chars(s.data(), s.data() + s.size(), value);
@@ -120,6 +124,8 @@ namespace leasy::STATIC_LOCAL {
       return std::stod(s);
     } else if constexpr (std::is_same_v<T, long double>) {
       return std::stold(s);
+    } else {
+      return T{};
     }
   }
 
@@ -129,80 +135,83 @@ namespace leasy::STATIC_LOCAL {
     return false;
   }
 
-  template <typename T>
-  struct numeric_type {
-    static_assert(std::is_arithmetic_v<T>);
+  namespace {
+    template <typename U>
+    struct numeric_type {
+      using T = std::remove_reference_t<std::remove_cv_t<U>>;
+      static_assert(std::is_arithmetic_v<T>);
 
-    static std::shared_ptr<leasy::metadata::Class> build() {
-      auto c = leasy::metadata::make_class<T>();
+      static std::shared_ptr<leasy::metadata::Class> build() {
+        auto c = leasy::metadata::make_class<T>();
 
-      c.method("new", 
-        [](T v) -> T { return T{v}; },
-        [](std::string s) { return parse_numeric<T>(s); },
-        []() -> T { return T{}; }
-      );
+        c.method("new",
+                 [](T v) -> T { return T{v}; },
+                 [](std::string s) { return parse_numeric<T>(s); },
+                 []() -> T { return T{}; }
+        );
 
-      c.method("add", [](T a, T b) { return a + b; });
-      c.method("sub", [](T a, T b) { return a - b; });
-      c.method("mul", [](T a, T b) { return a * b; });
-
-      if constexpr (!std::is_same_v<T, bool>) {
-        c.method("div", [](T a, T b) { return a / b; });
-        c.method("is_signed", [](T) { return std::is_signed_v<T>; });
-      } else {
-        c.method("div", [](T a, T b) { return T{}; }); // Yeah.
-        c.method("is_signed", [](T) { return false; }); // SORRY.
-      }
-
-      c.method("eq", [](T a, T b) { return a == b; });
-      c.method("ne", [](T a, T b) { return a != b; });
-      c.method("lt", [](T a, T b) { return a < b; });
-      c.method("le", [](T a, T b) { return a <= b; });
-      c.method("gt", [](T a, T b) { return a > b; });
-      c.method("ge", [](T a, T b) { return a >= b; });
-      c.method("is_zero", [](T x) { return x == T{}; });
-
-      if constexpr (std::is_signed_v<T>) {
-        c.method("is_positive", [](T x) { return x > 0; });
-        c.method("is_negative", [](T x) { return x < 0; });
-        c.method("abs", [](T x) { return std::abs(x); });
-      } else {
-        c.method("is_positive", [](T x) { return false; });
-        c.method("is_negative", [](T x) { return false; });
-        c.method("abs", [](T x) { return T{}; });
-      }
-
-      if constexpr (std::is_integral_v<T>) {
-        c.method("is_even", [](T x) { return (x & 1) == 0; });
-
-        c.method("is_odd", [](T x) { return (x & 1) != 0; });
+        c.method("add", [](T a, T b) { return a + b; });
+        c.method("sub", [](T a, T b) { return a - b; });
+        c.method("mul", [](T a, T b) { return a * b; });
 
         if constexpr (!std::is_same_v<T, bool>) {
-          c.method("mod", [](T a, T b) { return a % b; });
+          c.method("div", [](T a, T b) { return a / b; });
+          c.method("is_signed", [](T) { return std::is_signed_v<T>; });
+        } else {
+          c.method("div", [](T a, T b) { return T{}; }); // Yeah.
+          c.method("is_signed", [](T) { return false; }); // SORRY.
         }
-      } else {
-        c.method("floor", [](T x) { return std::floor(x); });
-        c.method("ceil", [](T x) { return std::ceil(x); });
-        c.method("round", [](T x) { return std::round(x); });
-        c.method("sqrt", [](T x) { return std::sqrt(x); });
-        c.method("sin", [](T x) { return std::sin(x); });
-        c.method("cos", [](T x) { return std::cos(x); });
-        c.method("tan", [](T x) { return std::tan(x); });
-        c.method("is_nan", [](T x) { return std::isnan(x); });
-        c.method("is_inf", [](T x) { return std::isinf(x); });
-        c.method("is_finite", [](T x) { return std::isfinite(x); });
-        c.method("epsilon", [] { return std::numeric_limits<T>::epsilon(); });
+
+        c.method("eq", [](T a, T b) { return a == b; });
+        c.method("ne", [](T a, T b) { return a != b; });
+        c.method("lt", [](T a, T b) { return a < b; });
+        c.method("le", [](T a, T b) { return a <= b; });
+        c.method("gt", [](T a, T b) { return a > b; });
+        c.method("ge", [](T a, T b) { return a >= b; });
+        c.method("is_zero", [](T x) { return x == T{}; });
+
+        if constexpr (std::is_signed_v<T>) {
+          c.method("is_positive", [](T x) { return x > 0; });
+          c.method("is_negative", [](T x) { return x < 0; });
+          c.method("abs", [](T x) { return std::abs(x); });
+        } else {
+          c.method("is_positive", [](T x) { return false; });
+          c.method("is_negative", [](T x) { return false; });
+          c.method("abs", [](T x) { return T{}; });
+        }
+
+        if constexpr (std::is_integral_v<T>) {
+          c.method("is_even", [](T x) { return (x & 1) == 0; });
+
+          c.method("is_odd", [](T x) { return (x & 1) != 0; });
+
+          if constexpr (!std::is_same_v<T, bool>) {
+            c.method("mod", [](T a, T b) { return a % b; });
+          }
+        } else {
+          c.method("floor", [](T x) { return std::floor(x); });
+          c.method("ceil", [](T x) { return std::ceil(x); });
+          c.method("round", [](T x) { return std::round(x); });
+          c.method("sqrt", [](T x) { return std::sqrt(x); });
+          c.method("sin", [](T x) { return std::sin(x); });
+          c.method("cos", [](T x) { return std::cos(x); });
+          c.method("tan", [](T x) { return std::tan(x); });
+          c.method("is_nan", [](T x) { return std::isnan(x); });
+          c.method("is_inf", [](T x) { return std::isinf(x); });
+          c.method("is_finite", [](T x) { return std::isfinite(x); });
+          c.method("epsilon", [] { return std::numeric_limits<T>::epsilon(); });
+        }
+
+        c.method("min", [] { return std::numeric_limits<T>::lowest(); });
+        c.method("max", [] { return std::numeric_limits<T>::max(); });
+
+        return c.done();
       }
-
-      c.method("min", [] { return std::numeric_limits<T>::lowest(); });
-      c.method("max", [] { return std::numeric_limits<T>::max(); });
-
-      return c.done();
-    }
-  };
+    };
+  }
 
   template <typename... Ts>
-  void add_numeric_types(leasy::metadata::NSpace& sp) {
+  static void add_numeric_types(leasy::metadata::NSpace& sp) {
     (sp.add(numeric_type<Ts>::build()), ...);
   }
 
@@ -213,7 +222,9 @@ namespace leasy::STATIC_LOCAL {
       bool, float, double, long double
     >(sp);
 
-    sp.add(leasy::metadata::make_class<Color>()
+    sp.add(leasy::metadata::make_class<const char*>().done())
+      .add(leasy::metadata::make_class<std::string>().done())
+      .add(leasy::metadata::make_class<Color>()
         .method("new", 
           [](uint8_t red, uint8_t green, uint8_t blue, uint8_t alpha) { return Color(red, green, blue, alpha);  },
           []() { return Color(); }

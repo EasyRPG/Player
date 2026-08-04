@@ -89,7 +89,6 @@
 // leasy
 #include "leasy/leasy.hpp"
 #include "leasy/events.hpp"
-#include "leasy/meta/main.hpp"
 
 #if defined(__ANDROID__) && !defined(USE_LIBRETRO)
 #include "platform/android/android.h"
@@ -438,6 +437,7 @@ void Player::Exit() {
 	FileFinder::Quit();
 	DisplayUi.reset();
 	leasy::engine::event("on_exit");
+	leasy::app::exit();
 }
 
 Game_Config Player::ParseCommandLine() {

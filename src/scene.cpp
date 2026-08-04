@@ -272,7 +272,7 @@ void Scene::Push(std::shared_ptr<Scene> const& new_scene, bool pop_stack_top) {
 	instance = new_scene;
 
 	push_pop_operation = ScenePushed;
-	leasy::io().Debug.writeln(nameof<decltype(info)>(), ": pusing scene ", scene_names[new_scene->type % SceneMax]);
+	leasy::io().Debug.writeln(nameof<decltype(info)>(), ": pushing scene ", scene_names[new_scene->type % SceneMax]);
 
 	DEBUG_VALIDATE("Push");
 }

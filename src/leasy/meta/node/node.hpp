@@ -23,13 +23,26 @@
 #pragma once
 
 #include <memory>
+#include <vector>
+#include "../../metadata/namespace.hpp"
+#include "../../iky7/cursor.hpp"
 
 namespace leasy::meta2::node {
   class Node {
-  protected:
+  private:
+    std::vector<std::shared_ptr<Node>> _children;
+
   public:
     inline virtual void ready() {}
     inline virtual void update(double) {}
     inline virtual void draw() {}
+    inline virtual ~Node() = default;
+    inline Node() = default;
+
+    inline std::vector<std::shared_ptr<Node>> children() { return _children; }
+
+    inline auto visit() {
+      return iky7::make_cursor(this->_children);
+    }
   };
 }

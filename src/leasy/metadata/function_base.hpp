@@ -24,18 +24,11 @@
 
 #include <any>
 #include <vector>
-#include <typeindex>
 #include <functional>
-#include <type_traits>
 
 #include "../iky7/nameof.hpp"
-#include "../iky7/anyf.hpp"
-#include "../kits/rtt.hpp"
-#include "../kits/variant.hpp"
-#include "../kits/select.hpp"
-#include "../ul2/state.hpp"
-#include "../ul2/function_traits.hpp"
 #include "../lio.hpp"
+#include "../lua/lua.hpp"
 
 #include "metadata.hpp"
 
@@ -64,11 +57,11 @@ namespace leasy::metadata {
   public:
     std::string name;
 
-    inline virtual std::pair<bool, std::string> is_callable(const std::vector<std::any>&) const {
+    inline virtual std::pair<bool, std::string> is_callable(std::vector<std::any>&) const {
       return {false, "You're trying to call a default-virtual function !"}; 
     }
 
-    inline virtual std::any call(const std::vector<std::any>&) const {
+    inline virtual std::any call(std::vector<std::any>&) const {
       return {}; // I prefer an API that fails over virtual methods rather than making weird pure virtual things.
     }
 

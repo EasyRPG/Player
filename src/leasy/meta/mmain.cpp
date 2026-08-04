@@ -28,6 +28,7 @@
 #include "metascene.hpp"
 #include "../lio.hpp"
 #include "../iky7/nameof.hpp"
+#include "node/node2d.hpp"
 
 #include "../cli/cli.hpp"
 
@@ -51,6 +52,7 @@ namespace {
     cli::addcli("--meta2", [](auto) {
       meta2::setmeta2(true);
     });
+    typeidof<leasy::meta2::node::Node2D>();
     return false;
   }();
 }

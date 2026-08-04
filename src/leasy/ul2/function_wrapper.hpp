@@ -49,7 +49,7 @@ public:
         return invoke_lua_impl(L, std::make_index_sequence<arity_v>{});
     }
 
-    std::any invoke_any(const std::vector<std::any>& args) const override {
+    std::any invoke_any(std::vector<std::any>& args) const override {
         return invoke_any_impl(args, std::make_index_sequence<arity_v>{});
     }
 
@@ -93,7 +93,7 @@ private:
     }
 
     template <std::size_t... I>
-    std::any invoke_any_impl(const std::vector<std::any>& args, std::index_sequence<I...>) const {
+    std::any invoke_any_impl(std::vector<std::any>& args, std::index_sequence<I...>) const {
         if constexpr (std::is_void_v<ret_t>) {
             std::invoke(fn_, std::any_cast<arg_t<I>>(args[I])...);
             return {};

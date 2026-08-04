@@ -1,5 +1,5 @@
 ---@diagnostic disable: duplicate-doc-alias
-local dump = require('dump')
+local dump = require("dump")
 
 ---@alias cindex { name: string, hash: integer }
 ---@alias liltype { name: string, cindex: cindex }
@@ -10,7 +10,7 @@ local dump = require('dump')
 ---@param str string
 ---@param delimiter string
 ---@return string[]
-string.split = function(str, delimiter)
+function string.split(str, delimiter)
   local result = {}
 
   if delimiter == "" then
@@ -23,7 +23,7 @@ string.split = function(str, delimiter)
   local start = 1
 
   while true do
-    local pos = string.find(str, delimiter, start, true) -- plain search
+    local pos = string.find(str, delimiter, start, true)
     if not pos then
       table.insert(result, string.sub(str, start))
       break
@@ -46,29 +46,21 @@ function string.replace(str, old, new)
 end
 
 local Cursor = {
-  ---@type func|class|namespace
-  current = {},
-  ---@type 'none'|'func'|'class'|'namespace'
-  kind = 'none',
   ---@type string[]
-  path = { 'EasyRPGPlayer' },
+  path = { "EasyRPGPlayer" },
 }
 
-Cursor.qualify = function ()
-  return table.concat(Cursor.path, '.')
+function Cursor.qualify()
+  return table.concat(Cursor.path, ".")
 end
 
 ---@param name string
-Cursor.advance = function (name)
-  Cursor.path[#Cursor.path+1] = name
+function Cursor.advance(name)
+  Cursor.path[#Cursor.path + 1] = name
 end
 
-Cursor.stepback = function ()
-  table.remove(Cursor.path, #Cursor.path)
-end
-
-Cursor.go = function (name)
-  Cursor.path = string.split(name, '::')
+function Cursor.stepback()
+  table.remove(Cursor.path)
 end
 
 local Dump = {}
@@ -79,20 +71,31 @@ function Dump.cname(name)
   if name:match("^%d") then
     return "_" .. name
   end
-
   return name
+end
+
+---@param fullname string
+---@return string
+function Dump.basename(fullname)
+  local parts = string.split(fullname, "::")
+  return Dump.cname(parts[#parts])
 end
 
 ---@param args liltype[]
 function Dump.arguments(args)
-  local doc1 = ''
-  local doc2 = ''
-  local list = ''
+  local doc1 = ""
+  local doc2 = ""
+  local list = ""
+
   for index, value in ipairs(args) do
-    if index > 1 then doc1 = doc1 .. ', '; list = list .. ', ' end
-    doc1 = doc1 .. 'arg' .. tostring(index) .. ': ' .. value.name
-    doc2 = doc2 .. '\n---@param arg' .. tostring(index) .. ' ' .. value.name
-    list = list .. 'arg' .. tostring(index)
+    if index > 1 then
+      doc1 = doc1 .. ", "
+      list = list .. ", "
+    end
+
+    doc1 = doc1 .. ("arg%d: %s"):format(index, 'EasyRPGPlayer.' .. value.name)
+    doc2 = doc2 .. ("\n---@param arg%d %s"):format(index, 'EasyRPGPlayer.' .. value.name)
+    list = list .. ("arg%d"):format(index)
   end
 
   return {
@@ -104,47 +107,85 @@ end
 
 ---@param fun func
 function Dump.func(fun)
-  local doc = ''
-  local lua = ''
-  local name = Cursor.qualify() .. '.' .. fun.name
+  local name = Cursor.qualify() .. "." .. fun.name
+
   if fun.overloads then
-    for _, value in ipairs(fun.overloads) do
-      doc = doc .. ('---@overload fun(%s):%s\n'):format(Dump.arguments(value.arguments).doc1, value["return"].name)
+    local doc = ""
+
+    for _, overload in ipairs(fun.overloads) do
+      doc = doc
+        .. ("---@overload fun(%s):%s\n"):format(
+          Dump.arguments(overload.arguments).doc1,
+          'EasyRPGPlayer.' .. overload["return"].name
+        )
     end
 
-    lua = ('function %s(...) end\n'):format(name)
-  else
-    local args =  Dump.arguments(fun.arguments)
-    doc = args.doc2 .. '\n---@return ' .. fun["return"].name
-    lua = ('function %s(%s) end\n'):format(name, args.list)
+    return ("%s\nfunction %s(...) end\n"):format(doc, name)
   end
 
-  return ('%s\n%s'):format(doc, lua)
+  local args = Dump.arguments(fun.arguments)
+
+  return ("%s\n---@return %s\nfunction %s(%s) end\n"):format(
+    args.doc2,
+    'EasyRPGPLayer.' .. fun["return"].name,
+    name,
+    args.list
+  )
 end
 
 ---@param class class
 function Dump.class(class)
-  local cname = Cursor.qualify() .. '.' .. Dump.cname(class.cindex.name)
-  Cursor.advance(cname)
+  local short = Dump.basename(class.name)
 
-  local code = '---@class ' .. cname .. '\n' .. cname .. ' = {}\n'
+  Cursor.advance(short)
 
-  for _, value in ipairs(class.methods) do
-    code = code .. Dump.func(value)
+  local fqcn = Cursor.qualify()
+
+  local code = ("---@class %s\n%s = {}\n"):format(fqcn, fqcn)
+
+  for _, method in ipairs(class.methods) do
+    code = code .. Dump.func(method)
   end
 
-  --Cursor.path = old
   Cursor.stepback()
-  return ('%s\n%s = %s\n'):format(code, 'EasyRPGPlayer.' .. string.replace(class.name, '::', '.'), cname)
+
+  return ("%s\nEasyRPGPlayer.%s = %s\n---@alias %s %s"):format(
+    code,
+    string.replace(class.name, "::", "."),
+    fqcn,
+    fqcn,
+    class.cindex.name
+  )
+
+
 end
 
 ---@param namespace namespace
 function Dump.namespace(namespace)
-  local all = ('local %s = {}'):format(namespace.name)
-  for _, value in pairs(namespace.functions) do all = all .. Dump.func(value) end
-  for _, value in pairs(namespace.classes) do all = all .. Dump.class(value) end
-  for _, value in pairs(namespace.namespaces) do all = all .. Dump.namespace(value) end
+  local all = ("---@diagnostic disable: missing-return\n%s = {}\n\n"):format(namespace.name)
+
+  if namespace.name ~= "EasyRPGPlayer" then
+    all = all .. ("%s = {}\n"):format(namespace.name)
+    Cursor.advance(namespace.name)
+  end
+
+  for _, value in pairs(namespace.functions) do
+    all = all .. Dump.func(value)
+  end
+
+  for _, value in pairs(namespace.classes) do
+    all = all .. Dump.class(value)
+  end
+
+  for _, value in pairs(namespace.namespaces) do
+    all = all .. Dump.namespace(value)
+  end
+
+  if namespace.name ~= "EasyRPGPlayer" then
+    Cursor.stepback()
+  end
+
   return all
 end
 
-io.open('out.lua', 'w'):write(Dump.namespace(dump))
+io.open("out.lua", "w"):write(Dump.namespace(dump))

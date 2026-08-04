@@ -23,24 +23,14 @@
 #include <chrono>
 #include <string>
 #include <fstream>
-#include <string_view>
 
 #include "events.hpp"
-#include "ldebug.hpp"
 #include "ul2/state.hpp"
 #include "ily3/ily3.hpp"
-#include "diag5/here.h"
-
 #include "ui/window.hpp"
 #include "ui/winstream.hpp"
-
 #include "metadata/namespace.hpp"
-#include "metadata/json.hpp"
-#include "metadata/lua.hpp"
-
 #include "signals.hpp"
-
-#include "kits/ps7k.hpp"
 
 namespace leasy {
   namespace ily3 {
@@ -64,21 +54,11 @@ namespace leasy {
       should_exit = true;
     }
 
-    void initex(const std::vector<std::string> &args) {
-      if (compat::contains(args, "--Xdump-lua")) {
-        std::ofstream out("dump.lua");
-        metadata::lua::write(out, metadata::EasyRPG().dump());
-      }
-
-      if (compat::contains(args, "--Xdump-json")) {
-        std::ofstream out("dump.json");
-        metadata::json::write(out, metadata::EasyRPG().dump());
-      }
-    }
-
     void ready(void) {
       if (! leasy_enabled) return;
       leasy::ready.emit();
+      //metadata::EasyRPG().sub("leasy").function("throw", [](std::string e) { throw std::runtime_error(e); });
+      io().Debug.writeln("binding EasyRPGPlayer!");
       metadata::EasyRPG().bind(ily3::global::state);
       ily3::global::state.call<void>("leasy.User.ready");
     }
@@ -89,7 +69,7 @@ namespace leasy {
       double delta = std::chrono::duration<double>(now - last).count();
 
       leasy::process.emit(delta);
-      ily3::global::state.call<void>("leasy.User.process", delta);      
+      ily3::global::state.call<void>("leasy.User.process", delta);
     }
 
     void draw(Bitmap *map) {
@@ -105,7 +85,7 @@ namespace leasy {
       ui3::update_windows();
     }
 
-    void exit(void) { }
+    void exit(void) {}
 
     void disable() {
       io().System.writeln(">>> leasy is disabled ! (You'll need to reboot the engine in order to enable it!)");

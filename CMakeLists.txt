@@ -525,6 +525,13 @@ add_library(${PROJECT_NAME} OBJECT
 	src/leasy/metadata/dumper.cpp
 	src/leasy/metadata/option.hpp
 	src/leasy/settings/settings.hpp
+	src/leasy/meta/node/node2d.hpp
+		src/leasy/meta/node/types.hpp
+		src/leasy/meta/node/sprite2d.hpp
+		src/leasy/iky7/cursor.hpp
+		src/leasy/meta/node/node.cpp
+		src/leasy/meta/node/node2d.cpp
+		src/leasy/metadata/export.hpp
 )
 
 # These are actually unused when building in CMake
@@ -1739,3 +1746,9 @@ if (${PLAYER_TARGET_PLATFORM} STREQUAL "SDL1")
 	message(WARNING "SDL1 is deprecated!")
 	message(WARNING "Please migrate to SDL2 or SDL3!")
 endif()
+
+source_group(
+    TREE "${CMAKE_SOURCE_DIR}/src"
+    PREFIX "src"
+    FILES ${PLAYER_SOURCES}
+)

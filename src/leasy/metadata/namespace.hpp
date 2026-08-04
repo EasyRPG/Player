@@ -113,26 +113,41 @@ namespace leasy::metadata {
         );
       }
 
-      for (const auto &klass: this->classes) {
-
-        auto &cl = klass.second;
-
-        for (const auto &method: cl->methods()) {
-          state.bind2(
-            prefix + "." + cl->fullname() + "." + method.first,
-            method.second->lua()
-          );
+      for (const auto&klass: this->classes) {
+        auto n = kits::replace(klass.second->fullname(), "::", ".");
+        for (const auto &method: klass.second->methods()) {
+          state.bind2(this->name + "." + n + "." + method.first, method.second->lua());
         }
       }
 
       for (const auto &ns: this->namespaces) {
-        ns.second->bind(state);
+        ns.second->bind2(state, this->name);
+      }
+    }
+
+    inline void bind2(ul2::lstate &state, const std::string &prefix) const {
+      for (const auto&f: this->functions) {
+        // We won't use the bind() method, as it'll register it as
+        // <Cursor>.<Fn>, where <Cursor> is most of the time _G!
+        state.bind2(prefix + "." + this->name + "." + f.first, f.second->lua());
+      }
+
+      for (const auto&klass: this->classes) {
+        auto n = kits::replace(klass.second->fullname(), "::", ".");
+
+        for (const auto &method: klass.second->methods()) {
+          state.bind2(n + "." + method.first, method.second->lua());
+        }
+      }
+
+      for (const auto &ns: this->namespaces) {
+        ns.second->bind2(state, prefix + "." + this->name);
       }
     }
   };
 
   inline NSpace make_namespace(const std::string &name) {
-    return NSpace(name);
+    return (name);
   }
 
   NSpace &EasyRPG();
