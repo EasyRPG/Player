@@ -1206,7 +1206,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 		case 10: {
 			// Switch (Maniac)
 			value = com.parameters[5];
-			if (com.parameters[6] == 1) {
+			if (com.parameters[6] == 0) {
 				value = Main_Data::game_switches->GetInt(value);
 			} else {
 				value = Main_Data::game_switches->GetInt(Main_Data::game_variables->Get(value));
@@ -1295,6 +1295,40 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 			// Expression (Maniac)
 			value = ManiacPatch::ParseExpression(MakeSpan(com.parameters).subspan(6, com.parameters[5]), *this);
 			break;
+		case 22: {
+			// Lerp (Maniac)
+			int mode = com.parameters[5];
+			int arg1 = ValueOrVariableBitfield(mode, 0, com.parameters[6]);
+			int arg2 = ValueOrVariableBitfield(mode, 1, com.parameters[7]);
+			int arg3 = ValueOrVariableBitfield(mode, 2, com.parameters[8]);
+			int arg4 = ValueOrVariableBitfield(mode, 3, com.parameters[9]);
+			value = ControlVariables::Lerp(arg1, arg2, arg3, arg4);
+			break;
+		}
+		case 23: {
+			// ArraySum (Maniac)
+			int mode = com.parameters[5];
+			int arg1 = ValueOrVariableBitfield(mode, 0, com.parameters[6]);
+			int arg2 = ValueOrVariableBitfield(mode, 1, com.parameters[7]);
+			value = ControlVariables::ArraySum(arg1, arg2);
+			break;
+		}
+		case 24: {
+			// ArrayMin (Maniac)
+			int mode = com.parameters[5];
+			int arg1 = ValueOrVariableBitfield(mode, 0, com.parameters[6]);
+			int arg2 = ValueOrVariableBitfield(mode, 1, com.parameters[7]);
+			value = ControlVariables::ArrayMin(arg1, arg2);
+			break;
+		}
+		case 25: {
+			// ArrayMax (Maniac)
+			int mode = com.parameters[5];
+			int arg1 = ValueOrVariableBitfield(mode, 0, com.parameters[6]);
+			int arg2 = ValueOrVariableBitfield(mode, 1, com.parameters[7]);
+			value = ControlVariables::ArrayMax(arg1, arg2);
+			break;
+		}
 		default:
 			Output::Warning("ControlVariables: Unsupported operand {}", operand);
 			return true;
