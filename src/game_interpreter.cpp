@@ -4896,6 +4896,35 @@ bool Game_Interpreter::CommandManiacControlVarArray(lcf::rpg::EventCommand const
 			// Shift right
 			Main_Data::game_variables->BitShiftRightArray(target_a, last_target_a, target_b);
 			break;
+		case 16:
+			// Dereference
+			Main_Data::game_variables->DerefArray(target_a, last_target_a, target_b);
+			break;
+		case 17:
+			// Sort asc sync
+			Main_Data::game_variables->SortSyncRange(target_a, last_target_a, target_b, true);
+			break;
+		case 18:
+			// Sort desc sync
+			Main_Data::game_variables->SortSyncRange(target_a, last_target_a, target_b, false);
+			break;
+		case 19:
+			// Shuffle sync
+			Main_Data::game_variables->ShuffleSyncRange(target_a, last_target_a, target_b);
+			break;
+		case 20:
+			// Repeat / Fill
+			// target_b evaluates to the scalar value in Repeat
+			Main_Data::game_variables->SetRange(target_a, last_target_a, target_b);
+			break;
+		case 21:
+			// Reverse
+			Main_Data::game_variables->ReverseRange(target_a, last_target_a);
+			break;
+		case 22:
+			// Copy From (effectively SetArray mirrored)
+			Main_Data::game_variables->SetArray(target_a, last_target_a, target_b);
+			break;
 		default:
 			Output::Warning("ManiacControlVarArray: Unknown operation {}", op);
 	}

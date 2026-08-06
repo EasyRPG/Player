@@ -127,6 +127,10 @@ public:
 	void BitShiftLeftArray(int first_id_a, int last_id_a, int first_id_b);
 	void BitShiftRightArray(int first_id_a, int last_id_a, int first_id_b);
 	void SwapArray(int first_id_a, int last_id_a, int first_id_b);
+	void DerefArray(int first_id_a, int last_id_a, int first_id_b);
+	void SortSyncRange(int first_id, int last_id, int sync_id, bool asc);
+	void ShuffleSyncRange(int first_id, int last_id, int sync_id);
+	void ReverseRange(int first_id, int last_id);
 
 	std::string_view GetName(int _id) const;
 
