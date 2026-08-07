@@ -1,0 +1,163 @@
+/** **********************************************************************
+ *  ██╗     ███████╗ █████╗ ███████╗██╗   ██╗
+ *  ██║     ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝
+ *  ██║     █████╗  ███████║███████╗ ╚████╔╝
+ *  ██║     ██╔══╝  ██╔══██║╚════██║  ╚██╔╝
+ *  ███████╗███████╗██║  ██║███████║   ██║
+ *  ╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝
+ *
+ *          The EasyRPG engine, with runtime extensions, easily.
+ *
+ *  Developed by @wys
+ *  https://github.com/wys-prog
+ * 
+ *  This file is free and open source. You may credit its usage in sources
+ *  by using this Github profile: https://github.com/wys-prog.
+ * 
+ *  You may see the evolution of this file at https://github.com/wys-prog/leasy.
+ * 
+ *  0xEF9087A@wys-prog.https://github.com/wys-prog/leasy
+ * 
+ * **********************************************************************/
+
+//
+// Created by @wys on 05/08/2026.
+//
+
+#ifndef EASYRPG_PLAYER_ASSEMBLY_HPP
+#define EASYRPG_PLAYER_ASSEMBLY_HPP
+
+#include <string>
+#include "type.hpp"
+#include "function.hpp"
+#include "../iky7/nameof.hpp"
+
+
+namespace leasy::metadata {
+  class Assembly : public Data, public SizeDescriptor {
+  protected:
+    std::string _name;
+
+  public:
+    virtual ~Assembly() = default;
+    inline Assembly() = default;
+    inline Assembly(const std::string &name) : _name(name) {}
+
+    inline virtual std::string name() const { return _name; }
+    inline virtual std::shared_ptr<Class> getType(const std::type_index &) const { return nullptr; }
+    inline virtual std::shared_ptr<Class> getType(const std::string &) const { return nullptr; }
+    inline virtual std::shared_ptr<function_base_t> getFunction(const std::string &) const { return nullptr; }
+    inline virtual size_t getMetadataSize() const override { return sizeof(*this); }
+  };
+
+  class BuiltInAssembly : public Assembly {
+  private:
+    std::unordered_map<std::string, std::shared_ptr<Class>> namedClasses;
+    std::unordered_map<std::type_index, std::shared_ptr<Class>> indexedClasses;
+    std::unordered_map<std::string, std::shared_ptr<function_base_t>> functions;
+
+    template <typename T>
+    inline void registerType(const std::shared_ptr<Class> &cls) {
+      this->namedClasses[std::string(nameof<T>())] = cls;
+      this->indexedClasses[typeid(T)] = cls;
+    }
+
+  public:
+
+    inline size_t getMetadataSize() const override {
+      size_t total = sizeof(*this) + getStringRealSize(_name) + sizeof(functions) + sizeof(namedClasses) + sizeof(indexedClasses);
+      for (const auto &[k, v]: this->functions) {
+        total += getStringRealSize(k);
+        total += sizeof(v) + v->getMetadataSize();
+      }
+
+      for (const auto &[k, v]: this->namedClasses) {
+        total += getStringRealSize(k);
+        total += v->getMetadataSize();
+        total += sizeof(v);
+      }
+
+      for (const auto &[k, v]: this->indexedClasses) {
+        total += sizeof(k) + sizeof(v);
+      }
+
+      return total;
+    }
+
+    inline Object dump() const override {
+      return Map()
+        .add("name", this->name())
+        .add("classes", kits::select(this->namedClasses, [](auto I) { return I.second->dump(); }))
+        .add("functions", kits::select(this->functions, [](auto I) { return I.second->dump(); }));
+    }
+
+    inline void bind(ul2::lstate &state) const override {
+      for (const auto &[name, func]: this->functions) {
+        state.bind2(kits::replace(name, "::", "."), func->lua());
+      }
+
+      for (const auto &[name, cl]: this->indexedClasses) {
+        cl->bind(state);
+      }
+    }
+
+    inline BuiltInAssembly(const std::string &s) : Assembly(s) {}
+
+    inline std::string name() const override { return _name; }
+
+    inline std::shared_ptr<Class> getType(const std::type_index &index) const override {
+      if (indexedClasses.find(index) == indexedClasses.end()) { return nullptr; }
+      return indexedClasses.at(index);
+    }
+
+    inline std::shared_ptr<Class> getType(const std::string &name) const override {
+      if (namedClasses.find(name) == namedClasses.end()) { return nullptr; }
+      return namedClasses.at(name);
+    }
+
+    inline std::shared_ptr<function_base_t> getFunction(const std::string &name) const override {
+      if (functions.find(name) == functions.end()) { return nullptr; }
+      return functions.at(name);
+    }
+
+    template <typename T>
+    inline BuiltInAssembly &addType(const std::shared_ptr<Class> &cls) {
+      using U = kits::flat_t<T>;
+      registerType<T>(cls);
+
+      if constexpr (! std::is_void_v<U>) {
+        using P = U*;
+        using R = U&;
+
+        // TODO: implement x.copy() for each types?
+        registerType<P>(ClassBuilder<P>().method("value", [](P p) { return *p; }).done());
+        registerType<R>(ClassBuilder<R>().done());
+      }
+
+      return *this;
+    }
+
+    // inline BuiltInAssembly &addType(const std::shared_ptr<Class> &cls) {
+    //   this->indexedClasses[cls->cindex()] = cls;
+    //   this->namedClasses[cls->fullname()] = cls;
+    //   return *this;
+    // }
+    // For now, I will remove this overload in order to avoid missing type information.
+    // Maybe over the time, I will add it.
+
+    inline BuiltInAssembly &addFunction(const std::string &name, const std::shared_ptr<function_base_t> &func) {
+      auto myName = this->_name + "::" + name;
+      this->functions[myName] = func;
+      return *this;
+    }
+
+    template <typename... Fs>
+    inline BuiltInAssembly &addFunction(const std::string &name, Fs... fs) {
+      auto myName = this->_name + "::" + name;
+      this->functions[myName] = make_function(myName, std::forward<Fs>(fs)...);
+      return *this;
+    }
+  };
+}
+
+#endif //EASYRPG_PLAYER_ASSEMBLY_HPP

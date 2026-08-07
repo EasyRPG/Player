@@ -92,3 +92,4 @@ constexpr std::string_view nameof() {
     return fake;
 }
 
+extern std::string nameof(const std::type_index &idx);

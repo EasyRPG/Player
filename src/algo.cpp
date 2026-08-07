@@ -348,31 +348,34 @@ int GetNumberOfAttacks(int actor_id, const lcf::rpg::Item& weapon) {
 
 } // namespace Algo
 
-#include "leasy/metadata/namespace.hpp"
+#include "leasy/metadata/Domain.hpp"
 
 namespace leasy::metadata::builtin {
 	typedef bool(*IsRowAdjusted_OV1)(lcf::rpg::SaveActor::RowType row, lcf::rpg::System::BattleCondition cond, bool offense);
   typedef bool(*IsRowAdjusted_OV2)(const Game_Battler& battler, lcf::rpg::System::BattleCondition cond, bool offense, bool allow_enemy);
 
 	auto foooo = ([]() -> bool {
-		auto algo = EasyRPG().sub("Algo")
-		.function("IsRowAdjusted", (IsRowAdjusted_OV1)Algo::IsRowAdjusted, (IsRowAdjusted_OV2)Algo::IsRowAdjusted)
-		.function("VarianceAdjustEffect", Algo::VarianceAdjustEffect)
-		.function("CalcNormalAttackToHit", Algo::CalcNormalAttackToHit)
-		.function("CalcSkillToHit", Algo::CalcSkillToHit)
-		.function("CalcCriticalHitChance", Algo::CalcCriticalHitChance)
-		.function("AdjustDamageForDefend", Algo::AdjustDamageForDefend)
-		.function("CalcNormalAttackEffect", Algo::CalcNormalAttackEffect)
-		.function("CalcSkillEffect", Algo::CalcSkillEffect)
-		.function("CalcSelfDestructEffect", Algo::CalcSelfDestructEffect)
-		.function("CalcSkillCost", Algo::CalcSkillCost)
-		.function("CalcSkillHpCost", Algo::CalcSkillHpCost)
-		.function("IsSkillUsable", Algo::IsSkillUsable)
-		.function("IsNormalOrSubskill", Algo::IsNormalOrSubskill)
-		.function("SkillTargetsEnemies", Algo::SkillTargetsEnemies)
-		.function("SkillTargetsAllies", Algo::SkillTargetsAllies)
-		.function("SkillTargetsOne", Algo::SkillTargetsOne)
-		.function("GetNumberOfAttacks", Algo::GetNumberOfAttacks);
+		auto algo = (BuiltInAssembly("Algo")
+			.addFunction("IsRowAdjusted", (IsRowAdjusted_OV1)Algo::IsRowAdjusted, (IsRowAdjusted_OV2)Algo::IsRowAdjusted)
+			.addFunction("VarianceAdjustEffect", Algo::VarianceAdjustEffect)
+			.addFunction("CalcNormalAttackToHit", Algo::CalcNormalAttackToHit)
+			.addFunction("CalcSkillToHit", Algo::CalcSkillToHit)
+			.addFunction("CalcCriticalHitChance", Algo::CalcCriticalHitChance)
+			.addFunction("AdjustDamageForDefend", Algo::AdjustDamageForDefend)
+			.addFunction("CalcNormalAttackEffect", Algo::CalcNormalAttackEffect)
+			.addFunction("CalcSkillEffect", Algo::CalcSkillEffect)
+			.addFunction("CalcSelfDestructEffect", Algo::CalcSelfDestructEffect)
+			.addFunction("CalcSkillCost", Algo::CalcSkillCost)
+			.addFunction("CalcSkillHpCost", Algo::CalcSkillHpCost)
+			.addFunction("IsSkillUsable", Algo::IsSkillUsable)
+			.addFunction("IsNormalOrSubskill", Algo::IsNormalOrSubskill)
+			.addFunction("SkillTargetsEnemies", Algo::SkillTargetsEnemies)
+			.addFunction("SkillTargetsAllies", Algo::SkillTargetsAllies)
+			.addFunction("SkillTargetsOne", Algo::SkillTargetsOne)
+			.addFunction("GetNumberOfAttacks", Algo::GetNumberOfAttacks)
+		);
+
+		AppDomain().load(std::make_shared<BuiltInAssembly>(algo));
 		return false;
 	}());
 }

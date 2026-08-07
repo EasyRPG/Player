@@ -29,7 +29,7 @@
 #include "ily3/ily3.hpp"
 #include "ui/window.hpp"
 #include "ui/winstream.hpp"
-#include "metadata/namespace.hpp"
+#include "metadata/Domain.hpp"
 #include "signals.hpp"
 
 namespace leasy {
@@ -57,10 +57,10 @@ namespace leasy {
     void ready(void) {
       if (! leasy_enabled) return;
       leasy::ready.emit();
-      //metadata::EasyRPG().sub("leasy").function("throw", [](std::string e) { throw std::runtime_error(e); });
       io().Debug.writeln("binding EasyRPGPlayer!");
-      metadata::EasyRPG().bind(ily3::global::state);
+      metadata::AppDomain().bind(ily3::global::state);
       ily3::global::state.call<void>("leasy.User.ready");
+      io().System.writeln("reflection metadata size: ", kits::format_bytes(metadata::AppDomain().getMetadataSize()));
     }
     
     void process() {

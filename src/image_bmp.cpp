@@ -192,3 +192,33 @@ bool ImageBMP::Read(Filesystem_Stream::InputStream& stream, bool transparent, Im
 	return Read(&buffer.front(), (unsigned) buffer.size(), transparent, output);
 }
 
+#include "leasy/metadata/Domain.hpp"
+
+namespace {
+	using namespace leasy::metadata;
+
+	bool ok = []() {
+		auto Asm = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("ImageBMP");
+		Asm->addType<ImageBMP::BitmapHeader>(
+			make_class<ImageBMP::BitmapHeader>()
+			.method("size", [](ImageBMP::BitmapHeader &header) { return header.size; })
+			.method("w", [](ImageBMP::BitmapHeader &header) { return header.w; })
+			.method("h", [](ImageBMP::BitmapHeader &header) { return header.h; })
+			.method("planes", [](ImageBMP::BitmapHeader &header) { return header.planes; })
+			.method("depth", [](ImageBMP::BitmapHeader &header) { return header.depth; })
+			.method("compression", [](ImageBMP::BitmapHeader &header) { return header.compression; })
+			.method("num_colors", [](ImageBMP::BitmapHeader &header) { return header.num_colors; })
+			.method("palette_size", [](ImageBMP::BitmapHeader &header) { return header.palette_size; })
+			.method("new", []() { return ImageBMP::BitmapHeader{}; })
+			.done()
+		);
+
+		Asm->addFunction("read", [](const uint8_t *data, unsigned len, bool transparent) -> std::tuple<bool, ImageOut> {
+			ImageOut out;
+			bool s = ImageBMP::Read(data, len, transparent, out);
+			return {s, out};
+		});
+
+		return false;
+	}();
+}

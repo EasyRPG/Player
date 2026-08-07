@@ -21,28 +21,36 @@
  * **********************************************************************/
 
 //
-// Created by @wys on 02/08/2026.
+// Created by @wys on 06/08/2026.
 //
 
-#include "node.hpp"
-#include "leasy/metadata/Domain.hpp"
+#include <string>
+#include <typeindex>
+#include <unordered_map>
 
-namespace leasy::meta2::node {
-  namespace {
-    auto reg = []() {
-      auto Asm = metadata::AppDomain().getAssemblyOrCreate<metadata::BuiltInAssembly>(assemblyName);
-      auto nodecls = metadata::make_class<Node>()
-        .method("ready", [](Node &self) { self.ready(); })
-        .method("update", [](Node &self, double delta) { self.update(delta); })
-        .method("draw", [](Node &self) { self.draw(); })
-        .method("new" ,[]() { return Node(); })
-        .method("children", [](Node &self) { return self.children(); })
-        .method("visit", [](Node &self) { return self.visit(); })
-        .done();
+#include "nameof.hpp"
 
-      Asm->addType<Node>(nodecls);
+namespace detail {
 
-      return false;
-    }();
+  static std::unordered_map<std::type_index, std::string> &nameof_cache() {
+    static std::unordered_map<std::type_index, std::string> c = {};
+    return c;
   }
+
+  void _leasy_cache_nameof_this(const std::type_index &idx, const std::string &name) {
+    auto &cache = nameof_cache();
+    if (cache.find(idx) == cache.end()) {
+      cache[idx] = name;
+    }
+  }
+
+}
+
+std::string nameof(const std::type_index &idx) {
+  auto cache = detail::nameof_cache();
+  if (cache.find(idx) != cache.end()) {
+    return cache[idx];
+  }
+
+  return idx.name();
 }

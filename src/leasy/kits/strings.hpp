@@ -63,4 +63,32 @@ namespace leasy::kits {
                    [](unsigned char c) { return std::toupper(c); });
     return s;
   }
+
+  inline std::string format_bytes(const std::size_t &bytes) {
+    static constexpr const char* units[] = {
+      "B","KiB","MiB","GiB","TiB","PiB"
+    };
+
+    double value = bytes;
+    int unit = 0;
+
+    while (value >= 1024.0 && unit < 5) {
+      value /= 1024.0;
+      ++unit;
+    }
+
+    std::ostringstream ss;
+
+    if (unit == 0)
+      ss << bytes;
+    else if (value >= 100)
+      ss << std::fixed << std::setprecision(0) << value;
+    else if (value >= 10)
+      ss << std::fixed << std::setprecision(1) << value;
+    else
+      ss << std::fixed << std::setprecision(2) << value;
+
+    ss << ' ' << units[unit];
+    return ss.str();
+  }
 }

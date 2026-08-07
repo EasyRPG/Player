@@ -1,3 +1,4 @@
+---@diagnostic disable: lowercase-global
 local function dump(value)
   local seen = {}
 
@@ -36,8 +37,8 @@ local function dump(value)
 end
 
 function leasy.User.ready()
-  --dump(_G)
-  local o = leasy.meta2.node.Node2D.new()
-  print('o:', o, type(o))
-  print(o:pos())
+  dump(_G)
+  --local o = leasy.meta2.node.Node2D.new()
+  --print('o:', o, type(o))
+  --print(o:pos())
 end

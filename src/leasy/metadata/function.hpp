@@ -24,11 +24,8 @@
 
 #include <any>
 #include <vector>
-#include <typeindex>
 #include <functional>
-#include <type_traits>
 
-#include "../iky7/nameof.hpp"
 #include "../iky7/anyf.hpp"
 #include "../kits/rtt.hpp"
 #include "../kits/variant.hpp"
@@ -37,7 +34,7 @@
 #include "../ul2/function_traits.hpp"
 #include "../lio.hpp"
 
-#include "metadata.hpp"
+#include "structs/metadata.hpp"
 #include "type.hpp"
 #include "function_base.hpp"
 
@@ -90,6 +87,12 @@ namespace leasy::metadata {
       this->arguments = kits::tuple_types<typename traits::args_tuple>();
       this->return_type = typeidof<typename traits::return_type>();
     }
+
+    size_t getMetadataSize() const override {
+      return sizeof(*this)
+      + sizeof(decltype(arguments)) + sizeof(arguments.capacity()) * sizeof(decltype(arguments)::value_type)
+      + sizeof(return_type);
+    }
   };
 
   class overload_set final : public function_base_t {
@@ -98,6 +101,14 @@ namespace leasy::metadata {
     std::function<int(lua_State*)> bridge;
 
   public:
+
+    inline size_t getMetadataSize() const override {
+      auto funcsize{0ull};
+      for (auto i{0ull}; i < funcs.size(); i++) funcsize += funcs[i].getMetadataSize();
+      return (
+        sizeof(*this) + sizeof(funcs) + sizeof(decltype(funcs)::value_type) * funcs.capacity() + sizeof(bridge) + funcsize
+      );
+    }
 
     inline std::pair<bool, std::string> is_callable(std::vector<std::any> &args) const override {
       size_t i = 0;

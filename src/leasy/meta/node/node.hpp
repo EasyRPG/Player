@@ -24,10 +24,10 @@
 
 #include <memory>
 #include <vector>
-#include "../../metadata/namespace.hpp"
 #include "../../iky7/cursor.hpp"
 
 namespace leasy::meta2::node {
+  static inline const char *assemblyName = "leasy::meta2::node";
   class Node {
   private:
     std::vector<std::shared_ptr<Node>> _children;

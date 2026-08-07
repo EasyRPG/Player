@@ -26,7 +26,6 @@
 #include <sstream>
 #include <string>
 #include <cstddef>
-#include <cstdio>
 #include "object.hpp"
 
 #include "option.hpp"

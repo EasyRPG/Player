@@ -20,22 +20,16 @@
  * 
  * **********************************************************************/
 
-#pragma once
+//
+// Created by @wys on 06/08/2026.
+//
 
-//#include "../ul2/state.hpp"
-
-#include "object.hpp"
-
-namespace leasy::ul2 {
-  class lstate;
-}
+#include "Domain.hpp"
 
 namespace leasy::metadata {
-  class Data {
-  protected:
-  public:
-    virtual Object dump() const { return {}; }
-    virtual void bind(ul2::lstate&) const {}
-  };
-}
+  Domain &AppDomain() {
+    static auto *dom = new Domain();
 
+    return *dom;
+  }
+}

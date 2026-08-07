@@ -1,5 +1,5 @@
 #include "clock.h"
-#include "leasy/metadata/namespace.hpp"
+#include "leasy/metadata/Domain.hpp"
 
 namespace {
   using namespace leasy::metadata;
@@ -9,7 +9,7 @@ namespace {
       .method("now", Platform_Clock::now)
       .done();
 
-    EasyRPG().add(klass);
+    AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer")->addType<Platform_Clock>(klass);
     return false;
   }());
 }

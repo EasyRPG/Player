@@ -53,9 +53,8 @@ namespace leasy::ily3 {
     
     if (!fs::exists(lua_file)) {
       io().Error.writeln(lua_file, ": file not found! (cannot load any mod!)");
-      return;
+    } else {
+      global::state.dofile(lua_file.string());
     }
-
-    global::state.dofile(lua_file.string());
   }
 }

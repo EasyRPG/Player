@@ -20,29 +20,31 @@
  * 
  * **********************************************************************/
 
-//
-// Created by @wys on 02/08/2026.
-//
+#pragma once
 
-#include "node.hpp"
-#include "leasy/metadata/Domain.hpp"
+//#include "../ul2/state.hpp"
 
-namespace leasy::meta2::node {
-  namespace {
-    auto reg = []() {
-      auto Asm = metadata::AppDomain().getAssemblyOrCreate<metadata::BuiltInAssembly>(assemblyName);
-      auto nodecls = metadata::make_class<Node>()
-        .method("ready", [](Node &self) { self.ready(); })
-        .method("update", [](Node &self, double delta) { self.update(delta); })
-        .method("draw", [](Node &self) { self.draw(); })
-        .method("new" ,[]() { return Node(); })
-        .method("children", [](Node &self) { return self.children(); })
-        .method("visit", [](Node &self) { return self.visit(); })
-        .done();
+#include "object.hpp"
 
-      Asm->addType<Node>(nodecls);
+namespace leasy::ul2 {
+  class lstate;
+}
 
-      return false;
-    }();
+namespace leasy::metadata {
+  class Data {
+  protected:
+  public:
+    virtual Object dump() const { return {}; }
+    virtual void bind(ul2::lstate&) const {}
+  };
+
+  class SizeDescriptor {
+  public:
+    virtual size_t getMetadataSize() const = 0;
+  };
+
+  inline size_t getStringRealSize(const std::string &k) {
+    return sizeof(k) + (sizeof(kits::flat_t<decltype(k)>::value_type) * k.capacity());
   }
 }
+

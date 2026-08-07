@@ -45,15 +45,21 @@ namespace leasy {
     leasy::ios::attachment logfile = io().Debug.attach(ios::file("leasy.io.Debug.log"));
     
     void lmain(const std::vector<std::string> &args) {
-      io().System.writeln(__func__, ": leasy subsystem started!");
+      try {
+        io().System.writeln(__func__, ": leasy subsystem started!");
 
-      ily3::setup();
-      ily3::setup_lua();
-      settings::makedefault(); // These will get overriden by the next load!
-      ily3::boot(std::filesystem::current_path());
-			// TODO: add the fs::current_path() to glob
-      cli::cli(args);
-      ready();
+        ily3::setup();
+        ily3::setup_lua();
+        settings::makedefault(); // These will get overriden by the next load!
+        ily3::boot(std::filesystem::current_path());
+        // TODO: add the fs::current_path() to glob
+        cli::cli(args);
+        ready();
+      } catch (const std::exception &e) {
+        io().Error.writeln("exception during lmain() init!!");
+        io().Error.writeln(e.what());
+        io().Warning.writeln(__func__, ": execution may continue, but this can crash because of init-exceptions!");
+      }
     }
   }
 }

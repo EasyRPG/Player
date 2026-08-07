@@ -20,29 +20,15 @@
  * 
  * **********************************************************************/
 
-//
-// Created by @wys on 02/08/2026.
-//
+#pragma once
 
-#include "node.hpp"
-#include "leasy/metadata/Domain.hpp"
+#include <cstdlib>
 
-namespace leasy::meta2::node {
-  namespace {
-    auto reg = []() {
-      auto Asm = metadata::AppDomain().getAssemblyOrCreate<metadata::BuiltInAssembly>(assemblyName);
-      auto nodecls = metadata::make_class<Node>()
-        .method("ready", [](Node &self) { self.ready(); })
-        .method("update", [](Node &self, double delta) { self.update(delta); })
-        .method("draw", [](Node &self) { self.draw(); })
-        .method("new" ,[]() { return Node(); })
-        .method("children", [](Node &self) { return self.children(); })
-        .method("visit", [](Node &self) { return self.visit(); })
-        .done();
-
-      Asm->addType<Node>(nodecls);
-
-      return false;
-    }();
-  }
+namespace leasy::metadata {
+  struct  options {
+    size_t  indent      = 2;
+    bool    newlines    = true;
+    bool    space_colon = true;
+    bool    space_equal = true;
+  };
 }

@@ -22,8 +22,11 @@
 
 #pragma once
 
+#include <tuple>
 #include <vector>
+#include <memory>
 #include <type_traits>
+#include <unordered_map>
 
 namespace leasy::kits {
   template <typename T>

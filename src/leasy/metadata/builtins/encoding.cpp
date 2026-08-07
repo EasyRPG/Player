@@ -21,26 +21,23 @@
  * **********************************************************************/
 
 //
-// Created by @wys on 02/08/2026.
+// Created by @wys on 06/08/2026.
 //
 
-#include "node.hpp"
 #include "leasy/metadata/Domain.hpp"
 
-namespace leasy::meta2::node {
+namespace leasy::metadata {
   namespace {
-    auto reg = []() {
-      auto Asm = metadata::AppDomain().getAssemblyOrCreate<metadata::BuiltInAssembly>(assemblyName);
-      auto nodecls = metadata::make_class<Node>()
-        .method("ready", [](Node &self) { self.ready(); })
-        .method("update", [](Node &self, double delta) { self.update(delta); })
-        .method("draw", [](Node &self) { self.draw(); })
-        .method("new" ,[]() { return Node(); })
-        .method("children", [](Node &self) { return self.children(); })
-        .method("visit", [](Node &self) { return self.visit(); })
-        .done();
+    const auto A = []() {
+      const auto& assembly = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("leasy::std");
+      assembly->addType<std::string>(make_class<std::string>().done());
+      assembly->addType<std::string_view>(
+        make_class<std::string_view>()
+        .method("get", [](const std::string_view &view) { return std::string(view); })
+        .done()
+      );
 
-      Asm->addType<Node>(nodecls);
+      assembly->addFunction("nameof", make_function("nameof", static_cast<std::string(*)(const std::type_index &)>(&nameof)));
 
       return false;
     }();

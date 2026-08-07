@@ -31,6 +31,7 @@
 #include "ulexception2.hpp"
 #include "lua_stack.hpp"
 #include "dispatcher.hpp"
+#include "../kits/strings.hpp"
 
 namespace leasy::ul2 {
   /**
@@ -309,7 +310,7 @@ namespace leasy::ul2 {
      * Uses lua_stack for normal types.
      */
     template <typename T>
-    inline void push_value(const T &value) {
+    inline void push_value(const T &value) const {
       lua_stack<T>::push(L, value);
     }
 
@@ -318,7 +319,7 @@ namespace leasy::ul2 {
      *
      * Because Lua likes raw C functions.
      */
-    inline void push_value(lua_CFunction fn) {
+    inline void push_value(lua_CFunction fn) const {
       lua_pushcfunction(L, fn);
     }
 
@@ -389,7 +390,7 @@ namespace leasy::ul2 {
     inline void dostring(const std::string &string) {
       if (luaL_dostring(L, string.c_str()) != LUA_OK) {
         auto S__ = lua_tostring(L, -1);
-        std::string msg = "lua dostring error:\t" + std::string(S__ ? S__ : "<unknown>") + "\nwith string:\"" + string + "\"";
+        std::string msg = "lua dostring(): error:\n\t>> " + std::string(S__ ? S__ : "<unknown>") + "\n\t>> \"" + string + "\"";
         ulthrow(msg);
       }
     }
@@ -397,12 +398,12 @@ namespace leasy::ul2 {
     /** 
      * @brief Executes a file. Revolutionary concept.
      *
-     * Same idea as dostring, but with files (wild, I know).
+     * Same idea as dostring(), but with files (wild, I know).
      */
     inline void dofile(const std::string &string) {
       if (luaL_dofile(L, string.c_str()) != LUA_OK) {
-        auto S__ = lua_tostring(L, -1);
-        std::string msg = "lua dofile error: " + std::string(S__ ? S__ : "<unknown>");
+        auto wtf = lua_tostring(L, -1);
+        std::string msg = "lua dofile error: " + std::string(wtf ? wtf : "<unknown>");
         ulthrow(msg);
       }
     }
@@ -456,3 +457,13 @@ namespace leasy::ul2 {
   }
 }
 
+namespace leasy::metadata {
+  inline void Class::bind(ul2::lstate &state) const {
+    auto n = kits::replace(this->_fullname, "::", ".");
+    n = kits::replace(n, "const ", "");
+    n = kits::replace(n, " ", "");
+    for (const auto&[name, method]: this->methods()) {
+      state.bind2(n + "." + name, method->lua());
+    }
+  }
+}

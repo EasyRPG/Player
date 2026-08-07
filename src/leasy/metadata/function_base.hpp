@@ -30,7 +30,7 @@
 #include "../lio.hpp"
 #include "../lua/lua.hpp"
 
-#include "metadata.hpp"
+#include "structs/metadata.hpp"
 
 namespace leasy::metadata {
   class Class; // What the fuck.
@@ -53,7 +53,7 @@ namespace leasy::metadata {
     */
    class function_base_t;
 
-  class function_base_t : public Data {
+  class function_base_t : public Data, public SizeDescriptor {
   public:
     std::string name;
 
@@ -73,6 +73,9 @@ namespace leasy::metadata {
       };
     }
 
-    virtual ~function_base_t() = default;
+    inline virtual ~function_base_t() = default;
+    inline virtual size_t getMetadataSize() const {
+      return sizeof(*this);
+    }
   };
 }

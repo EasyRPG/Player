@@ -1,3 +1,25 @@
+/** **********************************************************************
+ *  ██╗     ███████╗ █████╗ ███████╗██╗   ██╗
+ *  ██║     ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝
+ *  ██║     █████╗  ███████║███████╗ ╚████╔╝
+ *  ██║     ██╔══╝  ██╔══██║╚════██║  ╚██╔╝
+ *  ███████╗███████╗██║  ██║███████║   ██║
+ *  ╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝
+ *
+ *          The EasyRPG engine, with runtime extensions, easily.
+ *
+ *  Developed by @wys
+ *  https://github.com/wys-prog
+ * 
+ *  This file is free and open source. You may credit its usage in sources
+ *  by using this Github profile: https://github.com/wys-prog.
+ * 
+ *  You may see the evolution of this file at https://github.com/wys-prog/leasy.
+ * 
+ *  0xEF9087A@wys-prog.https://github.com/wys-prog/leasy
+ * 
+ * **********************************************************************/
+
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -11,9 +33,9 @@
 
 #include "../cli/cli.hpp"
 
-#include "json.hpp"
-#include "lua.hpp"
-#include "namespace.hpp"
+#include "structs/json.hpp"
+#include "structs/lua.hpp"
+#include "Domain.hpp"
 
 
 namespace leasy::metadata {
@@ -25,7 +47,7 @@ namespace leasy::metadata {
   void Xdump(const std::string &lang, const options &options) {
     if (map.find(lang) != map.end()) {
       std::ofstream of("dump." + lang);
-      map[lang](of, EasyRPG().dump(), options);
+      map[lang](of, AppDomain().dump(), options);
     } else {
       io().Warning.writeln(__func__, ": language ", lang, " not found!");
     }
