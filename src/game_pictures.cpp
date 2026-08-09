@@ -211,6 +211,8 @@ bool Game_Pictures::Picture::Show(const ShowParams& params) {
 	data.spritesheet_play_once = params.spritesheet_play_once;
 	data.spritesheet_frame = params.spritesheet_frame;
 	data.spritesheet_speed = params.spritesheet_speed;
+	data.spritesheet_start = params.spritesheet_start;
+	data.spritesheet_end = params.spritesheet_end;
 	data.map_layer = params.map_layer;
 	data.battle_layer = params.battle_layer;
 
@@ -415,7 +417,17 @@ void Game_Pictures::Picture::ApplyOrigin(bool is_move) {
 	double width = sprite->GetFrameWidth();
 	double height = sprite->GetFrameHeight();
 
-	switch (origin) {
+	bool position_scaled = origin >= 100;
+	int real_origin = origin % 100;
+
+	if (position_scaled) {
+		double scale_x = (is_move ? data.finish_magnify : data.current_magnify) / 100.0;
+		double scale_y = (is_move ? data.maniac_finish_magnify_height : data.maniac_current_magnify_height) / 100.0;
+		width *= scale_x;
+		height *= scale_y;
+	}
+
+	switch (real_origin) {
 		case 1:
 			// Top-Left
 			x += width / 2;
@@ -589,8 +601,16 @@ void Game_Pictures::Picture::Update(bool is_battle) {
 		data.frames = 1;
 		data.spritesheet_frame = data.spritesheet_frame + 1;
 
-		if (data.spritesheet_frame >= data.spritesheet_rows * data.spritesheet_cols) {
-			data.spritesheet_frame = 0;
+		int end_frame = data.spritesheet_rows * data.spritesheet_cols - 1;
+		int start_frame = 0;
+
+		if (data.spritesheet_end > 0 || data.spritesheet_start > 0) {
+			end_frame = data.spritesheet_end;
+			start_frame = data.spritesheet_start;
+		}
+
+		if (data.spritesheet_frame > end_frame) {
+			data.spritesheet_frame = std::max(0, start_frame);
 			if (data.spritesheet_play_once && !data.name.empty()) {
 				Erase();
 			}
@@ -624,6 +644,8 @@ Game_Pictures::ShowParams Game_Pictures::Picture::GetShowParams() const {
 	params.spritesheet_rows = data.spritesheet_rows;
 	params.spritesheet_frame = data.spritesheet_frame;
 	params.spritesheet_speed = data.spritesheet_speed;
+	params.spritesheet_start = data.spritesheet_start;
+	params.spritesheet_end = data.spritesheet_end;
 	params.map_layer = data.map_layer;
 	params.battle_layer = data.battle_layer;
 	for (size_t i = 0; i < data.flags.flags.size(); ++i) {
