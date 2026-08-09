@@ -426,6 +426,8 @@ void Game_Event::CheckCollisonOnMoveFailure() {
 			int fy = Game_Map::RoundY(GetY() + dy);
 			if (Main_Data::game_player->IsInPosition(fx, fy) && GetLayer() == lcf::rpg::EventPage::Layers_same && GetTrigger() == lcf::rpg::EventPage::Trigger_collision) {
 				ScheduleForegroundExecution(false, true);
+				// Events with trigger collision and layer same always reset their
+				// stop_count when they fail movement to a tile that the player inhabits.
 				SetStopCount(0);
 				return;
 			}

@@ -326,17 +326,23 @@ void Game_Player::UpdateNextMovementAction() {
 
 	int move_dir = -1;
 	switch (Input::dir4) {
-		case 2: move_dir = Down; break;
-		case 4: move_dir = Left; break;
-		case 6: move_dir = Right; break;
-		case 8: move_dir = Up; break;
+		case 2:
+			move_dir = Down;
+			break;
+		case 4:
+			move_dir = Left;
+			break;
+		case 6:
+			move_dir = Right;
+			break;
+		case 8:
+			move_dir = Up;
+			break;
 	}
-
 	if (move_dir >= 0) {
 		SetThrough((Player::debug_flag && Input::IsPressed(Input::DEBUG_THROUGH)) || data()->move_route_through);
 		Move(move_dir);
 		ResetThrough();
-
 		if (IsStopping()) {
 			int x1, x2, y1, y2;
 			const Game_Character* active_char = IsAboard() ? static_cast<const Game_Character*>(GetVehicle()) : static_cast<const Game_Character*>(this);
@@ -348,7 +354,7 @@ void Game_Player::UpdateNextMovementAction() {
 				int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
 				int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
 				CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, front_x, front_y, false);
-			} else {
+		} else {
 				// --- BRANCH: EXTENDED BOUNDARIES ---
 				int dir = GetDirection();
 				// Scan the leading edge of the expanded 2D block
@@ -434,6 +440,7 @@ bool Game_Player::CheckActionEvent() {
 		return false;
 	}
 
+
 	int x1, x2, y1, y2;
 	const Game_Character* active_char = IsAboard() ? static_cast<const Game_Character*>(GetVehicle()) : static_cast<const Game_Character*>(this);
 	active_char->GetTileOffsets(x1, x2, y1, y2);
@@ -464,17 +471,18 @@ bool Game_Player::CheckActionEvent() {
 
 	// --- BRANCH: EXTENDED BOUNDARIES ---
 	int dir = GetDirection();
-	bool result = false;
 
+	bool result = false;
 	for (int i = (dir == Up || dir == Down ? x1 : y1); i <= (dir == Up || dir == Down ? x2 : y2); ++i) {
 		int fx = GetX() + (dir == Up || dir == Down ? i : (dir == Left ? x1 - 1 : x2 + 1));
 		int fy = GetY() + (dir == Left || dir == Right ? i : (dir == Up ? y1 - 1 : y2 + 1));
 		result |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, Game_Map::RoundX(fx), Game_Map::RoundY(fy), true);
 	}
-
 	result |= CheckEventTriggerHere({lcf::rpg::EventPage::Trigger_action}, true);
 
+	// Counter tile loop stops only if you talk to an action event.
 	bool got_action = false;
+	// RPG_RT allows maximum of 3 counter tiles
 	for (int i = (dir == Up || dir == Down ? x1 : y1); i <= (dir == Up || dir == Down ? x2 : y2); ++i) {
 		int fx = GetX() + (dir == Up || dir == Down ? i : (dir == Left ? x1 - 1 : x2 + 1));
 		int fy = GetY() + (dir == Left || dir == Right ? i : (dir == Up ? y1 - 1 : y2 + 1));
@@ -492,8 +500,8 @@ bool Game_Player::CheckActionEvent() {
 			cur_fx = Game_Map::RoundX(Game_Map::XwithDirection(cur_fx, dir));
 			cur_fy = Game_Map::RoundY(Game_Map::YwithDirection(cur_fy, dir));
 			got_action |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, cur_fx, cur_fy, true);
+			}
 		}
-	}
 
 	return result || got_action;
 }
@@ -503,7 +511,7 @@ bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_d
 		return false;
 	}
 
-	int x1, x2, y1, y2;
+int x1, x2, y1, y2;
 	const Game_Character* active_char = IsAboard() ? static_cast<const Game_Character*>(GetVehicle()) : static_cast<const Game_Character*>(this);
 	active_char->GetTileOffsets(x1, x2, y1, y2);
 
@@ -627,10 +635,12 @@ bool Game_Player::GetOnVehicle() {
 				ResetThrough();
 			}
 		}
-
 		data()->vehicle = Game_Vehicle::Airship;
 		data()->aboard = true;
+
+		// Note: RPG_RT ignores the lock_facing flag here!
 		SetFacing(Left);
+
 		data()->preboard_move_speed = GetMoveSpeed();
 		SetMoveSpeed(airship->GetMoveSpeed());
 		airship->StartAscent();
@@ -696,9 +706,12 @@ bool Game_Player::GetOnVehicle() {
 		}
 	} else {
 		// Standard Logic
+
 		SetThrough(true);
 		Move(GetDirection());
+		// FIXME: RPG_RT resets through to move_route_through || not visible?
 		ResetThrough();
+
 	}
 
 	data()->vehicle = vehicle->GetVehicleType();
@@ -714,10 +727,16 @@ bool Game_Player::GetOffVehicle() {
 	assert(IsAboard());
 
 	auto* vehicle = GetVehicle();
-	if (!vehicle) return false;
+	if (!vehicle) {
+		return false;
+	}
 
 	if (InAirship()) {
-		if (vehicle->IsAscendingOrDescending()) return false;
+		if (vehicle->IsAscendingOrDescending()) {
+			return false;
+		}
+
+		// Note: RPG_RT ignores the lock_facing flag here!
 		SetFacing(Left);
 		vehicle->StartDescent();
 		return true;
@@ -785,11 +804,14 @@ bool Game_Player::GetOffVehicle() {
 
 	data()->vehicle = 0;
 	Main_Data::game_system->BgmPlay(Main_Data::game_system->GetBeforeVehicleMusic());
+
 	return true;
 }
 
 void Game_Player::ForceGetOffVehicle() {
-	if (!IsAboard()) return;
+	if (!IsAboard()) {
+		return;
+	}
 
 	auto* vehicle = GetVehicle();
 	vehicle->ForceLand();
