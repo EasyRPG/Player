@@ -59,11 +59,11 @@ namespace Input {
 	};
 
 	struct TouchInput {
-		void Down(int id, int x, int y);
+		void Down(int64_t id, int x, int y);
 		void Up();
 
 		// Do not alter the fields from the Ui class, use Down and Up
-		int id = -1;
+		int64_t id = -1;
 		Point position;
 		bool pressed = false;
 		bool prev_frame_pressed = false;

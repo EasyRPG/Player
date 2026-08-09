@@ -42,10 +42,12 @@ class Game_Quit;
 class Game_DynRpg;
 class Game_Ineluki;
 class Game_Destiny;
+class Game_Constants;
 class FileFinder_RTP;
 
 namespace Main_Data {
 	// Dynamic Game lcf::Data
+	extern std::unique_ptr<Game_Constants> game_constants;
 	extern std::unique_ptr<Game_System> game_system;
 	extern std::unique_ptr<Game_Switches> game_switches;
 	extern std::unique_ptr<Game_Variables> game_variables;
@@ -62,10 +64,10 @@ namespace Main_Data {
 	extern std::unique_ptr<Game_DynRpg> game_dynrpg;
 	extern std::unique_ptr<Game_Ineluki> game_ineluki;
 	extern std::unique_ptr<Game_Destiny> game_destiny;
+
 	extern bool global_save_opened;
 	extern std::unique_ptr<Game_Switches> game_switches_global; // Used by Global Save command
 	extern std::unique_ptr<Game_Variables> game_variables_global;
-
 
 	extern std::unique_ptr<FileFinder_RTP> filefinder_rtp;
 

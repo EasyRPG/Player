@@ -37,6 +37,7 @@ struct Game_ConfigGame {
 
 	BoolConfigParam new_game{ "Start new game", "Skips the title screen and starts a new game directly", "Game", "NewGame", false };
 	StringConfigParam engine_str{ "Engine", "", "Game", "Engine", std::string() };
+	StringConfigParam engine_path{ "Engine Path", "Sets the executable to be used by the engine auto-detection", "Game", "EnginePath", std::string() };
 	BoolConfigParam fake_resolution{ "Fake Metrics", "Makes games run on higher resolutions (with some success)", "Game", "FakeResolution", false };
 	BoolConfigParam patch_easyrpg{ "EasyRPG", "EasyRPG Engine Extensions", "Patch", "EasyRPG", false };
 	BoolConfigParam patch_destiny{ "Destiny Patch", "", "Patch", "Destiny", false };
@@ -70,6 +71,8 @@ struct Game_ConfigGame {
 
 	ConfigParam<int> patch_guardrevamp_normal{ "GuardRevamp", "Changes damage calculation for defense situations (Normal)", "Patch", "GuardRevamp.NormalDefense", 0 };
 	ConfigParam<int> patch_guardrevamp_strong{ "GuardRevamp", "Changes damage calculation for defense situations (Strong)", "Patch", "GuardRevamp.StrongDefense", 0 };
+
+	ConfigParam<int> patch_powermode{ "Power Mode 2003", "", "Patch", "PowerMode2003", 0 };
 
 	// Command line only
 	BoolConfigParam patch_support{ "Support patches", "When OFF all patch support is disabled", "", "", true };

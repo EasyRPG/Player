@@ -945,7 +945,7 @@ bool Game_Interpreter_Map::CommandEasyRpgPathfinder(lcf::rpg::EventCommand const
 		int var = ValueOrVariable(com.parameters[11], com.parameters[12]);
 		int num_events_ids = Main_Data::game_variables->Get(var);
 		auto lst = Main_Data::game_variables->GetRange(var + 1, num_events_ids);
-		std::copy(lst.begin(), lst.end(), event_id_ignore_list.begin());
+		std::copy(lst.begin(), lst.end(), std::back_inserter(event_id_ignore_list));
 		ni = 13;
 	}
 	args.event_id_ignore_list = event_id_ignore_list;

@@ -77,6 +77,16 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			}
 			continue;
 		}
+		if (cp.ParseNext(arg, 1, "--engine-path")) {
+			if (arg.NumValues() > 0) {
+				std::string path = arg.Value(0);
+				path = FileFinder::MakeCanonical(path, 0);
+				if (!path.empty()) {
+					engine_path.Set(path);
+				}
+			}
+			continue;
+		}
 		if (cp.ParseNext(arg, 0, "--no-patch")) {
 			patch_support.Set(false);
 			patch_dynrpg.Lock(false);
@@ -87,6 +97,7 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			patch_rpg2k3_commands.Lock(false);
 			patch_anti_lag_switch.Lock(0);
 			patch_direct_menu.Lock(0);
+			patch_powermode.Lock(0);
 
 			RuntimePatches::LockPatchesAsDiabled();
 			patch_override = true;
@@ -156,6 +167,11 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			}
 			continue;
 		}
+		if (cp.ParseNext(arg, 0, { "--patch-powermode", "--no-patch-powermode" })) {
+			patch_powermode.Set(arg.ArgIsOn());
+			patch_override = true;
+			continue;
+		}
 		if (RuntimePatches::ParseFromCommandLine(cp)) {
 			patch_override = true;
 			continue;
@@ -197,6 +213,7 @@ void Game_ConfigGame::LoadFromStream(Filesystem_Stream::InputStream& is) {
 
 	new_game.FromIni(ini);
 	engine_str.FromIni(ini);
+	engine_path.FromIni(ini);
 	fake_resolution.FromIni(ini);
 
 	if (patch_easyrpg.FromIni(ini)) {
@@ -232,6 +249,10 @@ void Game_ConfigGame::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	}
 
 	if (patch_direct_menu.FromIni(ini)) {
+		patch_override = true;
+	}
+
+	if (patch_powermode.FromIni(ini)) {
 		patch_override = true;
 	}
 

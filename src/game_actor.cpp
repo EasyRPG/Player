@@ -17,10 +17,10 @@
 
 // Headers
 #include <algorithm>
-#include <sstream>
 #include <iterator>
 #include "game_actor.h"
 #include "game_battle.h"
+#include "game_constants.h"
 #include "game_party.h"
 #include "sprite_actor.h"
 #include "main_data.h"
@@ -36,47 +36,24 @@
 #include "algo.h"
 #include "game_message_terms.h"
 
-constexpr int max_level_2k = 50;
-constexpr int max_level_2k3 = 99;
-
 int Game_Actor::MaxHpValue() const {
-	auto& val = lcf::Data::system.easyrpg_max_actor_hp;
-	if (val == -1) {
-		return Player::IsRPG2k() ? 999 : 9999;
-	}
-	return val;
+	return Main_Data::game_constants->MaxActorHpValue();
 }
 
 int Game_Actor::MaxSpValue() const {
-	auto& val = lcf::Data::system.easyrpg_max_actor_sp;
-	if (val == -1) {
-		return 999;
-	}
-	return val;
+	return Main_Data::game_constants->MaxActorSpValue();
 }
 
 int Game_Actor::MaxStatBattleValue() const {
-	auto& val = lcf::Data::system.easyrpg_max_stat_battle_value;
-	if (val == -1) {
-		return 9999;
-	}
-	return val;
+	return Main_Data::game_constants->MaxStatBattleValue();
 }
 
 int Game_Actor::MaxStatBaseValue() const {
-	auto& val = lcf::Data::system.easyrpg_max_stat_base_value;
-	if (val == -1) {
-		return 999;
-	}
-	return val;
+	return Main_Data::game_constants->MaxStatBaseValue();
 }
 
 int Game_Actor::MaxExpValue() const {
-	auto& val = lcf::Data::system.easyrpg_max_exp;
-	if (val == -1) {
-		return Player::IsRPG2k() ? 999999 : 9999999;
-	}
-	return val;
+	return Main_Data::game_constants->MaxExpValue();
 }
 
 Game_Actor::Game_Actor(int actor_id) {
@@ -745,11 +722,7 @@ int Game_Actor::GetAccessoryId() const {
 }
 
 int Game_Actor::GetMaxLevel() const {
-	int max_level = Player::IsRPG2k() ? max_level_2k : max_level_2k3;
-	if (lcf::Data::system.easyrpg_max_level > -1) {
-		max_level = lcf::Data::system.easyrpg_max_level;
-	}
-	return Utils::Clamp<int32_t>(max_level, 1, dbActor->final_level);
+	return Utils::Clamp<int32_t>(Main_Data::game_constants->MaxLevel(), 1, dbActor->final_level);
 }
 
 void Game_Actor::SetExp(int _exp) {

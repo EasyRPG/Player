@@ -78,7 +78,7 @@
     <string name="delete">Sil</string>
     <string name="input">Giriş</string>
     <string name="not_valid_game">$PATH geçerli bir oyun değil</string>
-    <string name="how_to_use_easy_rpg">EasyRPG Player nasıl kullanılır</string>
+    <string name="how_to_use_easy_rpg">EasyRPG Oynatıcı nasıl kullanılır</string>
     <string name="error_saf_download_selected">İndirme klasörü EasyRPG klasörü olarak kullanılamaz.</string>
     <string name="ok">Tamam</string>
     <string name="toggle_ui">Sanal düğmeleri aç/kapat</string>
@@ -136,7 +136,7 @@
     <string name="reset_button_mapping">Düğme atamasını sıfırla</string>
     <string name="error_no_games_folder">\"games\" klasörü mevcut değil veya bir klasör değil. Lütfen klasörü manuel olarak oluşturun veya EasyRPG klasörü için farklı bir konum seçin. EasyRPG klasörü ayarlarda değiştirilebilir.</string>
     <string name="open_save_folder">Kayıt dosyası klasörünü aç</string>
-    <string name="open_games_folder">\"oyunlar (oyunlar)\" Klasörünü aç</string>
+    <string name="open_games_folder">\"Oyunlar (games)\" Klasörünü aç</string>
     <string name="do_want_quit">Gerçekten çıkmak istiyor musunuz?</string>
     <string name="default_layout">Varsayılan</string>
     <string name="audio">Ses</string>

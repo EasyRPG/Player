@@ -19,11 +19,10 @@
 #include <algorithm>
 #include <sstream>
 #include <vector>
-#include "baseui.h"
 #include "cache.h"
 #include <lcf/data.h>
+#include "game_constants.h"
 #include "game_system.h"
-#include "game_party.h"
 #include "input.h"
 #include <lcf/lsd/reader.h>
 #include "player.h"
@@ -32,7 +31,7 @@
 #include <lcf/reader_util.h>
 #include "output.h"
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 #  include <emscripten.h>
 #  include "platform/emscripten/interface.h"
 #endif
@@ -123,7 +122,7 @@ void Scene_File::Start() {
 	// Refresh File Finder Save Folder
 	fs = FileFinder::Save();
 
-	for (int i = 0; i < Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99); i++) {
+	for (int i = 0; i < Main_Data::game_constants->MaxSaveFiles(); i++) {
 		std::shared_ptr<Window_SaveFile>
 			w(new Window_SaveFile(Player::menu_offset_x, 40 + i * 64, MENU_WIDTH, 64));
 		w->SetIndex(i);
@@ -149,7 +148,7 @@ void Scene_File::Start() {
 	}
 
 	std::vector<std::string> commands;
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	commands.emplace_back("Download Savegame");
 	commands.emplace_back("Upload Savegame");
 #endif
@@ -168,7 +167,7 @@ void Scene_File::RefreshWindows() {
 }
 
 void Scene_File::Refresh() {
-	for (int i = 0; i < Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99); i++) {
+	for (int i = 0; i < Main_Data::game_constants->MaxSaveFiles(); i++) {
 		Window_SaveFile *w = file_windows[i].get();
 		PopulateSaveWindow(*w, i);
 		w->Refresh();
@@ -201,7 +200,7 @@ void Scene_File::vUpdate() {
 			Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
 		}
 	} else if (Input::IsTriggered(Input::SHIFT)) {
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 		extra_commands_window->SetX(SCREEN_TARGET_WIDTH - extra_commands_window->GetWidth() - 8);
 		extra_commands_window->SetY(file_windows[index]->GetY() + 8);
 		extra_commands_window->SetItemEnabled(0, file_windows[index]->IsValid() && file_windows[index]->HasParty());
@@ -298,7 +297,7 @@ bool Scene_File::HandleExtraCommandsWindow() {
 
 	extra_commands_window->Update();
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	if (Input::IsTriggered(Input::DECISION)) {
 		if (extra_commands_window->GetIndex() == 0) {
 			// Download

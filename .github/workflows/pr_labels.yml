@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Clone repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           # pull_request_target is run under forks, use main repo source
           fetch-depth: 0
@@ -21,7 +21,7 @@ jobs:
           ref: master
 
       - name: Update labels
-        uses: actions/labeler@v6
+        uses: actions/labeler@v7
         with:
           sync-labels: true
           dot: true

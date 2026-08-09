@@ -26,7 +26,7 @@
 #include <chrono>
 #include <fmt/color.h>
 #include <fmt/ostream.h>
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 #  include "platform/emscripten/interface.h"
 #endif
 
@@ -137,7 +137,7 @@ void Output::SetLogCallback(LogCallbackFn fn, LogCallbackUserData userdata) {
 
 static void WriteLog(LogLevel lvl, std::string const& msg, Color const& c = Color()) {
 // skip writing log file
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
 	std::string prefix = Output::LogLevelToString(lvl) + ": ";
 
 	// Every new message is written once to the file.
@@ -198,7 +198,7 @@ void Output::Quit() {
 }
 
 bool Output::TakeScreenshot(bool is_auto_screenshot) {
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	Emscripten_Interface::TakeScreenshot(is_auto_screenshot);
 	return true;
 #else
@@ -286,7 +286,7 @@ void Output::ErrorStr(std::string const& err) {
 #if defined (PLAYER_NINTENDO) || defined(__vita__)
 		// stdin is non-blocking
 		Game_Clock::SleepFor(5s);
-#elif defined (EMSCRIPTEN)
+#elif defined (__EMSCRIPTEN__)
 		// Don't show JavaScript Window.prompt from stdin call
 		std::cout << " Process finished.";
 #else

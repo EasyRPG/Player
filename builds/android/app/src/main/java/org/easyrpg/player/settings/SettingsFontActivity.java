@@ -44,7 +44,7 @@ public class SettingsFontActivity extends BaseActivity {
         fonts1ListLayout = findViewById(R.id.settings_font1_list);
         fonts2ListLayout = findViewById(R.id.settings_font2_list);
 
-        SDL.setContext(getApplicationContext());
+        SDL.setContext(this);
 
         // Setup UI components
         // The Font Button

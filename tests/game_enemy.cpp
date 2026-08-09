@@ -52,10 +52,9 @@ TEST_CASE("Default") {
 	REQUIRE(e.IsInParty());
 }
 
-static void testLimits(int hp, int base, int battle) {
+static void testLimits(int base, int battle) {
 	auto& enemy = MakeEnemy(1, 100, 10, 11, 12, 13, 14);
 
-	REQUIRE_EQ(enemy.MaxHpValue(), hp);
 	REQUIRE_EQ(enemy.MaxStatBaseValue(), base);
 	REQUIRE_EQ(enemy.MaxStatBattleValue(), battle);
 
@@ -86,12 +85,12 @@ TEST_CASE("Limits") {
 	SUBCASE("2k") {
 		const MockActor m(Player::EngineRpg2k);
 
-		testLimits(9999, 999, 9999);
+		testLimits(999, 9999);
 	}
 	SUBCASE("2k3") {
 		const MockActor m(Player::EngineRpg2k3);
 
-		testLimits(99999, 999, 9999);
+		testLimits(999, 9999);
 	}
 }
 

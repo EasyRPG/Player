@@ -619,7 +619,12 @@ void Scene_Battle::EndBattle(BattleResult result) {
 		case BattleResult::Abort: break;
 	}
 
-	Scene::Pop();
+	if (Game_Battle::battle_test.enabled) {
+		// Shut down when battle test ends
+		Scene::PopUntil(Scene::Null);
+	} else {
+		Scene::Pop();
+	}
 
 	// For RPG_RT compatibility, wait 30 frames if a battle test ends
 	if (Game_Battle::battle_test.enabled) {

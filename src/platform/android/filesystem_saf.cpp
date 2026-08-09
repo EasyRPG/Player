@@ -21,7 +21,7 @@
 #include "android.h"
 
 #include <unistd.h>
-#include <SDL_system.h>
+#include <SDL3/SDL_system.h>
 
 static jobject get_jni_handle(const SafFilesystem* fs, std::string_view path) {
 	std::string combined_path = FileFinder::MakePath(fs->GetPath(), path);

@@ -14,23 +14,21 @@
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
+
 #include <algorithm>
 #include <cstdlib>
 #include <cstring>
-#include "SDL3/SDL_mouse.h"
-#include "SDL3/SDL_video.h"
 #include "game_config.h"
 #include "system.h"
 #include "sdl3_ui.h"
 
 #ifdef _WIN32
 #  include <windows.h>
-#  include <SDL_syswm.h>
 #  include <dwmapi.h>
 #elif defined(__ANDROID__)
 #  include <jni.h>
-#  include <SDL_system.h>
-#elif defined(EMSCRIPTEN)
+#  include <SDL3/SDL_system.h>
+#elif defined(__EMSCRIPTEN__)
 #  include <emscripten.h>
 #elif defined(__WIIU__)
 #  include "platform/wiiu/main.h"
@@ -69,6 +67,38 @@ static SDL_PixelFormat GetDefaultFormat() {
 #endif
 }
 
+/**
+ * Return preference for the given sdl format.
+ * Higher numbers are better, -1 means unsupported.
+ * We prefer formats which have fast paths in pixman.
+ */
+static int GetFormatRank(uint32_t fmt) {
+
+	switch (fmt) {
+#ifdef WORDS_BIGENDIAN
+		case SDL_PIXELFORMAT_RGBA32:
+			return 0;
+		case SDL_PIXELFORMAT_BGRA32:
+			return 0;
+		case SDL_PIXELFORMAT_ARGB32:
+			return 1;
+		case SDL_PIXELFORMAT_ABGR32:
+			return 2;
+#else
+		case SDL_PIXELFORMAT_RGBA32:
+			return 2;
+		case SDL_PIXELFORMAT_BGRA32:
+			return 2;
+		case SDL_PIXELFORMAT_ARGB32:
+			return 1;
+		case SDL_PIXELFORMAT_ABGR32:
+			return 0;
+#endif
+		default:
+			return -1;
+	}
+}
+
 static DynamicFormat GetDynamicFormat(uint32_t fmt) {
 	switch (fmt) {
 		case SDL_PIXELFORMAT_RGBA32:
@@ -84,16 +114,41 @@ static DynamicFormat GetDynamicFormat(uint32_t fmt) {
 	}
 }
 
+static SDL_PixelFormat SelectFormat(const SDL_PixelFormat* formats, bool print_all) {
+	SDL_PixelFormat current_fmt = SDL_PIXELFORMAT_UNKNOWN;
+	int current_rank = -1;
+
+	if (!formats) {
+		return current_fmt;
+	}
+
+	for (int i = 0; formats[i] != SDL_PIXELFORMAT_UNKNOWN; ++i) {
+		const auto fmt = formats[i];
+		int rank = GetFormatRank(fmt);
+		if (rank >= 0) {
+			if (rank > current_rank) {
+				current_fmt = fmt;
+				current_rank = rank;
+			}
+			Output::Debug("SDL3: Detected format ({}) {} : rank=({})",
+					i, SDL_GetPixelFormatName(fmt), rank);
+		} else {
+			if (print_all) {
+				Output::Debug("SDL3: Detected format ({}) {} : Not Supported",
+						i, SDL_GetPixelFormatName(fmt));
+			}
+		}
+	}
+	return current_fmt;
+}
+
 #ifdef _WIN32
 HWND GetWindowHandle(SDL_Window* window) {
-	SDL_SysWMinfo wminfo;
-	SDL_VERSION(&wminfo.version)
-	SDL_bool success = SDL_GetWindowWMInfo(window, &wminfo);
-
-	if (success < 0)
-		Output::Error("Wrong SDL version");
-
-	return wminfo.info.win.window;
+	return (HWND)SDL_GetPointerProperty(
+		SDL_GetWindowProperties(window),
+		SDL_PROP_WINDOW_WIN32_HWND_POINTER,
+		NULL
+	);
 }
 #endif
 
@@ -115,7 +170,7 @@ Sdl3Ui::Sdl3Ui(long width, long height, const Game_Config& cfg) : BaseUi(cfg)
 	// Set the application class name
 	setenv("SDL_VIDEO_X11_WMCLASS", GAME_TITLE, 0);
 #endif
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	SDL_SetHint(SDL_HINT_EMSCRIPTEN_ASYNCIFY, "0");
 	// Only handle keyboard events when the canvas has focus
 	SDL_SetHint(SDL_HINT_EMSCRIPTEN_KEYBOARD_ELEMENT, "#canvas");
@@ -163,9 +218,6 @@ Sdl3Ui::~Sdl3Ui() {
 	if (sdl_texture_game) {
 		SDL_DestroyTexture(sdl_texture_game);
 	}
-	if (sdl_texture_scaled) {
-		SDL_DestroyTexture(sdl_texture_scaled);
-	}
 	if (sdl_renderer) {
 		SDL_DestroyRenderer(sdl_renderer);
 	}
@@ -196,7 +248,9 @@ bool Sdl3Ui::vChangeDisplaySurfaceResolution(int new_width, int new_height) {
 	}
 
 	sdl_texture_game = new_sdl_texture_game;
-	SDL_SetTextureScaleMode(sdl_texture_game, SDL_SCALEMODE_NEAREST);
+	auto scaling_mode = (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Bilinear) ?
+		SDL_SCALEMODE_PIXELART : SDL_SCALEMODE_NEAREST;
+	SDL_SetTextureScaleMode(sdl_texture_game, scaling_mode);
 
 	BitmapRef new_main_surface = Bitmap::Create(new_width, new_height, Color(0, 0, 0, 255));
 
@@ -264,7 +318,7 @@ void Sdl3Ui::EndDisplayModeChange() {
 			}
 
 			current_display_mode.effective = true;
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 			SetIsFullscreen(true);
 #else
 			SetIsFullscreen((current_display_mode.flags & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN);
@@ -287,32 +341,11 @@ bool Sdl3Ui::RefreshDisplayMode() {
 #endif
 
 	if (!sdl_window) {
-		#ifdef __ANDROID__
-		// Workaround SDL bug: https://bugzilla.libsdl.org/show_bug.cgi?id=2291
-		// Set back buffer format to 565
-		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 5);
-		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 6);
-		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 5);
-		#endif
-
-		#if defined(__APPLE__) && TARGET_OS_OSX
-		// Use OpenGL on Mac only -- to work around an SDL Metal deficiency
-		// where it will always use discrete GPU.
-		// See SDL source code:
-		// http://hg.libsdl.org/SDL/file/aa9d7c43a982/src/render/metal/SDL_render_metal.m#l1613
-		SDL_SetHint(SDL_HINT_RENDER_DRIVER, "opengl");
-		#endif
-
-		#if defined(EMSCRIPTEN) || defined(_WIN32)
-		// FIXME: This will not DPI-scale on Windows due to SDL2 limitations.
-		// Is properly fixed in SDL3. See #2764
-		flags |= SDL_WINDOW_ALLOW_HIGHDPI;
-		#endif
-
 		// Create our window
 		SDL_PropertiesID wprops = SDL_CreateProperties();
 		SDL_SetStringProperty(wprops, SDL_PROP_WINDOW_CREATE_TITLE_STRING, GAME_TITLE);
-		SDL_SetNumberProperty(wprops, SDL_PROP_WINDOW_CREATE_FLAGS_NUMBER, SDL_WINDOW_RESIZABLE | flags);
+		SDL_SetNumberProperty(wprops, SDL_PROP_WINDOW_CREATE_FLAGS_NUMBER,
+			SDL_WINDOW_RESIZABLE | SDL_WINDOW_HIGH_PIXEL_DENSITY | flags);
 
 		if (vcfg.window_x.Get() < 0 || vcfg.window_y.Get() < 0 || vcfg.window_height.Get() <= 0 || vcfg.window_width.Get() <= 0) {
 			SDL_SetNumberProperty(wprops, SDL_PROP_WINDOW_CREATE_X_NUMBER, SDL_WINDOWPOS_CENTERED);
@@ -360,7 +393,27 @@ bool Sdl3Ui::RefreshDisplayMode() {
 				sdl_renderer = nullptr;
 				});
 
-		texture_format = GetDefaultFormat();
+		SDL_PropertiesID render_props = SDL_GetRendererProperties(sdl_renderer);
+		const SDL_PixelFormat* texture_formats = nullptr;
+		if (render_props != 0) {
+			Output::Debug("SDL3: RendererInfo name={} vsync={}",
+				SDL_GetStringProperty(render_props, SDL_PROP_RENDERER_NAME_STRING, "Unknown"),
+				SDL_GetNumberProperty(render_props, SDL_PROP_RENDERER_VSYNC_NUMBER, -1)
+			);
+			texture_formats = reinterpret_cast<const SDL_PixelFormat*>(
+					SDL_GetPointerProperty(render_props, SDL_PROP_RENDERER_TEXTURE_FORMATS_POINTER, nullptr));
+			texture_format = SelectFormat(texture_formats, false);
+		} else {
+			Output::Debug("SDL_GetRendererProperties failed : {}", SDL_GetError());
+		}
+
+		if (texture_format == SDL_PIXELFORMAT_UNKNOWN) {
+			texture_format = GetDefaultFormat();
+			Output::Debug("SDL3: None of the detected formats were supported! Falling back to {}. This will likely cause performance degredation.",
+					SDL_GetPixelFormatName(texture_format));
+			// Run again to print all the formats on this system.
+			SelectFormat(texture_formats, true);
+		}
 
 		Output::Debug("SDL3: Selected Pixel Format {}", SDL_GetPixelFormatName(texture_format));
 
@@ -378,20 +431,15 @@ bool Sdl3Ui::RefreshDisplayMode() {
 			return false;
 		}
 
-		SDL_SetTextureScaleMode(sdl_texture_game, SDL_SCALEMODE_NEAREST);
-
-#ifdef _WIN32
-		HWND window = GetWindowHandle(sdl_window);
-		// Not using the enum names because this will fail to build when not using a recent Windows 11 SDK
-		int window_rounding = 1; // DWMWCP_DONOTROUND
-		DwmSetWindowAttribute(window, 33 /* DWMWA_WINDOW_CORNER_PREFERENCE */, &window_rounding, sizeof(window_rounding));
-#endif
+		auto scaling_mode = (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Bilinear) ?
+			SDL_SCALEMODE_PIXELART : SDL_SCALEMODE_NEAREST;
+		SDL_SetTextureScaleMode(sdl_texture_game, scaling_mode);
 
 		renderer_sg.Dismiss();
 		window_sg.Dismiss();
 	} else {
 		// Browser handles fast resizing for emscripten, TODO: use fullscreen API
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
 		bool is_fullscreen = (flags & SDL_WINDOW_FULLSCREEN) == SDL_WINDOW_FULLSCREEN;
 		if (is_fullscreen) {
 			SDL_SetWindowFullscreen(sdl_window, SDL_WINDOW_FULLSCREEN);
@@ -411,7 +459,20 @@ bool Sdl3Ui::RefreshDisplayMode() {
 	// creating the renderer (i.e. Windows), see also comment in SetAppIcon()
 	SetAppIcon();
 
-	uint32_t sdl_pixel_fmt = GetDefaultFormat();
+#ifdef _WIN32
+	HWND window = GetWindowHandle(sdl_window);
+	// Not using the enum names because this will fail to build when not using a recent Windows 11 SDK
+	int window_rounding = 1; // DWMWCP_DONOTROUND
+	DwmSetWindowAttribute(window, 33 /* DWMWA_WINDOW_CORNER_PREFERENCE */, &window_rounding, sizeof(window_rounding));
+#endif
+
+	uint32_t sdl_pixel_fmt;
+	if (auto tex_props = SDL_GetTextureProperties(sdl_texture_game); tex_props != 0) {
+		sdl_pixel_fmt = SDL_GetNumberProperty(tex_props, SDL_PROP_TEXTURE_FORMAT_NUMBER, GetDefaultFormat());
+	} else {
+		Output::Debug("SDL_GetTextureProperties failed : {}", SDL_GetError());
+		return false;
+	}
 
 	auto format = GetDynamicFormat(sdl_pixel_fmt);
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format));
@@ -497,6 +558,9 @@ bool Sdl3Ui::ProcessEvents() {
 
 void Sdl3Ui::SetScalingMode(ConfigEnum::ScalingMode mode) {
 	window.size_changed = true;
+	auto scaling_mode = (mode == ConfigEnum::ScalingMode::Bilinear) ?
+		SDL_SCALEMODE_PIXELART : SDL_SCALEMODE_NEAREST;
+	SDL_SetTextureScaleMode(sdl_texture_game, scaling_mode);
 	vcfg.scaling_mode.Set(mode);
 }
 
@@ -523,24 +587,6 @@ void Sdl3Ui::SetScreenScale(int scale) {
 }
 
 void Sdl3Ui::UpdateDisplay() {
-#ifdef __WIIU__
-	if (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Bilinear && window.scale > 0.f) {
-		// Workaround WiiU bug: Bilinear uses a render target and for these the format is not converted
-		void* target_pixels;
-		int target_pitch;
-
-		SDL_LockTexture(sdl_texture_game, nullptr, &target_pixels, &target_pitch);
-		SDL_ConvertPixels(main_surface->width(), main_surface->height(), GetDefaultFormat(), main_surface->pixels(),
-			main_surface->pitch(), SDL_PIXELFORMAT_RGBA8888, target_pixels, target_pitch);
-		SDL_UnlockTexture(sdl_texture_game);
-	} else {
-		SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
-	}
-#else
-	// SDL_UpdateTexture was found to be faster than SDL_LockTexture / SDL_UnlockTexture.
-	SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
-#endif
-
 	if (window.size_changed && window.width > 0 && window.height > 0) {
 		// Based on SDL2 function UpdateLogicalSize
 		window.size_changed = false;
@@ -567,9 +613,9 @@ void Sdl3Ui::UpdateDisplay() {
 		if (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Integer) {
 			// Integer division on purpose
 			if (want_aspect > real_aspect) {
-				window.scale = static_cast<float>(win_width / main_surface->width());
+				window.scale = static_cast<float>(static_cast<int>(win_width / main_surface->width()));
 			} else {
-				window.scale = static_cast<float>(win_height / main_surface->height());
+				window.scale = static_cast<float>(static_cast<int>(win_height / main_surface->height()));
 			}
 
 			viewport.w = static_cast<int>(ceilf(main_surface->width() * window.scale));
@@ -585,7 +631,13 @@ void Sdl3Ui::UpdateDisplay() {
 			viewport.x = border_x;
 			viewport.w = win_width;
 			viewport.h = static_cast<int>(ceilf(main_surface->height() * window.scale));
+#ifdef __ANDROID__
+			// Top align in Portrait mode
+			// This is less fragile than computing the bounding box on the Java side
+			viewport.y = 0;
+#else
 			viewport.y = (win_height - viewport.h) / 2 + border_y;
+#endif
 			do_stretch();
 			SDL_SetRenderViewport(sdl_renderer, &viewport);
 		} else {
@@ -598,31 +650,11 @@ void Sdl3Ui::UpdateDisplay() {
 			do_stretch();
 			SDL_SetRenderViewport(sdl_renderer, &viewport);
 		}
-
-		if (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Bilinear && window.scale > 0.f) {
-			if (sdl_texture_scaled) {
-				SDL_DestroyTexture(sdl_texture_scaled);
-			}
-			sdl_texture_scaled = SDL_CreateTexture(sdl_renderer, texture_format, SDL_TEXTUREACCESS_TARGET,
-			   static_cast<int>(ceilf(window.scale)) * main_surface->width(), static_cast<int>(ceilf(window.scale)) * main_surface->height());
-			if (!sdl_texture_scaled) {
-				Output::Debug("SDL_CreateTexture failed : {}", SDL_GetError());
-			}
-		}
 	}
 
+	SDL_UpdateTexture(sdl_texture_game, nullptr, main_surface->pixels(), main_surface->pitch());
 	SDL_RenderClear(sdl_renderer);
-	if (vcfg.scaling_mode.Get() == ConfigEnum::ScalingMode::Bilinear && window.scale > 0.f) {
-		// Render game texture on the scaled texture
-		SDL_SetRenderTarget(sdl_renderer, sdl_texture_scaled);
-		SDL_RenderClear(sdl_renderer);
-		SDL_RenderTexture(sdl_renderer, sdl_texture_game, nullptr, nullptr);
-
-		SDL_SetRenderTarget(sdl_renderer, nullptr);
-		SDL_RenderTexture(sdl_renderer, sdl_texture_scaled, nullptr, nullptr);
-	} else {
-		SDL_RenderTexture(sdl_renderer, sdl_texture_game, nullptr, nullptr);
-	}
+	SDL_RenderTexture(sdl_renderer, sdl_texture_game, nullptr, nullptr);
 	SDL_RenderPresent(sdl_renderer);
 }
 
@@ -762,12 +794,6 @@ void Sdl3Ui::ProcessWindowEvent(SDL_Event &evnt) {
 		window.width = evnt.window.data1;
 		window.height = evnt.window.data2;
 
-#ifdef EMSCRIPTEN
-		double display_ratio = emscripten_get_device_pixel_ratio();
-		window.width = static_cast<int>(window.width * display_ratio);
-		window.height = static_cast<int>(window.height * display_ratio);
-#endif
-
 		window.size_changed = true;
 	}
 }
@@ -815,15 +841,13 @@ void Sdl3Ui::ProcessMouseMotionEvent(SDL_Event& evnt) {
 		return;
 	}
 
-#ifdef EMSCRIPTEN
-	double display_ratio = emscripten_get_device_pixel_ratio();
-	mouse_pos.x = (evnt.motion.x * display_ratio - viewport.x) * main_surface->width() / xw;
-	mouse_pos.y = (evnt.motion.y * display_ratio - viewport.y) * main_surface->height() / yh;
-#else
-	mouse_pos.x = (evnt.motion.x - viewport.x) * main_surface->width() / xw;
-	mouse_pos.y = (evnt.motion.y - viewport.y) * main_surface->height() / yh;
-#endif
-
+	if (SDL_ConvertEventToRenderCoordinates(sdl_renderer, &evnt)) {
+		mouse_pos.x = evnt.motion.x * main_surface->width() / xw;
+		mouse_pos.y = evnt.motion.y * main_surface->height() / yh;
+	} else {
+		mouse_pos.x = (evnt.motion.x - viewport.x) * main_surface->width() / xw;
+		mouse_pos.y = (evnt.motion.y - viewport.y) * main_surface->height() / yh;
+	}
 #else
 	/* unused */
 	(void) evnt;
@@ -955,19 +979,13 @@ void Sdl3Ui::ProcessFingerEvent(SDL_Event& evnt) {
 			return;
 		}
 
-#ifdef EMSCRIPTEN
-		double display_ratio = emscripten_get_device_pixel_ratio();
-		int x = (evnt.tfinger.x * display_ratio - viewport.x) * main_surface->width() / xw;
-		int y = (evnt.tfinger.y * display_ratio - viewport.y) * main_surface->height() / yh;
-#else
 		int x = (evnt.tfinger.x - viewport.x) * main_surface->width() / xw;
 		int y = (evnt.tfinger.y - viewport.y) * main_surface->height() / yh;
-#endif
 
 		fi->Down(evnt.tfinger.fingerID, x, y);
 	} else if (evnt.type == SDL_EVENT_FINGER_UP) {
 		auto fi = std::find_if(touch_input.begin(), touch_input.end(), [&](const auto& input) {
-			return input.id == evnt.tfinger.fingerID;
+			return input.id == static_cast<int64_t>(evnt.tfinger.fingerID);
 		});
 		if (fi == touch_input.end()) {
 			// Finger is not tracked
@@ -1197,14 +1215,14 @@ int FilterUntilFocus(const SDL_Event* evnt) {
 }
 
 void Sdl3Ui::vGetConfig(Game_ConfigVideo& cfg) const {
-#ifdef EMSCRIPTEN
-	cfg.renderer.Lock("SDL2 (Software, Emscripten)");
+#ifdef __EMSCRIPTEN__
+	cfg.renderer.Lock("SDL3 (Software, Emscripten)");
 #elif defined(__wii__)
-	cfg.renderer.Lock("SDL2 (Software, Wii)");
+	cfg.renderer.Lock("SDL3 (Software, Wii)");
 #elif defined(__WIIU__)
-	cfg.renderer.Lock("SDL2 (Software, Wii U)");
+	cfg.renderer.Lock("SDL3 (Software, Wii U)");
 #else
-	cfg.renderer.Lock("SDL2 (Software)");
+	cfg.renderer.Lock("SDL3 (Software)");
 #endif
 
 	cfg.vsync.SetOptionVisible(true);
@@ -1224,7 +1242,7 @@ void Sdl3Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.window_zoom.Set(current_display_mode.zoom);
 	cfg.fullscreen.Set(IsFullscreen());
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	// Fullscreen is handled by the browser
 	cfg.fullscreen.SetOptionVisible(false);
 	cfg.fps_limit.SetOptionVisible(false);

@@ -192,7 +192,8 @@ Game_Message::ParseParamResult Game_Message::ParseParam(
 		const char* end,
 		uint32_t escape_char,
 		bool skip_prefix,
-		int max_recursion)
+		int max_recursion,
+		bool parse_array)
 {
 	if (!skip_prefix) {
 		const auto begin = iter;
@@ -217,6 +218,7 @@ Game_Message::ParseParamResult Game_Message::ParseParam(
 	}
 
 	int value = 0;
+	std::vector<int> values;
 	++iter;
 	bool stop_parsing = false;
 	bool got_valid_number = false;
@@ -240,6 +242,14 @@ Game_Message::ParseParamResult Game_Message::ParseParam(
 			auto ret = Utils::UTF8Next(iter, end);
 			auto ch = ret.ch;
 			iter = ret.next;
+
+			if (parse_array && ch == ',') {
+				// command contains a list of numbers
+				values.push_back(value);
+				value = 0;
+				got_valid_number = false;
+				continue;
+			}
 
 			// Recursive variable case.
 			if (ch == escape_char) {
@@ -273,15 +283,17 @@ Game_Message::ParseParamResult Game_Message::ParseParam(
 		++iter;
 	}
 
+	values.emplace_back(value);
+
 	// Actor 0 references the first party member
-	if (upper == 'N' && value == 0 && got_valid_number) {
+	if (upper == 'N' && values.front() == 0 && got_valid_number) {
 		auto* party = Main_Data::game_party.get();
 		if (party->GetBattlerCount() > 0) {
-			value = (*party)[0].GetId();
+			values.front() = (*party)[0].GetId();
 		}
 	}
 
-	return { iter, value };
+	return { iter, values.front(), values };
 }
 
 Game_Message::ParseParamStringResult Game_Message::ParseStringParam(
@@ -358,8 +370,8 @@ Game_Message::ParseParamResult Game_Message::ParseString(const char* iter, const
 	return ParseParam('T', 't', iter, end, escape_char, skip_prefix, max_recursion);
 }
 
-Game_Message::ParseParamResult Game_Message::ParseColor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {
-	return ParseParam('C', 'c', iter, end, escape_char, skip_prefix, max_recursion);
+Game_Message::ParseParamResult Game_Message::ParseColor(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion, bool parse_array) {
+	return ParseParam('C', 'c', iter, end, escape_char, skip_prefix, max_recursion, parse_array);
 }
 
 Game_Message::ParseParamResult Game_Message::ParseSpeed(const char* iter, const char* end, uint32_t escape_char, bool skip_prefix, int max_recursion) {

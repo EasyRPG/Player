@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="autodetect">التعرّف التلقائي على المنطقة (مقترح)</string>
+    <string name="west_europe">أوروبي غربي</string>
+    <string name="cyrillic">سيريلي/روسي</string>
+    <string name="east_europe">أوروبي وسطي/شرقي</string>
+    <string name="japan">ياباني</string>
+    <string name="korean">كوري</string>
+    <string name="chinese_simple">صيني مبسط</string>
+    <string name="chinese_traditional">صيني تقليدي</string>
+    <string name="greek">يوناني</string>
+    <string name="turkish">تركي</string>
+    <string name="hebrew">عبري</string>
+    <string name="arabic">عربي</string>
+    <string name="baltic">بلطيقي</string>
+    <string name="thai">تايلاندي</string>
+    <string name="vietnamese">فيتنامي</string>
+</resources>

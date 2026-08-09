@@ -78,6 +78,10 @@ inline bool Game_Interpreter_Shared::DecodeTargetEvaluationMode(lcf::rpg::EventC
 				return true;
 			}
 			break;
+		default:
+			id_0 = 0;
+			id_1 = 0;
+			break;
 	}
 
 	if constexpr (validate_patches) {

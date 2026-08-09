@@ -130,6 +130,7 @@ void Scene_Title::Suspend(Scene::SceneType scene_type) {
 void Scene_Title::vUpdate() {
 	if (Game_Battle::battle_test.enabled) {
 		Player::SetupBattleTest();
+		restart_title_cache = true;
 		return;
 	}
 

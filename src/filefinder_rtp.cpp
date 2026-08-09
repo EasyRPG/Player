@@ -28,11 +28,11 @@
 
 #if defined(USE_SDL) && defined(__ANDROID__)
 #  include <jni.h>
-#  include <SDL_system.h>
+#  include <SDL3/SDL_system.h>
 #endif
 
 FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings, std::string rtp_path) {
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	// No RTP support for emscripten at the moment.
 	disable_rtp = true;
 #else
@@ -77,8 +77,8 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings, std::string rt
 	}
 #elif defined(__ANDROID__)
 	// Invoke "String getRtpPath()" in EasyRPG Activity via JNI
-	JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
-	jobject sdl_activity = (jobject)SDL_AndroidGetActivity();
+	JNIEnv* env = (JNIEnv*)SDL_GetAndroidJNIEnv();
+	jobject sdl_activity = (jobject)SDL_GetAndroidActivity();
 	jclass cls = env->GetObjectClass(sdl_activity);
 	jmethodID jni_getRtpPath = env->GetMethodID(cls , "getRtpPath", "()Ljava/lang/String;");
 	jstring return_string = (jstring)env->CallObjectMethod(sdl_activity, jni_getRtpPath);

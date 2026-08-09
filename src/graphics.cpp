@@ -76,7 +76,7 @@ void Graphics::UpdateTitle() {
 		return;
 	}
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	return;
 #else
 	std::string fps;

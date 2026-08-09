@@ -26,7 +26,7 @@ public class SettingsGamesFolderActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_settings_easyrpg_folders);
-        SDL.setContext(getApplicationContext());
+        SDL.setContext(this);
 
         safError = GameBrowserHelper.SafError.OK;
 

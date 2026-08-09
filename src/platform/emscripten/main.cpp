@@ -77,6 +77,11 @@ void main_loop() {
 			return;
 		}
 		emscripten_cancel_main_loop();
+		EM_ASM({
+			if (Module.onExit !== undefined) {
+				Module.onExit();
+			}
+		});
 	}
 }
 
@@ -84,7 +89,7 @@ void main_loop() {
  * If the main function ever needs to change, be sure to update the `main()`
  * functions of the other platforms as well.
  */
-extern "C" int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
 	args.assign(argv, argv + argc);
 
 	Output::IgnorePause(true);

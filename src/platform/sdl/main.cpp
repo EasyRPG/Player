@@ -22,8 +22,10 @@
 #include "utils.h"
 #include "output.h"
 
-#if USE_SDL == 3 // This is needed on Windows, SDL wraps main()
+#if USE_SDL == 3
 #  include <SDL3/SDL.h>
+// This is needed on Windows, SDL wraps main()
+#  include <SDL3/SDL_main.h>
 #elif USE_SDL <= 2
 #  include <SDL.h>
 #endif
@@ -55,7 +57,7 @@ static void LogCallback(LogLevel lvl, std::string const& msg, LogCallbackUserDat
  * If the main function ever needs to change, be sure to update the `main()`
  * functions of the other platforms as well.
  */
-extern "C" int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) {
 	std::vector<std::string> args;
 
 #if defined(_WIN32)
@@ -78,7 +80,7 @@ extern "C" int main(int argc, char* argv[]) {
 #endif
 
 #if defined(__ANDROID__)
-	EpAndroid::env = (JNIEnv*)SDL_AndroidGetJNIEnv();
+	EpAndroid::env = (JNIEnv*)SDL_GetAndroidJNIEnv();
 #endif
 
 	Player::Init(std::move(args));

@@ -831,7 +831,6 @@ bool Game_Character::CalculateMoveRoute(const CalculateMoveRouteArgs& args) {
 	std::unordered_map<int, SearchNode> graph;
 	std::map<std::pair<int, int>, SearchNode> graph_by_coord;
 	queue.push_back(start);
-	int id = 0;
 	int idd = 0;
 	int steps_taken = 0;
 	SearchNode closest_node = {args.dest_x, args.dest_y, std::numeric_limits<int>::max(), -1}; // Initialize with a very high cost.
@@ -997,7 +996,7 @@ bool Game_Character::CalculateMoveRoute(const CalculateMoveRouteArgs& args) {
 				}
 			}
 		}
-		id++;
+
 		// Calculate the Manhattan distance between the current node and the destination
 		int manhattan_dist = abs(args.dest_x - n.x) + abs(args.dest_y - n.y);
 

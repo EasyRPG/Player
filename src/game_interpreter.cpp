@@ -28,6 +28,7 @@
 #include "async_handler.h"
 #include "game_dynrpg.h"
 #include "filefinder.h"
+#include "cache.h"
 #include "game_destiny.h"
 #include "game_map.h"
 #include "game_event.h"
@@ -468,7 +469,10 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			const int key = _keyinput.CheckInput();
 			Main_Data::game_variables->Set(_keyinput.variable, key);
 			Game_Map::SetNeedRefreshForVarChange(_keyinput.variable);
-			if (key == 0) {
+			RuntimePatches::OnVariableChanged(_keyinput.variable);
+			// Content of KeyInput value might have changed due to a
+			// patch side effect -> Read it again
+			if (Main_Data::game_variables->Get(_keyinput.variable) == 0) {
 				++_keyinput.wait_frames;
 				break;
 			}
@@ -477,6 +481,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 				Main_Data::game_variables->Set(_keyinput.time_variable,
 						(_keyinput.wait_frames * 10) / Game_Clock::GetTargetGameFps());
 				Game_Map::SetNeedRefreshForVarChange(_keyinput.time_variable);
+				RuntimePatches::OnVariableChanged(_keyinput.time_variable);
 			}
 			_keyinput.wait = false;
 		}
@@ -586,7 +591,7 @@ void Game_Interpreter::SkipToNextConditional(std::initializer_list<Cmd> codes, i
 	}
 
 	for (++index; index < static_cast<int>(list.size()); ++index) {
-		const auto& com = list[index];
+		const auto& com = ResolveEventCommand(list[index]);
 		if (com.indent > indent) {
 			continue;
 		}
@@ -806,6 +811,8 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter::CommandManiacSetGameOption, 4>(com);
 		case Cmd::Maniac_ControlStrings:
 			return CmdSetup<&Game_Interpreter::CommandManiacControlStrings, 8>(com);
+		case Cmd::Maniac_WritePicture:
+			return CmdSetup<&Game_Interpreter::CommandManiacWritePicture, 5>(com);
 		case Cmd::Maniac_CallCommand:
 			return CmdSetup<&Game_Interpreter::CommandManiacCallCommand, 6>(com);
 		case Cmd::Maniac_GetGameInfo:
@@ -870,17 +877,21 @@ std::vector<std::string> Game_Interpreter::GetChoices(int max_num_choices) {
 	auto& index = frame.current_command;
 
 	// Let's find the choices
-	int current_indent = list[index + 1].indent;
+	if (index + 1 >= static_cast<int>(list.size())) return {};
+
+	int current_indent = ResolveEventCommand(list[index + 1]).indent;
+
 	std::vector<std::string> s_choices;
 	for (int index_temp = index + 1; index_temp < static_cast<int>(list.size()); ++index_temp) {
-		const auto& com = list[index_temp];
+		const auto& com = ResolveEventCommand(list[index_temp]);
+
 		if (com.indent != current_indent) {
 			continue;
 		}
 
 		if (static_cast<Cmd>(com.code) == Cmd::ShowChoiceOption && com.parameters.size() > 0 && com.parameters[0] < max_num_choices) {
 			// Choice found
-			s_choices.push_back(ToString(list[index_temp].string));
+			s_choices.push_back(ToString(com.string));
 		}
 
 		if (static_cast<Cmd>(com.code) == Cmd::ShowChoiceEnd) {
@@ -920,29 +931,38 @@ bool Game_Interpreter::CommandShowMessage(lcf::rpg::EventCommand const& com) { /
 	++index;
 
 	// Check for continued lines via ShowMessage_2
-	while (index < static_cast<int>(list.size()) && static_cast<Cmd>(list[index].code) == Cmd::ShowMessage_2) {
-		// Add second (another) line
-		pm.PushLine(ToString(list[index].string));
-		++index;
+	while (index < static_cast<int>(list.size())) {
+		const auto& next_cmd = ResolveEventCommand(list[index]);
+
+		if (static_cast<Cmd>(next_cmd.code) == Cmd::ShowMessage_2) {
+			pm.PushLine(ToString(next_cmd.string));
+			++index;
+		}
+		else {
+			break;
+		}
 	}
 
 	// Handle Choices or number
 	if (index < static_cast<int>(list.size())) {
 		// If next event command is show choices
-		if (static_cast<Cmd>(list[index].code) == Cmd::ShowChoice) {
+		const auto& next_cmd = ResolveEventCommand(list[index]);
+
+		if (static_cast<Cmd>(next_cmd.code) == Cmd::ShowChoice) {
 			std::vector<std::string> s_choices = GetChoices(4);
 			// If choices fit on screen
 			if (static_cast<int>(s_choices.size()) <= (4 - pm.NumLines())) {
-				pm.SetChoiceCancelType(list[index].parameters[0]);
-				SetupChoices(s_choices, com.indent, pm);
+				pm.SetChoiceCancelType(next_cmd.parameters[0]);
+				SetupChoices(s_choices, next_cmd.indent, pm);
 				++index;
 			}
-		} else if (static_cast<Cmd>(list[index].code) == Cmd::InputNumber) {
-			// If next event command is input number
-			// If input number fits on screen
+		}
+		else if (static_cast<Cmd>(next_cmd.code) == Cmd::InputNumber) {
+			// If next event command is input number and
+			// input number fits on screen
 			if (pm.NumLines() < 4) {
-				int digits = list[index].parameters[0];
-				int variable_id = list[index].parameters[1];
+				int digits = next_cmd.parameters[0];
+				int variable_id = next_cmd.parameters[1];
 				pm.PushNumInput(variable_id, digits);
 				++index;
 			}
@@ -1055,37 +1075,39 @@ bool Game_Interpreter::CommandInputNumber(lcf::rpg::EventCommand const& com) { /
 }
 
 bool Game_Interpreter::CommandControlSwitches(lcf::rpg::EventCommand const& com) { // code 10210
-	{
-		int start, end;
-		bool target_eval_result = DecodeTargetEvaluationMode<
-			/* validate_patches */ true,
-			/* support_range_indirect */ false,
-			/* support_expressions */ false,
-			/* support_bitmask */ false,
-			/* support_scopes */ false
-		>(com, start, end);
-		if (!target_eval_result) {
-			Output::Warning("ControlSwitches: Unsupported target evaluation mode {}", com.parameters[0]);
-			return true;
-		}
+	int start, end;
+	bool target_eval_result = DecodeTargetEvaluationMode<
+		/* validate_patches */ true,
+		/* support_range_indirect */ false,
+		/* support_expressions */ false,
+		/* support_bitmask */ false,
+		/* support_scopes */ false
+	>(com, start, end);
+	if (!target_eval_result) {
+		Output::Warning("ControlSwitches: Unsupported target evaluation mode {}", com.parameters[0]);
+		return true;
+	}
 
-		int val = com.parameters[3];
+	int mode = com.parameters[3];
 
-		if (start == end) {
-			if (val < 2) {
-				Main_Data::game_switches->Set(start, val == 0);
-			} else {
-				Main_Data::game_switches->Flip(start);
-			}
-			Game_Map::SetNeedRefreshForSwitchChange(start);
+	if (start == end) {
+		if (mode == 0 || mode == 1) {
+			Main_Data::game_switches->Set(start, mode == 0);
+		} else if (mode == 2) {
+			Main_Data::game_switches->Flip(start);
 		} else {
-			if (val < 2) {
-				Main_Data::game_switches->SetRange(start, end, val == 0);
-			} else {
-				Main_Data::game_switches->FlipRange(start, end);
-			}
-			Game_Map::SetNeedRefresh(true);
+			Output::Debug("ControlSwitch: Unknown mode {}", mode);
 		}
+		Game_Map::SetNeedRefreshForSwitchChange(start);
+	} else {
+		if (mode == 0 || mode == 1) {
+			Main_Data::game_switches->SetRange(start, end, mode == 0);
+		} else if (mode == 2) {
+			Main_Data::game_switches->FlipRange(start, end);
+		} else {
+			Output::Debug("ControlSwitch: Unknown mode {}", mode);
+		}
+		Game_Map::SetNeedRefresh(true);
 	}
 	return true;
 }
@@ -1328,6 +1350,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					break;
 			}
 			Game_Map::SetNeedRefreshForVarChange(start);
+			RuntimePatches::OnVariableChanged(start);
 		} else if (com.parameters[4] == 1) {
 			// Multiple variables - Direct variable lookup
 			int var_id = com.parameters[5];
@@ -1367,6 +1390,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					break;
 			}
 			Game_Map::SetNeedRefresh(true);
+			RuntimePatches::OnVariableRangeChanged(start, end);
 		} else if (com.parameters[4] == 2) {
 			// Multiple variables - Indirect variable lookup
 			int var_id = com.parameters[5];
@@ -1406,6 +1430,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					break;
 			}
 			Game_Map::SetNeedRefresh(true);
+			RuntimePatches::OnVariableRangeChanged(start, end);
 		} else if (com.parameters[4] == 3) {
 			// Multiple variables - random
 			int rmax = max(com.parameters[5], com.parameters[6]);
@@ -1446,6 +1471,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					break;
 			}
 			Game_Map::SetNeedRefresh(true);
+			RuntimePatches::OnVariableRangeChanged(start, end);
 		} else {
 			// Multiple variables - constant
 			switch (operation) {
@@ -1484,6 +1510,7 @@ bool Game_Interpreter::CommandControlVariables(lcf::rpg::EventCommand const& com
 					break;
 			}
 			Game_Map::SetNeedRefresh(true);
+			RuntimePatches::OnVariableRangeChanged(start, end);
 		}
 	}
 
@@ -1536,19 +1563,20 @@ std::vector<Game_Actor*> Game_Interpreter::GetActors(int mode, int id) {
 	return actors;
 }
 
-Game_Character* Game_Interpreter::GetCharacter(int event_id, std::string_view origin) const {
+Game_Character* Game_Interpreter::GetCharacter(int event_id, std::string_view origin, bool silent) const {
 	if (event_id == Game_Character::CharThisEvent) {
 		event_id = GetThisEventId();
 		// Is a common event
 		if (event_id == 0) {
 			// With no map parent
+			// Still reported even when "silent" as this would hide a bug
 			Output::Warning("{}: Can't use ThisEvent in common event: Not called from a map event", origin);
 			return nullptr;
 		}
 	}
 
 	Game_Character* ch = Game_Character::GetCharacter(event_id, event_id);
-	if (!ch) {
+	if (!ch && !silent) {
 		Output::Warning("{}: Unknown event with id {}", origin, event_id);
 	}
 	return ch;
@@ -1947,6 +1975,7 @@ bool Game_Interpreter::CommandSimulatedAttack(lcf::rpg::EventCommand const& com)
 
 		if (com.parameters[6] != 0) {
 			Main_Data::game_variables->Set(com.parameters[7], result);
+			RuntimePatches::OnVariableChanged(com.parameters[7]);
 			Game_Map::SetNeedRefresh(true);
 		}
 	}
@@ -2060,7 +2089,7 @@ std::optional<bool> Game_Interpreter::HandleDynRpgScript(const lcf::rpg::EventCo
 
 		// Concat everything that is not another command or a new comment block
 		for (size_t i = index + 1; i < list.size(); ++i) {
-			const auto& cmd = list[i];
+			const auto& cmd = ResolveEventCommand(list[i]);
 			if (cmd.code == static_cast<uint32_t>(Cmd::Comment_2) &&
 					!cmd.string.empty() && cmd.string[0] != '@') {
 				command += ToString(cmd.string);
@@ -2197,11 +2226,13 @@ bool Game_Interpreter::CommandChangeVehicleGraphic(lcf::rpg::EventCommand const&
 bool Game_Interpreter::CommandChangeSystemBGM(lcf::rpg::EventCommand const& com) { //code 10660
 	lcf::rpg::Music music;
 	int context = com.parameters[0];
-	music.name = ToString(com.string);
-	music.fadein = com.parameters[1];
-	music.volume = com.parameters[2];
-	music.tempo = com.parameters[3];
-	music.balance = com.parameters[4];
+
+	music.name = ToString(CommandStringOrVariableBitfield(com, 5, 0, 6));
+	music.fadein = ValueOrVariableBitfield(com, 5, 1, 1);
+	music.volume = ValueOrVariableBitfield(com, 5, 2, 2);
+	music.tempo = ValueOrVariableBitfield(com, 5, 3, 3);
+	music.balance = ValueOrVariableBitfield(com, 5, 4, 4);
+
 	Main_Data::game_system->SetSystemBGM(context, std::move(music));
 	return true;
 }
@@ -2209,18 +2240,22 @@ bool Game_Interpreter::CommandChangeSystemBGM(lcf::rpg::EventCommand const& com)
 bool Game_Interpreter::CommandChangeSystemSFX(lcf::rpg::EventCommand const& com) { //code 10670
 	lcf::rpg::Sound sound;
 	int context = com.parameters[0];
-	sound.name = ToString(com.string);
-	sound.volume = com.parameters[1];
-	sound.tempo = com.parameters[2];
-	sound.balance = com.parameters[3];
+
+	sound.name = ToString(CommandStringOrVariableBitfield(com, 4, 0, 5));
+	sound.volume = ValueOrVariableBitfield(com, 4, 1, 1);
+	sound.tempo = ValueOrVariableBitfield(com, 4, 2, 2);
+	sound.balance = ValueOrVariableBitfield(com, 4, 3, 3);
+
 	Main_Data::game_system->SetSystemSE(context, std::move(sound));
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeSystemGraphics(lcf::rpg::EventCommand const& com) { // code 10680
-	Main_Data::game_system->SetSystemGraphic(ToString(CommandStringOrVariable(com, 2, 3)),
-			static_cast<lcf::rpg::System::Stretch>(com.parameters[0]),
-			static_cast<lcf::rpg::System::Font>(com.parameters[1]));
+	std::string name = ToString(CommandStringOrVariableBitfield(com, 2, 0, 3));
+
+	Main_Data::game_system->SetSystemGraphic(name,
+		static_cast<lcf::rpg::System::Stretch>(com.parameters[0]),
+		static_cast<lcf::rpg::System::Font>(com.parameters[1]));
 
 	return true;
 }
@@ -2239,6 +2274,7 @@ bool Game_Interpreter::CommandMemorizeLocation(lcf::rpg::EventCommand const& com
 	Main_Data::game_variables->Set(var_x, player->GetX());
 	Main_Data::game_variables->Set(var_y, player->GetY());
 	Game_Map::SetNeedRefreshForVarChange({var_map_id, var_x, var_y});
+	RuntimePatches::OnVariableChanged({var_map_id, var_x, var_y});
 	return true;
 }
 
@@ -2329,11 +2365,11 @@ bool Game_Interpreter::CommandChangeEventLocation(lcf::rpg::EventCommand const& 
 }
 
 bool Game_Interpreter::CommandTradeEventLocations(lcf::rpg::EventCommand const& com) { // Code 10870
-	int event1_id = com.parameters[0];
-	int event2_id = com.parameters[1];
+	int event1_id = ValueOrVariableBitfield(com, 2, 0, 0);
+	int event2_id = ValueOrVariableBitfield(com, 2, 1, 1);
 
-	Game_Character *event1 = GetCharacter(event1_id, "TradeEventLocations");
-	Game_Character *event2 = GetCharacter(event2_id, "TradeEventLocations");
+	Game_Character *event1 = GetCharacter(event1_id, "TradeEventLocations EV1");
+	Game_Character *event2 = GetCharacter(event2_id, "TradeEventLocations EV2");
 
 	if (event1 != nullptr && event2 != nullptr) {
 		auto m1 = event1->GetMapId();
@@ -2357,6 +2393,7 @@ bool Game_Interpreter::CommandStoreTerrainID(lcf::rpg::EventCommand const& com) 
 	int var_id = com.parameters[3];
 	Main_Data::game_variables->Set(var_id, Game_Map::GetTerrainTag(x, y));
 	Game_Map::SetNeedRefreshForVarChange(var_id);
+	RuntimePatches::OnVariableChanged(var_id);
 	return true;
 }
 
@@ -2367,6 +2404,7 @@ bool Game_Interpreter::CommandStoreEventID(lcf::rpg::EventCommand const& com) { 
 	auto* ev = Game_Map::GetEventAt(x, y, false);
 	Main_Data::game_variables->Set(var_id, ev ? ev->GetId() : 0);
 	Game_Map::SetNeedRefreshForVarChange(var_id);
+	RuntimePatches::OnVariableChanged(var_id);
 	return true;
 }
 
@@ -2796,10 +2834,7 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 			pic_id = ValueOrVariable(com.parameters[17], pic_id);
 		}
 		if (com.parameters[19] != 0) {
-			int var = 0;
-			if (Main_Data::game_variables->IsValid(com.parameters[19])) {
-				var = Main_Data::game_variables->Get(com.parameters[19]);
-			}
+			int var = Main_Data::game_variables->Get(com.parameters[19]);
 			params.name = PicPointerPatch::ReplaceName(params.name, var, com.parameters[18]);
 		}
 
@@ -3252,6 +3287,7 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 		// While waiting the variable is reset to 0 each frame.
 		Main_Data::game_variables->Set(var_id, 0);
 		Game_Map::SetNeedRefreshForVarChange(var_id);
+		RuntimePatches::OnVariableChanged(var_id);
 	}
 
 	if (wait && Game_Message::IsMessageActive()) {
@@ -3367,12 +3403,13 @@ bool Game_Interpreter::CommandKeyInputProc(lcf::rpg::EventCommand const& com) { 
 	int key = _keyinput.CheckInput();
 	Main_Data::game_variables->Set(_keyinput.variable, key);
 	Game_Map::SetNeedRefreshForVarChange(_keyinput.variable);
+	RuntimePatches::OnVariableChanged(_keyinput.variable);
 
 	return true;
 }
 
 bool Game_Interpreter::CommandChangeMapTileset(lcf::rpg::EventCommand const& com) { // code 11710
-	int chipset_id = com.parameters[0];
+	int chipset_id = ValueOrVariableBitfield(com, 1, 0, 0);
 
 	if (chipset_id == Game_Map::GetChipset()) {
 		return true;
@@ -3392,13 +3429,15 @@ bool Game_Interpreter::CommandChangeMapTileset(lcf::rpg::EventCommand const& com
 
 bool Game_Interpreter::CommandChangePBG(lcf::rpg::EventCommand const& com) { // code 11720
 	Game_Map::Parallax::Params params;
-	params.name = ToString(com.string);
+	params.name = ToString(CommandStringOrVariableBitfield(com, 6, 0, 7));
+
 	params.scroll_horz = com.parameters[0] != 0;
 	params.scroll_vert = com.parameters[1] != 0;
 	params.scroll_horz_auto = com.parameters[2] != 0;
-	params.scroll_horz_speed = com.parameters[3];
+	params.scroll_horz_speed = ValueOrVariableBitfield(com, 6, 4, 3);
+
 	params.scroll_vert_auto = com.parameters[4] != 0;
-	params.scroll_vert_speed = com.parameters[5];
+	params.scroll_vert_speed = ValueOrVariableBitfield(com, 6, 6, 5);
 
 	Game_Map::Parallax::ChangeBG(params);
 
@@ -3608,9 +3647,14 @@ bool Game_Interpreter::CommandConditionalBranch(lcf::rpg::EventCommand const& co
 			chara_id = ValueOrVariable(com.parameters[3], chara_id);
 		}
 
-		character = GetCharacter(chara_id, "ConditionalBranch");
-		if (character != NULL) {
-			result = character->GetFacing() == com.parameters[2];
+		if (Player::IsPatchManiac() && com.parameters[4] == 1) {
+			// Existance check
+			result = GetCharacter(chara_id, "ConditionalBranch", true) != nullptr;
+		} else {
+			character = GetCharacter(chara_id, "ConditionalBranch");
+			if (character) {
+				result = character->GetFacing() == com.parameters[2];
+			}
 		}
 		break;
 	}
@@ -3771,9 +3815,11 @@ bool Game_Interpreter::CommandJumpToLabel(lcf::rpg::EventCommand const& com) { /
 	int label_id = com.parameters[0];
 
 	for (int idx = 0; (size_t)idx < list.size(); idx++) {
-		if (static_cast<Cmd>(list[idx].code) != Cmd::Label)
+		const auto& next_cmd = ResolveEventCommand(list[idx]);
+
+		if (static_cast<Cmd>(next_cmd.code) != Cmd::Label)
 			continue;
-		if (list[idx].parameters.empty() || list[idx].parameters[0] != label_id)
+		if (next_cmd.parameters.empty() || next_cmd.parameters[0] != label_id)
 			continue;
 		index = idx;
 		break;
@@ -3853,19 +3899,19 @@ bool Game_Interpreter::CommandBreakLoop(lcf::rpg::EventCommand const& /* com */)
 
 	bool has_bug = !Player::IsPatchManiac();
 	if (!has_bug) {
-		SkipToNextConditional({ Cmd::EndLoop }, list[index].indent - 1);
+		SkipToNextConditional({ Cmd::EndLoop }, ResolveEventCommand(list[index]).indent - 1);
 		++index;
 		return true;
 	}
 
 	// This emulates an RPG_RT bug where break loop ignores scopes and
 	// unconditionally jumps to the next EndLoop command.
-	auto pcode = static_cast<Cmd>(list[index].code);
+	auto pcode = static_cast<Cmd>(ResolveEventCommand(list[index]).code);
 	for (++index; index < (int)list.size(); ++index) {
 		if (pcode == Cmd::EndLoop) {
 			break;
 		}
-		pcode = static_cast<Cmd>(list[index].code);
+		pcode = static_cast<Cmd>(ResolveEventCommand(list[index]).code);
 	}
 
 	return true;
@@ -3931,11 +3977,13 @@ bool Game_Interpreter::CommandEndLoop(lcf::rpg::EventCommand const& com) { // co
 
 	// Restart the loop
 	for (int idx = index; idx >= 0; idx--) {
-		if (list[idx].indent > indent)
+		const auto& next_cmd = ResolveEventCommand(list[idx]);
+
+		if (next_cmd.indent > indent)
 			continue;
-		if (list[idx].indent < indent)
+		if (next_cmd.indent < indent)
 			return false;
-		if (static_cast<Cmd>(list[idx].code) != Cmd::Loop)
+		if (static_cast<Cmd>(next_cmd.code) != Cmd::Loop)
 			continue;
 		index = idx;
 		break;
@@ -4659,7 +4707,31 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	}
 
 	params.system_name = components[2];
+	uint32_t var_id = 0;
+	auto mode = delims[1] - 1;
+	if (mode > 0) {
+		if (!ManiacPatch::DecodeStringToInt(params.system_name, var_id)) {
+			Output::Warning("ShowStringPic: Bad system name arg (id={}, arg={})", pic_id, components[2]);
+			return true;
+		}
+
+		params.system_name = Main_Data::game_strings->GetWithMode(
+			params.system_name, mode, var_id, *Main_Data::game_variables
+		);
+	}
+
 	text.font_name = components[3];
+	mode = delims[2] - 1;
+	if (mode > 0) {
+		if (!ManiacPatch::DecodeStringToInt(text.font_name, var_id)) {
+			Output::Warning("ShowStringPic: Bad font name arg (id={}, arg={})", pic_id, components[3]);
+			return true;
+		}
+
+		text.font_name = Main_Data::game_strings->GetWithMode(
+			text.font_name, mode, var_id, *Main_Data::game_variables
+		);
+	}
 
 	params.texts = {text};
 
@@ -4877,7 +4949,7 @@ bool Game_Interpreter::CommandManiacRewriteMap(lcf::rpg::EventCommand const& com
 	}
 
 	int mode = com.parameters[0];
-	//bool is_replace_range = com.parameters[1] != 0; FIXME not implemented
+	bool is_replace_range = com.parameters[1] != 0;
 	bool is_upper_layer = com.parameters[2] != 0;
 
 	int tile_index = ValueOrVariableBitfield(mode, 0, com.parameters[3]);
@@ -4892,16 +4964,19 @@ bool Game_Interpreter::CommandManiacRewriteMap(lcf::rpg::EventCommand const& com
 	if (!scene)
 		return true;
 
-	if (is_upper_layer) {
-		for (auto y = y_start; y < y_start + height; ++y) {
-			for (auto x = x_start; x < x_start + width; ++x) {
-				scene->spriteset->ReplaceUpAt(x, y, tile_index);
+	for (auto y = y_start; y < y_start + height; ++y) {
+		for (auto x = x_start; x < x_start + width; ++x) {
+			int tid = tile_index;
+			if (is_replace_range) {
+				// Calculate offset based on row-major order
+				int var_offset = (y - y_start) * width + (x - x_start);
+				tid = Main_Data::game_variables->Get(tile_index + var_offset);
 			}
-		}
-	} else {
-		for (auto y = y_start; y < y_start + height; ++y) {
-			for (auto x = x_start; x < x_start + width; ++x) {
-				scene->spriteset->ReplaceDownAt(x, y, tile_index, disable_autotile);
+
+			if (is_upper_layer) {
+				scene->spriteset->ReplaceUpAt(x, y, tid);
+			} else {
+				scene->spriteset->ReplaceDownAt(x, y, tid, disable_autotile);
 			}
 		}
 	}
@@ -5288,9 +5363,127 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& com) {
+bool Game_Interpreter::CommandManiacWritePicture(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
+	}
+
+	/*
+	TPC Structure Reference:
+	@img.save .screen .dst "filename"
+	@img.save .pic ID .static/.dynamic .opaq .dst "filename"
+
+	Parameters:
+	[0] Packing:
+		Bits 0-3: Picture ID Mode (0: Const, 1: Var, 2: Indirect)
+		Bits 4-7: Filename Mode (0: Literal, 1: String/Variable)
+	[1] Target Type: 0 = Screen, 1 = Picture
+	[2] Picture ID (Value)
+	[3] Filename ID (Value if not literal)
+	[4] Flags:
+		Bit 0: Dynamic (1) / Static (0)
+		Bit 1: Opaque (1)
+	*/
+
+	int target_type = com.parameters[1];
+
+	std::string filename = ToString(CommandStringOrVariableBitfield(com, 0, 1, 3));
+
+	if (filename.empty()) {
+		Output::Warning("ManiacSaveImage: Filename is empty");
+		return true;
+	}
+
+	// Decode Flags
+	int flags = com.parameters[4];
+	bool apply_effects = (flags & 1) != 0;
+	bool is_opaque = (flags & 2) != 0;
+
+	// Prepare Bitmap
+	BitmapRef bitmap;
+
+	if (target_type == 0) {
+		// Target: Screen (.screen)
+		bitmap = DisplayUi->CaptureScreen();
+	} else if (target_type == 1) {
+		// Target: Picture (.pic)
+		int pic_id = ValueOrVariableBitfield(com, 0, 0, 2);
+
+		if (pic_id <= 0) {
+			Output::Warning("ManiacSaveImage: Invalid Picture ID {}", pic_id);
+			return true;
+		}
+
+		auto& picture = Main_Data::game_pictures->GetPicture(pic_id);
+
+		if (picture.IsRequestPending()) {
+			picture.MakeRequestImportant();
+			_async_op = AsyncOp::MakeYieldRepeat();
+			return true;
+		}
+
+		const auto sprite = picture.sprite.get();
+
+		// Retrieve bitmap
+		if (picture.IsWindowAttached()) {
+			// Maniac ignores the opaque setting for String Picture
+			bitmap = picture.sprite->GetBitmap();
+		} else if (picture.data.name.empty()) {
+			// Not much we can do here (also shouldn't happen normally)
+			bitmap = picture.sprite->GetBitmap();
+		} else {
+			// Fetch picture with correct transparency
+			bitmap = Cache::Picture(picture.data.name, !is_opaque);
+		}
+
+		if (bitmap) {
+			// Determine Spritesheet frame
+			Rect src_rect = picture.sprite->GetSrcRect();
+
+			if (apply_effects) {
+				// .dynamic: Reflect color tone, flash, and other effects
+				auto tone = sprite->GetTone();
+				auto flash = sprite->GetFlashEffect();
+				auto flip_x = sprite->GetFlipX();
+				auto flip_y = sprite->GetFlipY();
+				bitmap = Cache::SpriteEffect(bitmap, src_rect, flip_x, flip_y, tone, flash);
+			} else if (src_rect != bitmap->GetRect()) {
+				// .static: Crop specific cell if it's a spritesheet
+				bitmap = Bitmap::Create(*bitmap, src_rect);
+			}
+		}
+	}
+	else {
+		Output::Warning("ManiacSaveImage: Unsupported target type {}", target_type);
+		return true;
+	}
+
+	// Save logic
+	if (bitmap) {
+		// Save to disk
+		// Ensure 'filename' has a valid extension (.png).
+		if (!EndsWith(Utils::LowerCase(filename), ".png")) {
+			filename += ".png";
+		}
+
+		auto found_file = FileFinder::Save().FindFile(filename);
+
+		auto os = FileFinder::Save().OpenOutputStream(found_file.empty() ? filename : found_file);
+		if (os) {
+			bitmap->WritePNG(os);
+		} else {
+			Output::Warning("ManiacSaveImage: Failed to open file for writing: {}", filename);
+		}
+	} else {
+		Output::Debug("ManiacSaveImage: Nothing to save (Target {})", target_type);
+	}
+
+	return true;
+}
+
+const lcf::rpg::EventCommand& Game_Interpreter::ResolveEventCommand(const lcf::rpg::EventCommand& com) {
+	if (static_cast<Cmd>(com.code) != Cmd::Maniac_CallCommand || !Player::IsPatchManiac()) {
+		return com;
 	}
 
 	enum class ProcessingMode {
@@ -5304,10 +5497,13 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	std::vector<int32_t> values;
 
 	// Create command with basic parameters
-	lcf::rpg::EventCommand cmd;
+	lcf::rpg::EventCommand& cmd = resolved_cmd;
 	cmd.code = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[1]);
 
 	cmd.string = lcf::DBString(CommandStringOrVariableBitfield(com, 0, 3, 4));
+
+	// Preserve the indentation level so loops and branches can find their pairs
+	cmd.indent = com.indent;
 
 	// Determine processing mode
 	auto processing_mode = static_cast<ProcessingMode>((com.parameters[0] >> 4) & 0b1111);
@@ -5346,14 +5542,15 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 	}
 	default:
 		Output::Warning("Call Command: Unsupported Processing Mode: {}", static_cast<int>(processing_mode));
-		return true;
+		return com;
 	}
 
 	// Finalize command parameters
 	cmd.parameters = lcf::DBArray<int32_t>(values.begin(), values.end());
 
 	// Debug output
-	/*Output::Warning("Processing mode: {}", static_cast<int>(processing_mode));
+	/*
+	Output::Warning("Processing mode: {}", static_cast<int>(processing_mode));
 	Output::Warning("Command code: {}", cmd.code);
 	Output::Warning("Command string: {}", cmd.string);
 	std::string params_str;
@@ -5361,13 +5558,40 @@ bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& co
 		params_str += " " + std::to_string(param);
 	}
 	Output::Warning("Command parameters:{}", params_str);
-	Output::Info("--------------------\n");*/
+	Output::Info("--------------------\n");
+	*/
 
-	// Our implementation pushes a new frame containing the command instead of invoking it directly.
-	// This is incompatible to Maniacs but has a better compatibility with our code.
-	Push<ExecutionType::Eval, EventType::None>({ cmd }, GetCurrentEventId(), 0);
+	return cmd;
+}
 
-	return true;
+bool Game_Interpreter::CommandManiacCallCommand(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	const auto& cmd = ResolveEventCommand(com);
+
+	switch (static_cast<Cmd>(cmd.code)) {
+		case Cmd::JumpToLabel:
+		case Cmd::Label:
+		case Cmd::Loop:
+		case Cmd::BreakLoop:
+		case Cmd::EndLoop:
+		case Cmd::EndEventProcessing:
+		case Cmd::EraseEvent:
+			// Everything that is flow control must (unfortunately) run inside
+			// current frame
+			return ExecuteCommand(cmd);
+		default: {
+			// In all other cases our implementation is incompatible to Maniacs
+			// and pushes a new frame containing the command instead of invoking
+			// it directly. Is safer to do.
+			auto new_cmd = cmd;
+			new_cmd.indent = 0; // reset the indent
+			Push<ExecutionType::Eval, EventType::None>({ new_cmd }, GetCurrentEventId(), 0);
+			return true;
+		}
+	}
 }
 
 bool Game_Interpreter::CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand const& com) {
@@ -5481,6 +5705,7 @@ bool Game_Interpreter::CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& c
 	}
 
 #ifndef HAVE_NLOHMANN_JSON
+	(void)com;
 	Output::Warning("CommandEasyRpgProcessJson: JSON not supported on this platform");
 	return true;
 #else

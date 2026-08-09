@@ -25,6 +25,7 @@
 #include "input.h"
 #include "player.h"
 #include "system.h"
+#include "game_runtime_patches.h"
 
 #include <lcf/inireader.h>
 
@@ -180,17 +181,18 @@ bool Game_Ineluki::Execute(std::string_view ini_file) {
 			}
 			std::string arg_lower = Utils::LowerCase(cmd.arg);
 			if (arg_lower == "left") {
-				mouse_decision_binding = MouseReturnMode::Left;
+				RuntimePatches::mouse_bindings.bind_decision = RuntimePatches::MouseButtonBindingMode::Left;
 			} else if (arg_lower == "right") {
-				mouse_decision_binding = MouseReturnMode::Right;
+				RuntimePatches::mouse_bindings.bind_decision = RuntimePatches::MouseButtonBindingMode::Right;
 			} else if (arg_lower == "both") {
-				mouse_decision_binding = MouseReturnMode::Both;
+				RuntimePatches::mouse_bindings.bind_decision = RuntimePatches::MouseButtonBindingMode::Both;
 			} else if (arg_lower == "none") {
-				mouse_decision_binding = MouseReturnMode::None;
+				RuntimePatches::mouse_bindings.bind_decision = RuntimePatches::MouseButtonBindingMode::None;
 			} else {
 				Output::Warning("Ineluki: Invalid value for setMouseAsReturn");
-				mouse_decision_binding = MouseReturnMode::None;
+				RuntimePatches::mouse_bindings.bind_decision = RuntimePatches::MouseButtonBindingMode::None;
 			}
+			RuntimePatches::mouse_bindings.enabled = true;
 		} else if (cmd.name == "setmousewheelaskeys") {
 			// This command is only found in a few uncommon versions of the patch
 			if (!mouse_support) {
@@ -198,15 +200,16 @@ bool Game_Ineluki::Execute(std::string_view ini_file) {
 			}
 			std::string arg_lower = Utils::LowerCase(cmd.arg);
 			if (arg_lower == "updown") {
-				mouse_wheel_binding = MouseWheelMode::UpDown;
+				RuntimePatches::mouse_bindings.bind_wheel = RuntimePatches::MouseWheelMode::UpDown;
 			} else if (arg_lower == "leftright") {
-				mouse_wheel_binding = MouseWheelMode::LeftRight;
+				RuntimePatches::mouse_bindings.bind_wheel = RuntimePatches::MouseWheelMode::LeftRight;
 			} else if (arg_lower == "none") {
-				mouse_wheel_binding = MouseWheelMode::None;
+				RuntimePatches::mouse_bindings.bind_wheel = RuntimePatches::MouseWheelMode::None;
 			} else {
 				Output::Warning("Ineluki: Invalid value for setMouseWheelAsKeys");
-				mouse_wheel_binding = MouseWheelMode::None;
+				RuntimePatches::mouse_bindings.bind_wheel = RuntimePatches::MouseWheelMode::None;
 			}
+			RuntimePatches::mouse_bindings.enabled = true;
 		}
 	}
 
@@ -335,9 +338,6 @@ void Game_Ineluki::Update() {
 	if (key_support) {
 		UpdateKeys();
 	}
-	if (mouse_support) {
-		UpdateMouse();
-	}
 }
 
 void Game_Ineluki::UpdateKeys() {
@@ -373,34 +373,6 @@ void Game_Ineluki::UpdateKeys() {
 			}
 		}
 	}
-}
-
-void Game_Ineluki::UpdateMouse() {
-#if defined(USE_MOUSE) && defined(SUPPORT_MOUSE)
-	if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_LEFT)) {
-		if ((mouse_decision_binding == MouseReturnMode::Left || mouse_decision_binding == MouseReturnMode::Both)) {
-			Input::SimulateButtonPress(Input::DECISION);
-		}
-	} else if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_RIGHT)) {
-		if ((mouse_decision_binding == MouseReturnMode::Right || mouse_decision_binding == MouseReturnMode::Both)) {
-			Input::SimulateButtonPress(Input::DECISION);
-		}
-	}
-
-	if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_SCROLLUP)) {
-		if (mouse_wheel_binding == MouseWheelMode::UpDown) {
-			Input::SimulateButtonPress(Input::UP);
-		} else if (mouse_wheel_binding == MouseWheelMode::LeftRight) {
-			Input::SimulateButtonPress(Input::LEFT);
-		}
-	} else if (Input::IsRawKeyTriggered(Input::Keys::MOUSE_SCROLLDOWN)) {
-		if (mouse_wheel_binding == MouseWheelMode::UpDown) {
-			Input::SimulateButtonPress(Input::DOWN);
-		} else if (mouse_wheel_binding == MouseWheelMode::LeftRight) {
-			Input::SimulateButtonPress(Input::RIGHT);
-		}
-	}
-#endif
 }
 
 void Game_Ineluki::OnScriptFileReady(FileRequestResult* result) {

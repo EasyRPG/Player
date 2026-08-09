@@ -25,7 +25,7 @@
 namespace ImagePNG {
 	bool Read(const void* buffer, bool transparent, ImageOut& output);
 	bool Read(Filesystem_Stream::InputStream& is, bool transparent, ImageOut& output);
-	bool Write(std::ostream& os, uint32_t width, uint32_t height, uint32_t* data);
+	bool Write(std::ostream& os, uint32_t width, uint32_t height, uint32_t* data, bool transparent);
 }
 
 #endif

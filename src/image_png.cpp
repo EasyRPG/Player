@@ -253,7 +253,7 @@ static void flush_stream(png_structp out_ptr) {
 	reinterpret_cast<Filesystem_Stream::OutputStream*>(png_get_io_ptr(out_ptr))->flush();
 }
 
-bool ImagePNG::Write(std::ostream& os, uint32_t width, uint32_t height, uint32_t* data) {
+bool ImagePNG::Write(std::ostream& os, uint32_t width, uint32_t height, uint32_t* data, bool transparent) {
 	png_structp write = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
 	if (!write) {
 		Output::Warning("Bitmap::WritePNG: error in png_create_write");
@@ -282,7 +282,7 @@ bool ImagePNG::Write(std::ostream& os, uint32_t width, uint32_t height, uint32_t
 	png_set_write_fn(write, &os, &write_data, &flush_stream);
 
 	png_set_IHDR(write, info, width, height, 8,
-				 PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,
+				 transparent ? PNG_COLOR_TYPE_RGBA : PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,
 				 PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
 	png_write_info(write, info);
 	png_write_image(write, ptrs);

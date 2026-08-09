@@ -21,7 +21,7 @@
 #include "android.h"
 
 #include <jni.h>
-#include <SDL_system.h>
+#include <SDL3/SDL_system.h>
 
 ApkFilesystem::ApkFilesystem() : Filesystem("", FilesystemView()) {
 	JNIEnv* env = EpAndroid::env;

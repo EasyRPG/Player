@@ -1,12 +1,16 @@
 apply plugin: 'com.android.application'
+
 android {
     namespace "org.easyrpg.player"
-    ndkVersion '21.4.7075529'
+    ndkVersion "28.2.13676358"
     assetPacks = [":assets"]
+    buildFeatures {
+        prefab true
+    }
     defaultConfig {
         applicationId "org.easyrpg.player"
-        compileSdk 36
-        minSdkVersion 21
+        compileSdkVersion 36
+        minSdkVersion 23
         targetSdkVersion 36
         versionName VERSION_NAME
         versionCode Integer.parseInt(VERSION_CODE)
@@ -42,11 +46,11 @@ android {
             version "3.22.1"
         }
     }
-	lint {
-		abortOnError false
-		disable 'MissingTranslation'
-	}
-	defaultConfig {
+    lint {
+        abortOnError false
+        disable 'MissingTranslation'
+    }
+    defaultConfig {
         externalNativeBuild {
             cmake {
                 arguments "-DPLAYER_GRADLE_BUILD=ON",
@@ -76,12 +80,39 @@ allprojects {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.7.0'
-    implementation "androidx.activity:activity:1.10.1"
-    implementation 'com.google.android.material:material:1.12.0'
+    implementation files("SDL3-${sdlVersion}.aar")
+    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation "androidx.activity:activity:1.13.0"
+    implementation 'com.google.android.material:material:1.13.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
-    implementation 'androidx.documentfile:documentfile:1.0.1'
+    implementation 'androidx.documentfile:documentfile:1.1.0'
     implementation 'org.ini4j:ini4j:0.5.4'
+}
+
+afterEvaluate {
+    preBuild.dependsOn downloadSdlAar
+}
+
+tasks.register('downloadSdlAar') {
+    doLast {
+        def sdlAarDest = file("SDL3-${sdlVersion}.aar")
+        if (!sdlAarDest.exists()) {
+            println "Downloading SDL ${sdlVersion} AAR..."
+            def sdlZipDest = layout.buildDirectory.file("sdl3.zip").get().asFile
+            sdlZipDest.parentFile.mkdirs()
+            new URL("https://github.com/libsdl-org/SDL/releases/download/release-${sdlVersion}/SDL3-devel-${sdlVersion}-android.zip")
+                .withInputStream { i -> sdlZipDest.withOutputStream { it << i } }
+            copy {
+                from zipTree(sdlZipDest)
+                into projectDir
+                include "**/*.aar"
+                eachFile { FileCopyDetails fcp ->
+                    fcp.relativePath = new RelativePath(true, fcp.file.name)
+                }
+                includeEmptyDirs = false
+            }
+        }
+    }
 }

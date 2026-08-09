@@ -211,6 +211,7 @@ void Game_Variables::WriteArray(const int first_id_a, const int last_id_a, const
 
 std::vector<Var_t> Game_Variables::GetRange(int variable_id, int length) {
 	std::vector<Var_t> vars;
+	vars.reserve(length);
 	for (int i = 0; i < length; ++i) {
 		vars.push_back(Get(variable_id + i));
 	}

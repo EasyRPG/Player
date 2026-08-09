@@ -138,7 +138,7 @@ public class GameScanner {
 
     private void scanRootFolder(Activity activity, Uri folderURI) {
         Context context = activity.getApplicationContext();
-        SDL.setContext(context);
+        SDL.setContext(activity);
 
         final ArrayList<String> names = new ArrayList<>();
         final ArrayList<Uri> fileURIs = new ArrayList<>();

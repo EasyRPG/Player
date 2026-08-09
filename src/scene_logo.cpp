@@ -131,7 +131,7 @@ bool Scene_Logo::DetectGame() {
 		FileFinder::SetGameFilesystem(fs);
 	}
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	static bool once = true;
 	if (once) {
 		FileRequestAsync* index = AsyncHandler::RequestFile("index.json");
@@ -225,7 +225,7 @@ std::vector<std::vector<uint8_t>> Scene_Logo::LoadLogos() {
 		}
 	}
 
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
 	if (logos.empty()) {
 		// Attempt reading Logos from RPG_RT.exe (not supported on Emscripten)
 		auto exeis = FileFinder::Game().OpenFile(EXE_NAME);

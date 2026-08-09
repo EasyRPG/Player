@@ -17,12 +17,15 @@
 
 // Headers
 #include "system.h"
+#include <cassert>
 #include <vector>
 #include "game_actors.h"
 #include "main_data.h"
 #include "output.h"
 
 Game_Actors::Game_Actors() {
+	assert(Main_Data::game_constants != nullptr && "Game Constants must be initialized");
+
 	data.reserve(lcf::Data::actors.size());
 	for (size_t i = 0; i < lcf::Data::actors.size(); i++) {
 		data.emplace_back(Game_Actor(i + 1));

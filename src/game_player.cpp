@@ -191,15 +191,33 @@ void Game_Player::UpdateScroll(int amount, bool was_jumping) {
 		return;
 	}
 
-	auto dx = (GetX() * SCREEN_TILE_SIZE) - Game_Map::GetPositionX() - GetPanX();
-	auto dy = (GetY() * SCREEN_TILE_SIZE) - Game_Map::GetPositionY() - GetPanY();
+	const auto map_width = Game_Map::GetTilesX() * SCREEN_TILE_SIZE;
+	const auto map_height = Game_Map::GetTilesY() * SCREEN_TILE_SIZE;
 
-	const auto w = Game_Map::GetTilesX() * SCREEN_TILE_SIZE;
-	const auto h = Game_Map::GetTilesY() * SCREEN_TILE_SIZE;
+	// When using FakeResolution mode, if the map is too small to fit the screen
+	// we need to calculate the black border offset, in case of a looping map for example
+	int screen_offset_x = 0;
+	if (Player::game_config.fake_resolution.Get()) {
+		int map_width_in_pixels = Game_Map::GetTilesX() * TILE_SIZE;
+		if (map_width_in_pixels < Player::screen_width) {
+			screen_offset_x = ((Player::screen_width - map_width_in_pixels) / 2 / TILE_SIZE) * SCREEN_TILE_SIZE;
+		}
+	}
+	int screen_offset_y = 0;
+	if (Player::game_config.fake_resolution.Get()) {
+		int map_height_in_pixels = Game_Map::GetTilesY() * TILE_SIZE;
+		if (map_height_in_pixels < Player::screen_height) {
+			screen_offset_y = ((Player::screen_height - map_height_in_pixels) / 2 / TILE_SIZE) * SCREEN_TILE_SIZE;
+		}
+	}
 
-	dx = Utils::PositiveModulo(dx + w / 2, w) - w / 2;
-	dy = Utils::PositiveModulo(dy + h / 2, h) - h / 2;
+	auto dx = (GetX() * SCREEN_TILE_SIZE) - Game_Map::GetPositionX() - GetPanX() + screen_offset_x;
+	auto dy = (GetY() * SCREEN_TILE_SIZE) - Game_Map::GetPositionY() - GetPanY() + screen_offset_y;
 
+	dx = Utils::PositiveModulo(dx + map_width / 2, map_width) - map_width / 2;
+	dy = Utils::PositiveModulo(dy + map_height / 2, map_height) - map_height / 2;
+
+	// If sx or sy equals zero, no scrolling is needed in the corresponding direction
 	const auto sx = Utils::Signum(dx);
 	const auto sy = Utils::Signum(dy);
 
@@ -441,8 +459,8 @@ bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_d
 				&& ev.GetX() == GetX()
 				&& ev.GetY() == GetY()
 				&& ev.GetLayer() != lcf::rpg::EventPage::Layers_same
-				&& trigger >= 0
-				&& triggers[trigger]) {
+				&& trigger.has_value()
+				&& triggers[*trigger]) {
 			SetEncounterCalling(false);
 			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player);
 		}
@@ -462,8 +480,8 @@ bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool
 				&& ev.GetX() == x
 				&& ev.GetY() == y
 				&& ev.GetLayer() == lcf::rpg::EventPage::Layers_same
-				&& trigger >= 0
-				&& triggers[trigger]) {
+				&& trigger.has_value()
+				&& triggers[*trigger]) {
 			SetEncounterCalling(false);
 			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player);
 		}
@@ -734,7 +752,7 @@ void Game_Player::UpdateEncounterSteps() {
 	const auto ratio = GetTotalEncounterRate() / encounter_steps;
 
 	auto& idx = last_encounter_idx;
-	while (ratio > enc_table[idx+1].ratio) {
+	while (ratio >= enc_table[idx+1].ratio) {
 		++idx;
 	}
 	const auto& row = enc_table[idx];

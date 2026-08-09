@@ -92,7 +92,7 @@ int Game_Strings::ToNum(Str_Params params, int var_id, Game_Variables& variables
 	if (params.hex)
 		num = static_cast<int>(std::strtol(it->second.c_str(), nullptr, 16));
 	else
-		num = static_cast<int>(std::strtol(it->second.c_str(), nullptr, 0));
+		num = static_cast<int>(std::strtol(it->second.c_str(), nullptr, 10));
 
 	variables.Set(var_id, num);
 

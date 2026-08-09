@@ -43,6 +43,7 @@
         <!-- Setting SDL hints from AndroidManifest.xml: -->
         <meta-data android:name="SDL_ENV.SDL_ACCELEROMETER_AS_JOYSTICK" android:value="0" />
         <meta-data android:name="SDL_ENV.SDL_APP_NAME" android:value="EasyRPG Player" />
+        <meta-data android:name="SDL_ENV.SDL_ANDROID_ALLOW_RECREATE_ACTIVITY" android:value="1" />
 
         <!-- Startup Activity -->
         <activity

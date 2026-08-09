@@ -145,4 +145,18 @@
     <string name="unsupported_engine_card">$ENGINE není podporovaný</string>
     <string name="unsupported_engine_title">Nepodporovaný engine</string>
     <string name="open_save_folder">Otevřít složku s uloženými hrami</string>
+    <string name="fullscreen_mode">Celá obrazovka</string>
+    <string name="font">Písmo</string>
+    <string name="settings_font_1">Primární písmo:</string>
+    <string name="settings_font_size">Velikost písma</string>
+    <string name="settings_font_2">Sekundární písmo:</string>
+    <string name="settings_font_default">Zabudované písmo</string>
+    <string name="view_show_game_folder">Podle názvu složky</string>
+    <string name="view_show_title_desc">Vyberte jak mají být hry pojmenované</string>
+    <string name="view_show_game_title">Podle názvu</string>
+    <string name="settings_fonts_explanation2">Hra se sama rozhodne, jestli použije primární nebo sekundární písmo.</string>
+    <string name="settings_fonts_explanation">Vložte písma do složky „fonts“. Pro nejlepší výsledek použíjte TTF písma nebo bitmapové (FON) písma.</string>
+    <string name="settings_fonts_size_explanation2">Velikost musí být nastavená tak, aby byl znak # aspoň částečně viditelný. Pokud ho nevidíte, text bude ve hře uříznutý.</string>
+    <string name="settings_fonts_size_explanation">Nastavení velikosti písma nemá žádný efekt při používání zabudovaného písma nebo určitých bitmapových písmen.</string>
+    <string name="unsupported_engine_explanation">Tato hra nemůže být spuštěna v EasyRPG, protože byla vytvořena v enginu $ENGINE.\n\nEasyRPG Player byl navržen tak, aby podporoval hry vytvořené pouze v RPG Makeru 2000 a 2003, bez případných plánů na podporu dalších enginů.\n\nPro programy schopné spustit tuto hru se prosím obraťte na Obchod Play.</string>
 </resources>

@@ -19,7 +19,7 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
-#include <cmath>
+#include "game_constants.h"
 #include "system.h"
 #include "game_party.h"
 #include "game_actors.h"
@@ -28,7 +28,6 @@
 #include "game_battle.h"
 #include "game_targets.h"
 #include "game_system.h"
-#include "scene_battle.h"
 #include <lcf/reader_util.h>
 #include "output.h"
 #include "algo.h"
@@ -161,7 +160,7 @@ int Game_Party::GetItemTotalCount(int item_id) const {
 int Game_Party::GetMaxItemCount(int item_id) const {
 	const lcf::rpg::Item* item = lcf::ReaderUtil::GetElement(lcf::Data::items, item_id);
 	if (!item || item->easyrpg_max_count == -1) {
-		return (lcf::Data::system.easyrpg_max_item_count == -1 ? 99 : lcf::Data::system.easyrpg_max_item_count);
+		return Main_Data::game_constants->MaxItemCount();
 	} else {
 		return item->easyrpg_max_count;
 	}
@@ -169,12 +168,12 @@ int Game_Party::GetMaxItemCount(int item_id) const {
 
 void Game_Party::GainGold(int n) {
 	data.gold = data.gold + n;
-	data.gold = std::min<int32_t>(std::max<int32_t>(data.gold, 0), 999999);
+	data.gold = std::min<int32_t>(std::max<int32_t>(data.gold, 0), Main_Data::game_constants->MaxGoldValue());
 }
 
 void Game_Party::LoseGold(int n) {
 	data.gold = data.gold - n;
-	data.gold = std::min<int32_t>(std::max<int32_t>(data.gold, 0), 999999);
+	data.gold = std::min<int32_t>(std::max<int32_t>(data.gold, 0), Main_Data::game_constants->MaxGoldValue());
 }
 
 void Game_Party::AddItem(int item_id, int amount) {

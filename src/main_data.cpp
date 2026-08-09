@@ -19,6 +19,7 @@
 #include <cstdlib>
 #include "main_data.h"
 #include "filefinder_rtp.h"
+#include "game_constants.h"
 #include "game_destiny.h"
 #include "game_system.h"
 #include "game_actors.h"
@@ -41,10 +42,7 @@
 #ifndef _WIN32
 #  include <unistd.h>
 #endif
-#if defined(USE_SDL) && defined(__ANDROID__)
-#  include <jni.h>
-#  include <SDL_system.h>
-#elif defined(__APPLE__) && TARGET_OS_OSX
+#if defined(__APPLE__) && TARGET_OS_OSX
 #  include <sys/syslimits.h>
 #  include "platform/macos/macos_utils.h"
 #endif
@@ -70,6 +68,7 @@ namespace Main_Data {
 	std::unique_ptr<Game_DynRpg> game_dynrpg;
 	std::unique_ptr<Game_Ineluki> game_ineluki;
 	std::unique_ptr<Game_Destiny> game_destiny;
+	std::unique_ptr<Game_Constants> game_constants;
 	std::unique_ptr<Game_Switches> game_switches_global;
 	std::unique_ptr<Game_Variables> game_variables_global;
 
@@ -112,6 +111,7 @@ void Main_Data::Init() {
 void Main_Data::Cleanup() {
 	Game_Map::Quit();
 
+	game_constants.reset();
 	game_switches.reset();
 	game_screen.reset();
 	game_pictures.reset();

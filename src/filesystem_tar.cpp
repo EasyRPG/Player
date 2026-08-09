@@ -133,7 +133,7 @@ TarFilesystem::TarFilesystem(std::string base_path, FilesystemView parent_fs) : 
 	}
 
 	tar_entry_raw data;
-	int blank = 0, n = 0;
+	int blank = 0;
 	static const char key[32] = { 0 };
 	while (stream.ReadIntoObj(data)) {
 		if (memcmp(&data, key, sizeof(key)) == 0 && memcmp(&data, sizeof(key) + (const char *)&data, sizeof(data) - sizeof(key)) == 0) {
@@ -142,8 +142,6 @@ TarFilesystem::TarFilesystem(std::string base_path, FilesystemView parent_fs) : 
 			continue;
 		}
 		blank = 0;
-
-		++n;
 
 		long skip;
 		Entry entry { (long)stream.tellg(), data, &skip };

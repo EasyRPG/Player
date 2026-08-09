@@ -56,7 +56,7 @@ public class GameBrowserActivity extends BaseActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        SDL.setContext(getApplicationContext());
+        SDL.setContext(this);
 
         setContentView(R.layout.activity_games_browser);
 
@@ -248,7 +248,6 @@ public class GameBrowserActivity extends BaseActivity
         getLayoutInflater().inflate(R.layout.browser_games_grid, content_layout);
 
         gamesGridRecyclerView = findViewById(R.id.games_grid_recycle_view);
-        gamesGridRecyclerView.setHasFixedSize(true);
         setGamesGridSize();
 
         reorderGameList();

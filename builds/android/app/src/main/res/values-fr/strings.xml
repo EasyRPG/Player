@@ -164,4 +164,5 @@
     <string name="unsupported_engine_title">Moteur de jeu non pris en charge</string>
     <string name="unsupported_engine_explanation">Ce jeu ne peut pas être lancé avec EasyRPG Player car il a été créé avec $ENGINE.\n\nEasy RPG Plater est conçu pour prendre en charge uniquement des jeux créés sur RPG Maker 2000 et 2003, il n\'est aucunement prévu d\'étendre à d\'autres moteurs.\n\nPour trouver un logiciel capable de lancer ce jeu, veuillez chercher sur le Play Store.</string>
     <string name="open_save_folder">Ouvrir le dossier de sauvegarde de jeu</string>
+    <string name="fullscreen_mode">Plein écran</string>
 </resources>

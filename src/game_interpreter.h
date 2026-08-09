@@ -52,7 +52,7 @@ public:
 	static Game_Interpreter& GetForegroundInterpreter();
 
 	Game_Interpreter(bool _main_flag = false);
-#ifndef EMSCRIPTEN
+#ifndef __EMSCRIPTEN__
 	// No idea why but emscripten will complain about a missing destructor when
 	// using virtual here
 	virtual
@@ -86,9 +86,18 @@ public:
 	void InputButton();
 	void SetupChoices(const std::vector<std::string>& choices, int indent, PendingMessage& pm);
 
+	/**
+	 * Resolves a Maniac Patch @cmd (Call Command) into the actual EventCommand it represents.
+	 * If the input is not a @cmd it returns the command itself.
+	 * The resolved command is shared and overwritten on subsequent calls.
+	 *
+	 * @param com Command to process
+	 * @return com itself or a parsed Call Command
+	 */
+	const lcf::rpg::EventCommand& ResolveEventCommand(const lcf::rpg::EventCommand& com);
+
 	bool ExecuteCommand();
 	virtual bool ExecuteCommand(lcf::rpg::EventCommand const& com);
-
 
 	/**
 	 * Returns the interpreters current state information.
@@ -104,7 +113,7 @@ public:
 	lcf::rpg::SaveEventExecState GetSaveState();
 
 	/** @return Game_Character of the passed event_id */
-	Game_Character* GetCharacter(int event_id, std::string_view origin) const override;
+	Game_Character* GetCharacter(int event_id, std::string_view origin, bool silent = false) const override;
 
 	/** @return the event_id of the current frame */
 	int GetCurrentEventId() const;
@@ -305,6 +314,7 @@ protected:
 	bool CommandManiacChangePictureId(lcf::rpg::EventCommand const& com);
 	bool CommandManiacSetGameOption(lcf::rpg::EventCommand const& com);
 	bool CommandManiacControlStrings(lcf::rpg::EventCommand const& com);
+	bool CommandManiacWritePicture(lcf::rpg::EventCommand const& com);
 	bool CommandManiacCallCommand(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& com);
@@ -360,17 +370,20 @@ protected:
 	KeyInputState _keyinput;
 	AsyncOp _async_op = {};
 
-	private:
-		void PushInternal(
-			InterpreterPush push_info,
-			std::vector<lcf::rpg::EventCommand> _list,
-			int _event_id,
-			int event_page_id = 0
-		);
+	/** Shared instance for ResolveEventCommand */
+	lcf::rpg::EventCommand resolved_cmd;
 
-		void PushInternal(Game_Event* ev, InterpreterExecutionType ex_type);
-		void PushInternal(Game_Event* ev, const lcf::rpg::EventPage* page, InterpreterExecutionType ex_type);
-		void PushInternal(Game_CommonEvent* ev, InterpreterExecutionType ex_type);
+private:
+	void PushInternal(
+		InterpreterPush push_info,
+		std::vector<lcf::rpg::EventCommand> _list,
+		int _event_id,
+		int event_page_id = 0
+	);
+
+	void PushInternal(Game_Event* ev, InterpreterExecutionType ex_type);
+	void PushInternal(Game_Event* ev, const lcf::rpg::EventPage* page, InterpreterExecutionType ex_type);
+	void PushInternal(Game_CommonEvent* ev, InterpreterExecutionType ex_type);
 
 	friend class Game_Interpreter_Inspector;
 };

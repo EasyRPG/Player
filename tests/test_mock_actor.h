@@ -2,6 +2,7 @@
 #define EP_TEST_MOCK_ACTOR
 
 #include "game_actors.h"
+#include "game_constants.h"
 #include "game_party.h"
 #include "game_enemyparty.h"
 #include "game_system.h"
@@ -85,6 +86,7 @@ public:
 
 		Main_Data::Cleanup();
 
+		Main_Data::game_constants = std::make_unique<Game_Constants>();
 		Main_Data::game_system = std::make_unique<Game_System>();
 		Main_Data::game_actors = std::make_unique<Game_Actors>();
 		Main_Data::game_enemyparty = std::make_unique<Game_EnemyParty>();

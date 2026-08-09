@@ -20,11 +20,9 @@
 
 // Headers
 #include "baseui.h"
-#include "color.h"
 #include "rect.h"
 #include "system.h"
 
-#include <array>
 #include <SDL3/SDL.h>
 
 extern "C" {
@@ -130,7 +128,6 @@ private:
 
 	/** Main SDL window. */
 	SDL_Texture* sdl_texture_game = nullptr;
-	SDL_Texture* sdl_texture_scaled = nullptr;
 	SDL_Window* sdl_window = nullptr;
 	SDL_Renderer* sdl_renderer = nullptr;
 	SDL_Joystick *sdl_joystick = nullptr;

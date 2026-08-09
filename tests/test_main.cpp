@@ -3,12 +3,12 @@
 
 #include "output.h"
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 #include <emscripten.h>
 #endif
 
 int main(int argc, char** argv) {
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 	EM_ASM({
 		FS.mkdir(UTF8ToString($0));
 		FS.mount(NODEFS, { root: UTF8ToString($1) }, UTF8ToString($0));

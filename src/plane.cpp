@@ -84,11 +84,6 @@ void Plane::Draw(Bitmap& dst) {
 		dst_rect.x = bg_x;
 		dst_rect.width = bg_width;
 
-		if (Game_Map::GetDisplayX() / 16 + Player::screen_width > Game_Map::GetTilesX() * TILE_SIZE) {
-			// Do not draw out of bounds to the right
-			dst_rect.width -= (Game_Map::GetDisplayX() / 16 + Player::screen_width) - (Game_Map::GetTilesX() * TILE_SIZE);
-		}
-
 		// Correct the offset if the top-left corner moved.
 		offset_x = shake_x + bg_x;
 	}

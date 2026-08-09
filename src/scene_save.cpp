@@ -16,9 +16,9 @@
  */
 
 // Headers
-#include <sstream>
+#include "game_constants.h"
 
-#ifdef EMSCRIPTEN
+#ifdef __EMSCRIPTEN__
 #  include <emscripten.h>
 #endif
 
@@ -53,7 +53,7 @@ Scene_Save::Scene_Save() :
 void Scene_Save::Start() {
 	Scene_File::Start();
 
-	for (int i = 0; i < Utils::Clamp<int32_t>(lcf::Data::system.easyrpg_max_savefiles, 3, 99); i++) {
+	for (int i = 0; i < Main_Data::game_constants->MaxSaveFiles(); i++) {
 		file_windows[i]->SetHasSave(true);
 		file_windows[i]->Refresh();
 	}

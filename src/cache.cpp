@@ -316,8 +316,14 @@ namespace {
 
 			// EasyRPG extensions add support for large charsets; size is spoofed to ignore the error
 			if (!filename.empty() && filename.front() == '$' && T == Material::Charset && Player::HasEasyRpgExtensions()) {
-				w = 288;
-				h = 256;
+				w = min_w;
+				h = min_h;
+			}
+
+			// Maniac Patch adds support for more colors; size is spoofed to ignore the error
+			if (T == Material::System && Player::IsPatchManiac()) {
+				w = min_w;
+				h = min_h;
 			}
 
 			if (w < min_w || max_w < w || h < min_h || max_h < h) {

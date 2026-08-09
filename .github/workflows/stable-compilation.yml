@@ -61,10 +61,10 @@ jobs:
             libdrm-dev libgbm-dev # only needed for sdl2 on debian 11
 
       - name: Clone Repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         if: github.event.inputs.git-ref == ''
       - name: Clone Repository (with custom ref)
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         if: github.event.inputs.git-ref != ''
         with:
           ref: ${{ github.event.inputs.git-ref }}
@@ -78,6 +78,7 @@ jobs:
           cmake -G Ninja -B build . \
             -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr \
             -DCMAKE_CXX_FLAGS="-Wall -Wextra -Wdeprecated -fsanitize=address,undefined" \
+            -DPLAYER_TARGET_PLATFORM=SDL2 \
             -DPLAYER_BUILD_LIBLCF=ON -DPLAYER_VERSION_APPEND="$VER"
           cmake --build build
 
