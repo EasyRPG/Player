@@ -31,6 +31,7 @@
 #include "ui/winstream.hpp"
 #include "metadata/Domain.hpp"
 #include "signals.hpp"
+#include "metadata/glues/lua_glues.hpp"
 
 namespace leasy {
   namespace ily3 {

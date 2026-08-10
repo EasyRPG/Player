@@ -1,4 +1,3 @@
----@diagnostic disable: lowercase-global
 local function dump(value)
   local seen = {}
 
@@ -36,9 +35,17 @@ local function dump(value)
   write(value)
 end
 
+---@overload fun(a:integer, b:string):boolean
+---@overload fun(c: string, e: string, o: table):string
+function name()
+
+end
+
+local asm = require('Xglue')
+
 function leasy.User.ready()
+  -- local node = EasyRPGPlayer.Assembly.leasy.meta2.node.Node.new();
+  -- print(node)
+
   dump(_G)
-  --local o = leasy.meta2.node.Node2D.new()
-  --print('o:', o, type(o))
-  --print(o:pos())
 end

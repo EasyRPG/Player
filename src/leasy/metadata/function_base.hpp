@@ -53,6 +53,11 @@ namespace leasy::metadata {
     */
    class function_base_t;
 
+  struct FunctionSignature final {
+    std::vector<std::shared_ptr<Class>> arguments;
+    std::shared_ptr<Class> returnType;
+  };
+
   class function_base_t : public Data, public SizeDescriptor {
   public:
     std::string name;
@@ -73,9 +78,14 @@ namespace leasy::metadata {
       };
     }
 
-    inline virtual ~function_base_t() = default;
-    inline virtual size_t getMetadataSize() const {
+    inline ~function_base_t() override = default;
+
+    inline size_t getMetadataSize() const override {
       return sizeof(*this);
+    }
+
+    inline virtual std::vector<FunctionSignature>  getSignatures() const {
+      return {};
     }
   };
 }

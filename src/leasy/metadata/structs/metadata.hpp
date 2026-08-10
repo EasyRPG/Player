@@ -32,15 +32,18 @@ namespace leasy::ul2 {
 
 namespace leasy::metadata {
   class Data {
-  protected:
   public:
-    virtual Object dump() const { return {}; }
+    virtual ~Data() = default;
+
+    [[nodiscard]] virtual Object dump() const { return {}; }
     virtual void bind(ul2::lstate&) const {}
   };
 
   class SizeDescriptor {
   public:
-    virtual size_t getMetadataSize() const = 0;
+    virtual ~SizeDescriptor() = default;
+
+    [[nodiscard]] virtual size_t getMetadataSize() const = 0;
   };
 
   inline size_t getStringRealSize(const std::string &k) {

@@ -48,6 +48,10 @@ namespace leasy::metadata {
     std::vector<std::shared_ptr<Class>> arguments;
     std::shared_ptr<Class> return_type;
 
+    inline std::vector<FunctionSignature> getSignatures() const override {
+      return { { .arguments = arguments, .returnType = return_type} };
+    }
+
     inline std::pair<bool, std::string> is_callable(std::vector<std::any> &args) const override {
       return kits::is_callable_with(this->arguments, args);
     }
@@ -102,6 +106,12 @@ namespace leasy::metadata {
 
   public:
 
+    inline std::vector<FunctionSignature> getSignatures() const override {
+      return kits::select(funcs, [](const function &fn) {
+        return fn.getSignatures()[0];
+      });
+    }
+
     inline size_t getMetadataSize() const override {
       auto funcsize{0ull};
       for (auto i{0ull}; i < funcs.size(); i++) funcsize += funcs[i].getMetadataSize();
@@ -143,7 +153,7 @@ namespace leasy::metadata {
       return this->bridge;
     }
 
-    inline overload_set() {} // bruh.
+    inline overload_set() = default; // bruh.
     
     template <typename... Fs> // why does standard conventions put 's' in plural templated-names ? Tf.
     inline overload_set(const std::string &name, Fs&& ...fs) {

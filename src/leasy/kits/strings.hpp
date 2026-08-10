@@ -91,4 +91,53 @@ namespace leasy::kits {
     ss << ' ' << units[unit];
     return ss.str();
   }
+
+  inline std::string join(const std::vector<std::string>& elements, const std::string& sep, const bool includeLast = false) {
+    std::string result;
+
+    for (size_t i = 0; i < elements.size(); i++) {
+      result += elements[i];
+
+      if (i + 1 < elements.size() || includeLast)
+        result += sep;
+    }
+
+    return result;
+  }
+
+  inline std::vector<std::string> split(const std::string &name, char sep = '.') {
+    std::vector<std::string> out;
+    std::stringstream ss(name);
+    std::string item;
+
+    while (std::getline(ss, item, sep)) {
+      if (!item.empty()) out.push_back(item);
+    }
+
+    return out;
+  }
+
+  struct SubStringInfo {
+    std::string string;
+    size_t      index;
+    bool        found;
+  };
+
+  inline SubStringInfo find_any(const std::string &string, const std::vector<std::string> &elements) {
+    for (const auto&e: elements) {
+      if (string.find(e) != std::string::npos) {
+        return {
+          .string = e,
+          .index = string.find(e),
+          .found = true,
+        };
+      }
+    }
+
+    return {
+      .string = "",
+      .index = std::string::npos,
+      .found = false,
+    };
+  }
 }

@@ -59,17 +59,17 @@ namespace leasy::ul2 {
      *  - empty string (why)
      *  - empty segment ("a..b" congrats, you broke it)
      */
-    inline std::vector<std::string> split(const std::string &name) const {
+    static inline std::vector<std::string> split(const std::string &name) {
       std::vector<std::string> out;
       std::stringstream ss(name);
       std::string item;
-      
+
       while (std::getline(ss, item, '.')) {
         if (item.empty())
           ulthrow("Malformed name (empty segment)");
         out.push_back(item);
       }
-      
+
       if (out.empty())
         ulthrow("Empty name");
 

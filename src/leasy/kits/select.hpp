@@ -129,4 +129,23 @@ namespace leasy::kits {
     return result;
   }
 
+  template <typename Range, typename F>
+  auto foreach(const Range &range, F&& func) {
+    using E = typename Range::value_type;
+    using R = decltype(func(std::declval<E>()));
+
+    if constexpr (! std::is_void_v<R>) {
+      std::vector<R> vec;
+
+      for (const auto &e: range) {
+        vec.emplace_back(func(e));
+      }
+
+      return vec;
+    } else {
+      for (const auto &e: range) {
+        func(e);
+      }
+    }
+  }
 }

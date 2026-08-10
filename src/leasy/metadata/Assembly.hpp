@@ -28,6 +28,7 @@
 #define EASYRPG_PLAYER_ASSEMBLY_HPP
 
 #include <string>
+#include <utility>
 #include "type.hpp"
 #include "function.hpp"
 #include "../iky7/nameof.hpp"
@@ -37,17 +38,20 @@ namespace leasy::metadata {
   class Assembly : public Data, public SizeDescriptor {
   protected:
     std::string _name;
+    std::string _luaDumpPrefix;
 
   public:
-    virtual ~Assembly() = default;
     inline Assembly() = default;
-    inline Assembly(const std::string &name) : _name(name) {}
+    inline Assembly(std::string name) : _name(std::move(name)) {}
 
-    inline virtual std::string name() const { return _name; }
-    inline virtual std::shared_ptr<Class> getType(const std::type_index &) const { return nullptr; }
-    inline virtual std::shared_ptr<Class> getType(const std::string &) const { return nullptr; }
-    inline virtual std::shared_ptr<function_base_t> getFunction(const std::string &) const { return nullptr; }
-    inline virtual size_t getMetadataSize() const override { return sizeof(*this); }
+    [[nodiscard]] inline virtual std::string name() const { return _name; }
+    [[nodiscard]] inline virtual std::shared_ptr<Class> getType(const std::type_index &) const { return nullptr; }
+    [[nodiscard]] inline virtual std::shared_ptr<Class> getType(const std::string &) const { return nullptr; }
+    [[nodiscard]] inline virtual std::shared_ptr<function_base_t> getFunction(const std::string &) const { return nullptr; }
+    [[nodiscard]] inline size_t getMetadataSize() const override { return sizeof(*this); }
+    [[nodiscard]] inline virtual std::vector<std::shared_ptr<Class>> getTypes() const { return {}; }
+    [[nodiscard]] inline virtual std::vector<std::shared_ptr<function_base_t>> getFunctions() const { return {}; }
+    inline void setLuaDumpPrefix(const std::string &prefix) { _luaDumpPrefix = prefix; }
   };
 
   class BuiltInAssembly : public Assembly {
@@ -59,11 +63,10 @@ namespace leasy::metadata {
     template <typename T>
     inline void registerType(const std::shared_ptr<Class> &cls) {
       this->namedClasses[std::string(nameof<T>())] = cls;
-      this->indexedClasses[typeid(T)] = cls;
+      this->indexedClasses[cls->cindex()] = cls;
     }
 
   public:
-
     inline size_t getMetadataSize() const override {
       size_t total = sizeof(*this) + getStringRealSize(_name) + sizeof(functions) + sizeof(namedClasses) + sizeof(indexedClasses);
       for (const auto &[k, v]: this->functions) {
@@ -92,12 +95,20 @@ namespace leasy::metadata {
     }
 
     inline void bind(ul2::lstate &state) const override {
+      auto prefix = this->_luaDumpPrefix.empty() ? "" : kits::replace(_luaDumpPrefix, "::", ".") + ".";
       for (const auto &[name, func]: this->functions) {
-        state.bind2(kits::replace(name, "::", "."), func->lua());
+        state.bind2(kits::replace(prefix + name, "::", "."), func->lua());
       }
 
-      for (const auto &[name, cl]: this->indexedClasses) {
-        cl->bind(state);
+      for (const auto &[idx, cl]: this->namedClasses) {
+        // NOTE: I don't like how this works so ima use the C++ mangled name for the Lua side. Anyways,
+        // I count on making a dump system that will later dump assemblies and be used as assembly glue
+        // in order to be able to use full-user-names instead of weird C++ Mangled names.
+        std::string classname = prefix + this->_name + "." + cl->cindex().name();
+          for (const auto &[name, fun]: cl->methods()) {
+            auto maNamePlease = kits::replace(classname + "." + name, "::", ".");
+            state.bind2(maNamePlease, fun->lua());
+          }
       }
     }
 
@@ -121,9 +132,10 @@ namespace leasy::metadata {
     }
 
     template <typename T>
-    inline BuiltInAssembly &addType(const std::shared_ptr<Class> &cls) {
-      using U = kits::flat_t<T>;
+    inline BuiltInAssembly &addType(const std::shared_ptr<Class> cls) {
       registerType<T>(cls);
+
+      using U = kits::flat_t<T>;
 
       if constexpr (! std::is_void_v<U>) {
         using P = U*;
@@ -156,6 +168,14 @@ namespace leasy::metadata {
       auto myName = this->_name + "::" + name;
       this->functions[myName] = make_function(myName, std::forward<Fs>(fs)...);
       return *this;
+    }
+
+    inline std::vector<std::shared_ptr<Class>> getTypes() const override {
+      return kits::select(this->namedClasses, [](auto I) { return I.second; });
+    }
+
+    inline std::vector<std::shared_ptr<function_base_t>> getFunctions() const override {
+      return kits::select(this->functions, [](auto I) { return I.second; });
     }
   };
 }

@@ -27,15 +27,12 @@
 #include <unordered_map>
 
 #include "../lio.hpp"
-
 #include "../kits/strings.hpp"
-#include "../kits/ps7k.hpp"
-
 #include "../cli/cli.hpp"
-
 #include "structs/json.hpp"
 #include "structs/lua.hpp"
 #include "Domain.hpp"
+#include "glues/lua_glues.hpp"
 
 
 namespace leasy::metadata {
@@ -44,7 +41,7 @@ namespace leasy::metadata {
     {"json", json::write },
   };
 
-  void Xdump(const std::string &lang, const options &options) {
+  static void Xdump(const std::string &lang, const options &options) {
     if (map.find(lang) != map.end()) {
       std::ofstream of("dump." + lang);
       map[lang](of, AppDomain().dump(), options);
@@ -58,7 +55,7 @@ using namespace leasy;
 
 namespace {
   std::vector<std::string> languages;
-  metadata::options           options = {};
+  metadata::options        options = {};
 
   auto ok = []() {
     cli::addcli("--Xdump-lang=[L]", [&](cli::CliArgs args) {

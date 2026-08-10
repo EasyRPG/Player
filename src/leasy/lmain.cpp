@@ -56,8 +56,8 @@ namespace leasy {
         cli::cli(args);
         ready();
       } catch (const std::exception &e) {
-        io().Error.writeln("exception during lmain() init!!");
-        io().Error.writeln(e.what());
+        io().Error.writeln(">>> exception during lmain() init!!");
+        io().Error.writeln(">>> ", e.what());
         io().Warning.writeln(__func__, ": execution may continue, but this can crash because of init-exceptions!");
       }
     }

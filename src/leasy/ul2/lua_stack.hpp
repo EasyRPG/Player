@@ -22,7 +22,6 @@
 
 #pragma once
 
-#include "../lua/lua.hpp"
 #include "ulexception2.hpp"
 #include "../typings/metatypes.hpp"
 #include "../kits/variant.hpp"
@@ -36,7 +35,6 @@
 #include <type_traits>
 #include <unordered_map>
 #include <utility>
-#include <new>
 
 #include "leasy/metadata/type.hpp"
 

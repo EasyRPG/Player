@@ -35,6 +35,12 @@
 #include "Assembly.hpp"
 
 namespace leasy::metadata {
+  inline const char *luaExportAssemblyPrefix = "EasyRPGPlayer::Assembly";
+  inline const char *luaExportAssemblyPrefixNiceNice = "EasyRPGPlayer.Assembly.";
+
+  /**
+   * Prefer not qualify this class as const!
+   */
   class Domain : public Data, public SizeDescriptor {
   protected:
     std::unordered_map<std::string, std::shared_ptr<Assembly>> assemblies;
@@ -45,7 +51,11 @@ namespace leasy::metadata {
     std::unordered_map<std::string, std::shared_ptr<function_base_t>> functionCache;
 
   public:
-    inline virtual ~Domain() = default;
+    inline ~Domain() override = default;
+
+    inline std::vector<std::shared_ptr<Assembly>> getAssemblies() const {
+      return kits::select(assemblies, [](auto I) { return I.second; });
+    }
 
     inline Object dump() const override {
       auto m = Map();
@@ -57,6 +67,7 @@ namespace leasy::metadata {
 
     inline void bind(ul2::lstate &state) const override {
       for (const auto&[name, assembly]: this->assemblies) {
+        assembly->setLuaDumpPrefix(luaExportAssemblyPrefix);
         assembly->bind(state);
       }
     }

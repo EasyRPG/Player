@@ -67,4 +67,42 @@ namespace leasy::kits {
 
   template<typename T>
   using vector_value_t = typename vector_value_type<flat_t<T>>::type;
+
+  template<class T>
+  struct underlying {
+    using type = T;
+  };
+
+  template<class T>
+  struct underlying<T*> {
+    using type = typename underlying<T>::type;
+  };
+
+  template<class T>
+  struct underlying<T&> {
+    using type = typename underlying<T>::type;
+  };
+
+  template<class T>
+  struct underlying<T&&> {
+    using type = typename underlying<T>::type;
+  };
+
+  template<class T>
+  struct underlying<const T> {
+    using type = typename underlying<T>::type;
+  };
+
+  template<class T>
+  struct underlying<volatile T> {
+    using type = typename underlying<T>::type;
+  };
+
+  template<class T>
+  struct underlying<const volatile T> {
+    using type = typename underlying<T>::type;
+  };
+
+  template<class T>
+  using underlying_t = typename underlying<T>::type;
 }

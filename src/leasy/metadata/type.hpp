@@ -67,9 +67,6 @@ namespace leasy::metadata {
     bool _resolved = true;
 
   public:
-    inline virtual ~Class() {
-    }
-
     inline virtual std::any call(const std::string &name, std::vector<std::any> &args) const {
       if (_methods.find(name) != _methods.end()) return _methods.at(name)->call(args);
       else {
@@ -131,19 +128,18 @@ namespace leasy::metadata {
           .add("name", c->_fullname)
           .add("size", c->_size)
           .add("bases", Array(
-                 kits::select(c->_bases, [](const std::shared_ptr<Class> &cl) {
-                   if (cl) return cl->dump();
-                   return Object("<null-class>");
-                 })
-               ))
+      kits::select(c->_bases, [](const std::shared_ptr<Class> &cl) {
+               if (cl) return cl->dump();
+               return Object("<null-class>");
+             })))
           .add("cindex", Map()
-               .add("name", c->_cindex.name())
-               .add("hashcode", c->_cindex.hash_code())
+            .add("name", c->_cindex.name())
+            .add("hashcode", c->_cindex.hash_code())
           )
           .add("methods", Array(kits::select(c->methods(),
-                                             [](const std::pair<std::string, std::shared_ptr<function_base_t> > &e) {
-                                               return e.second->dump();
-                                             })));
+            [](const std::pair<std::string, std::shared_ptr<function_base_t> > &e) {
+              return e.second->dump();
+            })));
     }
 
     inline Object minimal_dump() const {
@@ -265,15 +261,9 @@ namespace leasy::metadata {
   protected:
     std::shared_ptr<DynamicClass<T, Bases...> > local;
 
-    static inline std::shared_ptr<DynamicClass<T, Bases...> > alloc_ptr() {
-      std::shared_ptr<DynamicClass<T, Bases...> > p = std::make_shared<DynamicClass<T, Bases...> >();
-      return p;
-    }
-
   public:
     inline ClassBuilder() {
-      nameof<bool>();
-      this->local = alloc_ptr();
+      this->local = std::make_shared<DynamicClass<T, Bases...> >();
       using U = std::remove_reference_t<T>;
 
       if constexpr (!std::is_void_v<U>) {

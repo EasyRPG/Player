@@ -537,6 +537,12 @@ add_library(${PROJECT_NAME} OBJECT
 		src/leasy/metadata/Domain.cpp
 		src/leasy/metadata/builtins/arithmetics.cpp
 		src/leasy/metadata/builtins/encoding.cpp
+		src/leasy/metadata/glues/lua_glues.cpp
+		src/leasy/metadata/glues/lua_glues.hpp
+		src/leasy/metadata/glues/glues.cpp
+		src/leasy/metadata/glues/luatypeparser.hpp
+		src/leasy/types/string.hpp
+		src/leasy/types/iterable.hpp
 )
 
 # These are actually unused when building in CMake
