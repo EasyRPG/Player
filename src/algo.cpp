@@ -355,7 +355,7 @@ namespace leasy::metadata::builtin {
   typedef bool(*IsRowAdjusted_OV2)(const Game_Battler& battler, lcf::rpg::System::BattleCondition cond, bool offense, bool allow_enemy);
 
 	auto foooo = ([]() -> bool {
-		auto algo = (BuiltInAssembly("Algo")
+		auto algo = (BuiltInAssembly("EasyRPGPlayer::Algo")
 			.addFunction("IsRowAdjusted", (IsRowAdjusted_OV1)Algo::IsRowAdjusted, (IsRowAdjusted_OV2)Algo::IsRowAdjusted)
 			.addFunction("VarianceAdjustEffect", Algo::VarianceAdjustEffect)
 			.addFunction("CalcNormalAttackToHit", Algo::CalcNormalAttackToHit)

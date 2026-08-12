@@ -637,7 +637,7925 @@ return {
     },
     ["name"] = "leasy::meta2::node"
   },
-  ["ImageBMP"] = {
+  ["leasy::encoding"] = {
+    ["functions"] = {},
+    ["classes"] = {
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6254907307669948269,
+                ["name"] = "PN5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t> *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "hasIndex"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858252,
+                  ["name"] = "Di"
+                },
+                ["name"] = "const char32_t &"
+              }
+            },
+            ["name"] = "hasValue"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8979449233550815645,
+                ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "lower"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8979449233550815645,
+                ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "upper"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8979449233550815645,
+                ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8979449233550815645,
+                ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "lowerInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8979449233550815645,
+                ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "upperInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8979449233550815645,
+                ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "replace"
+          }
+        },
+        ["size"] = 32,
+        ["cindex"] = {
+          ["hashcode"] = 8979449233550815645,
+          ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "leasy::BasicString<char32_t>"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 5833076775954135173,
+                ["name"] = "PPNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+              },
+              ["name"] = "std::string **"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3070905138797737461,
+                  ["name"] = "PNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string *"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 7048117399172095301,
+                ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+              },
+              ["name"] = "std::string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3070905138797737461,
+                  ["name"] = "PNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string *"
+              }
+            },
+            ["name"] = "value"
+          }
+        },
+        ["size"] = 8,
+        ["cindex"] = {
+          ["hashcode"] = 3070905138797737461,
+          ["name"] = "PNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "std::string *"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 4121149767572612231,
+                ["name"] = "PPN5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t> **"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3828604129348662455,
+                  ["name"] = "PN5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t> *"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 14008604122560490695,
+                ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3828604129348662455,
+                  ["name"] = "PN5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t> *"
+              }
+            },
+            ["name"] = "value"
+          }
+        },
+        ["size"] = 8,
+        ["cindex"] = {
+          ["hashcode"] = 3828604129348662455,
+          ["name"] = "PN5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "leasy::BasicString<char16_t> *"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6254907307669948269,
+                ["name"] = "PN5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t> *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "hasIndex"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858252,
+                  ["name"] = "Di"
+                },
+                ["name"] = "const char32_t &"
+              }
+            },
+            ["name"] = "hasValue"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8979449233550815645,
+                ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "lower"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8979449233550815645,
+                ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "upper"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8979449233550815645,
+                ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8979449233550815645,
+                ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "lowerInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8979449233550815645,
+                ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "upperInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8979449233550815645,
+                ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8979449233550815645,
+                  ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t>"
+              }
+            },
+            ["name"] = "replace"
+          }
+        },
+        ["size"] = 32,
+        ["cindex"] = {
+          ["hashcode"] = 8979449233550815645,
+          ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "leasy::BasicString<char32_t>"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "contains"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 4790322757607355595,
+                ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+              },
+              ["name"] = "std::u32string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "insert"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858252,
+                  ["name"] = "Di"
+                },
+                ["name"] = "const char32_t &"
+              }
+            },
+            ["name"] = "pushBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "find"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "reserve"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6191801336001333883,
+                ["name"] = "PNSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+              },
+              ["name"] = "std::u32string *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858252,
+                ["name"] = "Di"
+              },
+              ["name"] = "const char32_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "at"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858252,
+                  ["name"] = "Di"
+                },
+                ["name"] = "const char32_t &"
+              }
+            },
+            ["name"] = "findChar"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "maxSize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "clear"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "capacity"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "rfind"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "startsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "endsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "popBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "resize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 4790322757607355595,
+                ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+              },
+              ["name"] = "std::u32string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 4790322757607355595,
+                ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+              },
+              ["name"] = "std::u32string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "erase"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "length"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "compare"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858252,
+                ["name"] = "Di"
+              },
+              ["name"] = "const char32_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "front"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 4790322757607355595,
+                ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+              },
+              ["name"] = "std::u32string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "append"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 4790322757607355595,
+                ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+              },
+              ["name"] = "std::u32string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "replace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858252,
+                ["name"] = "Di"
+              },
+              ["name"] = "const char32_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "back"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "swap"
+          }
+        },
+        ["size"] = 24,
+        ["cindex"] = {
+          ["hashcode"] = 4790322757607355595,
+          ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "std::u32string"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 13139123385624288139,
+                ["name"] = "PPNSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+              },
+              ["name"] = "std::u32string **"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6191801336001333883,
+                  ["name"] = "PNSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string *"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 4790322757607355595,
+                ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+              },
+              ["name"] = "std::u32string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6191801336001333883,
+                  ["name"] = "PNSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string *"
+              }
+            },
+            ["name"] = "value"
+          }
+        },
+        ["size"] = 8,
+        ["cindex"] = {
+          ["hashcode"] = 6191801336001333883,
+          ["name"] = "PNSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "std::u32string *"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 13553296842316126531,
+                ["name"] = "PN5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char> *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "hasIndex"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858063,
+                  ["name"] = "c"
+                },
+                ["name"] = "const char &"
+              }
+            },
+            ["name"] = "hasValue"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 9683073507199425395,
+                ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "lower"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 9683073507199425395,
+                ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "upper"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 9683073507199425395,
+                ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 9683073507199425395,
+                ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "lowerInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 9683073507199425395,
+                ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "upperInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 9683073507199425395,
+                ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "replace"
+          }
+        },
+        ["size"] = 32,
+        ["cindex"] = {
+          ["hashcode"] = 9683073507199425395,
+          ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "leasy::BasicString<char>"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "contains"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 15067349643040121425,
+                ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+              },
+              ["name"] = "std::wstring"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "insert"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858054,
+                  ["name"] = "w"
+                },
+                ["name"] = "const wchar_t &"
+              }
+            },
+            ["name"] = "pushBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "find"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "reserve"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 4947016567758277345,
+                ["name"] = "PNSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+              },
+              ["name"] = "std::wstring *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858054,
+                ["name"] = "w"
+              },
+              ["name"] = "const wchar_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "at"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858054,
+                  ["name"] = "w"
+                },
+                ["name"] = "const wchar_t &"
+              }
+            },
+            ["name"] = "findChar"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "maxSize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "clear"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "capacity"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "rfind"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "startsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "endsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "popBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "resize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 15067349643040121425,
+                ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+              },
+              ["name"] = "std::wstring"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 15067349643040121425,
+                ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+              },
+              ["name"] = "std::wstring"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "erase"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "length"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "compare"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858054,
+                ["name"] = "w"
+              },
+              ["name"] = "const wchar_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "front"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 15067349643040121425,
+                ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+              },
+              ["name"] = "std::wstring"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "append"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 15067349643040121425,
+                ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+              },
+              ["name"] = "std::wstring"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "replace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858054,
+                ["name"] = "w"
+              },
+              ["name"] = "const wchar_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "back"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "swap"
+          }
+        },
+        ["size"] = 24,
+        ["cindex"] = {
+          ["hashcode"] = 15067349643040121425,
+          ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "std::wstring"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "contains"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 4790322757607355595,
+                ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+              },
+              ["name"] = "std::u32string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "insert"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858252,
+                  ["name"] = "Di"
+                },
+                ["name"] = "const char32_t &"
+              }
+            },
+            ["name"] = "pushBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "find"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "reserve"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6191801336001333883,
+                ["name"] = "PNSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+              },
+              ["name"] = "std::u32string *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858252,
+                ["name"] = "Di"
+              },
+              ["name"] = "const char32_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "at"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858252,
+                  ["name"] = "Di"
+                },
+                ["name"] = "const char32_t &"
+              }
+            },
+            ["name"] = "findChar"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "maxSize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "clear"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "capacity"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "rfind"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "startsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "endsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "popBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "resize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 4790322757607355595,
+                ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+              },
+              ["name"] = "std::u32string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 4790322757607355595,
+                ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+              },
+              ["name"] = "std::u32string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "erase"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "length"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "compare"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858252,
+                ["name"] = "Di"
+              },
+              ["name"] = "const char32_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "front"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 4790322757607355595,
+                ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+              },
+              ["name"] = "std::u32string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "append"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 4790322757607355595,
+                ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+              },
+              ["name"] = "std::u32string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "replace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858252,
+                ["name"] = "Di"
+              },
+              ["name"] = "const char32_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "back"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4790322757607355595,
+                  ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+                },
+                ["name"] = "std::u32string"
+              }
+            },
+            ["name"] = "swap"
+          }
+        },
+        ["size"] = 24,
+        ["cindex"] = {
+          ["hashcode"] = 4790322757607355595,
+          ["name"] = "NSt3__112basic_stringIDiNS_11char_traitsIDiEENS_9allocatorIDiEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "std::u32string"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3828604129348662455,
+                ["name"] = "PN5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t> *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "hasIndex"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858240,
+                  ["name"] = "Ds"
+                },
+                ["name"] = "const char16_t &"
+              }
+            },
+            ["name"] = "hasValue"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 14008604122560490695,
+                ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "lower"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 14008604122560490695,
+                ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "upper"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 14008604122560490695,
+                ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 14008604122560490695,
+                ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "lowerInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 14008604122560490695,
+                ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "upperInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 14008604122560490695,
+                ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "replace"
+          }
+        },
+        ["size"] = 32,
+        ["cindex"] = {
+          ["hashcode"] = 14008604122560490695,
+          ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "leasy::BasicString<char16_t>"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "contains"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3718748076239981585,
+                ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+              },
+              ["name"] = "std::u16string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "insert"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858240,
+                  ["name"] = "Ds"
+                },
+                ["name"] = "const char16_t &"
+              }
+            },
+            ["name"] = "pushBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "find"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "reserve"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3524094603148980641,
+                ["name"] = "PNSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+              },
+              ["name"] = "std::u16string *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858240,
+                ["name"] = "Ds"
+              },
+              ["name"] = "const char16_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "at"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858240,
+                  ["name"] = "Ds"
+                },
+                ["name"] = "const char16_t &"
+              }
+            },
+            ["name"] = "findChar"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "maxSize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "clear"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "capacity"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "rfind"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "startsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "endsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "popBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "resize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3718748076239981585,
+                ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+              },
+              ["name"] = "std::u16string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3718748076239981585,
+                ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+              },
+              ["name"] = "std::u16string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "erase"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "length"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "compare"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858240,
+                ["name"] = "Ds"
+              },
+              ["name"] = "const char16_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "front"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3718748076239981585,
+                ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+              },
+              ["name"] = "std::u16string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "append"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3718748076239981585,
+                ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+              },
+              ["name"] = "std::u16string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "replace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858240,
+                ["name"] = "Ds"
+              },
+              ["name"] = "const char16_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "back"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "swap"
+          }
+        },
+        ["size"] = 24,
+        ["cindex"] = {
+          ["hashcode"] = 3718748076239981585,
+          ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "std::u16string"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 10650108524271519837,
+                ["name"] = "PPN5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t> **"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6254907307669948269,
+                  ["name"] = "PN5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t> *"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8979449233550815645,
+                ["name"] = "N5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+              },
+              ["name"] = "leasy::BasicString<char32_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6254907307669948269,
+                  ["name"] = "PN5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+                },
+                ["name"] = "leasy::BasicString<char32_t> *"
+              }
+            },
+            ["name"] = "value"
+          }
+        },
+        ["size"] = 8,
+        ["cindex"] = {
+          ["hashcode"] = 6254907307669948269,
+          ["name"] = "PN5leasy11BasicStringIDiNSt3__111char_traitsIDiEENS1_9allocatorIDiEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "leasy::BasicString<char32_t> *"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 9907773206652899537,
+                ["name"] = "PPNSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+              },
+              ["name"] = "std::u16string **"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3524094603148980641,
+                  ["name"] = "PNSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string *"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3718748076239981585,
+                ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+              },
+              ["name"] = "std::u16string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3524094603148980641,
+                  ["name"] = "PNSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string *"
+              }
+            },
+            ["name"] = "value"
+          }
+        },
+        ["size"] = 8,
+        ["cindex"] = {
+          ["hashcode"] = 3524094603148980641,
+          ["name"] = "PNSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "std::u16string *"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 11809777555687990615,
+                ["name"] = "PN5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t> *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "hasIndex"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858054,
+                  ["name"] = "w"
+                },
+                ["name"] = "const wchar_t &"
+              }
+            },
+            ["name"] = "hasValue"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 16292417631917193063,
+                ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "lower"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 16292417631917193063,
+                ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "upper"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 16292417631917193063,
+                ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 16292417631917193063,
+                ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "lowerInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 16292417631917193063,
+                ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "upperInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 16292417631917193063,
+                ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "replace"
+          }
+        },
+        ["size"] = 32,
+        ["cindex"] = {
+          ["hashcode"] = 16292417631917193063,
+          ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "leasy::BasicString<wchar_t>"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 1190765452551881895,
+                ["name"] = "PPN5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t> **"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 11809777555687990615,
+                  ["name"] = "PN5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t> *"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 16292417631917193063,
+                ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 11809777555687990615,
+                  ["name"] = "PN5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t> *"
+              }
+            },
+            ["name"] = "value"
+          }
+        },
+        ["size"] = 8,
+        ["cindex"] = {
+          ["hashcode"] = 11809777555687990615,
+          ["name"] = "PN5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "leasy::BasicString<wchar_t> *"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 11809777555687990615,
+                ["name"] = "PN5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t> *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "hasIndex"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858054,
+                  ["name"] = "w"
+                },
+                ["name"] = "const wchar_t &"
+              }
+            },
+            ["name"] = "hasValue"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 16292417631917193063,
+                ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "lower"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 16292417631917193063,
+                ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "upper"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 16292417631917193063,
+                ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 16292417631917193063,
+                ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "lowerInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 16292417631917193063,
+                ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "upperInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 16292417631917193063,
+                ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+              },
+              ["name"] = "leasy::BasicString<wchar_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 16292417631917193063,
+                  ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+                },
+                ["name"] = "leasy::BasicString<wchar_t>"
+              }
+            },
+            ["name"] = "replace"
+          }
+        },
+        ["size"] = 32,
+        ["cindex"] = {
+          ["hashcode"] = 16292417631917193063,
+          ["name"] = "N5leasy11BasicStringIwNSt3__111char_traitsIwEENS1_9allocatorIwEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "leasy::BasicString<wchar_t>"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "contains"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 15067349643040121425,
+                ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+              },
+              ["name"] = "std::wstring"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "insert"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858054,
+                  ["name"] = "w"
+                },
+                ["name"] = "const wchar_t &"
+              }
+            },
+            ["name"] = "pushBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "find"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "reserve"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 4947016567758277345,
+                ["name"] = "PNSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+              },
+              ["name"] = "std::wstring *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858054,
+                ["name"] = "w"
+              },
+              ["name"] = "const wchar_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "at"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858054,
+                  ["name"] = "w"
+                },
+                ["name"] = "const wchar_t &"
+              }
+            },
+            ["name"] = "findChar"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "maxSize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "clear"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "capacity"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "rfind"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "startsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "endsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "popBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "resize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 15067349643040121425,
+                ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+              },
+              ["name"] = "std::wstring"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 15067349643040121425,
+                ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+              },
+              ["name"] = "std::wstring"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "erase"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "length"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "compare"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858054,
+                ["name"] = "w"
+              },
+              ["name"] = "const wchar_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "front"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 15067349643040121425,
+                ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+              },
+              ["name"] = "std::wstring"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "append"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 15067349643040121425,
+                ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+              },
+              ["name"] = "std::wstring"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "replace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858054,
+                ["name"] = "w"
+              },
+              ["name"] = "const wchar_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "back"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 15067349643040121425,
+                  ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring"
+              }
+            },
+            ["name"] = "swap"
+          }
+        },
+        ["size"] = 24,
+        ["cindex"] = {
+          ["hashcode"] = 15067349643040121425,
+          ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "std::wstring"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 13553296842316126531,
+                ["name"] = "PN5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char> *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "hasIndex"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858063,
+                  ["name"] = "c"
+                },
+                ["name"] = "const char &"
+              }
+            },
+            ["name"] = "hasValue"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 9683073507199425395,
+                ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "lower"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 9683073507199425395,
+                ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "upper"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 9683073507199425395,
+                ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 9683073507199425395,
+                ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "lowerInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 9683073507199425395,
+                ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "upperInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 9683073507199425395,
+                ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 9683073507199425395,
+                  ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char>"
+              }
+            },
+            ["name"] = "replace"
+          }
+        },
+        ["size"] = 32,
+        ["cindex"] = {
+          ["hashcode"] = 9683073507199425395,
+          ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "leasy::BasicString<char>"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 13028165401543665843,
+                ["name"] = "PPN5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char> **"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 13553296842316126531,
+                  ["name"] = "PN5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char> *"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 9683073507199425395,
+                ["name"] = "N5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+              },
+              ["name"] = "leasy::BasicString<char>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 13553296842316126531,
+                  ["name"] = "PN5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+                },
+                ["name"] = "leasy::BasicString<char> *"
+              }
+            },
+            ["name"] = "value"
+          }
+        },
+        ["size"] = 8,
+        ["cindex"] = {
+          ["hashcode"] = 13553296842316126531,
+          ["name"] = "PN5leasy11BasicStringIcNSt3__111char_traitsIcEENS1_9allocatorIcEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "leasy::BasicString<char> *"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "contains"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 7048117399172095301,
+                ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+              },
+              ["name"] = "std::string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "insert"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858063,
+                  ["name"] = "c"
+                },
+                ["name"] = "const char &"
+              }
+            },
+            ["name"] = "pushBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "find"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "reserve"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3070905138797737461,
+                ["name"] = "PNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+              },
+              ["name"] = "std::string *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858063,
+                ["name"] = "c"
+              },
+              ["name"] = "const char &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "at"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858063,
+                  ["name"] = "c"
+                },
+                ["name"] = "const char &"
+              }
+            },
+            ["name"] = "findChar"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "maxSize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "clear"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "capacity"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "rfind"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "startsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "endsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "popBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "resize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 7048117399172095301,
+                ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+              },
+              ["name"] = "std::string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 7048117399172095301,
+                ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+              },
+              ["name"] = "std::string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "erase"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "length"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "compare"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858063,
+                ["name"] = "c"
+              },
+              ["name"] = "const char &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "front"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 7048117399172095301,
+                ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+              },
+              ["name"] = "std::string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "append"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 7048117399172095301,
+                ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+              },
+              ["name"] = "std::string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "replace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858063,
+                ["name"] = "c"
+              },
+              ["name"] = "const char &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "back"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "swap"
+          }
+        },
+        ["size"] = 24,
+        ["cindex"] = {
+          ["hashcode"] = 7048117399172095301,
+          ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "std::string"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 13852309019822161297,
+                ["name"] = "PPNSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+              },
+              ["name"] = "std::wstring **"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4947016567758277345,
+                  ["name"] = "PNSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring *"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 15067349643040121425,
+                ["name"] = "NSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+              },
+              ["name"] = "std::wstring"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4947016567758277345,
+                  ["name"] = "PNSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+                },
+                ["name"] = "std::wstring *"
+              }
+            },
+            ["name"] = "value"
+          }
+        },
+        ["size"] = 8,
+        ["cindex"] = {
+          ["hashcode"] = 4947016567758277345,
+          ["name"] = "PNSt3__112basic_stringIwNS_11char_traitsIwEENS_9allocatorIwEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "std::wstring *"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3828604129348662455,
+                ["name"] = "PN5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t> *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "hasIndex"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858240,
+                  ["name"] = "Ds"
+                },
+                ["name"] = "const char16_t &"
+              }
+            },
+            ["name"] = "hasValue"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 14008604122560490695,
+                ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "lower"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 14008604122560490695,
+                ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "upper"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 14008604122560490695,
+                ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 14008604122560490695,
+                ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "lowerInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 14008604122560490695,
+                ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "upperInPlace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 14008604122560490695,
+                ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+              },
+              ["name"] = "leasy::BasicString<char16_t>"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 14008604122560490695,
+                  ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+                },
+                ["name"] = "leasy::BasicString<char16_t>"
+              }
+            },
+            ["name"] = "replace"
+          }
+        },
+        ["size"] = 32,
+        ["cindex"] = {
+          ["hashcode"] = 14008604122560490695,
+          ["name"] = "N5leasy11BasicStringIDsNSt3__111char_traitsIDsEENS1_9allocatorIDsEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "leasy::BasicString<char16_t>"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "contains"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3718748076239981585,
+                ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+              },
+              ["name"] = "std::u16string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "insert"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858240,
+                  ["name"] = "Ds"
+                },
+                ["name"] = "const char16_t &"
+              }
+            },
+            ["name"] = "pushBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "find"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "reserve"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3524094603148980641,
+                ["name"] = "PNSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+              },
+              ["name"] = "std::u16string *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858240,
+                ["name"] = "Ds"
+              },
+              ["name"] = "const char16_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "at"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858240,
+                  ["name"] = "Ds"
+                },
+                ["name"] = "const char16_t &"
+              }
+            },
+            ["name"] = "findChar"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "maxSize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "clear"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "capacity"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "rfind"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "startsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "endsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "popBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "resize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3718748076239981585,
+                ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+              },
+              ["name"] = "std::u16string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3718748076239981585,
+                ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+              },
+              ["name"] = "std::u16string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "erase"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "length"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "compare"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858240,
+                ["name"] = "Ds"
+              },
+              ["name"] = "const char16_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "front"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3718748076239981585,
+                ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+              },
+              ["name"] = "std::u16string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "append"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3718748076239981585,
+                ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+              },
+              ["name"] = "std::u16string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "replace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858240,
+                ["name"] = "Ds"
+              },
+              ["name"] = "const char16_t &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "back"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 3718748076239981585,
+                  ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+                },
+                ["name"] = "std::u16string"
+              }
+            },
+            ["name"] = "swap"
+          }
+        },
+        ["size"] = 24,
+        ["cindex"] = {
+          ["hashcode"] = 3718748076239981585,
+          ["name"] = "NSt3__112basic_stringIDsNS_11char_traitsIDsEENS_9allocatorIDsEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "std::u16string"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "contains"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 7048117399172095301,
+                ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+              },
+              ["name"] = "std::string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "insert"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858063,
+                  ["name"] = "c"
+                },
+                ["name"] = "const char &"
+              }
+            },
+            ["name"] = "pushBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "find"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "reserve"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 3070905138797737461,
+                ["name"] = "PNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+              },
+              ["name"] = "std::string *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858063,
+                ["name"] = "c"
+              },
+              ["name"] = "const char &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "at"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858063,
+                  ["name"] = "c"
+                },
+                ["name"] = "const char &"
+              }
+            },
+            ["name"] = "findChar"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "maxSize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "clear"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "capacity"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "rfind"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "startsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "endsWith"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "popBack"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "resize"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 7048117399172095301,
+                ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+              },
+              ["name"] = "std::string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "substr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 7048117399172095301,
+                ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+              },
+              ["name"] = "std::string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              }
+            },
+            ["name"] = "erase"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858135,
+                ["name"] = "m"
+              },
+              ["name"] = "unsigned long"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "length"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "compare"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858063,
+                ["name"] = "c"
+              },
+              ["name"] = "const char &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "front"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "empty"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 7048117399172095301,
+                ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+              },
+              ["name"] = "std::string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "append"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 7048117399172095301,
+                ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+              },
+              ["name"] = "std::string"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858135,
+                  ["name"] = "m"
+                },
+                ["name"] = "unsigned long"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "replace"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858063,
+                ["name"] = "c"
+              },
+              ["name"] = "const char &"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "back"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858024,
+                ["name"] = "v"
+              },
+              ["name"] = "void"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 7048117399172095301,
+                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+                },
+                ["name"] = "std::string"
+              }
+            },
+            ["name"] = "swap"
+          }
+        },
+        ["size"] = 24,
+        ["cindex"] = {
+          ["hashcode"] = 7048117399172095301,
+          ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+        },
+        ["bases"] = {},
+        ["name"] = "std::string"
+      }
+    },
+    ["name"] = "leasy::encoding"
+  },
+  ["EasyRPGPlayer::ImageBMP"] = {
     ["functions"] = {
       {
         ["return"] = {
@@ -670,7 +8588,7 @@ return {
             ["name"] = "bool"
           }
         },
-        ["name"] = "ImageBMP::read"
+        ["name"] = "EasyRPGPlayer::ImageBMP::read"
       }
     },
     ["classes"] = {
@@ -1110,7 +9028,7 @@ return {
         ["name"] = "ImageBMP::BitmapHeader"
       }
     },
-    ["name"] = "ImageBMP"
+    ["name"] = "EasyRPGPlayer::ImageBMP"
   },
   ["EasyRPGPlayer::Clock"] = {
     ["functions"] = {},
@@ -1271,187 +9189,628 @@ return {
     },
     ["name"] = "EasyRPGPlayer::Clock"
   },
-  ["leasy::std"] = {
+  ["EasyRPGPlayer::Algo"] = {
     ["functions"] = {
       {
         ["return"] = {
           ["cindex"] = {
-            ["hashcode"] = 7048117399172095301,
-            ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
+            ["hashcode"] = 6615858045,
+            ["name"] = "b"
           },
-          ["name"] = "std::string"
+          ["name"] = "bool"
         },
         ["arguments"] = {
           {
             ["cindex"] = {
-              ["hashcode"] = 8921313818456734131,
-              ["name"] = "NSt3__110type_indexE"
+              ["hashcode"] = 4420775708918966150,
+              ["name"] = "N3lcf3rpg5SkillE"
             },
-            ["name"] = "NSt3__110type_indexE"
+            ["name"] = "N3lcf3rpg5SkillE"
           }
         },
-        ["name"] = "nameof"
+        ["name"] = "EasyRPGPlayer::Algo::SkillTargetsAllies"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858045,
+            ["name"] = "b"
+          },
+          ["name"] = "bool"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4420775708918966150,
+              ["name"] = "N3lcf3rpg5SkillE"
+            },
+            ["name"] = "N3lcf3rpg5SkillE"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::IsNormalOrSubskill"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858108,
+            ["name"] = "i"
+          },
+          ["name"] = "int"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4420775708918966150,
+              ["name"] = "N3lcf3rpg5SkillE"
+            },
+            ["name"] = "N3lcf3rpg5SkillE"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858108,
+              ["name"] = "i"
+            },
+            ["name"] = "int"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858045,
+              ["name"] = "b"
+            },
+            ["name"] = "bool"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::CalcSkillCost"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858108,
+            ["name"] = "i"
+          },
+          ["name"] = "int"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858108,
+              ["name"] = "i"
+            },
+            ["name"] = "int"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 13549776772121148003,
+              ["name"] = "N3lcf3rpg4ItemE"
+            },
+            ["name"] = "N3lcf3rpg4ItemE"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::GetNumberOfAttacks"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858045,
+            ["name"] = "b"
+          },
+          ["name"] = "bool"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4420775708918966150,
+              ["name"] = "N3lcf3rpg5SkillE"
+            },
+            ["name"] = "N3lcf3rpg5SkillE"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::SkillTargetsOne"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858108,
+            ["name"] = "i"
+          },
+          ["name"] = "int"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4317599689,
+              ["name"] = "12Game_Battler"
+            },
+            ["name"] = "12Game_Battler"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4317599689,
+              ["name"] = "12Game_Battler"
+            },
+            ["name"] = "12Game_Battler"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858045,
+              ["name"] = "b"
+            },
+            ["name"] = "bool"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::CalcSelfDestructEffect"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858108,
+            ["name"] = "i"
+          },
+          ["name"] = "int"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4420775708918966150,
+              ["name"] = "N3lcf3rpg5SkillE"
+            },
+            ["name"] = "N3lcf3rpg5SkillE"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858108,
+              ["name"] = "i"
+            },
+            ["name"] = "int"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::CalcSkillHpCost"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858108,
+            ["name"] = "i"
+          },
+          ["name"] = "int"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4317599689,
+              ["name"] = "12Game_Battler"
+            },
+            ["name"] = "12Game_Battler"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4317599689,
+              ["name"] = "12Game_Battler"
+            },
+            ["name"] = "12Game_Battler"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4420775708918966150,
+              ["name"] = "N3lcf3rpg5SkillE"
+            },
+            ["name"] = "N3lcf3rpg5SkillE"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858045,
+              ["name"] = "b"
+            },
+            ["name"] = "bool"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858045,
+              ["name"] = "b"
+            },
+            ["name"] = "bool"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 1485114547661566828,
+              ["name"] = "N3lcf3rpg6System15BattleConditionE"
+            },
+            ["name"] = "N3lcf3rpg6System15BattleConditionE"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858045,
+              ["name"] = "b"
+            },
+            ["name"] = "bool"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::CalcSkillEffect"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858108,
+            ["name"] = "i"
+          },
+          ["name"] = "int"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4317599689,
+              ["name"] = "12Game_Battler"
+            },
+            ["name"] = "12Game_Battler"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4317599689,
+              ["name"] = "12Game_Battler"
+            },
+            ["name"] = "12Game_Battler"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 843925990230665840,
+              ["name"] = "N12Game_Battler6WeaponE"
+            },
+            ["name"] = "N12Game_Battler6WeaponE"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858045,
+              ["name"] = "b"
+            },
+            ["name"] = "bool"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858045,
+              ["name"] = "b"
+            },
+            ["name"] = "bool"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858045,
+              ["name"] = "b"
+            },
+            ["name"] = "bool"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 1485114547661566828,
+              ["name"] = "N3lcf3rpg6System15BattleConditionE"
+            },
+            ["name"] = "N3lcf3rpg6System15BattleConditionE"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858045,
+              ["name"] = "b"
+            },
+            ["name"] = "bool"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::CalcNormalAttackEffect"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858108,
+            ["name"] = "i"
+          },
+          ["name"] = "int"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4317599689,
+              ["name"] = "12Game_Battler"
+            },
+            ["name"] = "12Game_Battler"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4317599689,
+              ["name"] = "12Game_Battler"
+            },
+            ["name"] = "12Game_Battler"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 843925990230665840,
+              ["name"] = "N12Game_Battler6WeaponE"
+            },
+            ["name"] = "N12Game_Battler6WeaponE"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858108,
+              ["name"] = "i"
+            },
+            ["name"] = "int"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::CalcCriticalHitChance"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858108,
+            ["name"] = "i"
+          },
+          ["name"] = "int"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4317599689,
+              ["name"] = "12Game_Battler"
+            },
+            ["name"] = "12Game_Battler"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4317599689,
+              ["name"] = "12Game_Battler"
+            },
+            ["name"] = "12Game_Battler"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4420775708918966150,
+              ["name"] = "N3lcf3rpg5SkillE"
+            },
+            ["name"] = "N3lcf3rpg5SkillE"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 1485114547661566828,
+              ["name"] = "N3lcf3rpg6System15BattleConditionE"
+            },
+            ["name"] = "N3lcf3rpg6System15BattleConditionE"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858045,
+              ["name"] = "b"
+            },
+            ["name"] = "bool"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::CalcSkillToHit"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858045,
+            ["name"] = "b"
+          },
+          ["name"] = "bool"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4420775708918966150,
+              ["name"] = "N3lcf3rpg5SkillE"
+            },
+            ["name"] = "N3lcf3rpg5SkillE"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::SkillTargetsEnemies"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858045,
+            ["name"] = "b"
+          },
+          ["name"] = "bool"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4420775708918966150,
+              ["name"] = "N3lcf3rpg5SkillE"
+            },
+            ["name"] = "N3lcf3rpg5SkillE"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858045,
+              ["name"] = "b"
+            },
+            ["name"] = "bool"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::IsSkillUsable"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858108,
+            ["name"] = "i"
+          },
+          ["name"] = "int"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858108,
+              ["name"] = "i"
+            },
+            ["name"] = "int"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4317599689,
+              ["name"] = "12Game_Battler"
+            },
+            ["name"] = "12Game_Battler"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::AdjustDamageForDefend"
+      },
+      {
+        ["overloads"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4175493968664669524,
+                  ["name"] = "N3lcf3rpg9SaveActor7RowTypeE"
+                },
+                ["name"] = "N3lcf3rpg9SaveActor7RowTypeE"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 1485114547661566828,
+                  ["name"] = "N3lcf3rpg6System15BattleConditionE"
+                },
+                ["name"] = "N3lcf3rpg6System15BattleConditionE"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858045,
+                  ["name"] = "b"
+                },
+                ["name"] = "b"
+              }
+            },
+            ["name"] = "EasyRPGPlayer::Algo::IsRowAdjusted"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858045,
+                ["name"] = "b"
+              },
+              ["name"] = "bool"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 4317599689,
+                  ["name"] = "12Game_Battler"
+                },
+                ["name"] = "12Game_Battler"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 1485114547661566828,
+                  ["name"] = "N3lcf3rpg6System15BattleConditionE"
+                },
+                ["name"] = "N3lcf3rpg6System15BattleConditionE"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858045,
+                  ["name"] = "b"
+                },
+                ["name"] = "bool"
+              },
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6615858045,
+                  ["name"] = "b"
+                },
+                ["name"] = "bool"
+              }
+            },
+            ["name"] = "EasyRPGPlayer::Algo::IsRowAdjusted"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::IsRowAdjusted"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858108,
+            ["name"] = "i"
+          },
+          ["name"] = "int"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4317599689,
+              ["name"] = "12Game_Battler"
+            },
+            ["name"] = "12Game_Battler"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 4317599689,
+              ["name"] = "12Game_Battler"
+            },
+            ["name"] = "12Game_Battler"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 843925990230665840,
+              ["name"] = "N12Game_Battler6WeaponE"
+            },
+            ["name"] = "N12Game_Battler6WeaponE"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 1485114547661566828,
+              ["name"] = "N3lcf3rpg6System15BattleConditionE"
+            },
+            ["name"] = "N3lcf3rpg6System15BattleConditionE"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858045,
+              ["name"] = "b"
+            },
+            ["name"] = "bool"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::CalcNormalAttackToHit"
+      },
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 6615858108,
+            ["name"] = "i"
+          },
+          ["name"] = "int"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858108,
+              ["name"] = "i"
+            },
+            ["name"] = "i"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858108,
+              ["name"] = "i"
+            },
+            ["name"] = "i"
+          }
+        },
+        ["name"] = "EasyRPGPlayer::Algo::VarianceAdjustEffect"
       }
     },
+    ["classes"] = {},
+    ["name"] = "EasyRPGPlayer::Algo"
+  },
+  ["leasy::std"] = {
+    ["functions"] = {},
     ["classes"] = {
-      {
-        ["methods"] = {
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 16748276718346824374,
-                ["name"] = "PNSt3__117basic_string_viewIcNS_11char_traitsIcEEEE"
-              },
-              ["name"] = "std::string_view *"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 6254030633146854470,
-                  ["name"] = "NSt3__117basic_string_viewIcNS_11char_traitsIcEEEE"
-                },
-                ["name"] = "std::string_view"
-              }
-            },
-            ["name"] = "ptr"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 7048117399172095301,
-                ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
-              },
-              ["name"] = "std::string"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 6254030633146854470,
-                  ["name"] = "NSt3__117basic_string_viewIcNS_11char_traitsIcEEEE"
-                },
-                ["name"] = "std::string_view"
-              }
-            },
-            ["name"] = "get"
-          }
-        },
-        ["size"] = 16,
-        ["cindex"] = {
-          ["hashcode"] = 6254030633146854470,
-          ["name"] = "NSt3__117basic_string_viewIcNS_11char_traitsIcEEEE"
-        },
-        ["bases"] = {},
-        ["name"] = "std::string_view"
-      },
-      {
-        ["methods"] = {
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 5833076775954135173,
-                ["name"] = "PPNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
-              },
-              ["name"] = "std::string **"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 3070905138797737461,
-                  ["name"] = "PNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
-                },
-                ["name"] = "std::string *"
-              }
-            },
-            ["name"] = "ptr"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 7048117399172095301,
-                ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
-              },
-              ["name"] = "std::string"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 3070905138797737461,
-                  ["name"] = "PNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
-                },
-                ["name"] = "std::string *"
-              }
-            },
-            ["name"] = "value"
-          }
-        },
-        ["size"] = 8,
-        ["cindex"] = {
-          ["hashcode"] = 3070905138797737461,
-          ["name"] = "PNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
-        },
-        ["bases"] = {},
-        ["name"] = "std::string *"
-      },
-      {
-        ["methods"] = {
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 3070905138797737461,
-                ["name"] = "PNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
-              },
-              ["name"] = "std::string *"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 7048117399172095301,
-                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
-                },
-                ["name"] = "std::string"
-              }
-            },
-            ["name"] = "ptr"
-          }
-        },
-        ["size"] = 24,
-        ["cindex"] = {
-          ["hashcode"] = 7048117399172095301,
-          ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
-        },
-        ["bases"] = {},
-        ["name"] = "std::string"
-      },
-      {
-        ["methods"] = {
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 3070905138797737461,
-                ["name"] = "PNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
-              },
-              ["name"] = "std::string *"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 7048117399172095301,
-                  ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
-                },
-                ["name"] = "std::string"
-              }
-            },
-            ["name"] = "ptr"
-          }
-        },
-        ["size"] = 24,
-        ["cindex"] = {
-          ["hashcode"] = 7048117399172095301,
-          ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
-        },
-        ["bases"] = {},
-        ["name"] = "std::string"
-      },
       {
         ["methods"] = {
           {
@@ -2026,55 +10385,6 @@ return {
         },
         ["bases"] = {},
         ["name"] = "long double &"
-      },
-      {
-        ["methods"] = {
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 16748276718346824374,
-                ["name"] = "PNSt3__117basic_string_viewIcNS_11char_traitsIcEEEE"
-              },
-              ["name"] = "std::string_view *"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 6254030633146854470,
-                  ["name"] = "NSt3__117basic_string_viewIcNS_11char_traitsIcEEEE"
-                },
-                ["name"] = "std::string_view"
-              }
-            },
-            ["name"] = "ptr"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 7048117399172095301,
-                ["name"] = "NSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE"
-              },
-              ["name"] = "std::string"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 6254030633146854470,
-                  ["name"] = "NSt3__117basic_string_viewIcNS_11char_traitsIcEEEE"
-                },
-                ["name"] = "std::string_view"
-              }
-            },
-            ["name"] = "get"
-          }
-        },
-        ["size"] = 16,
-        ["cindex"] = {
-          ["hashcode"] = 6254030633146854470,
-          ["name"] = "NSt3__117basic_string_viewIcNS_11char_traitsIcEEEE"
-        },
-        ["bases"] = {},
-        ["name"] = "std::string_view"
       },
       {
         ["methods"] = {
@@ -2686,55 +10996,6 @@ return {
           {
             ["return"] = {
               ["cindex"] = {
-                ["hashcode"] = 3092003849749912582,
-                ["name"] = "PPNSt3__117basic_string_viewIcNS_11char_traitsIcEEEE"
-              },
-              ["name"] = "std::string_view **"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 16748276718346824374,
-                  ["name"] = "PNSt3__117basic_string_viewIcNS_11char_traitsIcEEEE"
-                },
-                ["name"] = "std::string_view *"
-              }
-            },
-            ["name"] = "ptr"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6254030633146854470,
-                ["name"] = "NSt3__117basic_string_viewIcNS_11char_traitsIcEEEE"
-              },
-              ["name"] = "std::string_view"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 16748276718346824374,
-                  ["name"] = "PNSt3__117basic_string_viewIcNS_11char_traitsIcEEEE"
-                },
-                ["name"] = "std::string_view *"
-              }
-            },
-            ["name"] = "value"
-          }
-        },
-        ["size"] = 8,
-        ["cindex"] = {
-          ["hashcode"] = 16748276718346824374,
-          ["name"] = "PNSt3__117basic_string_viewIcNS_11char_traitsIcEEEE"
-        },
-        ["bases"] = {},
-        ["name"] = "std::string_view *"
-      },
-      {
-        ["methods"] = {
-          {
-            ["return"] = {
-              ["cindex"] = {
                 ["hashcode"] = 193465601,
                 ["name"] = "PPd"
               },
@@ -3149,624 +11410,5 @@ return {
       }
     },
     ["name"] = "EasyRPGPlayer::bitmap"
-  },
-  ["Algo"] = {
-    ["functions"] = {
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858108,
-            ["name"] = "i"
-          },
-          ["name"] = "int"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858108,
-              ["name"] = "i"
-            },
-            ["name"] = "int"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 13549776772121148003,
-              ["name"] = "N3lcf3rpg4ItemE"
-            },
-            ["name"] = "N3lcf3rpg4ItemE"
-          }
-        },
-        ["name"] = "Algo::GetNumberOfAttacks"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858045,
-            ["name"] = "b"
-          },
-          ["name"] = "bool"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4420775708918966150,
-              ["name"] = "N3lcf3rpg5SkillE"
-            },
-            ["name"] = "N3lcf3rpg5SkillE"
-          }
-        },
-        ["name"] = "Algo::SkillTargetsAllies"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858045,
-            ["name"] = "b"
-          },
-          ["name"] = "bool"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4420775708918966150,
-              ["name"] = "N3lcf3rpg5SkillE"
-            },
-            ["name"] = "N3lcf3rpg5SkillE"
-          }
-        },
-        ["name"] = "Algo::SkillTargetsEnemies"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858045,
-            ["name"] = "b"
-          },
-          ["name"] = "bool"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4420775708918966150,
-              ["name"] = "N3lcf3rpg5SkillE"
-            },
-            ["name"] = "N3lcf3rpg5SkillE"
-          }
-        },
-        ["name"] = "Algo::IsNormalOrSubskill"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858045,
-            ["name"] = "b"
-          },
-          ["name"] = "bool"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4420775708918966150,
-              ["name"] = "N3lcf3rpg5SkillE"
-            },
-            ["name"] = "N3lcf3rpg5SkillE"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858045,
-              ["name"] = "b"
-            },
-            ["name"] = "bool"
-          }
-        },
-        ["name"] = "Algo::IsSkillUsable"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858108,
-            ["name"] = "i"
-          },
-          ["name"] = "int"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4310114185,
-              ["name"] = "12Game_Battler"
-            },
-            ["name"] = "12Game_Battler"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4310114185,
-              ["name"] = "12Game_Battler"
-            },
-            ["name"] = "12Game_Battler"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 843925990230665840,
-              ["name"] = "N12Game_Battler6WeaponE"
-            },
-            ["name"] = "N12Game_Battler6WeaponE"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 1485114547661566828,
-              ["name"] = "N3lcf3rpg6System15BattleConditionE"
-            },
-            ["name"] = "N3lcf3rpg6System15BattleConditionE"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858045,
-              ["name"] = "b"
-            },
-            ["name"] = "bool"
-          }
-        },
-        ["name"] = "Algo::CalcNormalAttackToHit"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858108,
-            ["name"] = "i"
-          },
-          ["name"] = "int"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4420775708918966150,
-              ["name"] = "N3lcf3rpg5SkillE"
-            },
-            ["name"] = "N3lcf3rpg5SkillE"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858108,
-              ["name"] = "i"
-            },
-            ["name"] = "int"
-          }
-        },
-        ["name"] = "Algo::CalcSkillHpCost"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858108,
-            ["name"] = "i"
-          },
-          ["name"] = "int"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4310114185,
-              ["name"] = "12Game_Battler"
-            },
-            ["name"] = "12Game_Battler"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4310114185,
-              ["name"] = "12Game_Battler"
-            },
-            ["name"] = "12Game_Battler"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858045,
-              ["name"] = "b"
-            },
-            ["name"] = "bool"
-          }
-        },
-        ["name"] = "Algo::CalcSelfDestructEffect"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858108,
-            ["name"] = "i"
-          },
-          ["name"] = "int"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4310114185,
-              ["name"] = "12Game_Battler"
-            },
-            ["name"] = "12Game_Battler"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4310114185,
-              ["name"] = "12Game_Battler"
-            },
-            ["name"] = "12Game_Battler"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4420775708918966150,
-              ["name"] = "N3lcf3rpg5SkillE"
-            },
-            ["name"] = "N3lcf3rpg5SkillE"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858045,
-              ["name"] = "b"
-            },
-            ["name"] = "bool"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858045,
-              ["name"] = "b"
-            },
-            ["name"] = "bool"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 1485114547661566828,
-              ["name"] = "N3lcf3rpg6System15BattleConditionE"
-            },
-            ["name"] = "N3lcf3rpg6System15BattleConditionE"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858045,
-              ["name"] = "b"
-            },
-            ["name"] = "bool"
-          }
-        },
-        ["name"] = "Algo::CalcSkillEffect"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858108,
-            ["name"] = "i"
-          },
-          ["name"] = "int"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4310114185,
-              ["name"] = "12Game_Battler"
-            },
-            ["name"] = "12Game_Battler"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4310114185,
-              ["name"] = "12Game_Battler"
-            },
-            ["name"] = "12Game_Battler"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 843925990230665840,
-              ["name"] = "N12Game_Battler6WeaponE"
-            },
-            ["name"] = "N12Game_Battler6WeaponE"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858108,
-              ["name"] = "i"
-            },
-            ["name"] = "int"
-          }
-        },
-        ["name"] = "Algo::CalcCriticalHitChance"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858108,
-            ["name"] = "i"
-          },
-          ["name"] = "int"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4310114185,
-              ["name"] = "12Game_Battler"
-            },
-            ["name"] = "12Game_Battler"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4310114185,
-              ["name"] = "12Game_Battler"
-            },
-            ["name"] = "12Game_Battler"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 843925990230665840,
-              ["name"] = "N12Game_Battler6WeaponE"
-            },
-            ["name"] = "N12Game_Battler6WeaponE"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858045,
-              ["name"] = "b"
-            },
-            ["name"] = "bool"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858045,
-              ["name"] = "b"
-            },
-            ["name"] = "bool"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858045,
-              ["name"] = "b"
-            },
-            ["name"] = "bool"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 1485114547661566828,
-              ["name"] = "N3lcf3rpg6System15BattleConditionE"
-            },
-            ["name"] = "N3lcf3rpg6System15BattleConditionE"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858045,
-              ["name"] = "b"
-            },
-            ["name"] = "bool"
-          }
-        },
-        ["name"] = "Algo::CalcNormalAttackEffect"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858108,
-            ["name"] = "i"
-          },
-          ["name"] = "int"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4310114185,
-              ["name"] = "12Game_Battler"
-            },
-            ["name"] = "12Game_Battler"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4310114185,
-              ["name"] = "12Game_Battler"
-            },
-            ["name"] = "12Game_Battler"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4420775708918966150,
-              ["name"] = "N3lcf3rpg5SkillE"
-            },
-            ["name"] = "N3lcf3rpg5SkillE"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 1485114547661566828,
-              ["name"] = "N3lcf3rpg6System15BattleConditionE"
-            },
-            ["name"] = "N3lcf3rpg6System15BattleConditionE"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858045,
-              ["name"] = "b"
-            },
-            ["name"] = "bool"
-          }
-        },
-        ["name"] = "Algo::CalcSkillToHit"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858108,
-            ["name"] = "i"
-          },
-          ["name"] = "int"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4420775708918966150,
-              ["name"] = "N3lcf3rpg5SkillE"
-            },
-            ["name"] = "N3lcf3rpg5SkillE"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858108,
-              ["name"] = "i"
-            },
-            ["name"] = "int"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858045,
-              ["name"] = "b"
-            },
-            ["name"] = "bool"
-          }
-        },
-        ["name"] = "Algo::CalcSkillCost"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858108,
-            ["name"] = "i"
-          },
-          ["name"] = "int"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858108,
-              ["name"] = "i"
-            },
-            ["name"] = "int"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4310114185,
-              ["name"] = "12Game_Battler"
-            },
-            ["name"] = "12Game_Battler"
-          }
-        },
-        ["name"] = "Algo::AdjustDamageForDefend"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858045,
-            ["name"] = "b"
-          },
-          ["name"] = "bool"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 4420775708918966150,
-              ["name"] = "N3lcf3rpg5SkillE"
-            },
-            ["name"] = "N3lcf3rpg5SkillE"
-          }
-        },
-        ["name"] = "Algo::SkillTargetsOne"
-      },
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 6615858108,
-            ["name"] = "i"
-          },
-          ["name"] = "int"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858108,
-              ["name"] = "i"
-            },
-            ["name"] = "i"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858108,
-              ["name"] = "i"
-            },
-            ["name"] = "i"
-          }
-        },
-        ["name"] = "Algo::VarianceAdjustEffect"
-      },
-      {
-        ["overloads"] = {
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858045,
-                ["name"] = "b"
-              },
-              ["name"] = "bool"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 4175493968664669524,
-                  ["name"] = "N3lcf3rpg9SaveActor7RowTypeE"
-                },
-                ["name"] = "N3lcf3rpg9SaveActor7RowTypeE"
-              },
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 1485114547661566828,
-                  ["name"] = "N3lcf3rpg6System15BattleConditionE"
-                },
-                ["name"] = "N3lcf3rpg6System15BattleConditionE"
-              },
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 6615858045,
-                  ["name"] = "b"
-                },
-                ["name"] = "b"
-              }
-            },
-            ["name"] = "Algo::IsRowAdjusted"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858045,
-                ["name"] = "b"
-              },
-              ["name"] = "bool"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 4310114185,
-                  ["name"] = "12Game_Battler"
-                },
-                ["name"] = "12Game_Battler"
-              },
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 1485114547661566828,
-                  ["name"] = "N3lcf3rpg6System15BattleConditionE"
-                },
-                ["name"] = "N3lcf3rpg6System15BattleConditionE"
-              },
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 6615858045,
-                  ["name"] = "b"
-                },
-                ["name"] = "bool"
-              },
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 6615858045,
-                  ["name"] = "b"
-                },
-                ["name"] = "bool"
-              }
-            },
-            ["name"] = "Algo::IsRowAdjusted"
-          }
-        },
-        ["name"] = "Algo::IsRowAdjusted"
-      }
-    },
-    ["classes"] = {},
-    ["name"] = "Algo"
   }
 }

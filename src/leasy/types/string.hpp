@@ -47,12 +47,8 @@ public:
     return this->find(value) != string_type::npos;
   }
 
-  bool hasIndex(const size_t& index) const override {
+  [[nodiscard]] bool hasIndex(const size_t& index) const override {
     return index < string_type::size();
-  }
-
-  size_t size() const override {
-    return string_type::size();
   }
 
   BasicString& replace(
@@ -167,8 +163,8 @@ public:
 
   struct SubStringInfo {
     BasicString string;
-    size_t index;
-    bool found;
+    size_t index{};
+    bool found{};
   };
 
   SubStringInfo findAny(
@@ -212,7 +208,14 @@ public:
   }
 
   BasicString substr(size_t start, size_t length = string_type::npos) const {
-    return string_type::substr(start, length);
+    return BasicString(
+        this->data() + start,
+        std::min(length, this->size() - start)
+    );
+  }
+
+  [[nodiscard]] size_t size() const override {
+    return string_type::size();
   }
 
   static BasicString join(
@@ -245,7 +248,9 @@ public:
   }
 };
 
-using String = BasicString<char>;
-using WString = BasicString<wchar_t>;
+  using String = BasicString<char>;
+  using WString = BasicString<wchar_t>;
+  using U16String = BasicString<char16_t>;
+  using U32String = BasicString<char32_t>;
 
 } // namespace leasy::types

@@ -158,5 +158,6 @@ doxygen-awesome-css/
 __pycache__/
 # tools/
 dump/
-games/
 dump.json
+dump.lua
+assembly/

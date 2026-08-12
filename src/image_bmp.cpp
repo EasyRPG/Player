@@ -198,7 +198,7 @@ namespace {
 	using namespace leasy::metadata;
 
 	bool ok = []() {
-		auto Asm = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("ImageBMP");
+		auto Asm = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer::ImageBMP");
 		Asm->addType<ImageBMP::BitmapHeader>(
 			make_class<ImageBMP::BitmapHeader>()
 			.method("size", [](ImageBMP::BitmapHeader &header) { return header.size; })
