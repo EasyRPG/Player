@@ -20,7 +20,7 @@
 ** stack across reallocations, doing the work only when needed.
 ** It also allows the running of one GC step when the stack is
 ** reallocated.
-** 'condmovestack' is used in heavy tests to force a stack reallocation
+** 'condmovestack' is used in heavy games to force a stack reallocation
 ** at every check.
 */
 

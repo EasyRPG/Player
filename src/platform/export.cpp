@@ -9,7 +9,7 @@ namespace {
       .method("now", Platform_Clock::now)
       .done();
 
-    AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer")->addType<Platform_Clock>(klass);
+    AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer::Clock")->addType<Platform_Clock>(klass);
     return false;
   }());
 }

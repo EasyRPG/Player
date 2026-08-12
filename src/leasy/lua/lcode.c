@@ -274,7 +274,7 @@ static int patchtestreg (FuncState *fs, int node, int reg) {
 
 
 /*
-** Traverse a list of tests ensuring no one produces a value
+** Traverse a list of games ensuring no one produces a value
 */
 static void removevalues (FuncState *fs, int list) {
   for (; list != NO_JUMP; list = getjump(fs, list))
@@ -283,9 +283,9 @@ static void removevalues (FuncState *fs, int list) {
 
 
 /*
-** Traverse a list of tests, patching their destination address and
-** registers: tests producing values jump to 'vtarget' (and put their
-** values in 'reg'), other tests jump to 'dtarget'.
+** Traverse a list of games, patching their destination address and
+** registers: games producing values jump to 'vtarget' (and put their
+** values in 'reg'), other games jump to 'dtarget'.
 */
 static void patchlistaux (FuncState *fs, int list, int vtarget, int reg,
                           int dtarget) {
@@ -965,7 +965,7 @@ static int need_value (FuncState *fs, int list) {
 ** Ensures final expression result (which includes results from its
 ** jump lists) is in register 'reg'.
 ** If expression has jumps, need to patch these jumps either to
-** its final position or to "load" instructions (for those tests
+** its final position or to "load" instructions (for those games
 ** that do not produce values).
 */
 static void exp2reg (FuncState *fs, expdesc *e, int reg) {

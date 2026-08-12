@@ -74,7 +74,7 @@
 /*
 ** Layout for bit use in 'marked' field. First three bits are
 ** used for object "age" in generational mode. Last bit is used
-** by tests.
+** by games.
 */
 #define WHITE0BIT	3  /* object is white (type 0) */
 #define WHITE1BIT	4  /* object is white (type 1) */
@@ -219,7 +219,7 @@
 /*
 ** Does one step of collection when debt becomes zero. 'pre'/'pos'
 ** allows some adjustments to be done only when needed. macro
-** 'condchangemem' is used only for heavy tests (forcing a full
+** 'condchangemem' is used only for heavy games (forcing a full
 ** GC cycle on every opportunity)
 */
 

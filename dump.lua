@@ -1,163 +1,4 @@
 return {
-  ["EasyRPGPlayer"] = {
-    ["functions"] = {},
-    ["classes"] = {
-      {
-        ["methods"] = {
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 13837397460718997846,
-                ["name"] = "PP8StdClock"
-              },
-              ["name"] = "StdClock **"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 8245171118366925990,
-                  ["name"] = "P8StdClock"
-                },
-                ["name"] = "StdClock *"
-              }
-            },
-            ["name"] = "ptr"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 249731095417650326,
-                ["name"] = "8StdClock"
-              },
-              ["name"] = "StdClock"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 8245171118366925990,
-                  ["name"] = "P8StdClock"
-                },
-                ["name"] = "StdClock *"
-              }
-            },
-            ["name"] = "value"
-          }
-        },
-        ["size"] = 8,
-        ["cindex"] = {
-          ["hashcode"] = 8245171118366925990,
-          ["name"] = "P8StdClock"
-        },
-        ["bases"] = {},
-        ["name"] = "StdClock *"
-      },
-      {
-        ["methods"] = {
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 8245171118366925990,
-                ["name"] = "P8StdClock"
-              },
-              ["name"] = "StdClock *"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 249731095417650326,
-                  ["name"] = "8StdClock"
-                },
-                ["name"] = "StdClock"
-              }
-            },
-            ["name"] = "ptr"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858068,
-                ["name"] = "PKc"
-              },
-              ["name"] = "const char *"
-            },
-            ["arguments"] = {},
-            ["name"] = "Name"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 10206583076624963542,
-                ["name"] = "NSt3__16chrono10time_pointINS0_12steady_clockENS0_8durationIxNS_5ratioILl1ELl1000000000EEEEEEE"
-              },
-              ["name"] = "std::chrono::time_point<std::chrono::steady_clock, std::chrono::duration<long long, std::ratio<1, 1000000000>>>"
-            },
-            ["arguments"] = {},
-            ["name"] = "now"
-          }
-        },
-        ["size"] = 1,
-        ["cindex"] = {
-          ["hashcode"] = 249731095417650326,
-          ["name"] = "8StdClock"
-        },
-        ["bases"] = {},
-        ["name"] = "StdClock"
-      },
-      {
-        ["methods"] = {
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 8245171118366925990,
-                ["name"] = "P8StdClock"
-              },
-              ["name"] = "StdClock *"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 249731095417650326,
-                  ["name"] = "8StdClock"
-                },
-                ["name"] = "StdClock"
-              }
-            },
-            ["name"] = "ptr"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858068,
-                ["name"] = "PKc"
-              },
-              ["name"] = "const char *"
-            },
-            ["arguments"] = {},
-            ["name"] = "Name"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 10206583076624963542,
-                ["name"] = "NSt3__16chrono10time_pointINS0_12steady_clockENS0_8durationIxNS_5ratioILl1ELl1000000000EEEEEEE"
-              },
-              ["name"] = "std::chrono::time_point<std::chrono::steady_clock, std::chrono::duration<long long, std::ratio<1, 1000000000>>>"
-            },
-            ["arguments"] = {},
-            ["name"] = "now"
-          }
-        },
-        ["size"] = 1,
-        ["cindex"] = {
-          ["hashcode"] = 249731095417650326,
-          ["name"] = "8StdClock"
-        },
-        ["bases"] = {},
-        ["name"] = "StdClock"
-      }
-    },
-    ["name"] = "EasyRPGPlayer"
-  },
   ["leasy::meta2::node"] = {
     ["functions"] = {},
     ["classes"] = {
@@ -796,26 +637,60 @@ return {
     },
     ["name"] = "leasy::meta2::node"
   },
-  ["bitmap.cpp"] = {
-    ["functions"] = {},
+  ["ImageBMP"] = {
+    ["functions"] = {
+      {
+        ["return"] = {
+          ["cindex"] = {
+            ["hashcode"] = 7510665017764879638,
+            ["name"] = "NSt3__15tupleIJb8ImageOutEEE"
+          },
+          ["name"] = "std::tuple<bool, ImageOut>"
+        },
+        ["arguments"] = {
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858077,
+              ["name"] = "PKh"
+            },
+            ["name"] = "PKh"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858117,
+              ["name"] = "j"
+            },
+            ["name"] = "j"
+          },
+          {
+            ["cindex"] = {
+              ["hashcode"] = 6615858045,
+              ["name"] = "b"
+            },
+            ["name"] = "bool"
+          }
+        },
+        ["name"] = "ImageBMP::read"
+      }
+    },
     ["classes"] = {
       {
         ["methods"] = {
           {
             ["return"] = {
               ["cindex"] = {
-                ["hashcode"] = 13837397870196371156,
-                ["name"] = "PP8ImageOut"
+                ["hashcode"] = 6425623367366090881,
+                ["name"] = "PN8ImageBMP12BitmapHeaderE"
               },
-              ["name"] = "ImageOut **"
+              ["name"] = "ImageBMP::BitmapHeader *"
             },
             ["arguments"] = {
               {
                 ["cindex"] = {
-                  ["hashcode"] = 8245170215167533604,
-                  ["name"] = "P8ImageOut"
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
                 },
-                ["name"] = "ImageOut *"
+                ["name"] = "ImageBMP::BitmapHeader"
               }
             },
             ["name"] = "ptr"
@@ -823,18 +698,211 @@ return {
           {
             ["return"] = {
               ["cindex"] = {
-                ["hashcode"] = 249731173975627796,
-                ["name"] = "8ImageOut"
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
               },
-              ["name"] = "ImageOut"
+              ["name"] = "int"
             },
             ["arguments"] = {
               {
                 ["cindex"] = {
-                  ["hashcode"] = 8245170215167533604,
-                  ["name"] = "P8ImageOut"
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
                 },
-                ["name"] = "ImageOut *"
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "num_colors"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "w"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "depth"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "h"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "planes"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "compression"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "palette_size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 2781185143312676337,
+                ["name"] = "N8ImageBMP12BitmapHeaderE"
+              },
+              ["name"] = "ImageBMP::BitmapHeader"
+            },
+            ["arguments"] = {},
+            ["name"] = "new"
+          }
+        },
+        ["size"] = 32,
+        ["cindex"] = {
+          ["hashcode"] = 2781185143312676337,
+          ["name"] = "N8ImageBMP12BitmapHeaderE"
+        },
+        ["bases"] = {},
+        ["name"] = "ImageBMP::BitmapHeader"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 15473311749227326385,
+                ["name"] = "PPN8ImageBMP12BitmapHeaderE"
+              },
+              ["name"] = "ImageBMP::BitmapHeader **"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6425623367366090881,
+                  ["name"] = "PN8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader *"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 2781185143312676337,
+                ["name"] = "N8ImageBMP12BitmapHeaderE"
+              },
+              ["name"] = "ImageBMP::BitmapHeader"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 6425623367366090881,
+                  ["name"] = "PN8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader *"
               }
             },
             ["name"] = "value"
@@ -842,86 +910,29 @@ return {
         },
         ["size"] = 8,
         ["cindex"] = {
-          ["hashcode"] = 8245170215167533604,
-          ["name"] = "P8ImageOut"
+          ["hashcode"] = 6425623367366090881,
+          ["name"] = "PN8ImageBMP12BitmapHeaderE"
         },
         ["bases"] = {},
-        ["name"] = "ImageOut *"
+        ["name"] = "ImageBMP::BitmapHeader *"
       },
       {
         ["methods"] = {
           {
             ["return"] = {
               ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
+                ["hashcode"] = 6425623367366090881,
+                ["name"] = "PN8ImageBMP12BitmapHeaderE"
               },
-              ["name"] = "int"
+              ["name"] = "ImageBMP::BitmapHeader *"
             },
             ["arguments"] = {
               {
                 ["cindex"] = {
-                  ["hashcode"] = 249731173975627796,
-                  ["name"] = "8ImageOut"
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
                 },
-                ["name"] = "ImageOut"
-              }
-            },
-            ["name"] = "width"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 249731173975627796,
-                  ["name"] = "8ImageOut"
-                },
-                ["name"] = "ImageOut"
-              }
-            },
-            ["name"] = "height"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858026,
-                ["name"] = "Pv"
-              },
-              ["name"] = "void *"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 249731173975627796,
-                  ["name"] = "8ImageOut"
-                },
-                ["name"] = "ImageOut"
-              }
-            },
-            ["name"] = "pixels"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 8245170215167533604,
-                ["name"] = "P8ImageOut"
-              },
-              ["name"] = "ImageOut *"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 249731173975627796,
-                  ["name"] = "8ImageOut"
-                },
-                ["name"] = "ImageOut"
+                ["name"] = "ImageBMP::BitmapHeader"
               }
             },
             ["name"] = "ptr"
@@ -937,153 +948,328 @@ return {
             ["arguments"] = {
               {
                 ["cindex"] = {
-                  ["hashcode"] = 249731173975627796,
-                  ["name"] = "8ImageOut"
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
                 },
-                ["name"] = "ImageOut"
+                ["name"] = "ImageBMP::BitmapHeader"
               }
             },
-            ["name"] = "bpp"
+            ["name"] = "num_colors"
           },
           {
             ["return"] = {
               ["cindex"] = {
-                ["hashcode"] = 249731173975627796,
-                ["name"] = "8ImageOut"
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
               },
-              ["name"] = "ImageOut"
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "w"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "depth"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "h"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "planes"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "compression"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 2781185143312676337,
+                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                },
+                ["name"] = "ImageBMP::BitmapHeader"
+              }
+            },
+            ["name"] = "palette_size"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 2781185143312676337,
+                ["name"] = "N8ImageBMP12BitmapHeaderE"
+              },
+              ["name"] = "ImageBMP::BitmapHeader"
             },
             ["arguments"] = {},
             ["name"] = "new"
           }
         },
-        ["size"] = 24,
+        ["size"] = 32,
         ["cindex"] = {
-          ["hashcode"] = 249731173975627796,
-          ["name"] = "8ImageOut"
+          ["hashcode"] = 2781185143312676337,
+          ["name"] = "N8ImageBMP12BitmapHeaderE"
         },
         ["bases"] = {},
-        ["name"] = "ImageOut"
-      },
-      {
-        ["methods"] = {
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 249731173975627796,
-                  ["name"] = "8ImageOut"
-                },
-                ["name"] = "ImageOut"
-              }
-            },
-            ["name"] = "width"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 249731173975627796,
-                  ["name"] = "8ImageOut"
-                },
-                ["name"] = "ImageOut"
-              }
-            },
-            ["name"] = "height"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858026,
-                ["name"] = "Pv"
-              },
-              ["name"] = "void *"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 249731173975627796,
-                  ["name"] = "8ImageOut"
-                },
-                ["name"] = "ImageOut"
-              }
-            },
-            ["name"] = "pixels"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 8245170215167533604,
-                ["name"] = "P8ImageOut"
-              },
-              ["name"] = "ImageOut *"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 249731173975627796,
-                  ["name"] = "8ImageOut"
-                },
-                ["name"] = "ImageOut"
-              }
-            },
-            ["name"] = "ptr"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 249731173975627796,
-                  ["name"] = "8ImageOut"
-                },
-                ["name"] = "ImageOut"
-              }
-            },
-            ["name"] = "bpp"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 249731173975627796,
-                ["name"] = "8ImageOut"
-              },
-              ["name"] = "ImageOut"
-            },
-            ["arguments"] = {},
-            ["name"] = "new"
-          }
-        },
-        ["size"] = 24,
-        ["cindex"] = {
-          ["hashcode"] = 249731173975627796,
-          ["name"] = "8ImageOut"
-        },
-        ["bases"] = {},
-        ["name"] = "ImageOut"
+        ["name"] = "ImageBMP::BitmapHeader"
       }
     },
-    ["name"] = "bitmap.cpp"
+    ["name"] = "ImageBMP"
+  },
+  ["EasyRPGPlayer::Clock"] = {
+    ["functions"] = {},
+    ["classes"] = {
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 13837397460718997846,
+                ["name"] = "PP8StdClock"
+              },
+              ["name"] = "StdClock **"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8245171118366925990,
+                  ["name"] = "P8StdClock"
+                },
+                ["name"] = "StdClock *"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 249731095417650326,
+                ["name"] = "8StdClock"
+              },
+              ["name"] = "StdClock"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 8245171118366925990,
+                  ["name"] = "P8StdClock"
+                },
+                ["name"] = "StdClock *"
+              }
+            },
+            ["name"] = "value"
+          }
+        },
+        ["size"] = 8,
+        ["cindex"] = {
+          ["hashcode"] = 8245171118366925990,
+          ["name"] = "P8StdClock"
+        },
+        ["bases"] = {},
+        ["name"] = "StdClock *"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8245171118366925990,
+                ["name"] = "P8StdClock"
+              },
+              ["name"] = "StdClock *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 249731095417650326,
+                  ["name"] = "8StdClock"
+                },
+                ["name"] = "StdClock"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858068,
+                ["name"] = "PKc"
+              },
+              ["name"] = "const char *"
+            },
+            ["arguments"] = {},
+            ["name"] = "Name"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 10206583076624963542,
+                ["name"] = "NSt3__16chrono10time_pointINS0_12steady_clockENS0_8durationIxNS_5ratioILl1ELl1000000000EEEEEEE"
+              },
+              ["name"] = "std::chrono::time_point<std::chrono::steady_clock, std::chrono::duration<long long, std::ratio<1, 1000000000>>>"
+            },
+            ["arguments"] = {},
+            ["name"] = "now"
+          }
+        },
+        ["size"] = 1,
+        ["cindex"] = {
+          ["hashcode"] = 249731095417650326,
+          ["name"] = "8StdClock"
+        },
+        ["bases"] = {},
+        ["name"] = "StdClock"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8245171118366925990,
+                ["name"] = "P8StdClock"
+              },
+              ["name"] = "StdClock *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 249731095417650326,
+                  ["name"] = "8StdClock"
+                },
+                ["name"] = "StdClock"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858068,
+                ["name"] = "PKc"
+              },
+              ["name"] = "const char *"
+            },
+            ["arguments"] = {},
+            ["name"] = "Name"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 10206583076624963542,
+                ["name"] = "NSt3__16chrono10time_pointINS0_12steady_clockENS0_8durationIxNS_5ratioILl1ELl1000000000EEEEEEE"
+              },
+              ["name"] = "std::chrono::time_point<std::chrono::steady_clock, std::chrono::duration<long long, std::ratio<1, 1000000000>>>"
+            },
+            ["arguments"] = {},
+            ["name"] = "now"
+          }
+        },
+        ["size"] = 1,
+        ["cindex"] = {
+          ["hashcode"] = 249731095417650326,
+          ["name"] = "8StdClock"
+        },
+        ["bases"] = {},
+        ["name"] = "StdClock"
+      }
+    },
+    ["name"] = "EasyRPGPlayer::Clock"
   },
   ["leasy::std"] = {
     ["functions"] = {
@@ -2675,60 +2861,26 @@ return {
     },
     ["name"] = "leasy::std"
   },
-  ["ImageBMP"] = {
-    ["functions"] = {
-      {
-        ["return"] = {
-          ["cindex"] = {
-            ["hashcode"] = 7510665017764879638,
-            ["name"] = "NSt3__15tupleIJb8ImageOutEEE"
-          },
-          ["name"] = "std::tuple<bool, ImageOut>"
-        },
-        ["arguments"] = {
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858077,
-              ["name"] = "PKh"
-            },
-            ["name"] = "PKh"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858117,
-              ["name"] = "j"
-            },
-            ["name"] = "j"
-          },
-          {
-            ["cindex"] = {
-              ["hashcode"] = 6615858045,
-              ["name"] = "b"
-            },
-            ["name"] = "bool"
-          }
-        },
-        ["name"] = "ImageBMP::read"
-      }
-    },
+  ["EasyRPGPlayer::bitmap"] = {
+    ["functions"] = {},
     ["classes"] = {
       {
         ["methods"] = {
           {
             ["return"] = {
               ["cindex"] = {
-                ["hashcode"] = 6425623367366090881,
-                ["name"] = "PN8ImageBMP12BitmapHeaderE"
+                ["hashcode"] = 13837397870196371156,
+                ["name"] = "PP8ImageOut"
               },
-              ["name"] = "ImageBMP::BitmapHeader *"
+              ["name"] = "ImageOut **"
             },
             ["arguments"] = {
               {
                 ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                  ["hashcode"] = 8245170215167533604,
+                  ["name"] = "P8ImageOut"
                 },
-                ["name"] = "ImageBMP::BitmapHeader"
+                ["name"] = "ImageOut *"
               }
             },
             ["name"] = "ptr"
@@ -2736,211 +2888,18 @@ return {
           {
             ["return"] = {
               ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
+                ["hashcode"] = 249731173975627796,
+                ["name"] = "8ImageOut"
               },
-              ["name"] = "int"
+              ["name"] = "ImageOut"
             },
             ["arguments"] = {
               {
                 ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                  ["hashcode"] = 8245170215167533604,
+                  ["name"] = "P8ImageOut"
                 },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "num_colors"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "size"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "w"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "depth"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "h"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "planes"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "compression"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "palette_size"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 2781185143312676337,
-                ["name"] = "N8ImageBMP12BitmapHeaderE"
-              },
-              ["name"] = "ImageBMP::BitmapHeader"
-            },
-            ["arguments"] = {},
-            ["name"] = "new"
-          }
-        },
-        ["size"] = 32,
-        ["cindex"] = {
-          ["hashcode"] = 2781185143312676337,
-          ["name"] = "N8ImageBMP12BitmapHeaderE"
-        },
-        ["bases"] = {},
-        ["name"] = "ImageBMP::BitmapHeader"
-      },
-      {
-        ["methods"] = {
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 15473311749227326385,
-                ["name"] = "PPN8ImageBMP12BitmapHeaderE"
-              },
-              ["name"] = "ImageBMP::BitmapHeader **"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 6425623367366090881,
-                  ["name"] = "PN8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader *"
-              }
-            },
-            ["name"] = "ptr"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 2781185143312676337,
-                ["name"] = "N8ImageBMP12BitmapHeaderE"
-              },
-              ["name"] = "ImageBMP::BitmapHeader"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 6425623367366090881,
-                  ["name"] = "PN8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader *"
+                ["name"] = "ImageOut *"
               }
             },
             ["name"] = "value"
@@ -2948,29 +2907,86 @@ return {
         },
         ["size"] = 8,
         ["cindex"] = {
-          ["hashcode"] = 6425623367366090881,
-          ["name"] = "PN8ImageBMP12BitmapHeaderE"
+          ["hashcode"] = 8245170215167533604,
+          ["name"] = "P8ImageOut"
         },
         ["bases"] = {},
-        ["name"] = "ImageBMP::BitmapHeader *"
+        ["name"] = "ImageOut *"
       },
       {
         ["methods"] = {
           {
             ["return"] = {
               ["cindex"] = {
-                ["hashcode"] = 6425623367366090881,
-                ["name"] = "PN8ImageBMP12BitmapHeaderE"
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
               },
-              ["name"] = "ImageBMP::BitmapHeader *"
+              ["name"] = "int"
             },
             ["arguments"] = {
               {
                 ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                  ["hashcode"] = 249731173975627796,
+                  ["name"] = "8ImageOut"
                 },
-                ["name"] = "ImageBMP::BitmapHeader"
+                ["name"] = "ImageOut"
+              }
+            },
+            ["name"] = "width"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 249731173975627796,
+                  ["name"] = "8ImageOut"
+                },
+                ["name"] = "ImageOut"
+              }
+            },
+            ["name"] = "height"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858026,
+                ["name"] = "Pv"
+              },
+              ["name"] = "void *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 249731173975627796,
+                  ["name"] = "8ImageOut"
+                },
+                ["name"] = "ImageOut"
+              }
+            },
+            ["name"] = "pixels"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8245170215167533604,
+                ["name"] = "P8ImageOut"
+              },
+              ["name"] = "ImageOut *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 249731173975627796,
+                  ["name"] = "8ImageOut"
+                },
+                ["name"] = "ImageOut"
               }
             },
             ["name"] = "ptr"
@@ -2986,169 +3002,153 @@ return {
             ["arguments"] = {
               {
                 ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
+                  ["hashcode"] = 249731173975627796,
+                  ["name"] = "8ImageOut"
                 },
-                ["name"] = "ImageBMP::BitmapHeader"
+                ["name"] = "ImageOut"
               }
             },
-            ["name"] = "num_colors"
+            ["name"] = "bpp"
           },
           {
             ["return"] = {
               ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
+                ["hashcode"] = 249731173975627796,
+                ["name"] = "8ImageOut"
               },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "size"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "w"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "depth"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "h"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "planes"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "compression"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 6615858108,
-                ["name"] = "i"
-              },
-              ["name"] = "int"
-            },
-            ["arguments"] = {
-              {
-                ["cindex"] = {
-                  ["hashcode"] = 2781185143312676337,
-                  ["name"] = "N8ImageBMP12BitmapHeaderE"
-                },
-                ["name"] = "ImageBMP::BitmapHeader"
-              }
-            },
-            ["name"] = "palette_size"
-          },
-          {
-            ["return"] = {
-              ["cindex"] = {
-                ["hashcode"] = 2781185143312676337,
-                ["name"] = "N8ImageBMP12BitmapHeaderE"
-              },
-              ["name"] = "ImageBMP::BitmapHeader"
+              ["name"] = "ImageOut"
             },
             ["arguments"] = {},
             ["name"] = "new"
           }
         },
-        ["size"] = 32,
+        ["size"] = 24,
         ["cindex"] = {
-          ["hashcode"] = 2781185143312676337,
-          ["name"] = "N8ImageBMP12BitmapHeaderE"
+          ["hashcode"] = 249731173975627796,
+          ["name"] = "8ImageOut"
         },
         ["bases"] = {},
-        ["name"] = "ImageBMP::BitmapHeader"
+        ["name"] = "ImageOut"
+      },
+      {
+        ["methods"] = {
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 249731173975627796,
+                  ["name"] = "8ImageOut"
+                },
+                ["name"] = "ImageOut"
+              }
+            },
+            ["name"] = "width"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 249731173975627796,
+                  ["name"] = "8ImageOut"
+                },
+                ["name"] = "ImageOut"
+              }
+            },
+            ["name"] = "height"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858026,
+                ["name"] = "Pv"
+              },
+              ["name"] = "void *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 249731173975627796,
+                  ["name"] = "8ImageOut"
+                },
+                ["name"] = "ImageOut"
+              }
+            },
+            ["name"] = "pixels"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 8245170215167533604,
+                ["name"] = "P8ImageOut"
+              },
+              ["name"] = "ImageOut *"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 249731173975627796,
+                  ["name"] = "8ImageOut"
+                },
+                ["name"] = "ImageOut"
+              }
+            },
+            ["name"] = "ptr"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 6615858108,
+                ["name"] = "i"
+              },
+              ["name"] = "int"
+            },
+            ["arguments"] = {
+              {
+                ["cindex"] = {
+                  ["hashcode"] = 249731173975627796,
+                  ["name"] = "8ImageOut"
+                },
+                ["name"] = "ImageOut"
+              }
+            },
+            ["name"] = "bpp"
+          },
+          {
+            ["return"] = {
+              ["cindex"] = {
+                ["hashcode"] = 249731173975627796,
+                ["name"] = "8ImageOut"
+              },
+              ["name"] = "ImageOut"
+            },
+            ["arguments"] = {},
+            ["name"] = "new"
+          }
+        },
+        ["size"] = 24,
+        ["cindex"] = {
+          ["hashcode"] = 249731173975627796,
+          ["name"] = "8ImageOut"
+        },
+        ["bases"] = {},
+        ["name"] = "ImageOut"
       }
     },
-    ["name"] = "ImageBMP"
+    ["name"] = "EasyRPGPlayer::bitmap"
   },
   ["Algo"] = {
     ["functions"] = {
@@ -3272,14 +3272,14 @@ return {
         ["arguments"] = {
           {
             ["cindex"] = {
-              ["hashcode"] = 4347656073,
+              ["hashcode"] = 4310114185,
               ["name"] = "12Game_Battler"
             },
             ["name"] = "12Game_Battler"
           },
           {
             ["cindex"] = {
-              ["hashcode"] = 4347656073,
+              ["hashcode"] = 4310114185,
               ["name"] = "12Game_Battler"
             },
             ["name"] = "12Game_Battler"
@@ -3345,14 +3345,14 @@ return {
         ["arguments"] = {
           {
             ["cindex"] = {
-              ["hashcode"] = 4347656073,
+              ["hashcode"] = 4310114185,
               ["name"] = "12Game_Battler"
             },
             ["name"] = "12Game_Battler"
           },
           {
             ["cindex"] = {
-              ["hashcode"] = 4347656073,
+              ["hashcode"] = 4310114185,
               ["name"] = "12Game_Battler"
             },
             ["name"] = "12Game_Battler"
@@ -3378,14 +3378,14 @@ return {
         ["arguments"] = {
           {
             ["cindex"] = {
-              ["hashcode"] = 4347656073,
+              ["hashcode"] = 4310114185,
               ["name"] = "12Game_Battler"
             },
             ["name"] = "12Game_Battler"
           },
           {
             ["cindex"] = {
-              ["hashcode"] = 4347656073,
+              ["hashcode"] = 4310114185,
               ["name"] = "12Game_Battler"
             },
             ["name"] = "12Game_Battler"
@@ -3439,14 +3439,14 @@ return {
         ["arguments"] = {
           {
             ["cindex"] = {
-              ["hashcode"] = 4347656073,
+              ["hashcode"] = 4310114185,
               ["name"] = "12Game_Battler"
             },
             ["name"] = "12Game_Battler"
           },
           {
             ["cindex"] = {
-              ["hashcode"] = 4347656073,
+              ["hashcode"] = 4310114185,
               ["name"] = "12Game_Battler"
             },
             ["name"] = "12Game_Battler"
@@ -3479,14 +3479,14 @@ return {
         ["arguments"] = {
           {
             ["cindex"] = {
-              ["hashcode"] = 4347656073,
+              ["hashcode"] = 4310114185,
               ["name"] = "12Game_Battler"
             },
             ["name"] = "12Game_Battler"
           },
           {
             ["cindex"] = {
-              ["hashcode"] = 4347656073,
+              ["hashcode"] = 4310114185,
               ["name"] = "12Game_Battler"
             },
             ["name"] = "12Game_Battler"
@@ -3547,14 +3547,14 @@ return {
         ["arguments"] = {
           {
             ["cindex"] = {
-              ["hashcode"] = 4347656073,
+              ["hashcode"] = 4310114185,
               ["name"] = "12Game_Battler"
             },
             ["name"] = "12Game_Battler"
           },
           {
             ["cindex"] = {
-              ["hashcode"] = 4347656073,
+              ["hashcode"] = 4310114185,
               ["name"] = "12Game_Battler"
             },
             ["name"] = "12Game_Battler"
@@ -3634,7 +3634,7 @@ return {
           },
           {
             ["cindex"] = {
-              ["hashcode"] = 4347656073,
+              ["hashcode"] = 4310114185,
               ["name"] = "12Game_Battler"
             },
             ["name"] = "12Game_Battler"
@@ -3733,7 +3733,7 @@ return {
             ["arguments"] = {
               {
                 ["cindex"] = {
-                  ["hashcode"] = 4347656073,
+                  ["hashcode"] = 4310114185,
                   ["name"] = "12Game_Battler"
                 },
                 ["name"] = "12Game_Battler"

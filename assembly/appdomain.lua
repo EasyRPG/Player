@@ -1,0 +1,6 @@
+local _ = require('assembly.leasy.meta2.node')
+local _ = require('assembly.ImageBMP')
+local _ = require('assembly.EasyRPGPlayer.Clock')
+local _ = require('assembly.leasy.std')
+local _ = require('assembly.EasyRPGPlayer.bitmap')
+local _ = require('assembly.Algo')

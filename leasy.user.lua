@@ -41,11 +41,9 @@ function name()
 
 end
 
-local asm = require('Xglue')
+local easyrpg = require('assembly.appdomain')
+
 
 function leasy.User.ready()
-  -- local node = EasyRPGPlayer.Assembly.leasy.meta2.node.Node.new();
-  -- print(node)
 
-  dump(_G)
 end

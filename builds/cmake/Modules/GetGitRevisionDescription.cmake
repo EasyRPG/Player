@@ -10,17 +10,17 @@
 #  git_describe(<var> [<additional arguments to git describe> ...])
 #
 # Returns the results of git describe on the source tree, and adjusting
-# the output so that it tests false if an error occurs.
+# the output so that it games false if an error occurs.
 #
 #  git_describe_working_tree(<var> [<additional arguments to git describe> ...])
 #
 # Returns the results of git describe on the working tree (--dirty option),
-# and adjusting the output so that it tests false if an error occurs.
+# and adjusting the output so that it games false if an error occurs.
 #
 #  git_get_exact_tag(<var> [<additional arguments to git describe> ...])
 #
 # Returns the results of git describe --exact-match on the source tree,
-# and adjusting the output so that it tests false if there was no exact
+# and adjusting the output so that it games false if there was no exact
 # matching tag.
 #
 #  git_local_changes(<var>)

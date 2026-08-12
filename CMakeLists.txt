@@ -1570,11 +1570,11 @@ if(DOXYGEN_FOUND)
 	add_dependencies(doc player_doc)
 endif()
 
-# Unit tests
-option(PLAYER_ENABLE_TESTS "Execute unit tests after compilation finishes" ON)
+# Unit games
+option(PLAYER_ENABLE_TESTS "Execute unit games after compilation finishes" ON)
 
 if(PLAYER_ENABLE_TESTS)
-	file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/tests/*.cpp)
+	file(GLOB TEST_FILES ${CMAKE_CURRENT_SOURCE_DIR}/games/*.cpp)
 	add_executable(test_runner_player EXCLUDE_FROM_ALL ${TEST_FILES})
 	set_target_properties(test_runner_player PROPERTIES
 		OUTPUT_NAME "test_runner"
@@ -1582,14 +1582,14 @@ if(PLAYER_ENABLE_TESTS)
 	)
 
 	if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
-		target_compile_definitions(test_runner_player PUBLIC EP_NATIVE_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
+		target_compile_definitions(test_runner_player PUBLIC EP_NATIVE_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/games/assets\")
 		target_compile_definitions(test_runner_player PUBLIC EP_TEST_PATH=\"/assets\")
 		target_compile_definitions(test_runner_player PUBLIC DOCTEST_CONFIG_NO_EXCEPTIONS_BUT_WITH_ALL_ASSERTS=1)
 
 		target_link_libraries(test_runner_player "nodefs.js")
 		set_property(TARGET test_runner_player PROPERTY LINK_FLAGS "-sALLOW_MEMORY_GROWTH --bind")
 	else()
-		target_compile_definitions(test_runner_player PUBLIC EP_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/assets\")
+		target_compile_definitions(test_runner_player PUBLIC EP_TEST_PATH=\"${CMAKE_CURRENT_SOURCE_DIR}/games/assets\")
 	endif()
 	target_link_libraries(test_runner_player ${PLAYER_TEST_LIBRARIES})
 	if(CMAKE_COLOR_DIAGNOSTICS)

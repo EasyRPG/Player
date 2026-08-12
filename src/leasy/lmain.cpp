@@ -42,7 +42,7 @@ namespace leasy {
   namespace app {
     void ready(void);
 
-    leasy::ios::attachment logfile = io().Debug.attach(ios::file("leasy.io.Debug.log"));
+    static leasy::ios::attachment logfile = io().Debug.attach(ios::file("leasy.io.Debug.log"));
     
     void lmain(const std::vector<std::string> &args) {
       try {

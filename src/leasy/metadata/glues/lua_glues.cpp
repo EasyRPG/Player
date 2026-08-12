@@ -99,7 +99,7 @@ namespace leasy::metadata::glues {
     }
   }
 
-  static void includeType(const String &prefix, const Class &type, std::ostream &ostream) {
+  static void includeType(const String &prefix, const Assembly &assembly, const Class &type, std::ostream &ostream) {
     String classBaseName = luaClassName(prefix, type);
     auto lastDot = classBaseName.rfind('.');
     String classQualification = classBaseName;
@@ -109,7 +109,7 @@ namespace leasy::metadata::glues {
       classQualification = classBaseName.substr(0, lastDot);
     }
 
-    String mangledBaseName = luaClassMangledName(prefix, type);
+    String mangledBaseName = luaClassMangledName(prefix + "." + assembly.name(), type);
     ostream << ensurePath(classQualification) << "\n";
     ostream << "---@class " << luaClassName << "\n";
     ostream << constructLuaName(classBaseName) << " = {}\n\n";
@@ -128,22 +128,54 @@ namespace leasy::metadata::glues {
   static void includeAssembly(const String &initialPrefix, const Assembly &assembly, std::ostream &ostream) {
     String prefix = ensurePrefix(initialPrefix);
     ostream << "--- from Assembly '" << assembly.name() << "'"  << std::endl;
+    ostream << ensurePath(kits::replace(prefix + assembly.name(), "::", "."));
 
     for (const auto&type: assembly.getTypes()) {
-      includeType(prefix, *type, ostream);
+      includeType(prefix, assembly, *type, ostream);
+    }
+
+    for (const auto&fun: assembly.getFunctions()) {
+      includeFunctionOverloads(prefix, *fun, ostream);
+      auto name = constructLuaName(kits::replace(prefix + fun->name, "::", "."));
+      ostream << fmt::format("function {}(...) end", name) << std::endl;
     }
   }
 
   void generateLuaGlue(
     const std::string &prefix,
     const Domain &domain,
-    std::ostream &ostream) {
-    ostream << ensurePath(prefix);
+    const std::filesystem::path &p) {
 
-    io().Warning.writeln(utils::transformType(std::string(nameof<int******>())));
+    std::vector<String> requires{};
 
     for (const auto &assembly: domain.getAssemblies()) {
+      auto parts = kits::split(
+        (p / (String(assembly->name())
+              .replace("::", "/")
+              .replace(".", "/")
+            ).c_str()).string(), '/'
+        );
+
+      if (parts.empty()) parts = {p.string(), "unknown"};
+      auto filename = parts.back() + ".lua";
+      auto filepath = kits::join({parts.begin(), parts.end() - 1}, "/");
+      if (! std::filesystem::exists(filepath)) {
+        std::filesystem::create_directories(filepath);
+      }
+      auto fileFullpath = std::filesystem::path(filepath) / filename;
+
+      std::ofstream ostream(fileFullpath);
+      if (! ostream) throw std::runtime_error("unable to open dump file: " + p.string());
+      ostream << ensurePath(prefix);
       includeAssembly(prefix, *assembly, ostream);
+      io().System.writeln("Xglue: exported assembly glues for assembly ", filepath);
+      requires.push_back(String(fileFullpath.string()).replace("/", ".").replace("\\", "."));
     }
+
+    std::ofstream ostream(p / "appdomain.lua");
+    for (auto req: requires) {
+      ostream << "local _ = require('" << req.replace(".lua", "") << "')" << std::endl;
+    }
+    requires = {};
   }
 } // namespace leasy::metadata::glues

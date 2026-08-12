@@ -10,10 +10,11 @@ namespace leasy::metadata::glues {
     bool okay = [] {
       cli::addcli("--Xglue-gen=[L]", [](auto args) {
         if (kits::lower(args["L"]) == "lua") {
-          std::ofstream file("Xglue.lua");
-          generateLuaGlue(luaExportAssemblyPrefixNiceNice, AppDomain(), file);
+          std::filesystem::create_directories("assembly");
+          generateLuaGlue(luaExportAssemblyPrefixNiceNice, AppDomain(), "assembly");
         }
       });
+
       return false;
     }();
   }

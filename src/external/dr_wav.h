@@ -3753,7 +3753,7 @@ DRWAV_PRIVATE drwav_bool32 drwav_init__internal(drwav* pWav, drwav_chunk_proc on
     from the number of blocks, however this results in the inclusion of extra silent samples at the end of the last block. The correct
     way to know the total sample count is to inspect the "fact" chunk, which should always be present for compressed formats, and should
     always include the sample count. This little block of code below is only used to emulate the libsndfile logic so I can properly run my
-    correctness tests against libsndfile, and is disabled by default.
+    correctness games against libsndfile, and is disabled by default.
     */
     if (pWav->translatedFormatTag == DR_WAVE_FORMAT_ADPCM) {
         drwav_uint64 blockCount = dataChunkSize / fmt.blockAlign;
@@ -6716,7 +6716,7 @@ DRWAV_PRIVATE drwav_uint64 drwav_read_pcm_frames_s16__alaw(drwav* pWav, drwav_ui
         /*
         For some reason libsndfile seems to be returning samples of the opposite sign for a-law, but only
         with AIFF files. For WAV files it seems to be the same as dr_wav. This is resulting in dr_wav's
-        automated tests failing. I'm not sure which is correct, but will assume dr_wav. If we're enforcing
+        automated games failing. I'm not sure which is correct, but will assume dr_wav. If we're enforcing
         libsndfile compatibility we'll swap the signs here.
         */
         #ifdef DR_WAV_LIBSNDFILE_COMPAT
@@ -6782,7 +6782,7 @@ DRWAV_PRIVATE drwav_uint64 drwav_read_pcm_frames_s16__mulaw(drwav* pWav, drwav_u
 
         /*
         Just like with alaw, for some reason the signs between libsndfile and dr_wav are opposite. We just need to
-        swap the sign if we're compiling with libsndfile compatiblity so our automated tests don't fail.
+        swap the sign if we're compiling with libsndfile compatiblity so our automated games don't fail.
         */
         #ifdef DR_WAV_LIBSNDFILE_COMPAT
         {

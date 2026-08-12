@@ -63,7 +63,7 @@ Game_Pictures::Picture::Picture(lcf::rpg::SavePicture save)
 	: data(std::move(save))
 {
 	// FIXME: Make this more accurate by checking all animating chunks values to see if they all will remain stable.
-	// Write unit tests to ensure it's correct.
+	// Write unit games to ensure it's correct.
 	// Then add it to ErasePicture()
 	needs_update = !IsEmpty(data);
 }

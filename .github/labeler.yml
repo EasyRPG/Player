@@ -24,7 +24,7 @@ Documentation:
 
 Tests:
 - changed-files:
-  - any-glob-to-any-file: [ tests/** ]
+  - any-glob-to-any-file: [ games/** ]
 
 Window/Scenes:
 - changed-files:

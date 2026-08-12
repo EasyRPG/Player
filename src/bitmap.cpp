@@ -1312,13 +1312,13 @@ namespace {
 	using namespace leasy::metadata;
 	auto ok = []() {
 		// FIXME: EasyRPGPlayer DOES NOT store its types in namespaces. WHY.
-		auto assembly = AppDomain().getAssemblyOrCreate<BuiltInAssembly>(__FILE_NAME__);
+		auto assembly = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer::bitmap");
 		assembly->addType<ImageOut>(
 			make_class<ImageOut>()
-			.method("width", [](ImageOut &img) { return img.width; })
-			.method("height", [](ImageOut &img) { return img.height; })
-			.method("pixels", [](ImageOut &img) { return img.pixels; })
-			.method("bpp", [](ImageOut &img) { return img.bpp; })
+			.method("width", [](const ImageOut &img) { return img.width; })
+			.method("height", [](const ImageOut &img) { return img.height; })
+			.method("pixels", [](const ImageOut &img) { return img.pixels; })
+			.method("bpp", [](const ImageOut &img) { return img.bpp; })
 			.method("new", []() { return ImageOut{}; })
 			.done()
 		);

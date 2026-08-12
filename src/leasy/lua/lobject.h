@@ -92,7 +92,7 @@ typedef struct TValue {
 #define checktype(o,t)		(ttype(o) == (t))
 
 
-/* Macros for internal tests */
+/* Macros for internal games */
 
 /* collectable object has the same tag as the original value */
 #define righttt(obj)		(ttypetag(obj) == gcvalue(obj)->tt)

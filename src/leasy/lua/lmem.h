@@ -18,7 +18,7 @@
 
 
 /*
-** This macro tests whether it is safe to multiply 'n' by the size of
+** This macro games whether it is safe to multiply 'n' by the size of
 ** type 't' without overflows. Because 'e' is always constant, it avoids
 ** the runtime division MAX_SIZET/(e).
 ** (The macro is somewhat complex to avoid warnings:  The 'sizeof'
