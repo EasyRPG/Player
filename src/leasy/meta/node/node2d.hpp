@@ -42,7 +42,7 @@ namespace leasy::meta2::node {
 
 		inline Node2D() : x(0), y(0) {}
 		inline Node2D(const pos_t &x, const pos_t &y) : x(x), y(y) {}
-		inline position pos() { return {this->x, this->y}; }
+		inline position pos() const { return {this->x, this->y}; }
 		inline void move(pos_t x, pos_t y) { this->x = x; this->y = y; }
 	};
 }

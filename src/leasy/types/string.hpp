@@ -1,3 +1,25 @@
+/** **********************************************************************
+ *  ██╗     ███████╗ █████╗ ███████╗██╗   ██╗
+ *  ██║     ██╔════╝██╔══██╗██╔════╝╚██╗ ██╔╝
+ *  ██║     █████╗  ███████║███████╗ ╚████╔╝
+ *  ██║     ██╔══╝  ██╔══██║╚════██║  ╚██╔╝
+ *  ███████╗███████╗██║  ██║███████║   ██║
+ *  ╚══════╝╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝
+ *
+ *          The EasyRPG engine, with runtime extensions, easily.
+ *
+ *  Developed by @wys
+ *  https://github.com/wys-prog
+ * 
+ *  This file is free and open source. You may credit its usage in sources
+ *  by using this Github profile: https://github.com/wys-prog.
+ * 
+ *  You may see the evolution of this file at https://github.com/wys-prog/leasy.
+ * 
+ *  0xEF9087A@wys-prog.https://github.com/wys-prog/leasy
+ * 
+ * **********************************************************************/
+
 //
 // Created by @wys on 09/08/2026.
 //
@@ -216,6 +238,20 @@ public:
 
   [[nodiscard]] size_t size() const override {
     return string_type::size();
+  }
+
+  [[nodiscard]] bool startsWith(const BasicString& prefix) const {
+    return this->size() >= prefix.size() &&
+           this->compare(0, prefix.size(), prefix) == 0;
+  }
+
+  [[nodiscard]] bool endsWith(const BasicString& suffix) const {
+    return this->size() >= suffix.size() &&
+        this->compare(
+            this->size() - suffix.size(),
+            suffix.size(),
+            suffix
+        ) == 0;
   }
 
   static BasicString join(
