@@ -46,7 +46,7 @@ local easyrpg = require('assembly.appdomain')
 local node = EasyRPGPlayer.Assembly.leasy.meta2.node;
 
 function leasy.User.ready()
-  --local sprite = node.Sprite2D.new('/Users/wys/Documents/leasy/icon.png', false)
+  local sprite = node.Sprite2D.new('/Users/wys/Documents/leasy/icon.png', false)
   local n = node.Node.new():makeShared();
   node.addChildToMain(n)
 end

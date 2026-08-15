@@ -39,11 +39,13 @@ namespace leasy::meta2::node {
         .method("new" ,[]() { return Node(); })
         .method("children", [](const Node &self) { return self.getChildren(); })
         .method("visit", [](Node &self) { return self.visit(); })
-        .method("addChild", [](Node &self, const std::shared_ptr<Node> &child) { return self.addChild(child); })
+        .method("addChild", [](Node &self, const std::shared_ptr<Node> &child) {
+          return self.addChild(child);
+        })
         .done()
       );
 
-      Asm->addFunction("addChildToMain", [&](const std::shared_ptr<Node> &n) {
+      Asm->addFunction("addChildToMain", [&](const std::shared_ptr<Node> n) {
         meta2Context.getRoot()->addChild(n);
       });
 
