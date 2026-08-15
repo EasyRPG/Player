@@ -66,6 +66,36 @@ namespace leasy::metadata {
       this->indexedClasses[cls->cindex()] = cls;
     }
 
+    template <typename T>
+    void addExtents() {
+      using P = T*;
+      using CP = const T*;
+      using R = T&;
+      using CR = const T&;
+
+      registerType<P>(make_class<P>()
+      .method("ref", [](P p) -> T& { return *p; })
+      .method("val", [](P p) -> T { return *p; })
+      .method("new", [](const int &len) { return new T[len];})
+      .method("del", [](P p) { delete[] p; })
+      .done());
+
+      registerType<R>(make_class<R>()
+      .method("val", [](R r) -> T { return r; })
+      .done());
+
+      registerType<P>(make_class<CP>()
+      .method("ref", [](CP p) -> const T& { return *p; })
+      .method("val", [](CP p) -> T { return *p; })
+      .method("new", [](const int &len) -> CP { return new T[len];})
+      .method("del", [](CP p) { delete[] p; })
+      .done());
+
+      registerType<R>(make_class<CR>()
+      .method("val", [](CR r) -> const T { return r; })
+      .done());
+    }
+
   public:
     inline size_t getMetadataSize() const override {
       size_t total = sizeof(*this) + getStringRealSize(_name) + sizeof(functions) + sizeof(namedClasses) + sizeof(indexedClasses);
@@ -138,24 +168,13 @@ namespace leasy::metadata {
       using U = kits::flat_t<T>;
 
       if constexpr (! std::is_void_v<U>) {
-        using P = U*;
-        using R = U&;
-
-        // TODO: implement x.copy() for each types?
-        registerType<P>(ClassBuilder<P>().method("value", [](P p) { return *p; }).done());
-        registerType<R>(ClassBuilder<R>().done());
+        addExtents<U>();
       }
+
+      // TODO: std::shared_ptr<U>, std::vector<U>, std::unique_ptr<U> and std::weak_ptr<U>
 
       return *this;
     }
-
-    // inline BuiltInAssembly &addType(const std::shared_ptr<Class> &cls) {
-    //   this->indexedClasses[cls->cindex()] = cls;
-    //   this->namedClasses[cls->fullname()] = cls;
-    //   return *this;
-    // }
-    // For now, I will remove this overload in order to avoid missing type information.
-    // Maybe over the time, I will add it.
 
     inline BuiltInAssembly &addFunction(const std::string &name, const std::shared_ptr<function_base_t> &func) {
       auto myName = this->_name + "::" + name;

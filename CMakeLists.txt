@@ -543,8 +543,6 @@ add_library(${PROJECT_NAME} OBJECT
 		src/leasy/types/string.hpp
 		src/leasy/types/iterable.hpp
 		src/leasy/types/string.cpp
-		src/leasy/meta/classes/image.cpp
-		src/leasy/meta/classes/image.hpp
 		src/leasy/meta/node/visual2D/sprite2d.cpp
 )
 

@@ -43,6 +43,10 @@ namespace leasy::meta2::node {
         .done()
       );
 
+      Asm->addFunction("addChildToMain", [&](const std::shared_ptr<Node> &n) {
+        meta2Context.getRoot()->addChild(n);
+      });
+
       return false;
     }();
   }

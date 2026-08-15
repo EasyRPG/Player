@@ -153,6 +153,8 @@ namespace leasy::metadata {
         float, double, long double
       >(assembly);
 
+      assembly.addType<void>(make_class<void>().done());
+
       AppDomain().load(std::make_shared<BuiltInAssembly>(assembly));
       return false;
     }();

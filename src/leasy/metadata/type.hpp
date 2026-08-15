@@ -267,7 +267,11 @@ namespace leasy::metadata {
       using U = std::remove_reference_t<T>;
 
       if constexpr (!std::is_void_v<U>) {
-        this->local->method("ptr", [](U &i) { return &i; });
+        this->local->method("ptr", [](U &i) { return &i; }, [](const U &i) { return &i; });
+        this->local->method("ref", [](U &i) -> U& { return i; }, [](const U &i) -> const U& { return i; });
+        this->local->method("makeShared", [](const U &i) {
+          return std::make_shared<U>(i);
+        });
       }
     }
 

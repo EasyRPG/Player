@@ -28,7 +28,6 @@ namespace leasy::meta2::node {
     auto rect = this->selfMap->GetRect();
     auto src = (this->selfMap);
     map->Blit(x, y, *src, rect, this->opacity);
-    io().Debug.writeln("drawing");
   }
 
   void Sprite2D::load(std::streambuf *stream, bool transparent) {
@@ -38,7 +37,7 @@ namespace leasy::meta2::node {
 
   namespace {
     bool ok = [] {
-      metadata::AppDomain().getAssemblyOrCreate<metadata::BuiltInAssembly>("node")->addType<Sprite2D>(
+      metadata::AppDomain().getAssemblyOrCreate<metadata::BuiltInAssembly>(assemblyName)->addType<Sprite2D>(
         metadata::make_class<Sprite2D, Node2D>()
         .method("load", [](Sprite2D &self, std::streambuf *streamptr, bool transparent) {
           return self.load(streamptr, transparent);

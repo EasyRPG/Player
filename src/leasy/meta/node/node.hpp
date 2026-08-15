@@ -32,6 +32,7 @@ namespace leasy::meta2::node {
   static inline const char *assemblyName = "leasy::meta2::node";
 
   class Meta2Context;
+  extern Meta2Context meta2Context;
 
   class Node {
     friend Meta2Context;
