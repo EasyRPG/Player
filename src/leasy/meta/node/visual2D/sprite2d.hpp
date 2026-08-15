@@ -20,29 +20,33 @@
  * 
  * **********************************************************************/
 
-#pragma once
+//
+// Created by @wys on 02/08/2026.
+//
 
-#include "node.hpp"
-#include "types.hpp"
+#ifndef EASYRPG_PLAYER_SPRITE2D_HPP
+#define EASYRPG_PLAYER_SPRITE2D_HPP
+
+#include "node2d.hpp"
+#include "bitmap.h"
+#include <filesystem>
 
 namespace leasy::meta2::node {
-	class Node2D : public Node {
-	protected:
-		pos_t x, y;
 
-	public:
-		struct position {
-			pos_t x, y;
-			inline position() = default;
-			inline position(const pos_t &x, const pos_t &y) : x(x), y(y) {}
-			inline std::tuple<pos_t, pos_t> tuple() {
-				return {this->x, this->y};
-			}
-		};
+  class Sprite2D : public Node2D {
+  protected:
+    std::shared_ptr<Bitmap> selfMap;
+    Opacity opacity{};
 
-		inline Node2D() : x(0), y(0) {}
-		inline Node2D(const pos_t &x, const pos_t &y) : x(x), y(y) {}
-		inline position pos() const { return {this->x, this->y}; }
-		inline void move(pos_t x, pos_t y) { this->x = x; this->y = y; }
-	};
+  public:
+    Sprite2D();
+    Sprite2D(const std::filesystem::path&, bool=true);
+    Sprite2D(std::istream*, bool=true);
+
+    void draw(Bitmap*) override;
+
+    void load(std::streambuf*, bool);
+  };
 }
+
+#endif //EASYRPG_PLAYER_SPRITE2D_HPP

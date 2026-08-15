@@ -23,12 +23,8 @@
 #include <memory>
 
 #include "main.hpp"
-#include "scene.h"
-#include "scene_logo.h"
-#include "metascene.hpp"
 #include "../lio.hpp"
 #include "../iky7/nameof.hpp"
-#include "node/node2d.hpp"
 
 #include "../cli/cli.hpp"
 

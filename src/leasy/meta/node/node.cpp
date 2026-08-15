@@ -31,16 +31,17 @@ namespace leasy::meta2::node {
   namespace {
     auto reg = []() {
       auto Asm = metadata::AppDomain().getAssemblyOrCreate<metadata::BuiltInAssembly>(assemblyName);
-      auto nodecls = metadata::make_class<Node>()
+
+      Asm->addType<Node>(metadata::make_class<Node>()
         .method("ready", [](Node &self) { self.ready(); })
         .method("update", [](Node &self, double delta) { self.update(delta); })
-        .method("draw", [](Node &self) { self.draw(); })
+        .method("draw", [](Node &self, Bitmap* ref) { self.draw(ref); })
         .method("new" ,[]() { return Node(); })
-        .method("children", [](Node &self) { return self.children(); })
+        .method("children", [](const Node &self) { return self.getChildren(); })
         .method("visit", [](Node &self) { return self.visit(); })
-        .done();
-
-      Asm->addType<Node>(nodecls);
+        .method("addChild", [](Node &self, const std::shared_ptr<Node> &child) { return self.addChild(child); })
+        .done()
+      );
 
       return false;
     }();

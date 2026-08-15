@@ -525,12 +525,12 @@ add_library(${PROJECT_NAME} OBJECT
 	src/leasy/metadata/dumper.cpp
 		src/leasy/metadata/structs/option.hpp
 	src/leasy/settings/settings.hpp
-	src/leasy/meta/node/node2d.hpp
+		src/leasy/meta/node/visual2D/node2d.hpp
 		src/leasy/meta/node/types.hpp
-		src/leasy/meta/node/sprite2d.hpp
+		src/leasy/meta/node/visual2D/sprite2d.hpp
 		src/leasy/iky7/cursor.hpp
 		src/leasy/meta/node/node.cpp
-		src/leasy/meta/node/node2d.cpp
+		src/leasy/meta/node/visual2D/node2d.cpp
 		src/leasy/metadata/Assembly.hpp
 		src/leasy/metadata/Domain.hpp
 		src/leasy/iky7/nameof.cpp
@@ -545,6 +545,7 @@ add_library(${PROJECT_NAME} OBJECT
 		src/leasy/types/string.cpp
 		src/leasy/meta/classes/image.cpp
 		src/leasy/meta/classes/image.hpp
+		src/leasy/meta/node/visual2D/sprite2d.cpp
 )
 
 # These are actually unused when building in CMake

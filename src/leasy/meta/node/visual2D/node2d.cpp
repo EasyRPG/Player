@@ -24,26 +24,24 @@
 // Created by @wys on 02/08/2026.
 //
 
-#ifndef EASYRPG_PLAYER_SPRITE2D_HPP
-#define EASYRPG_PLAYER_SPRITE2D_HPP
-
 #include "node2d.hpp"
-#include "bitmap.h"
-#include <filesystem>
+#include "leasy/metadata/Domain.hpp"
 
 namespace leasy::meta2::node {
+  namespace {
+    auto reg = []() {
+      auto Asm = metadata::AppDomain().getAssemblyOrCreate<metadata::BuiltInAssembly>(assemblyName);
+      auto cls = metadata::make_class<Node2D, Node>()
+          .method("new" ,
+                  []() { return Node2D(); },
+                  [](pos_t x, pos_t y) { return Node2D(x, y); }
+          )
+          .method("pos", [](const Node2D &self) { return self.pos().tuple(); })
+          .method("move", [](Node2D &self, pos_t x, pos_t y) { return self.move(x, y); })
+          .done();
 
-  class Sprite2D : public Node2D {
-  protected:
-
-
-  public:
-    Sprite2D();
-    Sprite2D(const std::filesystem::path&);
-
-    void ready() override;
-    void draw() override;
-  };
+      Asm->addType<Node2D>(cls);
+      return false;
+    }();
+  }
 }
-
-#endif //EASYRPG_PLAYER_SPRITE2D_HPP

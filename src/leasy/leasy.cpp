@@ -32,6 +32,7 @@
 #include "metadata/Domain.hpp"
 #include "signals.hpp"
 #include "metadata/glues/lua_glues.hpp"
+#include "meta/node/node.hpp"
 
 namespace leasy {
   namespace ily3 {
@@ -41,6 +42,8 @@ namespace leasy {
   Signal<> ready   = {};
   Signal<double> process = {};
   Signal<Bitmap*> draw = {};
+
+  static meta2::node::Meta2Context meta2Context {std::make_shared<meta2::node::Node>()};
 
   namespace app {
     static bool should_exit = false;
@@ -62,6 +65,7 @@ namespace leasy {
       metadata::AppDomain().bind(ily3::global::state);
       ily3::global::state.call<void>("leasy.User.ready");
       io().System.writeln("reflection metadata size: ", kits::format_bytes(metadata::AppDomain().getMetadataSize()));
+      meta2Context.ready();
     }
     
     void process() {
@@ -71,6 +75,7 @@ namespace leasy {
 
       leasy::process.emit(delta);
       ily3::global::state.call<void>("leasy.User.process", delta);
+      meta2Context.update(delta);
     }
 
     void draw(Bitmap *map) {
@@ -84,6 +89,7 @@ namespace leasy {
       }
 
       ui3::update_windows();
+      meta2Context.draw(map);
     }
 
     void exit(void) {}

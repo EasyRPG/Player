@@ -24,25 +24,83 @@
 
 #include <memory>
 #include <vector>
+
+#include "bitmap.h"
 #include "../../iky7/cursor.hpp"
 
 namespace leasy::meta2::node {
   static inline const char *assemblyName = "leasy::meta2::node";
+
+  class Meta2Context;
+
   class Node {
-  private:
+    friend Meta2Context;
     std::vector<std::shared_ptr<Node>> _children;
 
+    void _ready() {
+      this->ready();
+
+      for (const auto &child: _children) {
+        child->ready();
+      }
+    }
+
+    void _update(double v) {
+      update(v);
+
+      for (const auto &child: _children) {
+        child->update(v);
+      }
+    }
+
+    void _draw(Bitmap *map) {
+      draw(map);
+
+      for (const auto &child: _children) {
+        child->draw(map);
+      }
+    }
+
   public:
-    inline virtual void ready() {}
-    inline virtual void update(double) {}
-    inline virtual void draw() {}
-    inline virtual ~Node() = default;
-    inline Node() = default;
+    virtual ~Node() = default;
+    Node() = default;
+    virtual void ready() {}
+    virtual void update(double) {}
+    virtual void draw(Bitmap*) {}
 
-    inline std::vector<std::shared_ptr<Node>> children() { return _children; }
+    std::vector<std::shared_ptr<Node>> getChildren() const { return _children; }
 
-    inline auto visit() {
+    auto visit() {
       return iky7::make_cursor(this->_children);
+    }
+
+    void addChild(const std::shared_ptr<Node> &nodeptr) {
+      this->_children.push_back(nodeptr);
+      nodeptr->_ready();
+    }
+  };
+
+  class Meta2Context {
+  protected:
+    std::shared_ptr<Node> root;
+
+  public:
+    Meta2Context(const std::shared_ptr<Node> &r): root{r} {}
+
+    void ready() const {
+      root->_ready();
+    }
+
+    void update(double d) const {
+      root->_update(d);
+    }
+
+    void draw(Bitmap*m) const {
+      root->_draw(m);
+    }
+
+    std::shared_ptr<Node> getRoot() const {
+      return root;
     }
   };
 }

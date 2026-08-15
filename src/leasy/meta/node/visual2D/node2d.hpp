@@ -20,28 +20,29 @@
  * 
  * **********************************************************************/
 
-//
-// Created by @wys on 02/08/2026.
-//
+#pragma once
 
-#include "node2d.hpp"
-#include "leasy/metadata/Domain.hpp"
+#include "../node.hpp"
+#include "../types.hpp"
 
 namespace leasy::meta2::node {
-  namespace {
-    auto reg = []() {
-      auto Asm = metadata::AppDomain().getAssemblyOrCreate<metadata::BuiltInAssembly>(assemblyName);
-      auto cls = metadata::make_class<Node2D>()
-          .method("new" ,
-                  []() { return Node2D(); },
-                  [](pos_t x, pos_t y) { return Node2D(x, y); }
-          )
-          .method("pos", [](Node2D &self) { return self.pos().tuple(); })
-          .method("move", [](Node2D &self, pos_t x, pos_t y) { return self.move(x, y); })
-          .done();
+	class Node2D : public Node {
+	protected:
+		pos_t x, y;
 
-      Asm->addType<Node2D>(cls);
-      return false;
-    }();
-  }
+	public:
+		struct position {
+			pos_t x, y;
+			inline position() = default;
+			inline position(const pos_t &x, const pos_t &y) : x(x), y(y) {}
+			inline std::tuple<pos_t, pos_t> tuple() {
+				return {this->x, this->y};
+			}
+		};
+
+		inline Node2D() : x(0), y(0) {}
+		inline Node2D(const pos_t &x, const pos_t &y) : x(x), y(y) {}
+		inline position pos() const { return {this->x, this->y}; }
+		inline void move(pos_t x, pos_t y) { this->x = x; this->y = y; }
+	};
 }
