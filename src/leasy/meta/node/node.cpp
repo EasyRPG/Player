@@ -38,7 +38,6 @@ namespace leasy::meta2::node {
         .method("draw", [](Node &self, Bitmap* ref) { self.draw(ref); })
         .method("new" ,[]() { return Node(); })
         .method("children", [](const Node &self) { return self.getChildren(); })
-        .method("visit", [](Node &self) { return self.visit(); })
         .method("addChild", [](Node &self, const std::shared_ptr<Node> &child) {
           return self.addChild(child);
         })

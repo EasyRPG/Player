@@ -295,7 +295,7 @@ namespace leasy::ul2 {
       push_path(parts, true, true);
 
       if (!lua_istable(L, -1))
-        ulthrow("Target parent is not a table");
+        ulthrow("Target parent is not a table\nwhen pushing path '" + name + "'");
 
       push_value(value);
       lua_setfield(L, -2, parts.back().c_str());
@@ -357,7 +357,7 @@ namespace leasy::ul2 {
       push_path(parts, false, false);
 
       if (!lua_isfunction(L, -1))
-        ulthrow("Target is not a function: " + name);
+        ulthrow("Target is not a function: " + name + "\nwhen trying to call " + name + " with " + std::to_string(sizeof...(args)) + " args");
 
       (push_value(std::forward<Args>(args)), ...);
 
@@ -367,14 +367,14 @@ namespace leasy::ul2 {
         const char *err = lua_tostring(L, -1);
         std::string msg = err ? err : "Unknown Lua error";
         lua_pop(L, 1);
-        ulthrow(msg);
+        ulthrow(traceback(msg));
       }
 
       if constexpr (std::is_void_v<R>) {
         return;
       } else {
         if (lua_gettop(L) < 1)
-          ulthrow("Expected return value");
+          ulthrow(traceback("Expected return value"));
 
         R result = lua_stack<R>::get(L, -1);
         lua_pop(L, 1);
@@ -389,9 +389,9 @@ namespace leasy::ul2 {
      */
     inline void dostring(const std::string &string) {
       if (luaL_dostring(L, string.c_str()) != LUA_OK) {
-        auto S__ = lua_tostring(L, -1);
-        std::string msg = "lua dostring(): error:\n\t>> " + std::string(S__ ? S__ : "<unknown>") + "\n\t>> \"" + string + "\"";
-        ulthrow(msg);
+        auto s = lua_tostring(L, -1);
+        std::string msg = "lua dostring(): error:\n" + std::string(s ? s : "<unknown>") + "\nin string: \"" + string + "\"";
+        ulthrow(traceback(msg));
       }
     }
 
@@ -403,9 +403,25 @@ namespace leasy::ul2 {
     inline void dofile(const std::string &string) {
       if (luaL_dofile(L, string.c_str()) != LUA_OK) {
         auto wtf = lua_tostring(L, -1);
-        std::string msg = "lua dofile error: " + std::string(wtf ? wtf : "<unknown>");
-        ulthrow(msg);
+        std::string msg = "lua dofile(): error: " + std::string(wtf ? wtf : "<unknown>");
+        ulthrow(traceback(msg));
       }
+    }
+
+    std::string traceback(const std::string &msg) {
+      std::string s2 = msg;
+      if (msg.empty()) s2 = "unknown lua error";
+      luaL_traceback(L, L, s2.c_str(), 1);
+
+      const char* trace = lua_tostring(L, -1);
+
+      std::string result = trace
+        ? trace
+        : msg;
+
+      lua_pop(L, 1);
+
+      return result;
     }
   };
 
@@ -430,18 +446,40 @@ namespace leasy::ul2 {
 
   protected:
     std::tuple<Fs...> funcs;
+    mutable std::stack<std::string> failures{};
 
     template<std::size_t I>
     int call(lua_State* L) const
     {
       if constexpr (I == sizeof...(Fs)) {
-        return luaL_error(L, "No matching overload.");
+        std::string err = "No matching overload found. Tried:\n";
+        int p{0};
+        while (! failures.empty()) {
+          err += std::to_string(p++) + ": " + failures.top() + "\n";
+          failures.pop();
+        }
+        return luaL_error(L, err.c_str());
       } else {
         using fn_t = std::tuple_element_t<I, std::tuple<Fs...>>;
 
-        if (matches<fn_t>(L)) {
+        auto match = matches<fn_t>(L);
+
+        if (match.first) {
           return lstate::bridge(std::get<I>(funcs))(L);
         }
+
+        std::stack<std::string> s{};
+        while (! match.second.empty()) {
+          s.push(match.second.top());
+          match.second.pop();
+        }
+
+        std::string reason = "overload #" + std::to_string(I) + " fails: ";
+        while (! s.empty()) {
+          reason += " " + s.top();
+          s.pop();
+        }
+        failures.push(reason);
 
         return call<I + 1>(L);
       }

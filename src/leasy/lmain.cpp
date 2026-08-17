@@ -57,7 +57,12 @@ namespace leasy {
         ready();
       } catch (const std::exception &e) {
         io().Error.writeln(">>> exception during lmain() init!!");
-        io().Error.writeln(">>> ", e.what());
+        auto parts = String(e.what()).split('\n');
+
+        for (const auto& part: parts) {
+          io().Error.writeln(">>> ", part);
+        }
+
         io().Warning.writeln(__func__, ": execution may continue, but this can crash because of init-exceptions!");
       }
     }

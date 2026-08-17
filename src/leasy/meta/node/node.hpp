@@ -23,10 +23,11 @@
 #pragma once
 
 #include <memory>
-#include <vector>
+#include <unordered_map>
 
 #include "bitmap.h"
-#include "../../iky7/cursor.hpp"
+
+#define MAX_NODE_STR_MACRO(X) #X
 
 namespace leasy::meta2::node {
   static inline const char *assemblyName = "leasy::meta2::node";
@@ -35,49 +36,102 @@ namespace leasy::meta2::node {
   extern Meta2Context meta2Context;
 
   class Node {
+  public:
+    using node_id = uint64_t;
+    static constexpr node_id INVALID_NODE = std::numeric_limits<node_id>::max();
+    static constexpr node_id MAX_NODE = std::numeric_limits<node_id>::max() - 1;
+
+    static node_id nextId;
+    static std::stack<node_id>& freeIds();
+
+    static node_id getNewId() {
+      if (freeIds().empty()) {
+        if (nextId >= MAX_NODE) {
+          throw std::runtime_error("too much nodes! (no free ID remaining)");
+        }
+        return nextId++;
+      }
+
+      const auto I{freeIds().top()};
+      freeIds().pop();
+      return I;
+    }
+
+  private:
     friend Meta2Context;
-    std::vector<std::shared_ptr<Node>> _children;
+
+    std::unordered_map<node_id, std::shared_ptr<Node>> _children;
+    node_id id{INVALID_NODE};
+
+    bool removeRequested{false};
+
+    template <typename Callback>
+    void iterate(const Callback &callback) {
+      std::stack<node_id> cleanupList{};
+
+      for (auto &[ref, node]: _children) {
+        if (node && !node->removeRequested) {
+          callback(node);
+        } else {
+          cleanupList.push(ref);
+        }
+      }
+
+      while (! cleanupList.empty()) {
+        _children.erase(cleanupList.top());
+        cleanupList.pop();
+      }
+    }
 
     void _ready() {
       this->ready();
 
-      for (const auto &child: _children) {
-        child->ready();
-      }
+      iterate([](const std::shared_ptr<Node>& node) {
+        node->_ready();
+      });
     }
 
     void _update(double v) {
       update(v);
 
-      for (const auto &child: _children) {
-        child->update(v);
-      }
+      iterate([&v](const std::shared_ptr<Node>& node) {
+        node->_update(v);
+      });
     }
 
     void _draw(Bitmap *map) {
       draw(map);
 
-      for (const auto &child: _children) {
-        child->draw(map);
-      }
+      iterate([&map](const std::shared_ptr<Node>& node) {
+        node->_draw(map);
+      });
     }
 
   public:
-    virtual ~Node() = default;
-    Node() = default;
+    virtual ~Node() {
+      freeIds().push(this->id);
+    }
+
+    Node() {
+      this->id = getNewId();
+    }
+
     virtual void ready() {}
     virtual void update(double) {}
     virtual void draw(Bitmap*) {}
 
-    std::vector<std::shared_ptr<Node>> getChildren() const { return _children; }
-
-    auto visit() {
-      return iky7::make_cursor(this->_children);
+    void remove() {
+      removeRequested = true;
     }
 
+    auto getChildren() const { return _children; }
+
     void addChild(const std::shared_ptr<Node> &nodeptr) {
-      this->_children.push_back(nodeptr);
-      nodeptr->_ready();
+      _children[nodeptr->id] = nodeptr;
+    }
+
+    bool isValid() const {
+      return this->id != INVALID_NODE;
     }
   };
 
@@ -103,5 +157,11 @@ namespace leasy::meta2::node {
     std::shared_ptr<Node> getRoot() const {
       return root;
     }
+  };
+
+  inline Node::node_id Node::nextId {0};
+  inline std::stack<Node::node_id> &Node::freeIds() {
+    static auto hold = new std::stack<Node::node_id>();
+    return *hold;
   };
 }

@@ -23,9 +23,10 @@
 #pragma once
 
 #include "ulexception2.hpp"
-#include "../typings/metatypes.hpp"
-#include "../kits/variant.hpp"
 #include "function_traits.hpp"
+#include "leasy/typings/metatypes.hpp"
+#include "leasy/kits/variant.hpp"
+#include "leasy/kits/ps7k.hpp"
 
 #include <any>
 #include <tuple>
@@ -35,48 +36,54 @@
 #include <type_traits>
 #include <unordered_map>
 #include <utility>
+#include <fmt/format.h>
 
+#include "leasy/ily3/basetypes.hpp"
 #include "leasy/metadata/type.hpp"
 
 namespace leasy::ul2 {
   template<typename T, typename = void>
-  struct lua_stack;
-
-  struct function_holder { // damnit, it's for yk destroying idk what func when lua can't blabla
-    std::function<int(lua_State*)> fn;  // I knew lua was boring sometimes... Anyways, it's cute..
+  struct lua_stack {
+    static bool accepts(lua_State *, int) {
+      return false;
+    }
   };
 
-  inline static int function_dispatch(lua_State* L) {
-    auto* holder = static_cast<function_holder*>(
-        lua_touserdata(L, lua_upvalueindex(1))
+  struct function_holder {
+    // damnit, it's for yk destroying idk what func when lua can't blabla
+    std::function<int(lua_State *)> fn; // I knew lua was boring sometimes... Anyways, it's cute..
+  };
+
+  inline static int function_dispatch(lua_State *L) {
+    auto *holder = static_cast<function_holder *>(
+      lua_touserdata(L, lua_upvalueindex(1))
     );
 
     return holder->fn(L);
   }
 
-  inline static int function_gc(lua_State* L) {
-    auto* holder = static_cast<function_holder*>(lua_touserdata(L, 1));
+  inline static int function_gc(lua_State *L) {
+    auto *holder = static_cast<function_holder *>(lua_touserdata(L, 1));
     holder->~function_holder();
     return 0;
   }
 
-  template <typename R, typename Tuple, typename Callable, size_t... I>
-    static int invoke_stdfn(const Callable &fn, lua_State *L, std::index_sequence<I...>) {
+  template<typename R, typename Tuple, typename Callable, size_t... I>
+  static int invoke_stdfn(const Callable &fn, lua_State *L, std::index_sequence<I...>) {
     if constexpr (std::is_void_v<R>) {
-      std::invoke(fn, lua_stack<std::tuple_element_t<I, Tuple>>::get(L, I + 1)...);
+      std::invoke(fn, lua_stack<std::tuple_element_t<I, Tuple> >::get(L, I + 1)...);
       return 0;
     } else {
-      auto r = std::invoke(fn, lua_stack<std::tuple_element_t<I, Tuple>>::get(L, I + 1)...);
-      lua_stack<R>::push(L, r);
-      return 1;
+      auto r = std::invoke(fn, lua_stack<std::tuple_element_t<I, Tuple> >::get(L, I + 1)...);
+      return lua_stack<R>::push(L, r);
     }
   }
 
-  inline void push_function2(lua_State *L, std::function<int(lua_State*)> fn) {
-    auto* holder = static_cast<function_holder*>(
+  inline void push_function2(lua_State *L, std::function<int(lua_State *)> fn) {
+    auto *holder = static_cast<function_holder *>(
       lua_newuserdatauv(L, sizeof(function_holder), 0)
     );
-    new (holder) function_holder{ std::move(fn) };
+    new(holder) function_holder{std::move(fn)};
 
     luaL_getmetatable(L, "__leasy_function");
     lua_setmetatable(L, -2);
@@ -101,6 +108,9 @@ namespace leasy::ul2 {
       );
     }
 
+    static bool accepts(lua_State *L, int index) {
+      return lua_isinteger(L, index);
+    }
 
     static int push(lua_State *L, T value) {
       lua_pushinteger(
@@ -121,6 +131,9 @@ namespace leasy::ul2 {
       return lua_toboolean(L, index);
     }
 
+    static bool accepts(lua_State *L, int index) {
+      return lua_isboolean(L, index);
+    }
 
     static int push(lua_State *L, bool value) {
       lua_pushboolean(L, value);
@@ -135,7 +148,7 @@ namespace leasy::ul2 {
   template<typename T>
   struct lua_stack<
         T,
-        std::enable_if_t<std::is_floating_point_v<T> >
+        std::enable_if_t<std::is_floating_point_v<T>>
       > {
     static T get(lua_State *L, int index) {
       return static_cast<T>(
@@ -143,6 +156,9 @@ namespace leasy::ul2 {
       );
     }
 
+    static bool accepts(lua_State *L, int index) {
+      return lua_isnumber(L, index);
+    }
 
     static int push(lua_State *L, T value) {
       lua_pushnumber(
@@ -163,12 +179,14 @@ namespace leasy::ul2 {
     static std::string get(lua_State *L, int index) {
       size_t len;
 
-      const char *str =
-          luaL_checklstring(L, index, &len);
+      const char *str = luaL_checklstring(L, index, &len);
 
       return std::string(str, len);
     }
 
+    static bool accepts(lua_State *L, int index) {
+      return lua_isstring(L, index);
+    }
 
     static int push(lua_State *L, const std::string &value) {
       lua_pushlstring(
@@ -191,6 +209,9 @@ namespace leasy::ul2 {
       return luaL_checkstring(L, index);
     }
 
+    static bool accepts(lua_State *L, int index) {
+      return lua_isstring(L, index);
+    }
 
     static int push(lua_State *L, const char *value) {
       lua_pushstring(L, value);
@@ -203,28 +224,70 @@ namespace leasy::ul2 {
    * Userdata system
    */
 
-  template<typename T, typename = void>
-  struct userdata_holder;
+  struct ul2userdata {
+    std::shared_ptr<void> data;
+    std::shared_ptr<metadata::Class> type;
 
-  template<typename T>
-  struct userdata_holder<T, std::enable_if_t<typings2::is_complete_v<T> > > {
-    T value;
+    template <typename T>
+    decltype(auto) cast() const {
+      using U = kits::remove_shared_ptr_t<fmt::remove_cvref_t<T>>;
 
-    inline static int lookup(lua_State *L) {
-      auto method_name = luaL_checkstring(L, 2);
-      auto type = metadata::typeidof<T>();
-      auto r = type->get_method(method_name);
-      if (r) {
-        push_function2(L, r->lua());
-        return 1;
+      if (! type->isAssignableTo<U>()) {
+        ulthrow(
+            "casting type " +
+            type->fullname() +
+            " to " +
+            typeidof<U>()->fullname() +
+            " (impossible cast!)"
+        );
+      }
+
+      if constexpr (std::is_pointer_v<T>) {
+        using P = std::remove_pointer_t<T>;
+        return static_cast<P *>(data.get());
       } else {
-        return luaL_error(L, "method '%s' not found in base %s (%s)", method_name, type->fullname().c_str(), type->cindex().name());
+        using R = std::remove_reference_t<T>;
+        using V = std::remove_cv_t<R>;
+
+        auto *ptr = static_cast<V *>(data.get());
+        return static_cast<R &>(*ptr);
       }
     }
-  };
 
-  template<typename T>
-  struct userdata_holder<T, std::enable_if_t<!typings2::is_complete_v<T> || std::is_abstract_v<T>> > {};
+    template <typename T>
+    static int lookup(lua_State *L) {
+      static auto type = metadata::typeidof<T>();
+      auto method_name = luaL_checkstring(L, 2);
+      auto method = type->get_method(method_name);
+
+      if (method) {
+        push_function2(L, method->lua());
+        return 1;
+      }
+
+      return luaL_error(L, "method '%s' not found in base %s (%s)", method_name, type->fullname().c_str(),
+                          type->cindex().name());
+    }
+
+    template<typename T>
+    std::shared_ptr<T> castShared() const {
+      using U = fmt::remove_cvref_t<T>;
+
+      if (!type->isAssignableTo<U>()) {
+        ulthrow(
+            "invalid cast from " +
+            type->fullname() +
+            " to " +
+            typeidof<U>()->fullname()
+        );
+      }
+
+      return std::shared_ptr<U>(
+        data,
+        static_cast<U*>(data.get())
+      );
+    }
+  };
 
   template<typename T>
   struct lua_stack<
@@ -236,24 +299,24 @@ namespace leasy::ul2 {
           !kits::is_vector_v<T> &&
           !kits::is_unordered_map_v<T> &&
           !kits::is_shared_ptr_v<T> &&
-          !kits::is_tuple_v<T>
+          !kits::is_tuple_v<T> &&
+          !kits::is_optional_v<T>
         >
       > {
-    using holder = userdata_holder<T>;
 
+    static bool accepts(lua_State *L, int index) {
+      return lua_isuserdata(L, index) &&
+        static_cast<ul2userdata*>(lua_touserdata(L, index))->type->isAssignableFrom<T>();
+    }
 
-    static T &get(lua_State *L, int index) {
+    static T get(lua_State *L, int index) {
       if constexpr (typings2::can_store_by_value<T>) {
-        auto *ptr =
-            static_cast<holder *>(
-              luaL_checkudata(
-                L,
-                index,
-                typings2::leasy_typeid<T>().name()
-              )
-            );
+        if (! lua_isuserdata(L, index)) {
+          ulthrow("expected userdata!");
+        }
 
-        return ptr->value;
+        auto *ptr = static_cast<ul2userdata *>(lua_touserdata(L, index));
+        return ptr->cast<T>();
       } else {
         ulthrow("cannot retrieve a value because its type is incomplete or abstract (which is illegal in C++)");
       }
@@ -261,21 +324,25 @@ namespace leasy::ul2 {
 
     static int push(lua_State *L, const T &value) {
       if constexpr (typings2::can_store_by_value<T>) {
-        void *memory = lua_newuserdata(L, sizeof(holder));
-        new(memory) holder{value};
+        using U = fmt::remove_cvref_t<T>;
+        void *memory = lua_newuserdata(L, sizeof(ul2userdata));
+        new(memory) ul2userdata{
+          .data = std::make_shared<U>(value),
+          .type = typeidof<U>()
+        };
 
-        if (luaL_newmetatable(L, typings2::leasy_typeid<T>().name())) {
+        if (luaL_newmetatable(L, typings2::leasy_typeid<U>().name())) {
           lua_pushcfunction(L, [](lua_State* L) -> int {
-            auto* ptr = static_cast<holder*>(
-              luaL_checkudata(L, 1, typings2::leasy_typeid<T>().name())
+            auto* ptr = static_cast<ul2userdata*>(
+              luaL_checkudata(L, 1, typings2::leasy_typeid<U>().name())
             );
 
-            ptr->~holder();
+            ptr->~ul2userdata();
             return 0;
           });
           lua_setfield(L, -2, "__gc");
 
-          lua_pushcfunction(L, &holder::lookup);
+          lua_pushcfunction(L, &ul2userdata::lookup<T>);
           lua_setfield(L, -2, "__index");
         }
 
@@ -301,17 +368,8 @@ namespace leasy::ul2 {
   namespace detail {
     template<typename T>
     bool try_get(lua_State *L, int idx, T &out) {
-      if constexpr (std::is_same_v<T, bool>) {
-        if (!lua_isboolean(L, idx)) return false;
-      } else if constexpr (std::is_integral_v<T>) {
-        if (!lua_isinteger(L, idx)) return false;
-      } else if constexpr (std::is_floating_point_v<T>) {
-        if (!lua_isnumber(L, idx)) return false;
-      } else if constexpr (std::is_same_v<T, std::string>) {
-        if (!lua_isstring(L, idx)) return false;
-      } else {
-        if (!luaL_testudata(L, idx, typings2::leasy_typeid<T>().name())) return false;
-      }
+      if (!lua_stack<T>::accepts(L, idx))
+        return false;
 
       out = lua_stack<T>::get(L, idx);
       return true;
@@ -335,6 +393,10 @@ namespace leasy::ul2 {
   struct lua_stack<leasy::kits::variant<Ts...> > {
     using variant_t = leasy::kits::variant<Ts...>;
 
+    static bool accepts(lua_State *L, int index) {
+      return (lua_stack<Ts>::accepts(L, index) || ...);
+    }
+
     static variant_t get(lua_State *L, int index) {
       variant_t result;
 
@@ -355,47 +417,69 @@ namespace leasy::ul2 {
   };
 
   template<typename... Ts>
-struct lua_stack<std::tuple<Ts...>> {
+  struct lua_stack<std::tuple<Ts...> > {
   private:
     template<std::size_t... I>
-    static std::tuple<Ts...> get_impl(lua_State* L,
+    static std::tuple<Ts...> get_impl(lua_State *L,
                                       int index,
                                       std::index_sequence<I...>) {
       return {
-        lua_stack<std::tuple_element_t<I, std::tuple<Ts...>>>::get(
-            L,
-            index + static_cast<int>(I)
+        lua_stack<std::tuple_element_t<I, std::tuple<Ts...> > >::get(
+          L,
+          index + static_cast<int>(I)
         )...
-    };
+      };
     }
 
     template<std::size_t... I>
-    static void push_impl(lua_State* L,
-                          const std::tuple<Ts...>& t,
+    static void push_impl(lua_State *L,
+                          const std::tuple<Ts...> &t,
                           std::index_sequence<I...>) {
       (
-          lua_stack<
-              std::tuple_element_t<I, std::tuple<Ts...>>
-          >::push(L, std::get<I>(t)),
-          ...
+        lua_stack<
+          std::tuple_element_t<I, std::tuple<Ts...> >
+        >::push(L, std::get<I>(t)),
+        ...
+      );
+    }
+
+    template<std::size_t... I>
+    static bool accepts_impl(
+        lua_State* L,
+        int index,
+        std::index_sequence<I...>
+    ) {
+      return (
+          lua_stack<std::tuple_element_t<I, std::tuple<Ts...>>>::accepts(
+              L,
+              index + static_cast<int>(I)
+          ) && ...
       );
     }
 
   public:
-    static std::tuple<Ts...> get(lua_State* L, int index) {
-      return get_impl(
+    static bool accepts(lua_State* L, int index) {
+      return accepts_impl(
           L,
           index,
           std::index_sequence_for<Ts...>{}
       );
     }
 
-    static int push(lua_State* L,
-                    const std::tuple<Ts...>& t) {
+    static std::tuple<Ts...> get(lua_State *L, int index) {
+      return get_impl(
+        L,
+        index,
+        std::index_sequence_for<Ts...>{}
+      );
+    }
+
+    static int push(lua_State *L,
+                    const std::tuple<Ts...> &t) {
       push_impl(
-          L,
-          t,
-          std::index_sequence_for<Ts...>{}
+        L,
+        t,
+        std::index_sequence_for<Ts...>{}
       );
 
       return sizeof...(Ts);
@@ -433,12 +517,19 @@ struct lua_stack<std::tuple<Ts...>> {
 
       return 1;
     }
+
+    static bool accepts(lua_State *L, int index) {
+      return lua_istable(L, index);
+    }
   };
 
   template<typename K, typename V>
   struct lua_stack<std::unordered_map<K, V> > {
-    static std::unordered_map<K, V>
-    get(lua_State *L, int index) {
+    static bool accepts(lua_State *L, int index) {
+      return lua_istable(L, index);
+    }
+
+    static std::unordered_map<K, V> get(lua_State *L, int index) {
       luaL_checktype(L, index, LUA_TTABLE);
 
       std::unordered_map<K, V> map;
@@ -475,33 +566,61 @@ struct lua_stack<std::tuple<Ts...>> {
   };
 
   template<typename T>
+  struct lua_stack<std::optional<T> > {
+    using U = std::optional<T>;
+
+    static U get(lua_State *L, int index) {
+      if (lua_isnoneornil(L, index))
+        return std::nullopt;
+
+      return lua_stack<T>::get(L, index);
+    }
+
+    static bool accepts(lua_State *L, int index) {
+      return lua_isnoneornil(L, index) || lua_stack<T>::accepts(L, index);
+    }
+
+    static int push(lua_State *L, const U &value) {
+      if (!value) {
+        lua_pushnil(L);
+        return 1;
+      }
+
+      return lua_stack<T>::push(L, *value);
+    }
+  };
+
+  template<typename T>
   struct lua_stack<std::shared_ptr<T> > {
     using ptr_t = std::shared_ptr<T>;
 
-    static ptr_t get(lua_State *L, int index) {
-      auto *ptr = static_cast<ptr_t *>(
-        luaL_checkudata(
-          L,
-          index,
-          typings2::leasy_typeid<ptr_t>().name()
-        )
-      );
+    static bool accepts(lua_State *L, int index) {
+      return lua_isuserdata(L, index) &&
+        static_cast<ul2userdata*>(lua_touserdata(L, index))->type->isAssignableFrom<T>();
+    }
 
-      return *ptr;
+    static ptr_t get(lua_State *L, int index) {
+      if (! lua_isuserdata(L, index)) {
+        ulthrow("expected userdata!");
+      }
+
+      auto ud = static_cast<ul2userdata*>(lua_touserdata(L, index));
+      return ud->castShared<T>();
     }
 
     static int push(lua_State *L, ptr_t value) {
-      void *mem = lua_newuserdata(L, sizeof(ptr_t));
+      void *mem = lua_newuserdata(L, sizeof(ul2userdata));
 
-      new(mem) ptr_t(std::move(value));
+      new(mem) ul2userdata{
+        .data = std::const_pointer_cast<std::remove_const_t<T>>(std::move(value)),
+        .type = typeidof<T>()
+      };
 
-      if (luaL_newmetatable(L, typings2::leasy_typeid<ptr_t>().name())) {
+      if (luaL_newmetatable(L, typings2::leasy_typeid<T>().name())) {
         lua_pushcfunction(L, [](lua_State* L){
-          auto* ptr = static_cast<ptr_t*>(
-            luaL_checkudata(L,1,typings2::leasy_typeid<ptr_t>().name())
-          );
+          auto* ptr = static_cast<ul2userdata*>(luaL_checkudata(L,1,typings2::leasy_typeid<T>().name()));
 
-          ptr->~ptr_t();
+          ptr->~ul2userdata();
           return 0;
         });
 
@@ -513,47 +632,76 @@ struct lua_stack<std::tuple<Ts...>> {
     }
   };
 
-  template<typename T>
-  bool accepts(lua_State *L, int index) {
-    if constexpr (std::is_same_v<T, bool>)
-      return lua_isboolean(L, index);
+  inline std::string lua_type_name(lua_State* L, int index) {
+    if (lua_isuserdata(L, index)) {
+      if (lua_getmetatable(L, index)) {
+        lua_getfield(L, -1, "__name");
 
-    else if constexpr (std::is_integral_v<T>)
-      return lua_isinteger(L, index);
+        if (lua_isstring(L, -1)) {
+          std::string name = lua_tostring(L, -1);
+          lua_pop(L, 2);
+          return name;
+        }
 
-    else if constexpr (std::is_floating_point_v<T>)
-      return lua_isnumber(L, index);
+        lua_pop(L, 2);
+      }
 
-    else if constexpr (std::is_same_v<T, std::string>)
-      return lua_isstring(L, index);
+      return "userdata";
+    }
 
-    else
-      return luaL_testudata(
-        L,
-        index,
-        typings2::leasy_typeid<T>().name()
-      );
+    return luaL_typename(L, index);
+  }
+
+  template<typename T, size_t I>
+  std::pair<bool, std::string> accepts_fr(lua_State *L, int index) {
+    auto ac = lua_stack<T>::accepts(L, index);
+    if (!ac) {
+      return {
+        ac,
+        "argument #" + std::to_string(I) + ": expected " + std::string(nameof<T>()) + " got: " + lua_type_name(L, index),
+      };
+    }
+
+    return {ac, ""};
   }
 
   template<typename Tuple, std::size_t... I>
-  bool matches_impl(lua_State *L, std::index_sequence<I...>) {
-    return (
-      accepts<
-        std::tuple_element_t<I, Tuple>
-      >(L, I + 1)
-      && ...
+  std::pair<bool, std::stack<std::string> >
+  matches_impl(
+    lua_State *L,
+    std::index_sequence<I...>) {
+    std::stack<std::string> reasons;
+    bool matched = true;
+
+    (
+      [&] {
+        auto [ok, reason] = accepts_fr<
+          std::tuple_element_t<I, Tuple>, I + 1
+        >(L, I + 1);
+
+        if (!ok) {
+          matched = false;
+          reasons.push(std::move(reason));
+        }
+      }(),
+      ...
     );
+
+    return {matched, std::move(reasons)};
   }
 
   template<typename F>
-  bool matches(lua_State *L) {
+  std::pair<bool, std::stack<std::string> > matches(lua_State *L) {
     using traits = function_traits<F>;
     using args = typename traits::args_tuple;
 
     constexpr std::size_t N = std::tuple_size_v<args>;
 
-    if (lua_gettop(L) != N)
-      return false;
+    if (lua_gettop(L) != N) {
+      std::stack<std::string> s;
+      s.emplace(fmt::format("expected {} arguments, got {}!", N, lua_gettop(L)));
+      return {false, s};
+    }
 
     return matches_impl<args>(L, std::make_index_sequence<N>{});
   }

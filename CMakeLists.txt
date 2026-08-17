@@ -528,7 +528,6 @@ add_library(${PROJECT_NAME} OBJECT
 		src/leasy/meta/node/visual2D/node2d.hpp
 		src/leasy/meta/node/types.hpp
 		src/leasy/meta/node/visual2D/sprite2d.hpp
-		src/leasy/iky7/cursor.hpp
 		src/leasy/meta/node/node.cpp
 		src/leasy/meta/node/visual2D/node2d.cpp
 		src/leasy/metadata/Assembly.hpp
@@ -544,6 +543,7 @@ add_library(${PROJECT_NAME} OBJECT
 		src/leasy/types/iterable.hpp
 		src/leasy/types/string.cpp
 		src/leasy/meta/node/visual2D/sprite2d.cpp
+		src/leasy/metadata/builtins/reflection.cpp
 )
 
 # These are actually unused when building in CMake

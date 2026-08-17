@@ -42,63 +42,78 @@ namespace leasy::metadata {
 
   public:
     inline Assembly() = default;
-    inline Assembly(std::string name) : _name(std::move(name)) {}
+
+    inline Assembly(std::string name) : _name(std::move(name)) {
+    }
 
     [[nodiscard]] inline virtual std::string name() const { return _name; }
     [[nodiscard]] inline virtual std::shared_ptr<Class> getType(const std::type_index &) const { return nullptr; }
     [[nodiscard]] inline virtual std::shared_ptr<Class> getType(const std::string &) const { return nullptr; }
-    [[nodiscard]] inline virtual std::shared_ptr<function_base_t> getFunction(const std::string &) const { return nullptr; }
+
+    [[nodiscard]] inline virtual std::shared_ptr<function_base_t> getFunction(const std::string &) const {
+      return nullptr;
+    }
+
     [[nodiscard]] inline size_t getMetadataSize() const override { return sizeof(*this); }
-    [[nodiscard]] inline virtual std::vector<std::shared_ptr<Class>> getTypes() const { return {}; }
-    [[nodiscard]] inline virtual std::vector<std::shared_ptr<function_base_t>> getFunctions() const { return {}; }
+    [[nodiscard]] inline virtual std::vector<std::shared_ptr<Class> > getTypes() const { return {}; }
+    [[nodiscard]] inline virtual std::vector<std::shared_ptr<function_base_t> > getFunctions() const { return {}; }
     inline void setLuaDumpPrefix(const std::string &prefix) { _luaDumpPrefix = prefix; }
   };
 
   class BuiltInAssembly : public Assembly {
   private:
-    std::unordered_map<std::string, std::shared_ptr<Class>> namedClasses;
-    std::unordered_map<std::type_index, std::shared_ptr<Class>> indexedClasses;
-    std::unordered_map<std::string, std::shared_ptr<function_base_t>> functions;
+    std::unordered_map<std::string, std::shared_ptr<Class> > namedClasses;
+    std::unordered_map<std::type_index, std::shared_ptr<Class> > indexedClasses;
+    std::unordered_map<std::string, std::shared_ptr<function_base_t> > functions;
 
-    template <typename T>
+    template<typename T>
     inline void registerType(const std::shared_ptr<Class> &cls) {
       this->namedClasses[std::string(nameof<T>())] = cls;
       this->indexedClasses[cls->cindex()] = cls;
     }
 
-    template <typename T>
+    template<typename T>
     void addExtents() {
-      using P = T*;
-      using CP = const T*;
-      using R = T&;
-      using CR = const T&;
+      using P = T *;
+      using CP = const T *;
+      using R = T &;
+      using CR = const T &;
 
       registerType<P>(make_class<P>()
-      .method("ref", [](P p) -> T& { return *p; })
-      .method("val", [](P p) -> T { return *p; })
-      .method("new", [](const int &len) { return new T[len];})
-      .method("del", [](P p) { delete[] p; })
-      .done());
+        .method("ref", [](P p) -> T & { return *p; })
+        .method("val", [](P p) -> T { return *p; })
+        .method("new", [](const int &len) {
+          if constexpr (std::is_default_constructible_v<T>)
+            return new T[len];
+          else return nullptr;
+        })
+        .method("del", [](P p) { delete[] p; })
+        .done());
 
       registerType<R>(make_class<R>()
-      .method("val", [](R r) -> T { return r; })
-      .done());
+        .method("val", [](R r) -> T { return r; })
+        .done());
 
-      registerType<P>(make_class<CP>()
-      .method("ref", [](CP p) -> const T& { return *p; })
-      .method("val", [](CP p) -> T { return *p; })
-      .method("new", [](const int &len) -> CP { return new T[len];})
-      .method("del", [](CP p) { delete[] p; })
-      .done());
+      registerType<CP>(make_class<CP>()
+        .method("ref", [](CP p) -> const T & { return *p; })
+        .method("val", [](CP p) -> T { return *p; })
+        .method("new", [](const int &len) -> CP {
+          if constexpr (std::is_default_constructible_v<T>)
+            return new T[len];
+          else return nullptr;
+        })
+        .method("del", [](CP p) { delete[] p; })
+        .done());
 
-      registerType<R>(make_class<CR>()
-      .method("val", [](CR r) -> const T { return r; })
-      .done());
+      registerType<CR>(make_class<CR>()
+        .method("val", [](CR r) -> const T { return r; })
+        .done());
     }
 
   public:
     inline size_t getMetadataSize() const override {
-      size_t total = sizeof(*this) + getStringRealSize(_name) + sizeof(functions) + sizeof(namedClasses) + sizeof(indexedClasses);
+      size_t total = sizeof(*this) + getStringRealSize(_name) + sizeof(functions) + sizeof(namedClasses) + sizeof(
+                       indexedClasses);
       for (const auto &[k, v]: this->functions) {
         total += getStringRealSize(k);
         total += sizeof(v) + v->getMetadataSize();
@@ -119,9 +134,9 @@ namespace leasy::metadata {
 
     inline Object dump() const override {
       return Map()
-        .add("name", this->name())
-        .add("classes", kits::select(this->namedClasses, [](auto I) { return I.second->dump(); }))
-        .add("functions", kits::select(this->functions, [](auto I) { return I.second->dump(); }));
+          .add("name", this->name())
+          .add("classes", kits::select(this->namedClasses, [](auto I) { return I.second->dump(); }))
+          .add("functions", kits::select(this->functions, [](auto I) { return I.second->dump(); }));
     }
 
     inline void bind(ul2::lstate &state) const override {
@@ -135,14 +150,15 @@ namespace leasy::metadata {
         // I count on making a dump system that will later dump assemblies and be used as assembly glue
         // in order to be able to use full-user-names instead of weird C++ Mangled names.
         std::string classname = prefix + this->_name + "." + cl->cindex().name();
-          for (const auto &[name, fun]: cl->methods()) {
-            auto maNamePlease = kits::replace(classname + "." + name, "::", ".");
-            state.bind2(maNamePlease, fun->lua());
-          }
+        for (const auto &[name, fun]: cl->methods()) {
+          auto maNamePlease = kits::replace(classname + "." + name, "::", ".");
+          state.bind2(maNamePlease, fun->lua());
+        }
       }
     }
 
-    inline BuiltInAssembly(const std::string &s) : Assembly(s) {}
+    inline BuiltInAssembly(const std::string &s) : Assembly(s) {
+    }
 
     inline std::string name() const override { return _name; }
 
@@ -161,13 +177,13 @@ namespace leasy::metadata {
       return functions.at(name);
     }
 
-    template <typename T>
+    template<typename T>
     inline BuiltInAssembly &addType(const std::shared_ptr<Class> cls) {
       registerType<T>(cls);
 
       using U = kits::flat_t<T>;
 
-      if constexpr (! std::is_void_v<U>) {
+      if constexpr (!std::is_void_v<U>) {
         addExtents<U>();
       }
 
@@ -182,18 +198,18 @@ namespace leasy::metadata {
       return *this;
     }
 
-    template <typename... Fs>
+    template<typename... Fs>
     inline BuiltInAssembly &addFunction(const std::string &name, Fs... fs) {
       auto myName = this->_name + "::" + name;
       this->functions[myName] = make_function(myName, std::forward<Fs>(fs)...);
       return *this;
     }
 
-    inline std::vector<std::shared_ptr<Class>> getTypes() const override {
+    inline std::vector<std::shared_ptr<Class> > getTypes() const override {
       return kits::select(this->namedClasses, [](auto I) { return I.second; });
     }
 
-    inline std::vector<std::shared_ptr<function_base_t>> getFunctions() const override {
+    inline std::vector<std::shared_ptr<function_base_t> > getFunctions() const override {
       return kits::select(this->functions, [](auto I) { return I.second; });
     }
   };

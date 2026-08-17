@@ -57,6 +57,9 @@ namespace leasy::metadata {
 
   std::shared_ptr<Class> typeidof(const std::type_index &);
 
+  template<typename T>
+  std::shared_ptr<Class> typeidof();
+
   class Class : public Data, public SizeDescriptor {
   protected:
     std::type_index _cindex;
@@ -67,27 +70,26 @@ namespace leasy::metadata {
     bool _resolved = true;
 
   public:
-    inline virtual std::any call(const std::string &name, std::vector<std::any> &args) const {
+    virtual std::any call(const std::string &name, std::vector<std::any> &args) const {
       if (_methods.find(name) != _methods.end()) return _methods.at(name)->call(args);
       else {
-        std::exception *ex = nullptr;
+        std::exception_ptr ex = nullptr;
         for (const auto &base: _bases) {
           if (!base) continue;
 
           try {
             return base->call(name, args);
           } catch (const std::exception &e) {
-            *ex = e;
+            ex = std::current_exception();
           }
         }
 
-        throw ex
-                ? std::runtime_error(ex->what())
-                : std::runtime_error(name + ": method not found in base " + _fullname);
+        if (ex) std::rethrow_exception(ex);
+        throw std::runtime_error(name + ": method not found in base " + _fullname);
       }
     }
 
-    inline std::shared_ptr<function_base_t> get_method(const std::string &name) const {
+    std::shared_ptr<function_base_t> get_method(const std::string &name) const {
       if (const auto it = _methods.find(name); it != _methods.end()) return it->second;
 
       for (auto &base: _bases) {
@@ -105,12 +107,12 @@ namespace leasy::metadata {
       return call("activate", args);
     }
 
-    inline virtual std::string fullname() const { return _fullname; }
-    inline virtual std::type_index cindex() const { return _cindex; }
-    inline virtual size_t size() const { return _size; }
-    inline virtual std::vector<std::shared_ptr<Class> > bases() const { return _bases; }
+    virtual std::string fullname() const { return _fullname; }
+    virtual std::type_index cindex() const { return _cindex; }
+    virtual size_t size() const { return _size; }
+    virtual std::vector<std::shared_ptr<Class> > bases() const { return _bases; }
 
-    inline virtual std::unordered_map<std::string, std::shared_ptr<function_base_t> > methods() const {
+    virtual std::unordered_map<std::string, std::shared_ptr<function_base_t> > methods() const {
       auto result = _methods;
       for (auto &base: _bases) {
         for (auto &[name, method]: base->methods()) {
@@ -121,25 +123,132 @@ namespace leasy::metadata {
       return result;
     }
 
-    inline Object dump() const override {
+    bool isSameAs(const Class &other) const {
+      return cindex() == other.cindex();
+    }
+
+    bool isBaseOf(const Class &derived) const {
+      if (cindex() == derived.cindex())
+        return false;
+
+      for (const auto &base: derived._bases) {
+        if (!base)
+          continue;
+
+        if (base->cindex() == cindex() || isBaseOf(*base))
+          return true;
+      }
+
+      return false;
+    }
+
+    bool isDerivedFrom(const Class &base) const {
+      return base.isBaseOf(*this);
+    }
+
+    bool isAssignableTo(const Class &target) const {
+      // Exact type or implicit upcast.
+      return isSameAs(target) || target.isBaseOf(*this);
+    }
+
+    bool isAssignableFrom(const Class &source) const {
+      return source.isAssignableTo(*this);
+    }
+
+    bool isConstructibleFrom(const Class &source) const {
+      // "Can an object of source type be used where this type is expected?"
+      return isAssignableFrom(source);
+    }
+
+    bool isConstructibleTo(const Class &target) const {
+      return target.isConstructibleFrom(*this);
+    }
+
+    bool isRelatedTo(const Class &other) const {
+      return isSameAs(other)
+             || isBaseOf(other)
+             || other.isBaseOf(*this);
+    }
+
+    bool isStrictBaseOf(const Class &derived) const {
+      return cindex() != derived.cindex() && isBaseOf(derived);
+    }
+
+    bool isStrictDerivedFrom(const Class &base) const {
+      return cindex() != base.cindex() && isDerivedFrom(base);
+    }
+
+    bool isRoot() const {
+      return _bases.empty();
+    }
+
+    bool hasBases() const {
+      return !_bases.empty();
+    }
+
+    bool hasBase(const Class &base) const {
+      return isBaseOf(base);
+    }
+
+    template<typename T>
+    bool isSameAs() const {
+      return cindex() == typeid(T);
+    }
+
+    template<typename T>
+    bool isBaseOf() const {
+      return isBaseOf(*typeidof<T>());
+    }
+
+    template<typename T>
+    bool isDerivedFrom() const {
+      return isDerivedFrom(*typeidof<T>());
+    }
+
+    template<typename T>
+    bool isAssignableTo() const {
+      return isAssignableTo(*typeidof<T>());
+    }
+
+    template<typename T>
+    bool isAssignableFrom() const {
+      return isAssignableFrom(*typeidof<T>());
+    }
+
+    template<typename T>
+    bool isConstructibleFrom() const {
+      return isConstructibleFrom(*typeidof<T>());
+    }
+
+    template<typename T>
+    bool isConstructibleTo() const {
+      return isConstructibleTo(*typeidof<T>());
+    }
+
+    template<typename T>
+    bool isRelatedTo() const {
+      return isRelatedTo(*typeidof<T>());
+    }
+
+    Object dump() const override {
       auto c = resolve();
 
       return Map()
           .add("name", c->_fullname)
           .add("size", c->_size)
           .add("bases", Array(
-      kits::select(c->_bases, [](const std::shared_ptr<Class> &cl) {
-               if (cl) return cl->dump();
-               return Object("<null-class>");
-             })))
+                 kits::select(c->_bases, [](const std::shared_ptr<Class> &cl) {
+                   if (cl) return cl->dump();
+                   return Object("<null-class>");
+                 })))
           .add("cindex", Map()
-            .add("name", c->_cindex.name())
-            .add("hashcode", c->_cindex.hash_code())
+               .add("name", c->_cindex.name())
+               .add("hashcode", c->_cindex.hash_code())
           )
           .add("methods", Array(kits::select(c->methods(),
-            [](const std::pair<std::string, std::shared_ptr<function_base_t> > &e) {
-              return e.second->dump();
-            })));
+                                             [](const std::pair<std::string, std::shared_ptr<function_base_t> > &e) {
+                                               return e.second->dump();
+                                             })));
     }
 
     inline Object minimal_dump() const {
@@ -268,8 +377,8 @@ namespace leasy::metadata {
 
       if constexpr (!std::is_void_v<U>) {
         this->local->method("ptr", [](U &i) { return &i; }, [](const U &i) { return &i; });
-        this->local->method("ref", [](U &i) -> U& { return i; }, [](const U &i) -> const U& { return i; });
-        this->local->method("makeShared", [](const U i) {
+        this->local->method("ref", [](U &i) -> U & { return i; }, [](const U &i) -> const U & { return i; });
+        this->local->method("makeShared", [](U i) {
           return std::make_shared<U>(i);
         });
       }

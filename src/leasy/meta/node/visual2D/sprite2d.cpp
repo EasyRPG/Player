@@ -42,6 +42,13 @@ namespace leasy::meta2::node {
         .method("load", [](Sprite2D &self, std::streambuf *streamptr, bool transparent) {
           return self.load(streamptr, transparent);
         })
+        .method("new", []  {
+          return Sprite2D();
+        }, [](std::string p, std::optional<bool> transparent) {
+          return Sprite2D(p, transparent.value_or(true));
+        }, [](std::istream *stream, std::optional<bool> transparent) {
+          return Sprite2D(stream, transparent.value_or(true));
+        })
         .done()
       );
       return false;
