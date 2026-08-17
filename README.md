@@ -1,21 +1,31 @@
 # (L)easy project — EasyRPG-Player "hack"
 
-> Warning: This project has for only purpose my own entertainement, and thus, all of names that you will see by reading the source code located at `src/leasy/` will NOT HAVE ANY meaning. By the goal of that project, maintaining will not be as steady as a real project could be, and regardless of how weak or strong it can be, do not focus yourselves on my activity (including that me, I and my refer all to wys-prog, the leader of this project) on Github. In any case of need, of question, suggestion, review, or anything that can be related to this project (even a feedback about the code, or even the engine itself!), feel-free to let me know through the Github repo. of this project, or, my Discord (`._wys_.`). Thank you a lot for all supporters, all reviews and feedbacks!
+## Overview
+Leasy is quick, light and fast. Or maybe not. It has as goal to make EasyRPG-Player open source ... In the way that you have the code without needing to compile the engine yourself.
+Honestly, this project is more stupid than serious. But you can give it a try. Note also that everything that works with EasyRPG-Player will work with this engine.
+It also brings thingies like being able to code in lua and reflection. Please don't judge the project by its look but by what it does.
 
-# Rights
+## Folders
+Folders do not mean anything but they are organized. Here is what you guys can retain:
+- ily3 (stands for I Love You :3): Lua + Global Lua "bindings" and utils with the main core of the leasy subsystem.
+- ul2: Ultimate Lua 2: a library around Lua's C API for C++!
+- cli: cli...
+- iky7: honestly this is older "high level" stuff and compilation-time hack.
+- libs2: old libraries for Lua.
+- kits: C++23 / C++20 concepts reimplemented for support, or, some utilities.
+- meta: Meta2 engine
+- metadata: Reflection core.
+- settings: settings...???
+- test: ... Bro?
+- types: bruh.
+- ui: old UI thingies!
 
-* This project is available on Github, at https://github.com/wys-prog/leasy. Its only leader is wys-prog, and no other people did contribute to it with his knowledge of. Please, in any case of copy, signal it to me.
-* This project is made only for ENTERTAINEMENT purposes.
-* You shall not make any money by the use of this project ; Unless it is a mod that uses indirectly this project.
+## Contacts
+I **DO** care about feedbacks, messages, and everything related to this project, regardless who you are!
+You guys can contact me there:
+- On Discord (`._wys_.`)
+- On GitHub (https://github.com/wys-prog/leasy, OR, https://github.com/wys-prog!)
+- Gmail: wysltek@gmail.com
 
-# Notes
-
-> The whole leasy subsystem lives \[mainly\] in the folder `src/leasy/`. Here's the "organization" I gave to it:
-* `leasy/diag5` is diagnostics / engine hack helpers. It is mainly for debugging, and you may not use them at all in a release version.
-* `leasy/iky7` is where you can find low-level utilies. You may use this if you want to MODIFY the engine itself.
-* `leasy/ul2` contains Lua bindings to C++ and UL library (that I DID MAKE by my DAMN OWN)
-* `leasy/kits` is temporal, and may be removed in further versions if ever EasyRPG's source code supports >= stdc++20. So, it is only reimplementations of some stdc++20.
-* `leasy/libs2` is public libraries; You can use those in C++-modding, even though this won't be supported yet. Again, you can use this in leasy-modding too.
-* `leasy/ily3` is where the Lua glue and structures live.
-
-That said, I still do not know why you guys would read this damn code. Just use it.
+If you also want to contribute to this project, feel free to talk with me. I would prefer working with something who at least introduced his interests, ideas, etc. rather than someone who just sends code roughly!
+Have fun X)
