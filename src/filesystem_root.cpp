@@ -23,6 +23,10 @@
 #  include "platform/android/filesystem_saf.h"
 #endif
 
+#ifdef USE_LIBRETRO
+#  include "platform/libretro/filesystem_libretro.h"
+#endif
+
 constexpr const std::string_view root_ns = "root://";
 
 RootFilesystem::RootFilesystem() : Filesystem("", FilesystemView()) {
@@ -30,6 +34,10 @@ RootFilesystem::RootFilesystem() : Filesystem("", FilesystemView()) {
 #if defined(__ANDROID__) && !defined(USE_LIBRETRO)
 	fs_list.push_back(std::make_pair("apk", std::make_unique<ApkFilesystem>()));
 	fs_list.push_back(std::make_pair("content", std::make_unique<SafFilesystem>("", FilesystemView())));
+#endif
+
+#ifdef USE_LIBRETRO
+	fs_list.push_back(std::make_pair("libretro", std::make_unique<LibretroFilesystem>("", FilesystemView())));
 #endif
 
 	// IMPORTANT: This must be the last filesystem in the list, do not push anything to fs_list afterwards!
@@ -49,11 +57,13 @@ FilesystemView RootFilesystem::Create(std::string_view path) const {
 	}
 
 	const auto& fs = FilesystemForPath(path);
-	// Strip namespace from path
+	// Strip namespace from path except for libretro which expects them
+#ifndef USE_LIBRETRO
 	auto ns_pos = path.find("://");
 	if (ns_pos != std::string::npos) {
 		path = path.substr(ns_pos + 3);
 	}
+#endif
 	return fs.Create(path);
 }
 
@@ -94,8 +104,8 @@ bool RootFilesystem::GetDirectoryContent(std::string_view path, std::vector<Dire
 	return FilesystemForPath(path).GetDirectoryContent(path, tree);
 }
 
-bool RootFilesystem::MakeDirectory(std::string_view path, bool follow_symlinks) const {
-	return FilesystemForPath(path).MakeDirectory(path, follow_symlinks);
+bool RootFilesystem::vMakeDirectory(std::string_view path, bool follow_symlinks) const {
+	return FilesystemForPath(path).vMakeDirectory(path, follow_symlinks);
 }
 
 std::string RootFilesystem::Describe() const {
@@ -106,12 +116,19 @@ const Filesystem& RootFilesystem::FilesystemForPath(std::string_view path) const
 	assert(!fs_list.empty());
 
 	std::string_view ns;
+
+#ifdef USE_LIBRETRO
+	if (LibretroFilesystem::vfs.required_interface_version >= EP_FILESYSTEM_LIBRETRO_REQUIRED_INTERFACE_VERSION) {
+		ns = "libretro";
+	}
+#else
 	// Check if the path contains a namespace
 	auto ns_pos = path.find("://");
 	if (ns_pos != std::string::npos) {
 		ns = path.substr(0, ns_pos);
 		path = path.substr(ns_pos + 3);
 	}
+#endif
 
 	if (ns.empty()) {
 		// No namespace returns the last fs which is the NativeFilesystem

@@ -129,63 +129,20 @@ bool Platform::File::MakeDirectory(bool follow_symlinks) const {
 	}
 
 #ifdef _WIN32
-	std::string path = Utils::FromWideString(filename);
-#else
-	std::string path = filename;
-#endif
-
-	auto components = FileFinder::SplitPath(path);
-	std::string cur_path;
-	if (StartsWith(path, "/")) {
-		cur_path += "/";
+	if (!CreateDirectoryW(filename.c_str(), nullptr)) {
+		return false;
 	}
-
-	bool first = true;
-	for (const auto& comp : components) {
-		if (comp.empty() || comp == ".") {
-			continue;
-		}
-
-		cur_path = FileFinder::MakePath(cur_path, comp);
-
-		if (first) {
-			// Do not check stuff that looks like drives, such as C:, ux0: or sd:
-			// Some systems do not consider them directories
-			first = false;
-			if (comp.back() == ':') {
-				continue;
-			}
-		}
-
-#if defined(__WIIU__)
-		if (cur_path == "fs:/vol" || cur_path == "/vol") {
-			// /vol is part of the path but checking for existance fails
-			continue;
-		}
-#endif
-
-		File cf(cur_path);
-		if (cf.IsDirectory(follow_symlinks)) {
-			continue;
-		} else if (cf.IsFile(follow_symlinks) || cf.Exists()) {
-			return false;
-		} else {
-#ifdef _WIN32
-			if (!CreateDirectoryW(Utils::ToWideString(cur_path).c_str(), nullptr)) {
-				return false;
-			}
 #else
 #  if defined(__vita__)
-			int res = sceIoMkdir(cur_path.c_str(), 0777);
+	int res = sceIoMkdir(filename.c_str(), 0777);
 #  else
-			int res = mkdir(cur_path.c_str(), 0777);
+	int res = mkdir(filename.c_str(), 0777);
 #  endif
-			if (res < 0) {
-				return false;
-			}
-#endif
-		}
+	if (res < 0) {
+		return false;
 	}
+#endif
+
 	return true;
 }
 

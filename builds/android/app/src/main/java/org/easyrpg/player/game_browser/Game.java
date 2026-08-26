@@ -219,7 +219,13 @@ public class Game implements Comparable<Game> {
         }
 
         String savePath = entries[0];
-        DocumentFile gameFolder = DocumentFile.fromTreeUri(context, Uri.parse(entries[1]));
+        DocumentFile gameFolder = null;
+        try {
+            gameFolder = DocumentFile.fromTreeUri(context, Uri.parse(entries[1]));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+
         if (gameFolder == null) {
             return null;
         }

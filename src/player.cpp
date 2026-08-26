@@ -457,6 +457,8 @@ Game_Config Player::ParseCommandLine() {
 
 	bool battletest_handled = false;
 
+	FileFinder::SetSaveFilesystem({});
+
 	cp.Rewind();
 	if (!cp.Done()) {
 		// BattleTest argument handling in a RPG_RT compatible way is very ugly because the arguments do not follow

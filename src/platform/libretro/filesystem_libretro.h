@@ -15,20 +15,25 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_FILESYSTEM_OS_H
-#define EP_FILESYSTEM_OS_H
+#ifndef EP_FILESYSTEM_LIBRETRO_H
+#define EP_FILESYSTEM_LIBRETRO_H
 
 #include "filesystem.h"
+#include "libretro.h"
+
+#define EP_FILESYSTEM_LIBRETRO_REQUIRED_INTERFACE_VERSION 3U
 
 /**
- * A virtual filesystem that represents the file system of the host system.
+ * A wrapper around the libretro virtual filesystem interface
  */
-class NativeFilesystem : public Filesystem {
+class LibretroFilesystem : public Filesystem {
 public:
 	/**
-	 * Initializes a OS Filesystem on the given os path
+	 * Initializes a libretro filesystem
 	 */
-	explicit NativeFilesystem(std::string base_path, FilesystemView parent_fs);
+	explicit LibretroFilesystem(std::string base_path, FilesystemView parent_fs);
+
+	static struct retro_vfs_interface_info vfs;
 
 protected:
 	/**
