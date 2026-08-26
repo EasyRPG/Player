@@ -223,6 +223,7 @@ protected:
 	bool CommandShowChoiceEnd(lcf::rpg::EventCommand const& com);
 	bool CommandInputNumber(lcf::rpg::EventCommand const& com);
 	bool CommandControlSwitches(lcf::rpg::EventCommand const& com);
+	template<bool EasyRpgEx = false>
 	bool CommandControlVariables(lcf::rpg::EventCommand const& com);
 	bool CommandTimerOperation(lcf::rpg::EventCommand const& com);
 	bool CommandChangeGold(lcf::rpg::EventCommand const& com);
@@ -316,6 +317,7 @@ protected:
 	bool CommandManiacControlStrings(lcf::rpg::EventCommand const& com);
 	bool CommandManiacWritePicture(lcf::rpg::EventCommand const& com);
 	bool CommandManiacCallCommand(lcf::rpg::EventCommand const& com);
+	bool CommandEasyRpgControlVariablesEx(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgSetInterpreterFlag(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgCloneMapEvent(lcf::rpg::EventCommand const& com);
