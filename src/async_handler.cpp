@@ -243,6 +243,12 @@ FileRequestAsync* AsyncHandler::RequestFile(std::string_view file_name) {
 	return RequestFile(".", file_name);
 }
 
+FileRequestAsync* AsyncHandler::RequestFile(std::string_view preferred_dir, std::string_view fallback_dir, std::string_view file_name) {
+	auto* request = RequestFile(preferred_dir, file_name);
+	request->SetFallbackDirectory(fallback_dir);
+	return request;
+}
+
 bool AsyncHandler::IsFilePending(bool important, bool graphic) {
 	for (auto& ap: async_requests) {
 		FileRequestAsync& request = ap.second;
@@ -437,6 +443,20 @@ void FileRequestAsync::DownloadDone(bool success) {
 	if (IsReady()) {
 		// Change to real success state when already finished before
 		success = state == State_DoneSuccess;
+	}
+
+	if (!success && !fallback_directory.empty()) {
+		// Not found in the current directory. On platforms without
+		// synchronous file access (Emscripten) this is the only way to
+		// learn that, since the file isn't present locally until it has
+		// actually been downloaded. Retry once in the fallback directory
+		// before giving up.
+		directory = std::move(fallback_directory);
+		fallback_directory.clear();
+		path = FileFinder::MakePath(directory, file);
+		state = State_WaitForStart;
+		Start();
+		return;
 	}
 
 	if (success) {
