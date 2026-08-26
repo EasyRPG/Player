@@ -54,6 +54,11 @@
 #    include "sdl2_audio.h"
 #  endif
 
+#include "game_interpreter_map.h"
+#include "game_interpreter_battle.h"
+#include "game_battle.h"
+#include "main_data.h"
+#include "game_map.h"
 AudioInterface& Sdl2Ui::GetAudio() {
 	return *audio_;
 }
@@ -551,6 +556,45 @@ bool Sdl2Ui::ProcessEvents() {
 
 	// Poll SDL events and process them
 	while (SDL_PollEvent(&evnt)) {
+
+		// Determine which interpreter is currently active.
+		Game_Interpreter* active_interpreter = nullptr;
+		if (Game_Battle::IsBattleRunning()) {
+			active_interpreter = &Game_Battle::GetInterpreter();
+		}
+		else if (Main_Data::game_player) { // Ensure game objects are initialized
+			active_interpreter = &Game_Map::GetInterpreter();
+		}
+
+		// If an interpreter is active and in typing mode, delegate input to it.
+		if (active_interpreter && active_interpreter->IsInTypingMode()) {
+			// Check the type of SDL event and call the appropriate handler
+			if (evnt.type == SDL_TEXTINPUT) {
+				active_interpreter->AppendTypingText(evnt.text.text);
+			}
+			else if (evnt.type == SDL_KEYDOWN) {
+				switch (evnt.key.keysym.sym) {
+				case SDLK_BACKSPACE:
+					active_interpreter->HandleTypingBackspace();
+					break;
+				case SDLK_RETURN:
+				case SDLK_KP_ENTER:
+					active_interpreter->HandleTypingEnter(evnt.key.keysym.mod & KMOD_CTRL);
+					break;
+				case SDLK_ESCAPE:
+					active_interpreter->HandleTypingEscape();
+					break;
+				default:
+					// Other key presses (like arrows, function keys) are ignored.
+					break;
+				}
+			}
+
+			// Skip the default event processing to prevent mapping typed keys
+			// to game actions (e.g., 'Z' to Decision button).
+			continue;
+		}
+
 		ProcessEvent(evnt);
 
 		if (Player::exit_flag)
