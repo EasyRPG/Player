@@ -115,10 +115,10 @@ public:
 
 	bool FromErase() const;
 	bool ToErase() const;
+	void Init(Type type, Scene* linked_scene, int duration, bool erase);
 
 private:
 	Transition();
-	void Init(Type type, Scene *linked_scene, int duration, bool erase);
 
 	const uint32_t size_random_blocks = 4;
 

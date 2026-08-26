@@ -26,6 +26,10 @@
 #include "game_character.h"
 #include "game_actor.h"
 #include "game_interpreter_shared.h"
+#include "audio_secache.h"
+#include "audio_midi.h"
+#include "scene_logo.h"
+#include "scene_save.h"
 #include <lcf/dbarray.h>
 #include <lcf/rpg/fwd.h>
 #include <lcf/rpg/eventcommand.h>
@@ -320,6 +324,7 @@ protected:
 	bool CommandEasyRpgProcessJson(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgCloneMapEvent(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgDestroyMapEvent(lcf::rpg::EventCommand const& com);
+	bool CommandEasyRpgLoadGame(lcf::rpg::EventCommand const& com);
 	bool CommandManiacGetGameInfo(lcf::rpg::EventCommand const& com);
 
 	void SetSubcommandIndex(int indent, int idx);

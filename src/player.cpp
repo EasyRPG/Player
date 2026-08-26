@@ -76,6 +76,7 @@
 #include "game_quit.h"
 #include "scene_settings.h"
 #include "scene_title.h"
+#include "scene_save.h"
 #include "instrumentation.h"
 #include "transition.h"
 #include <lcf/scope_guard.h>
@@ -135,15 +136,18 @@ namespace Player {
 	int rng_seed = -1;
 	Game_ConfigPlayer player_config;
 	Game_ConfigGame game_config;
+
+	std::vector<ParentGame> parent_games;
+
 #ifdef __EMSCRIPTEN__
 	std::string emscripten_game_name;
 #endif
+
+	std::vector<std::string> arguments;
 	Game_Clock::time_point last_auto_screenshot;
 }
 
 namespace {
-	std::vector<std::string> arguments;
-
 	// Overwritten by --encoding
 	std::string forced_encoding;
 
@@ -167,7 +171,7 @@ void Player::Init(std::vector<std::string> args) {
 #endif
 
 	// First parse command line arguments
-	arguments = args;
+	Player::arguments = args;
 	auto cfg = ParseCommandLine();
 
 	// Display a nice version string
@@ -270,6 +274,10 @@ void Player::MainLoop() {
 	Scene::old_instances.clear();
 
 	if (!Transition::instance().IsActive() && Scene::instance->type == Scene::Null) {
+		if (!Player::parent_games.empty()) {
+			Player::RestoreParentGame();
+			return;
+		}
 		Exit();
 		return;
 	}
@@ -1659,4 +1667,46 @@ int Player::EngineVersion() {
 std::string Player::GetEngineVersion() {
 	if (EngineVersion() > 0) return std::to_string(EngineVersion());
 	return std::string();
+}
+
+
+void Player::RestoreParentGame() {
+	if (parent_games.empty()) return;
+
+	ParentGame parent = parent_games.back();
+	parent_games.pop_back();
+
+	Transition::instance().Init(Transition::TransitionNone, nullptr, 0, false);
+
+	Main_Data::game_system->BgmStop();
+	Cache::ClearAll();
+	AudioSeCache::Clear();
+	MidiDecoder::Reset();
+	lcf::Data::Clear();
+
+	Player::RestoreBaseResolution();
+	Player::has_custom_resolution = false;
+
+	Player::game_title = "";
+	Player::game_title_original = "";
+	Player::translation.Reset();
+	Font::ResetDefault();
+
+	FileFinder::SetGameFilesystem(parent.game_fs);
+	FileFinder::SetSaveFilesystem(parent.save_fs);
+	Player::arguments = parent.arguments;
+
+	Scene::PopUntil(Scene::Null);
+
+	if (parent.exit_behavior == 2) {
+		Player::load_game_id = parent.save_slot;
+		Scene::Push(std::make_shared<Scene_Logo>());
+	}
+	else if (parent.exit_behavior == 1) {
+		Player::load_game_id = 0;
+		Scene::Push(std::make_shared<Scene_Logo>());
+	}
+	else {
+		Player::exit_flag = true;
+	}
 }
