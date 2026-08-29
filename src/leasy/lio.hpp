@@ -37,7 +37,7 @@
 #include <thread>
 #include <vector>
 
-#include "kits/ps7k.hpp"
+#include "kits/cppsupport/bases.hpp"
 
 namespace leasy::ios {
 
@@ -287,7 +287,7 @@ private:
 
   inline void detach(const std::shared_ptr<sink>& target) {
     std::lock_guard lock(mutex_);
-    compat::erase_if(
+    stl2::compat::cpp17::erase_if(
       outputs_,
       [&](const auto& weak) {
         auto locked = weak.lock();
@@ -300,7 +300,7 @@ private:
     std::vector<std::shared_ptr<sink>> sinks;
     {
       std::lock_guard lock(mutex_);
-      compat::erase_if(outputs_, [](const auto& weak) {
+      stl2::compat::cpp17::erase_if(outputs_, [](const auto& weak) {
         return weak.expired();
       });
       sinks.reserve(outputs_.size());

@@ -166,7 +166,7 @@ namespace leasy::metadata {
     inline Object dump() const override {
       return Map()  // Programming's magic.
              .add("name", this->name)
-             .add("overloads", kits::select(this->funcs, [](function func) { return func.dump(); }));
+             .add("overloads", kits::select(this->funcs, [](const function& func) { return func.dump(); }));
     }
 
     inline void bind(ul2::lstate &state) const override {

@@ -544,6 +544,8 @@ add_library(${PROJECT_NAME} OBJECT
 		src/leasy/types/string.cpp
 		src/leasy/meta/node/visual2D/sprite2d.cpp
 		src/leasy/metadata/builtins/reflection.cpp
+		src/leasy/kits/support.hpp
+		src/leasy/kits/cppsupport/functionnal.hpp
 )
 
 # These are actually unused when building in CMake

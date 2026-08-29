@@ -30,7 +30,6 @@
 #include <string_view>
 
 #include "../iky7/nameof.hpp"
-#include "../kits/utils.hpp"
 #include "structs/metadata.hpp"
 #include "function_base.hpp"
 #include "leasy/kits/select.hpp"
@@ -373,15 +372,30 @@ namespace leasy::metadata {
   public:
     inline ClassBuilder() {
       this->local = std::make_shared<DynamicClass<T, Bases...> >();
-      using U = std::remove_reference_t<T>;
 
-      if constexpr (!std::is_void_v<U>) {
-        this->local->method("ptr", [](U &i) { return &i; }, [](const U &i) { return &i; });
-        this->local->method("ref", [](U &i) -> U & { return i; }, [](const U &i) -> const U & { return i; });
-        this->local->method("makeShared", [](U i) {
-          return std::make_shared<U>(i);
-        });
+      if constexpr (! std::is_abstract_v<T>) {
+        using U = std::remove_reference_t<T>;
+
+        if constexpr (!std::is_void_v<U>) {
+          this->local->method("ptr", [](U &i) { return &i; }, [](const U &i) { return &i; });
+          this->local->method("ref", [](U &i) -> U& { return i; }, [](const U &i) -> const U & { return i; });
+          this->local->method("makeShared", [](U i) {
+            return std::make_shared<U>(i);
+          });
+        }
       }
+
+      this->local->method("isAbstract", [] { return std::is_abstract_v<T>; });
+      this->local->method("isArray", []{ return std::is_array_v<T>; });
+      this->local->method("isAggregate", []{ return std::is_aggregate_v<T>; });
+      this->local->method("isArithmetic", []{ return std::is_arithmetic_v<T>; });
+      this->local->method("isClass", []{ return std::is_class_v<T>; });
+      this->local->method("isConst", []{ return std::is_const_v<T>; });
+      this->local->method("isFinal", []{ return std::is_final_v<T>; });
+      this->local->method("isFloatingPoint", []{ return std::is_floating_point_v<T>; });
+      this->local->method("isPolymorphic", []{ return std::is_polymorphic_v<T>; });
+      this->local->method("isReference", []{ return std::is_reference_v<T>; });
+      this->local->method("isStandardLayout", []{ return std::is_standard_layout_v<T>; });
     }
 
     template<typename... Fs>

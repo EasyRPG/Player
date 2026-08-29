@@ -1,4 +1,5 @@
 local rpg = require('assembly.appdomain')
+
 local node = EasyRPGPlayer.Assembly.leasy.meta2.node;
 local std = EasyRPGPlayer.Assembly.std;
 

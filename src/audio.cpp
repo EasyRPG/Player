@@ -23,124 +23,185 @@
 #include "player.h"
 #include "game_clock.h"
 
-AudioInterface& Audio() {
-	static Game_ConfigAudio cfg;
-	static EmptyAudio default_(cfg);
+AudioInterface &Audio() {
+  static Game_ConfigAudio cfg;
+  static EmptyAudio default_(cfg);
 #ifdef SUPPORT_AUDIO
-	if (!Player::no_audio_flag && DisplayUi)
-		return DisplayUi->GetAudio();
+  if (!Player::no_audio_flag && DisplayUi)
+    return DisplayUi->GetAudio();
 #endif
-	return default_;
+  return default_;
 }
 
 void EmptyAudio::BGM_Play(Filesystem_Stream::InputStream, int, int, int) {
-	bgm_starttick = Player::GetFrames();
-	playing = true;
+  bgm_starttick = Player::GetFrames();
+  playing = true;
 }
 
 void EmptyAudio::BGM_Stop() {
-	playing = false;
+  playing = false;
 }
 
 int EmptyAudio::BGM_GetTicks() const {
-	if (!playing) {
-		return 0;
-	}
+  if (!playing) {
+    return 0;
+  }
 
-	// Time since BGM_Play was called, works for everything except MIDI
-	return (Player::GetFrames() - bgm_starttick + 1) / Game_Clock::GetTargetGameFps();
+  // Time since BGM_Play was called, works for everything except MIDI
+  return (Player::GetFrames() - bgm_starttick + 1) / Game_Clock::GetTargetGameFps();
 }
 
-void EmptyAudio::vGetConfig(Game_ConfigAudio&) const {
-	// Not supported. The audio menu is disabled.
+void EmptyAudio::vGetConfig(Game_ConfigAudio &) const {
+  // Not supported. The audio menu is disabled.
 }
 
 bool EmptyAudio::BGM_PlayedOnce() const {
-	// 5 seconds, arbitrary
-	return BGM_GetTicks() > (Game_Clock::GetTargetGameFps() * 5);
+  // 5 seconds, arbitrary
+  return BGM_GetTicks() > (Game_Clock::GetTargetGameFps() * 5);
 }
 
-EmptyAudio::EmptyAudio(const Game_ConfigAudio& cfg) : AudioInterface(cfg) {
-
+EmptyAudio::EmptyAudio(const Game_ConfigAudio &cfg) : AudioInterface(cfg) {
 }
 
-AudioInterface::AudioInterface(const Game_ConfigAudio& cfg) : cfg(cfg) {
-
+AudioInterface::AudioInterface(const Game_ConfigAudio &cfg) : cfg(cfg) {
 }
 
 Game_ConfigAudio AudioInterface::GetConfig() const {
-	auto acfg = cfg;
-	acfg.Hide();
+  auto acfg = cfg;
+  acfg.Hide();
 
 #if !defined(HAVE_FLUIDSYNTH) && !defined(HAVE_FLUIDLITE)
-	acfg.fluidsynth_midi.SetOptionVisible(false);
-	acfg.soundfont.SetOptionVisible(false);
+  acfg.fluidsynth_midi.SetOptionVisible(false);
+  acfg.soundfont.SetOptionVisible(false);
 #endif
 #ifndef HAVE_LIBWILDMIDI
-	acfg.wildmidi_midi.SetOptionVisible(false);
+  acfg.wildmidi_midi.SetOptionVisible(false);
 #endif
 #ifndef HAVE_NATIVE_MIDI
-	acfg.native_midi.SetOptionVisible(false);
+  acfg.native_midi.SetOptionVisible(false);
 #endif
 #ifndef WANT_FMMIDI
-	acfg.fmmidi_midi.SetOptionVisible(false);
+  acfg.fmmidi_midi.SetOptionVisible(false);
 #endif
 
 #ifdef __ANDROID__
-	// FIXME: URI encoded SAF paths are not supported
-	acfg.soundfont.SetOptionVisible(false);
+  // FIXME: URI encoded SAF paths are not supported
+  acfg.soundfont.SetOptionVisible(false);
 #endif
 
-	vGetConfig(acfg);
-	return acfg;
+  vGetConfig(acfg);
+  return acfg;
 }
 
 int AudioInterface::BGM_GetGlobalVolume() const {
-	return cfg.music_volume.Get();
+  return cfg.music_volume.Get();
 }
 
 void AudioInterface::BGM_SetGlobalVolume(int volume) {
-	cfg.music_volume.Set(volume);
+  cfg.music_volume.Set(volume);
 }
 
 int AudioInterface::SE_GetGlobalVolume() const {
-	return cfg.sound_volume.Get();
+  return cfg.sound_volume.Get();
 }
 
 void AudioInterface::SE_SetGlobalVolume(int volume) {
-	cfg.sound_volume.Set(volume);
+  cfg.sound_volume.Set(volume);
 }
 
 bool AudioInterface::GetFluidsynthEnabled() const {
-	return cfg.fluidsynth_midi.Get();
+  return cfg.fluidsynth_midi.Get();
 }
 
 void AudioInterface::SetFluidsynthEnabled(bool enable) {
-	cfg.fluidsynth_midi.Set(enable);
+  cfg.fluidsynth_midi.Set(enable);
 }
 
 bool AudioInterface::GetWildMidiEnabled() const {
-	return cfg.wildmidi_midi.Get();
+  return cfg.wildmidi_midi.Get();
 }
 
 void AudioInterface::SetWildMidiEnabled(bool enable) {
-	cfg.wildmidi_midi.Set(enable);
+  cfg.wildmidi_midi.Set(enable);
 }
 
 bool AudioInterface::GetNativeMidiEnabled() const {
-	return cfg.native_midi.Get();
+  return cfg.native_midi.Get();
 }
 
 void AudioInterface::SetNativeMidiEnabled(bool enable) {
-	cfg.native_midi.Set(enable);
+  cfg.native_midi.Set(enable);
 }
 
 std::string AudioInterface::GetFluidsynthSoundfont() const {
-	return cfg.soundfont.Get();
+  return cfg.soundfont.Get();
 }
 
 void AudioInterface::SetFluidsynthSoundfont(std::string_view sf) {
-	cfg.soundfont.Set(ToString(sf));
-	MidiDecoder::ChangeFluidsynthSoundfont(sf);
+  cfg.soundfont.Set(ToString(sf));
+  MidiDecoder::ChangeFluidsynthSoundfont(sf);
 }
 
+#include "leasy/metadata/Domain.hpp"
+#include "leasy/kits/cppsupport/functionnal.hpp"
+
+namespace leasy {
+  using namespace leasy::metadata;
+
+  namespace {
+    struct AudioInterfaceBridge : public AudioInterface {
+      explicit AudioInterfaceBridge(const Game_ConfigAudio &cfg) : AudioInterface(cfg) {}
+      void BGM_Play(Filesystem_Stream::InputStream, int, int, int) override {}
+      void BGM_Pause() override {}
+      void BGM_Resume() override {}
+      void BGM_Stop() override {}
+      bool BGM_PlayedOnce() const override { return false; }
+      bool BGM_IsPlaying() const override { return false; }
+      int BGM_GetTicks() const override { return 0; }
+      void BGM_Fade(int) override {}
+      void BGM_Volume(int) override {}
+      void BGM_Pitch(int) override {}
+      std::string BGM_GetType() const override { return {}; };
+      void SE_Play(std::unique_ptr<AudioSeCache>, int, int) override {}
+      void SE_Stop() override {}
+      void Update() override {}
+      void vGetConfig(Game_ConfigAudio&) const override {}
+    };
+
+    bool reg = [] {
+      auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer::Sounding");
+
+      a->addType<AudioInterface>(make_class<AudioInterface>()
+        .method("BGMPause", stl2::pass<&AudioInterfaceBridge::BGM_Pause>())
+        .method("BGMResume", stl2::pass<&AudioInterfaceBridge::BGM_Resume>())
+        .method("BGMStop", stl2::pass<&AudioInterfaceBridge::BGM_Stop>())
+        .method("BGMPlayedOnce", stl2::pass<&AudioInterfaceBridge::BGM_PlayedOnce>())
+        .method("BGMIsPlaying", stl2::pass<&AudioInterfaceBridge::BGM_IsPlaying>())
+        .method("BGMGetTicks", stl2::pass<&AudioInterfaceBridge::BGM_GetTicks>())
+        .method("BGMFade", stl2::pass<&AudioInterfaceBridge::BGM_Fade>())
+        .method("BGMVolume", stl2::pass<&AudioInterfaceBridge::BGM_Volume>())
+        .method("BGMPitch", stl2::pass<&AudioInterfaceBridge::BGM_Pitch>())
+        .method("BGMGetType", stl2::pass<&AudioInterfaceBridge::BGM_GetType>())
+        .method("SEStop", stl2::pass<&AudioInterfaceBridge::SE_Stop>())
+        .method("Update", stl2::pass<&AudioInterfaceBridge::Update>())
+        .method("vGetConfig", stl2::pass<&AudioInterfaceBridge::vGetConfig>())
+        .method("SEPlay", [](AudioInterfaceBridge &self, const std::shared_ptr<AudioSeCache> &audio, int a, int b) {
+          return self.SE_Play(std::make_unique<AudioSeCache>(std::move(*audio)), a, b);
+        })
+        .method("BMGPlay",
+                [](AudioInterfaceBridge &self, Filesystem_Stream::InputStream &stream, int a, int b, int c) {
+                  return self.BGM_Play(std::move(stream), a, b, c);
+                })
+        .done()
+      );
+
+      a->addType<EmptyAudio>(make_class<EmptyAudio, AudioInterfaceBridge>().done());
+
+      a->addFunction("Audio", [] {
+        return &Audio();
+      });
+
+      return false;
+    }();
+  }
+}

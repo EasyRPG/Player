@@ -81,6 +81,9 @@ namespace leasy::metadata::glues {
   }
 
   static String luaClassName(const String &prefix, const Class &cl) {
+    if (prefix.empty()) {
+      return String(cl.fullname()).replace("::", ".");
+    }
     const String myPrefix = ensurePrefix(prefix);
     return String(myPrefix + cl.fullname()).replace("::", ".");
   }
@@ -113,10 +116,10 @@ namespace leasy::metadata::glues {
     for (const auto &signature: signatures) {
       std::vector<String> args;
       for (size_t i = 0; i < signature.arguments.size(); ++i) {
-        auto name = removeSpaces(utils::transformType(luaClassName(prefix, *signature.arguments[i])));
+        auto name = prefix + removeSpaces(utils::transformType(luaClassName("", *signature.arguments[i])));
         args.emplace_back(fmt::format("arg{}: {}", i, name));
       }
-      auto ret = removeSpaces(utils::transformType(luaClassName(prefix, *signature.returnType)));
+      auto ret = prefix + removeSpaces(utils::transformType(luaClassName("", *signature.returnType)));
       ostream << fmt::format("---@overload fun({}):{}", String::join(args, ", "), ret) << "\n";
     }
   }
@@ -125,7 +128,7 @@ namespace leasy::metadata::glues {
     String classBaseName = luaClassName(prefix, type);
     auto lastDot = classBaseName.rfind('.');
     String classQualification = classBaseName;
-    String luaClassName = removeSpaces(utils::transformType(classBaseName));
+    String myLuaClassName = removeSpaces(utils::transformType(classBaseName));
 
     if (lastDot != String::npos) {
       classQualification = classBaseName.substr(0, lastDot);
@@ -133,7 +136,8 @@ namespace leasy::metadata::glues {
 
     String mangledBaseName = luaClassMangledName(prefix + "." + assembly.name(), type);
     ostream << ensurePath(classQualification) << "\n";
-    ostream << "---@class " << luaClassName << "\n";
+    ostream << "\n---@class " << myLuaClassName;
+    ostream << '\n';
     ostream << constructLuaName(classBaseName) << " = {}\n\n";
 
     for (const auto &[name, method]: type.methods()) {
@@ -142,7 +146,7 @@ namespace leasy::metadata::glues {
 
       includeFunctionOverloads(prefix, *method, ostream);
       ostream
-      << fmt::format("{} = function(...)\n  return {}(...)\nend", functionName, internalFunctionName)
+      << fmt::format("{} = function(...)\n  return {}(...)\nend\n", functionName, internalFunctionName)
       << std::endl;
     }
   }

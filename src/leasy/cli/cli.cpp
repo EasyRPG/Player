@@ -26,7 +26,7 @@
 
 #include "cli.hpp"
 #include "../lio.hpp"
-#include "../kits/ps7k.hpp"
+#include "../kits/cppsupport/bases.hpp"
 
 namespace leasy::cli {
 
@@ -195,7 +195,7 @@ namespace leasy::cli {
     r.reserve(args.size());
 
     for (size_t i = 1; i < args.size(); i++) {
-      if (! compat::contains(easyrpgArgs, args[i])) r.push_back(args[i]);
+      if (! stl2::compat::cpp20::contains(easyrpgArgs, args[i])) r.push_back(args[i]);
     }
 
     return r;

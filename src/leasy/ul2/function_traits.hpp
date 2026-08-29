@@ -56,13 +56,13 @@ namespace leasy::ul2 {
   template<typename C, typename R, typename... Args>
   struct function_traits<R(C::*)(Args...)>
     : function_traits<R(Args...)> {
-    using class_type = C;
+      using class_type = C;
   };
 
   template<typename C, typename R, typename... Args>
   struct function_traits<R(C::*)(Args...) const>
     : function_traits<R(Args...)> {
-    using class_type = C;
+      using class_type = C;
   };
 
   template<typename T>
