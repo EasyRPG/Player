@@ -546,6 +546,7 @@ add_library(${PROJECT_NAME} OBJECT
 		src/leasy/metadata/builtins/reflection.cpp
 		src/leasy/kits/support.hpp
 		src/leasy/kits/cppsupport/functionnal.hpp
+		src/leasy/metadata/fields.hpp
 )
 
 # These are actually unused when building in CMake

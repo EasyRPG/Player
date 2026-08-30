@@ -21,6 +21,7 @@
 #include "audio_decoder_midi.h"
 #include "midisequencer.h"
 #include "output.h"
+#include "leasy/metadata/fields.hpp"
 
 using namespace std::chrono_literals;
 
@@ -481,3 +482,20 @@ int AudioDecoderMidi::MidiTempoData::GetSamples(std::chrono::microseconds mtime_
 	return samples + static_cast<int>(ticks_since_last * samples_per_tick);
 }
 
+#include "leasy/metadata/Domain.hpp"
+#include "leasy/kits/cppsupport/functionnal.hpp"
+
+namespace leasy {
+	using namespace metadata;
+
+	static bool reg = [] {
+		auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer::Sounding");
+		a->addType<AudioDecoderMidi>(make_class<AudioDecoderMidi>()
+			.method("fileBuffer", field(&AudioDecoderMidi::file_buffer), readonly(&AudioDecoderMidi::file_buffer_pos))
+			.method("fileBufferPos", field(&AudioDecoderMidi::file_buffer_pos), readonly(&AudioDecoderMidi::file_buffer_pos))
+			.done()
+		);
+
+		return false;
+	}();
+}

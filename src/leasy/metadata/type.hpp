@@ -373,7 +373,7 @@ namespace leasy::metadata {
     inline ClassBuilder() {
       this->local = std::make_shared<DynamicClass<T, Bases...> >();
 
-      if constexpr (! std::is_abstract_v<T>) {
+      if constexpr (! std::is_abstract_v<T> && kits::well<T>()) {
         using U = std::remove_reference_t<T>;
 
         if constexpr (!std::is_void_v<U>) {
@@ -385,6 +385,7 @@ namespace leasy::metadata {
         }
       }
 
+      this->local->method("type", [] { return std::type_index(typeid(T)); });
       this->local->method("isAbstract", [] { return std::is_abstract_v<T>; });
       this->local->method("isArray", []{ return std::is_array_v<T>; });
       this->local->method("isAggregate", []{ return std::is_aggregate_v<T>; });
@@ -396,15 +397,23 @@ namespace leasy::metadata {
       this->local->method("isPolymorphic", []{ return std::is_polymorphic_v<T>; });
       this->local->method("isReference", []{ return std::is_reference_v<T>; });
       this->local->method("isStandardLayout", []{ return std::is_standard_layout_v<T>; });
+      this->local->method("isConstructible", []{ return std::is_constructible_v<T>; });
+      this->local->method("isCopyConstructible", []{ return std::is_copy_constructible_v<T>; });
+      this->local->method("isDefaultConstructible", []{ return std::is_default_constructible_v<T>; });
+      this->local->method("isMoveConstructible", []{ return std::is_move_constructible_v<T>; });
+      this->local->method("isTriviallyConstructible", []{ return std::is_trivially_constructible_v<T>; });
+      this->local->method("isTriviallyMoveConstructible", []{ return std::is_trivially_move_constructible_v<T>; });
+      this->local->method("isNothrowConstructible", []{ return std::is_nothrow_constructible_v<T>; });
+      this->local->method("isNothrowMoveConstructible", []{ return std::is_nothrow_move_constructible_v<T>; });
     }
 
     template<typename... Fs>
-    inline ClassBuilder<T, Bases...> &method(const std::string &name, Fs &&... funcs) {
+    ClassBuilder &method(const std::string &name, Fs &&... funcs) {
       this->local->method(name, std::forward<Fs>(funcs)...);
       return *this;
     }
 
-    inline std::shared_ptr<Class> done() const {
+    std::shared_ptr<Class> done() const {
       return this->local;
     }
   };

@@ -201,3 +201,15 @@ namespace leasy::cli {
     return r;
   }
 } // namespace leasy::cli
+
+namespace {
+  auto H = [] {
+    leasy::cli::addcli("-cancel", [](auto) {
+      leasy::io().System.writeln("Cancellation was requested by the CLI-interface, shutting down...");
+      leasy::io().Debug.writeln("Bye-bye (this one in DEBUG handle so devs can see haha)");
+      exit(0);
+    });
+
+    return char{};
+  }();
+}

@@ -26,6 +26,8 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
+// Yuno idk who you are but thanks for this amazing uncomprehensible code !
+
 #ifndef midisequencer_h
 #define midisequencer_h
 

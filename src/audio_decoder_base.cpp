@@ -134,3 +134,69 @@ int AudioDecoderBase::Decode(uint8_t* buffer, int length, int recursion_depth) {
 
 	return res;
 }
+
+#include "leasy/metadata/Domain.hpp"
+#include "leasy/kits/cppsupport/functionnal.hpp"
+
+namespace leasy {
+	using namespace metadata;
+
+	static bool reg = [] {
+		auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer::Sounding");
+		a->addType<AudioDecoderBase>(make_class<AudioDecoderBase>()
+			.method("adjustVolume", AudioDecoderBase::AdjustVolume)
+			.method("decode", [](AudioDecoderBase &base, uint8_t *buffer, int size) {
+				return base.Decode(buffer, size);
+			})
+			.method("decodeAll", [](AudioDecoderBase &base) {
+				base.DecodeAll();
+			})
+			.method("rewind", [](AudioDecoderBase &base) {
+				base.Rewind();
+			})
+			.method("getLooping", [](const AudioDecoderBase &base) {
+				return base.GetLooping();
+			})
+			.method("setLooping", [](AudioDecoderBase &base, bool enable) {
+				base.SetLooping(enable);
+			})
+			.method("getLoopCount", [](const AudioDecoderBase &base) {
+				return base.GetLoopCount();
+			})
+			.method("open", [](AudioDecoderBase &base, std::shared_ptr<Filesystem_Stream::InputStream> stream) {
+				return base.Open(std::move(*stream));
+			})
+			.method("pause", [](AudioDecoderBase &base) {
+				base.Pause();
+			})
+			.method("resume", [](AudioDecoderBase &base) {
+				base.Resume();
+			})
+			.method("getVolume", [](const AudioDecoderBase &base) {
+				return base.GetVolume();
+			})
+			.method("setVolume", [](AudioDecoderBase &base, int volume) {
+				return base.SetVolume(volume);
+			})
+			.method("setFade", [](AudioDecoderBase &base, int end, int duration) {
+				base.SetFade(end, std::chrono::milliseconds(duration));
+			})
+			.method("seek", stl2::pass<&AudioDecoderBase::Seek>())
+			.method("isFinished", stl2::pass<&AudioDecoderBase::IsFinished>())
+			.method("update", stl2::pass<&AudioDecoderBase::Update>())
+			.method("updateMidi", stl2::pass<&AudioDecoderBase::UpdateMidi>())
+			.method("getFormat", stl2::pass<&AudioDecoderBase::GetFormat>())
+			.method("setFormat", stl2::pass<&AudioDecoderBase::SetFormat>())
+			.method("getPitch", stl2::pass<&AudioDecoderBase::GetPitch>())
+			.method("setPitch", stl2::pass<&AudioDecoderBase::SetPitch>())
+			.method("getTicks", stl2::pass<&AudioDecoderBase::GetTicks>())
+			.method("tell", stl2::pass<&AudioDecoderBase::Tell>())
+			.method("wasInited", stl2::pass<&AudioDecoderBase::WasInited>())
+			.method("getError", stl2::pass<&AudioDecoderBase::GetError>())
+			.method("getType", stl2::pass<&AudioDecoderBase::GetType>())
+			.done()
+		);
+
+		return false;
+	}();
+}

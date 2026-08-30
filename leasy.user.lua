@@ -1,10 +1,10 @@
 local rpg = require('assembly.appdomain')
 
 local node = EasyRPGPlayer.Assembly.leasy.meta2.node;
-local std = EasyRPGPlayer.Assembly.std;
+local sounding = EasyRPGPlayer.Assembly.EasyRPGPlayer.Sounding
 
 function leasy.User.ready() -- Called when the engine boots
-  sprite = node.Sprite2D.new('/Users/wys/Documents/leasy/icon.png', true) -- transparent? true
+  sprite = node.Sprite2D.new('/Users/wys/Pictures/pixel_art_large.png', true) -- transparent? true
   node.addChildToMain(sprite)
 end
 
@@ -18,6 +18,8 @@ function leasy.User.process(delta)
   if y  >= 300 then
     y = 0
   end
+
+
 
   sprite:move((x + 2), (y + 2));
 end

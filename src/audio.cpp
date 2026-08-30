@@ -149,53 +149,34 @@ namespace leasy {
   using namespace leasy::metadata;
 
   namespace {
-    struct AudioInterfaceBridge : public AudioInterface {
-      explicit AudioInterfaceBridge(const Game_ConfigAudio &cfg) : AudioInterface(cfg) {}
-      void BGM_Play(Filesystem_Stream::InputStream, int, int, int) override {}
-      void BGM_Pause() override {}
-      void BGM_Resume() override {}
-      void BGM_Stop() override {}
-      bool BGM_PlayedOnce() const override { return false; }
-      bool BGM_IsPlaying() const override { return false; }
-      int BGM_GetTicks() const override { return 0; }
-      void BGM_Fade(int) override {}
-      void BGM_Volume(int) override {}
-      void BGM_Pitch(int) override {}
-      std::string BGM_GetType() const override { return {}; };
-      void SE_Play(std::unique_ptr<AudioSeCache>, int, int) override {}
-      void SE_Stop() override {}
-      void Update() override {}
-      void vGetConfig(Game_ConfigAudio&) const override {}
-    };
-
     bool reg = [] {
       auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer::Sounding");
 
       a->addType<AudioInterface>(make_class<AudioInterface>()
-        .method("BGMPause", stl2::pass<&AudioInterfaceBridge::BGM_Pause>())
-        .method("BGMResume", stl2::pass<&AudioInterfaceBridge::BGM_Resume>())
-        .method("BGMStop", stl2::pass<&AudioInterfaceBridge::BGM_Stop>())
-        .method("BGMPlayedOnce", stl2::pass<&AudioInterfaceBridge::BGM_PlayedOnce>())
-        .method("BGMIsPlaying", stl2::pass<&AudioInterfaceBridge::BGM_IsPlaying>())
-        .method("BGMGetTicks", stl2::pass<&AudioInterfaceBridge::BGM_GetTicks>())
-        .method("BGMFade", stl2::pass<&AudioInterfaceBridge::BGM_Fade>())
-        .method("BGMVolume", stl2::pass<&AudioInterfaceBridge::BGM_Volume>())
-        .method("BGMPitch", stl2::pass<&AudioInterfaceBridge::BGM_Pitch>())
-        .method("BGMGetType", stl2::pass<&AudioInterfaceBridge::BGM_GetType>())
-        .method("SEStop", stl2::pass<&AudioInterfaceBridge::SE_Stop>())
-        .method("Update", stl2::pass<&AudioInterfaceBridge::Update>())
-        .method("vGetConfig", stl2::pass<&AudioInterfaceBridge::vGetConfig>())
-        .method("SEPlay", [](AudioInterfaceBridge &self, const std::shared_ptr<AudioSeCache> &audio, int a, int b) {
+        .method("BGMPause", stl2::pass<&AudioInterface::BGM_Pause>())
+        .method("BGMResume", stl2::pass<&AudioInterface::BGM_Resume>())
+        .method("BGMStop", stl2::pass<&AudioInterface::BGM_Stop>())
+        .method("BGMPlayedOnce", stl2::pass<&AudioInterface::BGM_PlayedOnce>())
+        .method("BGMIsPlaying", stl2::pass<&AudioInterface::BGM_IsPlaying>())
+        .method("BGMGetTicks", stl2::pass<&AudioInterface::BGM_GetTicks>())
+        .method("BGMFade", stl2::pass<&AudioInterface::BGM_Fade>())
+        .method("BGMVolume", stl2::pass<&AudioInterface::BGM_Volume>())
+        .method("BGMPitch", stl2::pass<&AudioInterface::BGM_Pitch>())
+        .method("BGMGetType", stl2::pass<&AudioInterface::BGM_GetType>())
+        .method("SEStop", stl2::pass<&AudioInterface::SE_Stop>())
+        .method("Update", stl2::pass<&AudioInterface::Update>())
+        .method("vGetConfig", stl2::pass<&AudioInterface::vGetConfig>())
+        .method("SEPlay", [](AudioInterface &self, const std::shared_ptr<AudioSeCache> &audio, int a, int b) {
           return self.SE_Play(std::make_unique<AudioSeCache>(std::move(*audio)), a, b);
         })
         .method("BMGPlay",
-                [](AudioInterfaceBridge &self, Filesystem_Stream::InputStream &stream, int a, int b, int c) {
+                [](AudioInterface &self, Filesystem_Stream::InputStream &stream, int a, int b, int c) {
                   return self.BGM_Play(std::move(stream), a, b, c);
                 })
         .done()
       );
 
-      a->addType<EmptyAudio>(make_class<EmptyAudio, AudioInterfaceBridge>().done());
+      a->addType<EmptyAudio>(make_class<EmptyAudio, AudioInterface>().done());
 
       a->addFunction("Audio", [] {
         return &Audio();

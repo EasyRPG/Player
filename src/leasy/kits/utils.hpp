@@ -118,4 +118,13 @@ namespace leasy::kits {
 
   template<class T>
   using underlying_t = typename underlying<T>::type;
+
+  template <typename T>
+  constexpr bool well() { // idk why i named the function like this.
+    return std::is_constructible_v<T>
+    || std::is_default_constructible_v<T>
+    || std::is_copy_constructible_v<T>
+    || std::is_move_constructible_v<T>
+    ;
+  }
 }

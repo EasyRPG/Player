@@ -183,7 +183,7 @@ namespace leasy::metadata {
 
       using U = kits::flat_t<T>;
 
-      if constexpr (!std::is_void_v<U> && !std::is_abstract_v<U>) {
+      if constexpr (!std::is_void_v<U> && kits::well<T>()) {
         addExtents<U>();
       }
 
