@@ -17,8 +17,8 @@
 
 // Headers
 #include <cstdint>
+#include <limits>
 #include <map>
-#include <type_traits>
 #include <vector>
 #include <iterator>
 
@@ -45,8 +45,8 @@
 #endif
 
 #include <lcf/reader_util.h>
-#include "bitmapfont.h"
 
+#include "bitmapfont.h"
 #include "filefinder.h"
 #include "output.h"
 #include "font.h"
@@ -148,6 +148,25 @@ namespace {
 
 #ifdef HAVE_FREETYPE
 	FT_Library library = nullptr;
+
+	static bool IsBetterFontSize(int candidate, int current_best, int target_size) {
+		// When the font is not scalable this helper function is used to find
+		// the closest smaller font height. An exception is when their is no
+		// smaller in which cases it picks the minimum.
+		if (current_best < 0) {
+			return true;
+		}
+		bool cand_fits = (candidate <= target_size);
+		bool best_fits = (current_best <= target_size);
+
+		if (cand_fits != best_fits) {
+			return cand_fits;
+		}
+		if (cand_fits) {
+			return candidate > current_best;
+		}
+		return candidate < current_best;
+	}
 
 	struct FTFont final : public Font  {
 		FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic);
@@ -302,6 +321,55 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 
 	if (face == nullptr) {
 		return;
+	}
+
+	if (face->num_faces > 1) {
+		// When there are multiple faces and the font is not scalable try to load the face where the size is closest
+		// (required for BitmapFonts)
+		if (!FT_HAS_COLOR(face) && !FT_IS_SCALABLE(face)) {
+			auto num_faces = face->num_faces;
+			FT_Done_Face(face);
+			face = nullptr;
+
+			// Find a predefined height that is as close as possible to the requested height
+			int best_height = -1;
+
+			// Stores the best match
+			FT_Face best_face = nullptr;
+
+			for (FT_Long i = 0; i < num_faces; ++i) {
+				if (FT_New_Memory_Face(library, ft_buffer.data(), ft_buffer.size(), i, &face) != 0) {
+					continue;
+				}
+
+				for (int j = 0; j < face->num_fixed_sizes; ++j) {
+					int face_height = face->available_sizes[j].height;
+
+					if (IsBetterFontSize(face_height, best_height, size)) {
+						best_height = face_height;
+
+						// Throw away previous best_face
+						if (best_face && face != best_face) {
+							FT_Done_Face(best_face);
+						}
+
+						best_face = face;
+					}
+				}
+
+				// If this face is not the new best throw it away
+				if (face != best_face) {
+					FT_Done_Face(face);
+					face = nullptr;
+				}
+			}
+
+			face = best_face;
+
+			if (face == nullptr) {
+				return;
+			}
+		}
 	}
 
 	if (face->num_charmaps > 0) {
@@ -581,9 +649,42 @@ void FTFont::vApplyStyle(const Style& style) {
 }
 
 void FTFont::SetSize(int height, bool create) {
+	// FreeType only supports exact bitmap strike matching, it never picks the
+	// closest strike on its own. For bitmap fonts we therefore select the
+	// strike whose height is closest to the requested height ourselves.
+	auto select_closest = [&]() {
+		FT_Error err;
+		if (face->num_fixed_sizes > 0) {
+			int best = 0;
+			int best_height = -1;
+			for (int j = 0; j < face->num_fixed_sizes; ++j) {
+				int face_height = static_cast<int>(face->available_sizes[j].height);
+				if (IsBetterFontSize(face_height, best_height, height)) {
+					best_height = face_height;
+					best = j;
+				}
+			}
+			err = FT_Select_Size(face, best);
+		} else {
+			err = FT_Set_Pixel_Sizes(face, 0, height);
+		}
+
+		if (err != FT_Err_Ok) {
+			Output::Debug("Couldn't select size {} for font {}", height, ToString(GetName()));
+		}
+	};
+
 	if (FT_HAS_COLOR(face)) {
-		// FIXME: Find the best size
-		FT_Select_Size(face, 0);
+		if (FT_HAS_FIXED_SIZES(face)) {
+			// Color bitmap font (CBDT/CBLC): use the strike closest to the requested size
+			select_closest();
+		} else {
+			// Scalable color font (COLR/CPAL): scale like a normal outline font
+			auto err = FT_Set_Pixel_Sizes(face, 0, height);
+			if (err != FT_Err_Ok) {
+				Output::Debug("Couldn't set pixel size {} for font {}", height, ToString(GetName()));
+			}
+		}
 	} else if (FT_IS_SCALABLE(face)) {
 		// Calculate the pt size from px
 		auto table_os2 = static_cast<TT_OS2*>(FT_Get_Sfnt_Table(face, ft_sfnt_os2));
@@ -605,9 +706,13 @@ void FTFont::SetSize(int height, bool create) {
 			height = std::max<int>(1, pt);
 		}
 
-		FT_Set_Pixel_Sizes(face, 0, height);
+		auto err = FT_Set_Pixel_Sizes(face, 0, height);
+		if (err != FT_Err_Ok) {
+			Output::Debug("Couldn't set pixel size {} for font {}", height, ToString(GetName()));
+		}
 	} else {
-		FT_Set_Pixel_Sizes(face, 0, face->available_sizes->height);
+		// Non-scalable bitmap font (FON, BDF, etc.): use the closest to the requested size
+		select_closest();
 	}
 
 #ifdef HAVE_HARFBUZZ
