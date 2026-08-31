@@ -466,10 +466,10 @@ Rect FTFont::vGetSize(char32_t glyph) const {
 		// When it is a color font check if the glyph is a color glyph
 		// If it is not then reload the glyph monochrome
 		if (face->glyph->bitmap.pixel_mode != FT_PIXEL_MODE_BGRA) {
-			load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO);
+			load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO | FT_LOAD_NO_AUTOHINT);
 		}
 	} else {
-		if (!load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO)) {
+		if (!load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO | FT_LOAD_NO_AUTOHINT)) {
 			if (fallback_font) {
 				return fallback_font->vGetSize(glyph);
 			} else {
@@ -537,10 +537,10 @@ Font::GlyphRet FTFont::vRenderShaped(char32_t glyph) const {
 		// If it is not then rerender the glyph monochrome
 		// FIXME: This is inefficient
 		if (face->glyph->bitmap.pixel_mode != FT_PIXEL_MODE_BGRA) {
-			render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO, FT_RENDER_MODE_MONO);
+			render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO | FT_LOAD_NO_AUTOHINT, FT_RENDER_MODE_MONO);
 		}
 	} else {
-		if (!render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO, FT_RENDER_MODE_MONO)) {
+		if (!render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO | FT_LOAD_NO_AUTOHINT, FT_RENDER_MODE_MONO)) {
 			if (fallback_font) {
 				return fallback_font->vRender(glyph);
 			} else {
@@ -723,6 +723,8 @@ void FTFont::SetSize(int height, bool create) {
 		hb_font_destroy(hb_font);
 	}
 	hb_font = hb_ft_font_create_referenced(face);
+	// Match load flags so the shaping picks the Bitmap Font
+	hb_ft_font_set_load_flags(hb_font, FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO | FT_LOAD_NO_AUTOHINT);
 	hb_ft_font_set_funcs(hb_font);
 #endif
 
