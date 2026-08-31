@@ -481,8 +481,10 @@ Rect FTFont::vGetSize(char32_t glyph) const {
 	FT_GlyphSlot slot = face->glyph;
 
 	Point advance;
-	advance.x = Utils::RoundTo<int>(slot->advance.x / 64.0);
-	advance.y = Utils::RoundTo<int>(slot->advance.y / 64.0);
+	// TrueType default rounding is "Round to Grid" (RTG) which matches the
+	// behaviour of std::round
+	advance.x = std::round(slot->advance.x / 64.0);
+	advance.y = std::round(slot->advance.y / 64.0);
 
 	if (EP_UNLIKELY(rm2000_workaround)) {
 		advance.x = 6;
@@ -581,8 +583,8 @@ Font::GlyphRet FTFont::vRenderShaped(char32_t glyph) const {
 	Point advance;
 	Point offset;
 
-	advance.x = Utils::RoundTo<int>(slot->advance.x / 64.0);
-	advance.y = Utils::RoundTo<int>(slot->advance.y / 64.0);
+	advance.x = std::round(slot->advance.x / 64.0);
+	advance.y = std::round(slot->advance.y / 64.0);
 	offset.x = slot->bitmap_left;
 	offset.y = slot->bitmap_top - baseline_offset;
 
@@ -628,10 +630,10 @@ std::vector<Font::ShapeRet> FTFont::vShape(std::u32string_view txt) const {
 			advance.y = s.height;
 			ret.push_back({txt[info.cluster], advance, offset, true});
 		} else {
-			advance.x = Utils::RoundTo<int>(pos.x_advance / 64.0);
-			advance.y = Utils::RoundTo<int>(pos.y_advance / 64.0);
-			offset.x = Utils::RoundTo<int>(pos.x_offset / 64.0);
-			offset.y = Utils::RoundTo<int>(pos.y_offset / 64.0);
+			advance.x = std::round(pos.x_advance / 64.0);
+			advance.y = std::round(pos.y_advance / 64.0);
+			offset.x = std::round(pos.x_offset / 64.0);
+			offset.y = std::round(pos.y_offset / 64.0);
 			ret.push_back({static_cast<char32_t>(info.codepoint), advance, offset, false});
 		}
 	}
