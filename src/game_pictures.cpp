@@ -454,6 +454,9 @@ void Game_Pictures::Picture::ApplyOrigin(bool is_move) {
 			break;
 	}
 
+	x = std::floor(x);
+	y = std::floor(y);
+
 	if (!is_move) {
 		data.current_x = x;
 		data.current_y = y;
