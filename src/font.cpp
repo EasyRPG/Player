@@ -676,6 +676,10 @@ void FTFont::SetSize(int height, bool create) {
 		}
 	};
 
+	// Ascender (in font units) used for the size normalization. Used to
+	// compute the baseline so it matches the Windows GDI metrics.
+	int baseline_units = 0;
+
 	if (FT_HAS_COLOR(face)) {
 		if (FT_HAS_FIXED_SIZES(face)) {
 			// Color bitmap font (CBDT/CBLC): use the strike closest to the requested size
@@ -696,8 +700,10 @@ void FTFont::SetSize(int height, bool create) {
 			int units;
 			if (table_os2->usWinAscent + table_os2->usWinDescent == 0) {
 				units = table_hori->Ascender - table_hori->Descender;
+				baseline_units = table_hori->Ascender;
 			} else {
 				units = table_os2->usWinAscent + table_os2->usWinDescent;
+				baseline_units = table_os2->usWinAscent;
 			}
 
 			int pt = FT_MulDiv(face->units_per_EM, height, units);
@@ -730,9 +736,16 @@ void FTFont::SetSize(int height, bool create) {
 	hb_ft_font_set_funcs(hb_font);
 #endif
 
-	baseline_offset = static_cast<int>(FT_MulFix(face->ascender, face->size->metrics.y_scale) / 64);
+	// For scalable fonts the baseline picked matching the Windows GDI metric
+	// For bitmap fonts (FON, BDF, etc.) use ascender from the metrics.
+	if (baseline_units > 0) {
+		baseline_offset = static_cast<int>(FT_MulFix(baseline_units, face->size->metrics.y_scale) / 64);
+	} else {
+		baseline_offset = static_cast<int>(face->size->metrics.ascender / 64);
+	}
+
 	if (baseline_offset == 0) {
-		// FIXME: Becomes 0 for FON files. How is the baseline calculated for them?
+		// Fallback when metrics are broken
 		baseline_offset = static_cast<int>(height * (10.0 / 12.0));
 	}
 }
