@@ -23,6 +23,8 @@
 #include "bitmap.h"
 #include "cache.h"
 #include "drawable_mgr.h"
+#include "sprite_picture.h"
+#include <game_map.h>
 
 // Constructor
 Sprite::Sprite(Drawable::Flags flags) : Drawable(0, flags)
@@ -114,8 +116,74 @@ BitmapRef Sprite::Refresh(Rect& rect) {
 		current_flip_x = flipx_effect;
 		current_flip_y = flipy_effect;
 
-		bitmap_effects = Cache::SpriteEffect(bitmap, rect, flipx_effect, flipy_effect, current_tone, current_flash);
-		bitmap_effects_src_rect = rect;
+		bool useBigSprite = false;
+
+		Sprite_Picture* spr_pic = dynamic_cast<Sprite_Picture*>(this);
+		if (spr_pic) {
+
+			if (spr_pic->GetTone() != Tone()) {
+				Rect r = GetSrcRect();
+
+				if (spr_pic->GetAngle() == 0) { // Do not apply on rotation for now, need to find the corrects safety border
+
+					double dzx = spr_pic->GetZoomX();
+					double dzy = spr_pic->GetZoomY();
+
+					int safety_w = 32;
+					int safety_h = 32;
+
+					if (dzx == 0)
+						safety_w = 0;
+					if (dzy == 0)
+						safety_h = 0;
+
+					double zoomX = 1 / dzx;
+					double zoomY = 1 / dzy;
+					int w = Player::screen_width * zoomX + safety_w;
+					int h = Player::screen_height * zoomY + safety_h;
+					if (w > r.width)
+						w = r.width;
+					if (h > r.height)
+						h = r.height;
+
+					int dx = 0;
+					int dy = 0;
+					if (r.width > w) {
+						r.width = w;
+						dx = spr_pic->GetOx() - spr_pic->GetX() - (r.width - Player::screen_width) / 2 - safety_w / 2;
+						useBigSprite = true;
+					}
+					if (r.height > h) {
+						r.height = h;
+						dy = spr_pic->GetOy() - spr_pic->GetY() - (r.height - Player::screen_height) / 2 - safety_h / 2;
+						useBigSprite = true;
+					}
+
+					if (useBigSprite) {
+						r.x += dx;
+						r.y += dy;
+
+						Rect rz = r;
+						rz.x *= zoomX;
+
+						Rect r2 = { 0,0,w,h };
+
+						bitmap_effects_src_rect = r;
+						BitmapRef bmp = Bitmap::Create(w, h, true);
+						bmp->Blit(0, 0, *bitmap, r, 255);
+						BitmapRef bmmp = Bitmap::Create(w, h, true);
+						bmp = Cache::SpriteEffect(bmp, r2, flipx_effect, flipy_effect, current_tone, current_flash);
+						bitmap_effects = Bitmap::Create(bitmap->GetWidth(), bitmap->GetHeight(), true);
+						bitmap_effects->Blit(r.x, r.y, *bmp, r2, 255);
+					}
+				}
+			}
+		}
+
+		if (!useBigSprite) {
+			bitmap_effects = Cache::SpriteEffect(bitmap, rect, flipx_effect, flipy_effect, current_tone, current_flash);
+			bitmap_effects_src_rect = rect;
+		}
 
 		return bitmap_effects;
 	}
