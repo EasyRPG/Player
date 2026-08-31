@@ -20,6 +20,7 @@
 #include <ctime>
 #include <iomanip>
 #include <iostream>
+#include <lcf/scope_guard.h>
 #include <regex>
 #include <sstream>
 #include <string>
@@ -47,6 +48,8 @@
 #include "game_interpreter_control_variables.h"
 #include "game_windows.h"
 #include "json_helper.h"
+#include "lcf/rpg/eventcommand.h"
+#include "lcf/rpg/movecommand.h"
 #include "maniac_patch.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
@@ -3174,29 +3177,166 @@ bool Game_Interpreter::CommandMoveEvent(lcf::rpg::EventCommand const& com) { // 
 	int repeat = ManiacBitmask(com.parameters[2], 0x1);
 
 	Game_Character* event = GetCharacter(event_id, "MoveEvent");
-	if (event != NULL) {
-		// If the event is a vehicle in use, push the commands to the player instead
-		if (event_id >= Game_Character::CharBoat && event_id <= Game_Character::CharAirship)
-			if (static_cast<Game_Vehicle*>(event)->IsInUse())
-				event = Main_Data::game_player.get();
-
-		lcf::rpg::MoveRoute route;
-		int move_freq = com.parameters[1];
-
-		if (move_freq <= 0 || move_freq > 8) {
-			// Invalid values
-			move_freq = 6;
-		}
-
-		route.repeat = repeat != 0;
-		route.skippable = com.parameters[3] != 0;
-
-		for (auto it = com.parameters.begin() + 4; it < com.parameters.end(); ) {
-			route.move_commands.push_back(DecodeMove(it));
-		}
-
-		event->ForceMoveRoute(route, move_freq);
+	if (!event) {
+		return true;
 	}
+
+	// If the event is a vehicle in use, push the commands to the player instead
+	if (event_id >= Game_Character::CharBoat && event_id <= Game_Character::CharAirship)
+		if (static_cast<Game_Vehicle*>(event)->IsInUse())
+			event = Main_Data::game_player.get();
+
+	lcf::rpg::MoveRoute route;
+	int move_freq = com.parameters[1];
+
+	if (move_freq <= 0 || move_freq > 8) {
+		// Invalid values
+		move_freq = 6;
+	}
+
+	route.repeat = repeat != 0;
+	route.skippable = com.parameters[3] != 0;
+
+	for (auto it = com.parameters.begin() + 4; it < com.parameters.end(); ) {
+		route.move_commands.push_back(DecodeMove(it));
+	}
+
+	auto force_route = lcf::makeScopeGuard([&]() {
+		// Set the move route when the command ends
+		event->ForceMoveRoute(route, move_freq);
+	});
+
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	// Check for Add Move Route commands
+	auto add_command = [&](const lcf::rpg::MoveCommand& cmd, int repeat = 1) {
+		for (int i = 0; i < repeat; ++i) {
+			route.move_commands.push_back(cmd);
+		}
+	};
+	using Code = lcf::rpg::MoveCommand::Code;
+
+	auto& frame = GetFrame();
+	const auto& list = frame.commands;
+	auto& index = frame.current_command;
+
+	++index;
+	while (index < static_cast<int>(list.size())) {
+		const auto& next_cmd = ResolveEventCommand(list[index]);
+
+		if (static_cast<Cmd>(next_cmd.code) == Cmd::Maniac_AddMoveRoute) {
+			if (next_cmd.parameters.size() < 2) {
+				Output::Warning("AddMoveRoute: Command is missing action_type parameter.");
+				break;
+			}
+
+			int action_type = next_cmd.parameters[1];
+			lcf::rpg::MoveCommand cmd = {};
+
+			switch (action_type) {
+				case 0: { // .move(direction, distance) and specific moves like .moveUp(n)
+					cmd.command_id = ValueOrVariableBitfield(next_cmd, 0, 1, 2);
+					int repeat = ValueOrVariableBitfield(next_cmd, 0, 2, 3);
+					if (next_cmd.parameters.size() <= 3) {
+						repeat = 1;
+					}
+					if (cmd.command_id >= static_cast<int32_t>(Code::move_up) && cmd.command_id <= static_cast<int32_t>(Code::move_forward)) {
+						add_command(cmd, repeat);
+					}
+					break;
+				}
+				case 1: { // .face(direction) and specific facings like .faceUp
+					int direction = ValueOrVariableBitfield(next_cmd, 0, 1, 2);
+					cmd.command_id = direction + static_cast<int32_t>(Code::face_up); // Apply Offset
+
+					if (cmd.command_id >= static_cast<int32_t>(Code::face_up) && cmd.command_id <= static_cast<int32_t>(Code::face_away_from_hero)) {
+						add_command(cmd);
+					}
+					break;
+				}
+				case 2: // .pause
+					cmd.command_id = static_cast<int32_t>(Code::wait); // Wait
+					add_command(cmd);
+					break;
+				case 3: { // .jump(x_offset, y_offset)
+					int x_offset = ValueOrVariableBitfield(next_cmd, 0, 1, 2);
+					int y_offset = ValueOrVariableBitfield(next_cmd, 0, 2, 3);
+
+					// TODO: Check this
+					cmd.command_id = static_cast<int32_t>(Code::begin_jump);
+					add_command(cmd);
+					cmd.command_id = (int32_t)((x_offset >= 0) ? lcf::rpg::MoveCommand::Code::move_right : lcf::rpg::MoveCommand::Code::move_left);
+					add_command(cmd, std::abs(x_offset));
+					cmd.command_id = (int32_t)((y_offset >= 0) ? lcf::rpg::MoveCommand::Code::move_down : lcf::rpg::MoveCommand::Code::move_up);
+					add_command(cmd, std::abs(y_offset));
+					cmd.command_id = static_cast<int32_t>(Code::end_jump);
+					add_command(cmd);
+					break;
+				}
+				case 4: { // Toggles like .fixDir/[on|off], .beginThrough/[on|off]
+					int toggle_type = ValueOrVariableBitfield(next_cmd, 0, 1, 2);
+					bool is_on = ValueOrVariableBitfield(next_cmd, 0, 2, 3) != 0;
+					int base_cmd_id = 0;
+					switch (toggle_type) {
+						case 0: base_cmd_id = static_cast<int32_t>(Code::begin_jump); break; // Begin/End Jump
+						case 1: base_cmd_id = static_cast<int32_t>(Code::lock_facing); break; // Lock/Unlock Facing
+						case 2: base_cmd_id = static_cast<int32_t>(Code::walk_everywhere_on); break; // Through ON/OFF
+						case 3: base_cmd_id = static_cast<int32_t>(Code::stop_animation); break; // Stop/Start Animation
+						default: return true;
+					}
+					cmd.command_id = base_cmd_id + (is_on ? 0 : 1);
+					add_command(cmd);
+					break;
+				}
+				case 5: { // Direct setters like .speed(n), .freq(n), .trans(n)
+					int type = ValueOrVariableBitfield(next_cmd, 0, 1, 2);
+					int value = ValueOrVariableBitfield(next_cmd, 0, 2, 3);
+					switch (type) {
+						case 0: cmd.command_id = 100; value += 4;  break; // Custom: Set Speed
+						case 1: cmd.command_id = 101; break; // Custom: Set Freq
+						case 2: cmd.command_id = 102; break; // Custom: Set Transparency
+						default: return true;
+					}
+					cmd.parameter_a = value;
+					add_command(cmd);
+					break;
+				}
+				case 6: { // .switch(id, val)
+					cmd.parameter_a = ValueOrVariableBitfield(next_cmd, 0, 1, 2);
+					cmd.command_id = ValueOrVariableBitfield(next_cmd, 0, 2, 3) != 0 ? static_cast<int32_t>(Code::switch_on) : static_cast<int32_t>(Code::switch_off); // Switch ON / OFF
+					add_command(cmd);
+					break;
+				}
+				case 7: { // .setBody("[name]", [index])
+					cmd.command_id = static_cast<int32_t>(Code::change_graphic);
+					cmd.parameter_string = lcf::DBString(CommandStringOrVariableBitfield(next_cmd, 0, 4, 5));
+					cmd.parameter_a = ValueOrVariableBitfield(next_cmd, 0, 1, 2);
+					add_command(cmd);
+					break;
+				}
+				case 8: { // .se("[name]", vol, pitch, balance)
+					cmd.command_id = static_cast<int32_t>(Code::play_sound_effect);
+					cmd.parameter_string = lcf::DBString(CommandStringOrVariableBitfield(next_cmd, 0, 5, 5));
+					cmd.parameter_a = next_cmd.parameters.size() > 2 ? ValueOrVariableBitfield(next_cmd, 0, 1, 2) : 100;
+					cmd.parameter_b = next_cmd.parameters.size() > 3 ? ValueOrVariableBitfield(next_cmd, 0, 2, 3) : 100;
+					cmd.parameter_c = next_cmd.parameters.size() > 4 ? ValueOrVariableBitfield(next_cmd, 0, 3, 4) : 50;
+					add_command(cmd);
+					break;
+				}
+				default:
+					Output::Warning("AddMoveRoute: Unknown action type {}", action_type);
+					break;
+			}
+
+			++index;
+		}
+		else {
+			break;
+		}
+	}
+
 	return true;
 }
 

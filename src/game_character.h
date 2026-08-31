@@ -45,6 +45,8 @@ public:
 
 	static std::string_view TypeToStr(Type t);
 
+	virtual int GetId() const;
+
 	virtual ~Game_Character() = default;
 	Game_Character(Game_Character&&) = default;
 	Game_Character& operator=(const Game_Character&) = default;
@@ -699,6 +701,9 @@ public:
 	 * @param frequency frequency.
 	 */
 	void ForceMoveRoute(const lcf::rpg::MoveRoute& new_route, int frequency);
+
+	/** Appends a move route to the current one */
+	void AppendMoveRoute(const lcf::rpg::MoveRoute & new_route);
 
 	/**
 	 * Cancels a previous forced move route.

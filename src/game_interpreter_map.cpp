@@ -25,6 +25,7 @@
 #include <unordered_set>
 #include "audio.h"
 #include "feature.h"
+#include "game_strings.h"
 #include "game_character.h"
 #include "game_map.h"
 #include "game_battle.h"
