@@ -126,7 +126,7 @@ constexpr Var_t VarBitShiftLeft(Var_t n, Var_t d) {
 };
 
 constexpr Var_t VarBitShiftRight(Var_t n, Var_t d) {
-	return n >> d;
+	return static_cast<Var_t>(static_cast<uint32_t>(n) >> d);
 };
 
 }
