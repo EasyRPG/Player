@@ -17,8 +17,8 @@
 
 // Headers
 #include <cstdint>
+#include <limits>
 #include <map>
-#include <type_traits>
 #include <vector>
 #include <iterator>
 
@@ -45,8 +45,8 @@
 #endif
 
 #include <lcf/reader_util.h>
-#include "bitmapfont.h"
 
+#include "bitmapfont.h"
 #include "filefinder.h"
 #include "output.h"
 #include "font.h"
@@ -148,6 +148,25 @@ namespace {
 
 #ifdef HAVE_FREETYPE
 	FT_Library library = nullptr;
+
+	static bool IsBetterFontSize(int candidate, int current_best, int target_size) {
+		// When the font is not scalable this helper function is used to find
+		// the closest smaller font height. An exception is when their is no
+		// smaller in which cases it picks the minimum.
+		if (current_best < 0) {
+			return true;
+		}
+		bool cand_fits = (candidate <= target_size);
+		bool best_fits = (current_best <= target_size);
+
+		if (cand_fits != best_fits) {
+			return cand_fits;
+		}
+		if (cand_fits) {
+			return candidate > current_best;
+		}
+		return candidate < current_best;
+	}
 
 	struct FTFont final : public Font  {
 		FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic);
@@ -304,6 +323,55 @@ FTFont::FTFont(Filesystem_Stream::InputStream is, int size, bool bold, bool ital
 		return;
 	}
 
+	if (face->num_faces > 1) {
+		// When there are multiple faces and the font is not scalable try to load the face where the size is closest
+		// (required for BitmapFonts)
+		if (!FT_HAS_COLOR(face) && !FT_IS_SCALABLE(face)) {
+			auto num_faces = face->num_faces;
+			FT_Done_Face(face);
+			face = nullptr;
+
+			// Find a predefined height that is as close as possible to the requested height
+			int best_height = -1;
+
+			// Stores the best match
+			FT_Face best_face = nullptr;
+
+			for (FT_Long i = 0; i < num_faces; ++i) {
+				if (FT_New_Memory_Face(library, ft_buffer.data(), ft_buffer.size(), i, &face) != 0) {
+					continue;
+				}
+
+				for (int j = 0; j < face->num_fixed_sizes; ++j) {
+					int face_height = face->available_sizes[j].height;
+
+					if (IsBetterFontSize(face_height, best_height, size)) {
+						best_height = face_height;
+
+						// Throw away previous best_face
+						if (best_face && face != best_face) {
+							FT_Done_Face(best_face);
+						}
+
+						best_face = face;
+					}
+				}
+
+				// If this face is not the new best throw it away
+				if (face != best_face) {
+					FT_Done_Face(face);
+					face = nullptr;
+				}
+			}
+
+			face = best_face;
+
+			if (face == nullptr) {
+				return;
+			}
+		}
+	}
+
 	if (face->num_charmaps > 0) {
 		// Force unicode charmap
 		if (FT_Select_Charmap(face, FT_ENCODING_UNICODE) != 0) {
@@ -398,10 +466,10 @@ Rect FTFont::vGetSize(char32_t glyph) const {
 		// When it is a color font check if the glyph is a color glyph
 		// If it is not then reload the glyph monochrome
 		if (face->glyph->bitmap.pixel_mode != FT_PIXEL_MODE_BGRA) {
-			load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO);
+			load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO | FT_LOAD_NO_AUTOHINT);
 		}
 	} else {
-		if (!load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO)) {
+		if (!load_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO | FT_LOAD_NO_AUTOHINT)) {
 			if (fallback_font) {
 				return fallback_font->vGetSize(glyph);
 			} else {
@@ -413,8 +481,10 @@ Rect FTFont::vGetSize(char32_t glyph) const {
 	FT_GlyphSlot slot = face->glyph;
 
 	Point advance;
-	advance.x = Utils::RoundTo<int>(slot->advance.x / 64.0);
-	advance.y = Utils::RoundTo<int>(slot->advance.y / 64.0);
+	// TrueType default rounding is "Round to Grid" (RTG) which matches the
+	// behaviour of std::round
+	advance.x = std::round(slot->advance.x / 64.0);
+	advance.y = std::round(slot->advance.y / 64.0);
 
 	if (EP_UNLIKELY(rm2000_workaround)) {
 		advance.x = 6;
@@ -469,10 +539,10 @@ Font::GlyphRet FTFont::vRenderShaped(char32_t glyph) const {
 		// If it is not then rerender the glyph monochrome
 		// FIXME: This is inefficient
 		if (face->glyph->bitmap.pixel_mode != FT_PIXEL_MODE_BGRA) {
-			render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO, FT_RENDER_MODE_MONO);
+			render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO | FT_LOAD_NO_AUTOHINT, FT_RENDER_MODE_MONO);
 		}
 	} else {
-		if (!render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO, FT_RENDER_MODE_MONO)) {
+		if (!render_glyph(FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO | FT_LOAD_NO_AUTOHINT, FT_RENDER_MODE_MONO)) {
 			if (fallback_font) {
 				return fallback_font->vRender(glyph);
 			} else {
@@ -513,8 +583,8 @@ Font::GlyphRet FTFont::vRenderShaped(char32_t glyph) const {
 	Point advance;
 	Point offset;
 
-	advance.x = Utils::RoundTo<int>(slot->advance.x / 64.0);
-	advance.y = Utils::RoundTo<int>(slot->advance.y / 64.0);
+	advance.x = std::round(slot->advance.x / 64.0);
+	advance.y = std::round(slot->advance.y / 64.0);
 	offset.x = slot->bitmap_left;
 	offset.y = slot->bitmap_top - baseline_offset;
 
@@ -560,10 +630,10 @@ std::vector<Font::ShapeRet> FTFont::vShape(std::u32string_view txt) const {
 			advance.y = s.height;
 			ret.push_back({txt[info.cluster], advance, offset, true});
 		} else {
-			advance.x = Utils::RoundTo<int>(pos.x_advance / 64.0);
-			advance.y = Utils::RoundTo<int>(pos.y_advance / 64.0);
-			offset.x = Utils::RoundTo<int>(pos.x_offset / 64.0);
-			offset.y = Utils::RoundTo<int>(pos.y_offset / 64.0);
+			advance.x = std::round(pos.x_advance / 64.0);
+			advance.y = std::round(pos.y_advance / 64.0);
+			offset.x = std::round(pos.x_offset / 64.0);
+			offset.y = std::round(pos.y_offset / 64.0);
 			ret.push_back({static_cast<char32_t>(info.codepoint), advance, offset, false});
 		}
 	}
@@ -581,9 +651,46 @@ void FTFont::vApplyStyle(const Style& style) {
 }
 
 void FTFont::SetSize(int height, bool create) {
+	// FreeType only supports exact bitmap strike matching, it never picks the
+	// closest strike on its own. For bitmap fonts we therefore select the
+	// strike whose height is closest to the requested height ourselves.
+	auto select_closest = [&]() {
+		FT_Error err;
+		if (face->num_fixed_sizes > 0) {
+			int best = 0;
+			int best_height = -1;
+			for (int j = 0; j < face->num_fixed_sizes; ++j) {
+				int face_height = static_cast<int>(face->available_sizes[j].height);
+				if (IsBetterFontSize(face_height, best_height, height)) {
+					best_height = face_height;
+					best = j;
+				}
+			}
+			err = FT_Select_Size(face, best);
+		} else {
+			err = FT_Set_Pixel_Sizes(face, 0, height);
+		}
+
+		if (err != FT_Err_Ok) {
+			Output::Debug("Couldn't select size {} for font {}", height, ToString(GetName()));
+		}
+	};
+
+	// Ascender (in font units) used for the size normalization. Used to
+	// compute the baseline so it matches the Windows GDI metrics.
+	int baseline_units = 0;
+
 	if (FT_HAS_COLOR(face)) {
-		// FIXME: Find the best size
-		FT_Select_Size(face, 0);
+		if (FT_HAS_FIXED_SIZES(face)) {
+			// Color bitmap font (CBDT/CBLC): use the strike closest to the requested size
+			select_closest();
+		} else {
+			// Scalable color font (COLR/CPAL): scale like a normal outline font
+			auto err = FT_Set_Pixel_Sizes(face, 0, height);
+			if (err != FT_Err_Ok) {
+				Output::Debug("Couldn't set pixel size {} for font {}", height, ToString(GetName()));
+			}
+		}
 	} else if (FT_IS_SCALABLE(face)) {
 		// Calculate the pt size from px
 		auto table_os2 = static_cast<TT_OS2*>(FT_Get_Sfnt_Table(face, ft_sfnt_os2));
@@ -593,8 +700,10 @@ void FTFont::SetSize(int height, bool create) {
 			int units;
 			if (table_os2->usWinAscent + table_os2->usWinDescent == 0) {
 				units = table_hori->Ascender - table_hori->Descender;
+				baseline_units = table_hori->Ascender;
 			} else {
 				units = table_os2->usWinAscent + table_os2->usWinDescent;
+				baseline_units = table_os2->usWinAscent;
 			}
 
 			int pt = FT_MulDiv(face->units_per_EM, height, units);
@@ -605,9 +714,13 @@ void FTFont::SetSize(int height, bool create) {
 			height = std::max<int>(1, pt);
 		}
 
-		FT_Set_Pixel_Sizes(face, 0, height);
+		auto err = FT_Set_Pixel_Sizes(face, 0, height);
+		if (err != FT_Err_Ok) {
+			Output::Debug("Couldn't set pixel size {} for font {}", height, ToString(GetName()));
+		}
 	} else {
-		FT_Set_Pixel_Sizes(face, 0, face->available_sizes->height);
+		// Non-scalable bitmap font (FON, BDF, etc.): use the closest to the requested size
+		select_closest();
 	}
 
 #ifdef HAVE_HARFBUZZ
@@ -618,12 +731,21 @@ void FTFont::SetSize(int height, bool create) {
 		hb_font_destroy(hb_font);
 	}
 	hb_font = hb_ft_font_create_referenced(face);
+	// Match load flags so the shaping picks the Bitmap Font
+	hb_ft_font_set_load_flags(hb_font, FT_LOAD_MONOCHROME | FT_LOAD_TARGET_MONO | FT_LOAD_NO_AUTOHINT);
 	hb_ft_font_set_funcs(hb_font);
 #endif
 
-	baseline_offset = static_cast<int>(FT_MulFix(face->ascender, face->size->metrics.y_scale) / 64);
+	// For scalable fonts the baseline picked matching the Windows GDI metric
+	// For bitmap fonts (FON, BDF, etc.) use ascender from the metrics.
+	if (baseline_units > 0) {
+		baseline_offset = static_cast<int>(FT_MulFix(baseline_units, face->size->metrics.y_scale) / 64);
+	} else {
+		baseline_offset = static_cast<int>(face->size->metrics.ascender / 64);
+	}
+
 	if (baseline_offset == 0) {
-		// FIXME: Becomes 0 for FON files. How is the baseline calculated for them?
+		// Fallback when metrics are broken
 		baseline_offset = static_cast<int>(height * (10.0 / 12.0));
 	}
 }
