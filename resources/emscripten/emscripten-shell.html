@@ -1,365 +1,1213 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EasyRPG Player</title>
-  <style>
-    :root {
-      --color-gray: hsl(0, 0%, 55%);
-      --controls-size: 10vh;
-    }
-
-    @media (orientation: landscape) {
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#000000" />
+    <title>EasyRPG Player</title>
+    <style>
       :root {
-        --controls-size: 20vh;
+        --color-gray: hsl(0 0% 55%);
+        --controls-size: clamp(3.5rem, 20vmin, 5.5rem);
+        --controls-opacity: 0.4;
+        --controls-fade: 80ms;
+
+        --save-fill: rgb(255 255 255 / 0.05);
+        --save-fill-hover: rgb(255 255 255 / 0.09);
+        --save-line: rgb(255 255 255 / 0.09);
       }
-    }
 
-    html {
-      touch-action: none;
-    }
+      html {
+        touch-action: none;
+      }
 
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
-      margin: 0;
-      color: white;
-      background: black;
-    }
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+        color: white;
+        background: black;
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+      }
 
-    .unselectable {
-      -webkit-touch-callout: none;
-      -webkit-user-select: none;
-      user-select: none;
-    }
+      #boot {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        font-family: ui-monospace, monospace;
+        text-align: center;
+        background: black;
+        pointer-events: none;
+        transition:
+          opacity 300ms ease,
+          visibility 300ms ease;
+      }
 
-    #status {
-      font-size: 1.5rem;
-      color: var(--color-gray);
-      text-align: center;
-    }
+      #boot.done {
+        visibility: hidden;
+        opacity: 0;
+      }
 
-    #controls {
-      position: relative;
-      text-align: right;
-      z-index: 10;
-    }
+      #status {
+        font-size: 0.875rem;
+        color: var(--color-gray);
+      }
 
-    #controls button {
-      -webkit-appearance: button;
-      appearance: button;
-      display: inline-flex;
-      background: transparent;
-      border: 0;
-      color: white;
-      font-family: inherit;
-      font-size: 1em;
-      line-height: inherit;
-      cursor: pointer;
-      padding: 0.5rem;
-    }
+      #controls {
+        position: fixed;
+        top: calc(env(safe-area-inset-top) + 0.5rem);
+        right: calc(env(safe-area-inset-right) + 0.5rem);
+        z-index: 10;
+        display: flex;
+        gap: 0.25rem;
+      }
 
-    #controls svg {
-      pointer-events: none;
-    }
+      #controls button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.35rem;
+        color: white;
+        background: transparent;
+        border: 0;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity 80ms ease;
+      }
 
-    #canvas {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100vw !important;
-      height: 100vh !important;
-      border: 0;
-      image-rendering: pixelated;
-      image-rendering: crisp-edges;
-      transform: translate(-50%, -50%);
-    }
+      #controls button[hidden] {
+        display: none;
+      }
 
-    img#canvas {
-      object-fit: contain;
-    }
+      #controls button:focus-visible {
+        opacity: 1;
+      }
 
-    #dpad,
-    #apad {
-      position: fixed;
-      bottom: 1rem;
-    }
+      #viewport:fullscreen #controls-fullscreen .icon-enter,
+      #viewport:not(:fullscreen) #controls-fullscreen .icon-exit {
+        display: none;
+      }
 
-    #dpad {
-      left: 1rem;
-    }
+      #canvas {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        outline: none;
+        image-rendering: pixelated;
+        transform: translate(-50%, -50%);
+      }
 
-    #apad {
-      right: 1rem;
-    }
+      img#canvas {
+        object-fit: contain;
+      }
 
-    #dpad svg {
-      width: calc(2 * var(--controls-size));
-      height: calc(2 * var(--controls-size));
-      fill: var(--color-gray);
-    }
+      /* `!important` beats the inline size SDL writes onto the canvas
+         while it manages its window size, which shrinks the canvas when
+         it measures a zero-height body */
+      #canvas {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: contain !important;
+      }
 
-    #dpad svg rect {
-      opacity: 0.4;
-    }
+      @media (hover: none), (pointer: coarse) {
+        #controls button,
+        .save-button {
+          min-block-size: 44px;
+        }
 
-    #apad > * {
-      width: var(--controls-size);
-      height: var(--controls-size);
-      background-color: var(--color-gray);
-      border-radius: 50%;
-    }
+        .save-button-icon {
+          min-inline-size: 44px;
+        }
 
-    #apad > :last-child {
-      position: relative;
-      right: var(--controls-size);
-    }
+        #controls {
+          gap: 0.625rem;
+        }
 
-    #dpad path:not(.active),
-    #apad > *:not(.active) {
-      opacity: 0.4;
-    }
-  </style>
-</head>
-<body>
-  <div id="controls">
-    <button id="controls-fullscreen" class="unselectable">
-      <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" width="25" height="25"><path d="M13.5 13.5H10m3.5 0V10m0 3.5l-4-4m.5-8h3.5m0 0V5m0-3.5l-4 4M5 1.5H1.5m0 0V5m0-3.5l4 4m-4 4.5v3.5m0 0H5m-3.5 0l4-4" stroke="currentColor"></path></svg>
-    </button>
-  </div>
+        #viewport {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100dvh;
+          display: grid;
+          grid-template-areas:
+            "screen screen"
+            "dpad apad";
+          grid-template-rows: minmax(0, 1fr) auto;
+          grid-template-columns: 1fr 1fr;
+        }
 
-  <div id="status"></div>
+        #canvas {
+          position: static;
+          grid-area: screen;
+          object-fit: contain;
+          transform: none;
+        }
 
-  <div id="viewport">
-    <canvas id="canvas" tabindex="-1" class="unselectable"></canvas>
+        #dpad,
+        #apad {
+          align-self: center;
+        }
 
-    <div id="dpad" class="unselectable">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
-        <path id="dpad-up" data-key="ArrowUp" d="M48,5.8C48,2.5,45.4,0,42,0H29.9C26.6,0,24,2.4,24,5.8V24h24V5.8z" />
-        <path id="dpad-right" data-key="ArrowRight" d="M66.2,24H48v24h18.2c3.3,0,5.8-2.7,5.8-6V29.9C72,26.5,69.5,24,66.2,24z" />
-        <path id="dpad-down" data-key="ArrowDown" d="M24,66.3c0,3.3,2.6,5.7,5.9,5.7H42c3.3,0,6-2.4,6-5.7V48H24V66.3z" />
-        <path id="dpad-left" data-key="ArrowLeft" d="M5.7,24C2.4,24,0,26.5,0,29.9V42c0,3.3,2.3,6,5.7,6H24V24H5.7z" />
-        <rect id="dpad-center" x="24" y="24" width="24" height="24" />
-      </svg>
+        #dpad {
+          grid-area: dpad;
+          padding: 0.75rem 0 calc(0.75rem + env(safe-area-inset-bottom))
+            calc(0.75rem + env(safe-area-inset-left));
+        }
+
+        #apad {
+          grid-area: apad;
+          justify-self: end;
+          padding: 0.75rem calc(0.75rem + env(safe-area-inset-right))
+            calc(0.75rem + env(safe-area-inset-bottom)) 0;
+        }
+
+        @media (orientation: landscape) {
+          #viewport {
+            grid-template-areas: "dpad screen apad";
+            grid-template-rows: minmax(0, 1fr);
+            grid-template-columns: auto minmax(0, 1fr) auto;
+          }
+
+          #dpad {
+            padding: 0 0.75rem 0 calc(0.75rem + env(safe-area-inset-left));
+          }
+
+          #apad {
+            padding: 0 calc(0.75rem + env(safe-area-inset-right)) 0 0.75rem;
+          }
+        }
+      }
+
+      #dpad svg {
+        width: calc(2 * var(--controls-size));
+        height: calc(2 * var(--controls-size));
+        fill: var(--color-gray);
+      }
+
+      #apad > * {
+        width: var(--controls-size);
+        height: var(--controls-size);
+        background-color: var(--color-gray);
+        border-radius: 50%;
+      }
+
+      #apad > :first-child {
+        margin-left: var(--controls-size);
+      }
+
+      #dpad svg > *,
+      #apad > * {
+        opacity: var(--controls-opacity);
+        transition:
+          opacity var(--controls-fade) ease,
+          scale 80ms ease;
+      }
+
+      #dpad path {
+        transform-box: fill-box;
+        transform-origin: center;
+      }
+
+      #dpad path.active,
+      #apad > .active {
+        opacity: 1;
+        scale: 0.94;
+      }
+
+      /* Idle dims the whole deck by flipping the shared opacity var */
+      body.controls-idle {
+        --controls-opacity: 0.2;
+        --controls-fade: 500ms;
+      }
+
+      body.gamepad-connected #dpad,
+      body.gamepad-connected #apad {
+        display: none;
+      }
+
+      @media (hover: hover) and (pointer: fine) {
+        #apad,
+        #dpad {
+          display: none;
+        }
+
+        #controls button:hover {
+          opacity: 1;
+        }
+      }
+
+      #save-dialog {
+        position: fixed;
+        inset: 0;
+        margin: auto;
+        width: min(20rem, calc(100vw - 2rem));
+        padding: 1.05rem 1.1rem 1.1rem;
+        color: white;
+        background: hsl(0 0% 10%);
+        border: 1px solid var(--save-line);
+        border-radius: 0.75rem;
+        box-shadow: 0 1rem 3rem hsl(0 0% 0% / 0.5);
+        opacity: 0;
+        scale: 0.98;
+        transition:
+          opacity 150ms ease-out,
+          scale 150ms ease-out,
+          overlay 150ms ease-out allow-discrete,
+          display 150ms ease-out allow-discrete;
+      }
+
+      #save-dialog[open] {
+        opacity: 1;
+        scale: 1;
+      }
+
+      @starting-style {
+        #save-dialog[open] {
+          opacity: 0;
+          scale: 0.98;
+        }
+      }
+
+      #save-dialog::backdrop {
+        background: hsl(0 0% 0% / 0.6);
+        backdrop-filter: blur(2px);
+        opacity: 0;
+        transition:
+          opacity 150ms ease-out,
+          overlay 150ms ease-out allow-discrete,
+          display 150ms ease-out allow-discrete;
+      }
+
+      #save-dialog[open]::backdrop {
+        opacity: 1;
+      }
+
+      @starting-style {
+        #save-dialog[open]::backdrop {
+          opacity: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #save-dialog,
+        #save-dialog::backdrop {
+          transition: none;
+        }
+      }
+
+      .save-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.85rem;
+      }
+
+      .save-title {
+        margin: 0;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      #save-list {
+        padding: 0.1rem 0.6rem;
+        background: var(--save-fill);
+        border-radius: 0.5rem;
+      }
+
+      .save-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 0;
+      }
+
+      .save-row + .save-row {
+        border-top: 1px solid var(--save-line);
+      }
+
+      .save-name {
+        flex: 1;
+        min-width: 0;
+        font-size: 0.9375rem;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .save-age {
+        color: var(--color-gray);
+        font-weight: 400;
+      }
+
+      .save-age::before {
+        content: " · ";
+      }
+
+      .save-empty {
+        margin: 0.4rem 0.1rem;
+        font-size: 0.9375rem;
+        color: var(--color-gray);
+      }
+
+      .save-button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        color: white;
+        background: transparent;
+        border: 0;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        font: inherit;
+        font-size: 0.9375rem;
+        transition:
+          background-color 120ms ease,
+          opacity 120ms ease;
+      }
+
+      .save-button:hover:not(:disabled),
+      .save-button:focus-visible {
+        background: var(--save-fill-hover);
+      }
+
+      .save-button:disabled {
+        opacity: 0.4;
+        cursor: default;
+      }
+
+      .save-button svg {
+        flex: none;
+      }
+
+      .save-button-icon {
+        justify-content: center;
+        padding: 0.45rem;
+      }
+
+      .save-button-block {
+        width: 100%;
+        padding: 0.6rem 0.65rem;
+        text-align: left;
+      }
+
+      .save-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.15rem;
+        margin-top: 0.6rem;
+      }
+
+      #save-toast {
+        position: fixed;
+        bottom: calc(1rem + env(safe-area-inset-bottom));
+        left: 50%;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        max-width: calc(100vw - 2rem);
+        padding: 0.6rem 0.9rem;
+        font: inherit;
+        font-size: 0.875rem;
+        text-align: left;
+        color: white;
+        background: hsl(0 0% 12%);
+        border: 1px solid hsl(0 0% 25%);
+        border-radius: 0.5rem;
+        box-shadow: 0 0.5rem 1.5rem hsl(0 0% 0% / 0.5);
+        cursor: pointer;
+        opacity: 0;
+        visibility: hidden;
+        transform: translate(-50%, 1rem);
+        transition:
+          opacity 200ms ease,
+          transform 200ms ease,
+          visibility 200ms ease;
+      }
+
+      #save-toast svg {
+        flex: none;
+      }
+
+      #save-toast.visible {
+        opacity: 1;
+        visibility: visible;
+        transform: translate(-50%, 0);
+      }
+    </style>
+  </head>
+  <body>
+    <svg
+      aria-hidden="true"
+      style="position: absolute; width: 0; height: 0; overflow: hidden"
+    >
+      <symbol
+        id="icon-save"
+        viewBox="0 0 15 15"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path
+          d="M4.5 14.5V11.5C4.5 10.9477 4.94772 10.5 5.5 10.5H9.5C10.0523 10.5 10.5 10.9477 10.5 11.5V14.5M13.5 14.5H1.5C0.947716 14.5 0.5 14.0523 0.5 13.5V1.5C0.5 0.947716 0.947715 0.5 1.5 0.5H10.0858C10.351 0.5 10.6054 0.605357 10.7929 0.792893L14.2071 4.20711C14.3946 4.39464 14.5 4.649 14.5 4.91421V13.5C14.5 14.0523 14.0523 14.5 13.5 14.5Z"
+        />
+      </symbol>
+      <symbol
+        id="icon-fullscreen-enter"
+        viewBox="0 0 15 15"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path
+          d="M13.5 13.5H10m3.5 0V10m0 3.5l-4-4m.5-8h3.5m0 0V5m0-3.5l-4 4M5 1.5H1.5m0 0V5m0-3.5l4 4m-4 4.5v3.5m0 0H5m-3.5 0l4-4"
+        />
+      </symbol>
+      <symbol
+        id="icon-fullscreen-exit"
+        viewBox="0 0 15 15"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path
+          d="M9.5 9.5H13m-3.5 0V13m0-3.5l4 4M13 5.5H9.5m0 0V2m0 3.5l4-4M2 5.5h3.5m0 0V2m0 3.5l-4-4M5.5 13V9.5m0 0H2m3.5 0l-4 4"
+        />
+      </symbol>
+      <symbol
+        id="icon-close"
+        viewBox="0 0 15 15"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path d="M1.5 1.5L13.5 13.5M1.5 13.5L13.5 1.5" />
+      </symbol>
+      <symbol
+        id="icon-upload"
+        viewBox="0 0 15 15"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path
+          d="M7.5 1.5L10.75 4.5M7.5 1.5L4.5 4.5M7.5 1.5V11M13.5 7V13.5H1.5V7"
+        />
+      </symbol>
+      <symbol
+        id="icon-download"
+        viewBox="0 0 15 15"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path
+          d="M7.5 10.5L4.25 7.5M7.5 10.5L10.5 7.5M7.5 10.5V1M13.5 7V13.5H1.5V7"
+        />
+      </symbol>
+      <symbol
+        id="icon-settings"
+        viewBox="0 0 15 15"
+        fill="none"
+        stroke="currentColor"
+      >
+        <path
+          d="M5.944 0.5L5.858 0.936707L5.52901 2.53467C5.00301 2.73554 4.526 3.02037 4.095 3.35815L2.487 2.8205L2.05501 2.68658L1.83101 3.07233L0.723999 4.9231L0.5 5.3089L0.828003 5.5957L2.07201 6.65399C2.02701 6.93081 1.96901 7.20461 1.96901 7.49542C1.96901 7.78623 2.02701 8.0601 2.07201 8.33691L0.828003 9.3952L0.5 9.68201L0.723999 10.0677L1.83101 11.9186L2.05501 12.3053L2.487 12.1704L4.095 11.6328C4.526 11.9705 5.00301 12.2553 5.52901 12.4562L5.858 14.0541L5.944 14.4909H9.05501L9.142 14.0541L9.47 12.4562C9.996 12.2553 10.473 11.9705 10.904 11.6328L12.512 12.1704L12.944 12.3053L13.169 11.9186L14.275 10.0677L14.5 9.68201L14.171 9.3952L12.927 8.33691C12.973 8.0601 13.03 7.78623 13.03 7.49542C13.03 7.20461 12.973 6.93081 12.927 6.65399L14.171 5.5957L14.5 5.3089L14.275 4.9231L13.169 3.07233L12.944 2.68658L12.512 2.8205L10.904 3.35815C10.473 3.02037 9.996 2.73554 9.47 2.53467L9.142 0.936707L9.05501 0.5H5.944Z"
+        />
+        <path
+          d="M9.49963 7.49542C9.49963 8.5987 8.60363 9.49414 7.49963 9.49414C6.39563 9.49414 5.49963 8.5987 5.49963 7.49542C5.49963 6.39214 6.39563 5.49677 7.49963 5.49677C8.60363 5.49677 9.49963 6.39214 9.49963 7.49542Z"
+        />
+      </symbol>
+    </svg>
+
+    <div id="boot">
+      <div id="status"></div>
     </div>
 
-    <div id="apad" class="unselectable">
-      <div id="apad-escape" data-key="Escape"></div>
-      <div id="apad-enter" data-key="Enter"></div>
+    <!-- Controls and the save UI live inside #viewport so they keep
+         rendering when it enters element fullscreen -->
+    <div id="viewport">
+      <div id="controls">
+        <button
+          id="controls-saves"
+          type="button"
+          aria-label="Manage saves"
+          title="Manage saves"
+        >
+          <svg width="18" height="18" aria-hidden="true">
+            <use href="#icon-save" />
+          </svg>
+        </button>
+        <button
+          id="controls-settings"
+          type="button"
+          aria-label="Open settings"
+          title="Open settings"
+        >
+          <svg width="18" height="18" aria-hidden="true">
+            <use href="#icon-settings" />
+          </svg>
+        </button>
+        <button
+          id="controls-fullscreen"
+          type="button"
+          aria-label="Enter fullscreen"
+          title="Enter fullscreen"
+        >
+          <svg class="icon-enter" width="18" height="18" aria-hidden="true">
+            <use href="#icon-fullscreen-enter" />
+          </svg>
+          <svg class="icon-exit" width="18" height="18" aria-hidden="true">
+            <use href="#icon-fullscreen-exit" />
+          </svg>
+        </button>
+      </div>
+
+      <canvas id="canvas" tabindex="-1"></canvas>
+
+      <dialog id="save-dialog" aria-labelledby="save-title">
+        <div class="save-header">
+          <h2 id="save-title" class="save-title">Saves</h2>
+          <button
+            id="save-close"
+            class="save-button save-button-icon"
+            type="button"
+            aria-label="Close"
+          >
+            <svg width="18" height="18" aria-hidden="true">
+              <use href="#icon-close" />
+            </svg>
+          </button>
+        </div>
+
+        <div id="save-list"></div>
+
+        <div class="save-actions">
+          <button
+            id="save-import"
+            class="save-button save-button-block"
+            type="button"
+          >
+            <svg width="18" height="18" aria-hidden="true">
+              <use href="#icon-upload" />
+            </svg>
+            Import save file…
+          </button>
+        </div>
+      </dialog>
+
+      <button id="save-toast" type="button">
+        <svg width="16" height="16" aria-hidden="true">
+          <use href="#icon-save" />
+        </svg>
+        <span>Game saved – tap to back up</span>
+      </button>
+
+      <div id="dpad" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72">
+          <path
+            id="dpad-up"
+            data-key="ArrowUp"
+            d="M48,5.8C48,2.5,45.4,0,42,0H29.9C26.6,0,24,2.4,24,5.8V24h24V5.8z"
+          />
+          <path
+            id="dpad-right"
+            data-key="ArrowRight"
+            d="M66.2,24H48v24h18.2c3.3,0,5.8-2.7,5.8-6V29.9C72,26.5,69.5,24,66.2,24z"
+          />
+          <path
+            id="dpad-down"
+            data-key="ArrowDown"
+            d="M24,66.3c0,3.3,2.6,5.7,5.9,5.7H42c3.3,0,6-2.4,6-5.7V48H24V66.3z"
+          />
+          <path
+            id="dpad-left"
+            data-key="ArrowLeft"
+            d="M5.7,24C2.4,24,0,26.5,0,29.9V42c0,3.3,2.3,6,5.7,6H24V24H5.7z"
+          />
+          <rect id="dpad-center" x="24" y="24" width="24" height="24" />
+        </svg>
+      </div>
+
+      <div id="apad" aria-hidden="true">
+        <div id="apad-enter" data-key="Enter"></div>
+        <div id="apad-escape" data-key="Escape"></div>
+      </div>
     </div>
-  </div>
 
-{{{ SCRIPT }}}
+    {{{ SCRIPT }}}
 
-<script>
-const hasTouchscreen = window.matchMedia('(hover: none), (pointer: coarse)').matches;
-const preventNativeKeys = ['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft', ' ', 'F12'];
-const keys = new Map();
-const keysDown = new Map();
-const canvas = document.getElementById('canvas');
-let easyrpgPlayer;
-let lastTouchedId;
+    <script type="module">
+      const gameId = new URLSearchParams(location.search).get("game");
+      if (gameId) {
+        document.title = `${gameId} – EasyRPG Player`;
+      }
 
-// Launch the Player and configure it
-window.addEventListener('load', (event) => {
-    createEasyRpgPlayer({
-      game: undefined,
-      saveFs: undefined
-    }).then(function(Module) {
-      // Module is ready
-      easyrpgPlayer = Module;
-      easyrpgPlayer.initApi();
-      canvas.focus();
+      const hasTouchscreen = window.matchMedia(
+        "(hover: none), (pointer: coarse)",
+      ).matches;
+      const preventNativeKeys = [
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowRight",
+        "ArrowLeft",
+        " ",
+        "F1",
+        "F3",
+        "F5",
+        "F7",
+        "F12",
+      ];
+      /** @type {Map<string, string>} */
+      const keyByControlId = new Map();
+      /**
+       * Pointers that started on a control and may slide between them
+       * @type {Set<number>}
+       */
+      const engagedPointers = new Set();
+      /**
+       * Control element id currently pressed by each engaged pointer
+       * @type {Map<number, string>}
+       */
+      const pressedControls = new Map();
+      const viewport = document.getElementById("viewport");
+      const canvas = document.getElementById("canvas");
+      const saveDialog = document.getElementById("save-dialog");
+      /** @type {Set<number>} */
+      const connectedGamepads = new Set();
+      let controlsIdleTimeoutId;
+      let player;
 
-      // Custom code here
-    });
-});
+      // Launch the Player; it reads the game from the query string itself
+      window.addEventListener("load", async () => {
+        try {
+          player = await createEasyRpgPlayer({
+            game: undefined,
+            saveFs: undefined,
+          });
+          player.initApi();
+          setupSaveManager();
+          canvas.focus();
+          document.getElementById("boot").classList.add("done");
+        } catch (error) {
+          document.getElementById("status").textContent =
+            "Failed to start – please reload the page";
+          throw error;
+        }
+      });
 
-// Make EasyRPG player embeddable
-canvas.addEventListener('mouseenter', () => canvas.focus());
-canvas.addEventListener('click', () => canvas.focus());
+      // Focus the canvas on hover/click so keyboard input reaches the game
+      // (e.g. when embedded in another page)
+      canvas.addEventListener("mouseenter", () => canvas.focus());
+      canvas.addEventListener("click", () => canvas.focus());
 
-// Handle clicking on the fullscreen button
-document.querySelector('#controls-fullscreen').addEventListener('click', () => {
-  const viewport = document.getElementById('viewport');
-  if (viewport.requestFullscreen) {
-    viewport.requestFullscreen();
-  }
-});
+      // Buttons grab focus when clicked and would swallow the arrow keys;
+      // hand it back so keyboard input keeps reaching the game
+      document
+        .getElementById("controls")
+        .addEventListener("click", () => canvas.focus({ preventScroll: true }));
 
-/**
- * Simulate a keyboard event on the emscripten canvas
- *
- * @param {string} eventType Type of the keyboard event
- * @param {string} key Key to simulate
- */
-function simulateKeyboardEvent(eventType, key) {
-  const event = new Event(eventType, { bubbles: true });
-  event.code = key;
+      // Opens the engine's settings scene, which has no JS API – simulate
+      // its F1 shortcut instead. The engine samples input once per frame,
+      // so a same-frame release would be lost; delay it well past one frame.
+      document
+        .getElementById("controls-settings")
+        .addEventListener("click", () => {
+          simulateKeyboardEvent("keydown", "F1");
+          window.setTimeout(() => simulateKeyboardEvent("keyup", "F1"), 100);
+        });
 
-  canvas.dispatchEvent(event);
-}
-
-/**
- * Simulate a keyboard input from `keydown` to `keyup`
- *
- * @param {string} key Key to simulate
- */
-function simulateKeyboardInput(key) {
-  simulateKeyboardEvent('keydown', key);
-  window.setTimeout(() => {
-    simulateKeyboardEvent('keyup', key);
-  }, 100);
-}
-
-/**
- * Bind a node by a specific key to simulate on touch
- *
- * @param {*} node The node to bind a key to
- * @param {string} key Key to simulate
- */
-function bindKey(node, key) {
-  keys.set(node.id, key);
-
-  node.addEventListener('touchstart', event => {
-    event.preventDefault();
-    simulateKeyboardEvent('keydown', key);
-    keysDown.set(event.target.id, node.id);
-    node.classList.add('active');
-  });
-
-  node.addEventListener('touchend', event => {
-    event.preventDefault();
-
-    const pressedKey = keysDown.get(event.target.id);
-    if (pressedKey && keys.has(pressedKey)) {
-      const key = keys.get(pressedKey);
-      simulateKeyboardEvent('keyup', key);
-    }
-
-    keysDown.delete(event.target.id);
-    node.classList.remove('active');
-
-    if (lastTouchedId) {
-      document.getElementById(lastTouchedId).classList.remove('active');
-    }
-  });
-
-  // Inspired by https://github.com/pulsejet/mkxp-web/blob/262a2254b684567311c9f0e135ee29f6e8c3613e/extra/js/dpad.js
-  node.addEventListener('touchmove', event => {
-    const { target, clientX, clientY } = event.changedTouches[0];
-    const origTargetId = keysDown.get(target.id);
-    const nextTargetId = document.elementFromPoint(clientX, clientY).id;
-    if (origTargetId === nextTargetId) return;
-
-    if (origTargetId) {
-      const key = keys.get(origTargetId);
-      simulateKeyboardEvent('keyup', key);
-      keysDown.delete(target.id);
-      document.getElementById(origTargetId).classList.remove('active');
-    }
-
-    if (keys.has(nextTargetId)) {
-      const key = keys.get(nextTargetId);
-      simulateKeyboardEvent('keydown', key);
-      keysDown.set(target.id, nextTargetId);
-      lastTouchedId = nextTargetId;
-      document.getElementById(nextTargetId).classList.add('active');
-    }
-  })
-}
-
-/** @type {{[key: number]: Gamepad}} */
-let gamepads = {};
-const haveEvents = 'ongamepadconnected' in window;
-
-function addGamepad(gamepad) {
-  if (gamepad == undefined) {
-    return;
-  }
-  gamepads[gamepad.index] = gamepad;
-  updateTouchControlsVisibility();
-}
-
-function removeGamepad(gamepad) {
-  if (gamepad == undefined) {
-    return;
-  }
-  delete gamepads[gamepad.index];
-  updateTouchControlsVisibility();
-}
-
-/** @returns {Gamepad[]} */
-function getGamepads() {
-  var pads = navigator.getGamepads ? navigator.getGamepads() : (navigator.webkitGetGamepads ? navigator.webkitGetGamepads() : []);
-  return pads;
-}
-
-function scanGamePads() {
-  var pads = getGamepads();
-  for (var i = 0; i < pads.length; i++) {
-    if (pads[i]) {
-      if (pads[i].index in gamepads) {
-        gamepads[pads[i].index] = pads[i];
+      // Element fullscreen is unavailable in some browsers, e.g. iPhone Safari
+      const fullscreenButton = document.getElementById("controls-fullscreen");
+      if (document.fullscreenEnabled) {
+        fullscreenButton.addEventListener("click", () => {
+          if (document.fullscreenElement) {
+            document.exitFullscreen();
+          } else {
+            viewport.requestFullscreen();
+          }
+        });
       } else {
-        addGamepad(pads[i]);
+        fullscreenButton.hidden = true;
       }
-    }
-  }
-}
 
-if (!haveEvents) {
-  setInterval(scanGamePads, 500);
-}
+      document.addEventListener("fullscreenchange", () => {
+        canvas.focus({ preventScroll: true });
+        // The icon swaps via the :fullscreen CSS rule; only the label, which
+        // CSS cannot set, has to follow the state here
+        const label = document.fullscreenElement
+          ? "Exit fullscreen"
+          : "Enter fullscreen";
+        fullscreenButton.setAttribute("aria-label", label);
+        fullscreenButton.title = label;
+      });
 
-window.addEventListener('gamepadconnected', function(e) {
-  addGamepad(e.gamepad);
-});
+      if (hasTouchscreen) {
+        for (const button of document.querySelectorAll("[data-key]")) {
+          bindKey(button, button.dataset.key);
+        }
+        wakeTouchControls();
+      } else {
+        // Stop the browser's default for keys the game uses
+        window.addEventListener("keydown", (event) => {
+          // While the save panel is open it owns the keyboard, so leave
+          // its Space/arrow/Tab navigation alone. The game engine reads
+          // keys only from #canvas, which has lost focus to the dialog
+          // anyway, so there is nothing to suppress here.
+          if (saveDialog.open) return;
+          if (preventNativeKeys.includes(event.key)) {
+            event.preventDefault();
+          }
+        });
 
-window.addEventListener('gamepaddisconnected', function(e) {
-  removeGamepad(e.gamepad);
-})
+        canvas.addEventListener("contextmenu", (event) => {
+          event.preventDefault();
+        });
+      }
 
-function updateTouchControlsVisibility() {
-  if (hasTouchscreen && Object.keys(gamepads).length === 0) {
-    for (const elem of document.querySelectorAll('#dpad, #apad')) {
-      elem.style.display = '';
-    }
-  } else {
-    // If we don't have a touch screen, OR any gamepads are connected...
-    for (const elem of document.querySelectorAll('#dpad, #apad')) {
-      // Hide the touch controls
-      elem.style.display = 'none';
-    }
-  }
-}
+      window.addEventListener("gamepadconnected", (event) => {
+        connectedGamepads.add(event.gamepad.index);
+        updateTouchControlsVisibility();
+      });
+      window.addEventListener("gamepaddisconnected", (event) => {
+        connectedGamepads.delete(event.gamepad.index);
+        updateTouchControlsVisibility();
+      });
 
-// Bind all elements providing a `data-key` attribute with the
-// given key on touch-based devices
-if (hasTouchscreen) {
-  for (const button of document.querySelectorAll('[data-key]')) {
-    bindKey(button, button.dataset.key);
-  }
-} else {
-  // Prevent scrolling when pressing specific keys
-  window.addEventListener('keydown', event => {
-    if (preventNativeKeys.includes(event.key)) {
-      event.preventDefault();
-    }
-  });
+      // The wake lock is released whenever the tab gets hidden, so it has
+      // to be re-requested every time the player becomes visible again
+      requestWakeLock();
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+          requestWakeLock();
+        }
+      });
 
-  canvas.addEventListener('contextmenu', event => {
-    event.preventDefault();
-    // simulateKeyboardInput('Escape', 27);
-  });
+      /**
+       * Simulate a physical keyboard event on the Emscripten canvas
+       *
+       * @param {string} eventType "keydown" or "keyup"
+       * @param {string} code Physical key code to simulate (e.g. "ArrowUp")
+       */
+      function simulateKeyboardEvent(eventType, code) {
+        canvas.dispatchEvent(
+          new KeyboardEvent(eventType, { code, bubbles: true }),
+        );
+      }
 
-  // canvas.addEventListener('click', () => {
-  //   simulateKeyboardInput('Enter', 13);
-  // });
-}
+      /**
+       * Bind a touch control element to the key it simulates
+       *
+       * @param {HTMLElement} element
+       * @param {string} key Key code to dispatch, e.g. "ArrowUp"
+       */
+      function bindKey(element, key) {
+        keyByControlId.set(element.id, key);
 
-updateTouchControlsVisibility();
-</script>
+        element.addEventListener("pointerdown", (event) => {
+          event.preventDefault();
+          engagedPointers.add(event.pointerId);
+          pressControl(event.pointerId, element.id);
 
-</body>
+          // Touch input captures implicitly; mouse and pen need an
+          // explicit capture so the gesture keeps firing on this element
+          try {
+            element.setPointerCapture(event.pointerId);
+          } catch {}
+        });
+
+        // Slide between controls without lifting the pointer
+        element.addEventListener("pointermove", (event) => {
+          if (!engagedPointers.has(event.pointerId)) return;
+
+          const targetId = document.elementFromPoint(
+            event.clientX,
+            event.clientY,
+          )?.id;
+          if (targetId === pressedControls.get(event.pointerId)) return;
+
+          if (targetId && keyByControlId.has(targetId)) {
+            pressControl(event.pointerId, targetId);
+          } else {
+            releaseControl(event.pointerId);
+          }
+        });
+
+        for (const eventType of ["pointerup", "pointercancel"]) {
+          element.addEventListener(eventType, (event) => {
+            engagedPointers.delete(event.pointerId);
+            releaseControl(event.pointerId);
+          });
+        }
+      }
+
+      /**
+       * Press a control, releasing whatever the pointer held before
+       *
+       * @param {number} pointerId Pointer pressing the control
+       * @param {string} elementId Element id of the control to press
+       */
+      function pressControl(pointerId, elementId) {
+        releaseControl(pointerId);
+        wakeTouchControls();
+
+        pressedControls.set(pointerId, elementId);
+        simulateKeyboardEvent("keydown", keyByControlId.get(elementId));
+        document.getElementById(elementId).classList.add("active");
+      }
+
+      /**
+       * Release the control held by a pointer, unless another pointer
+       * still presses the same control
+       *
+       * @param {number} pointerId Pointer to release
+       */
+      function releaseControl(pointerId) {
+        const elementId = pressedControls.get(pointerId);
+        if (!elementId) return;
+
+        wakeTouchControls();
+        pressedControls.delete(pointerId);
+        if ([...pressedControls.values()].includes(elementId)) return;
+
+        simulateKeyboardEvent("keyup", keyByControlId.get(elementId));
+        document.getElementById(elementId).classList.remove("active");
+      }
+
+      function updateTouchControlsVisibility() {
+        document.body.classList.toggle(
+          "gamepad-connected",
+          connectedGamepads.size > 0,
+        );
+      }
+
+      /**
+       * Light up the touch controls and dim them again after a few
+       * seconds without input
+       */
+      function wakeTouchControls() {
+        document.body.classList.remove("controls-idle");
+        clearTimeout(controlsIdleTimeoutId);
+        controlsIdleTimeoutId = setTimeout(() => {
+          // Keep the controls lit while something is still pressed
+          if (pressedControls.size > 0) {
+            wakeTouchControls();
+            return;
+          }
+          document.body.classList.add("controls-idle");
+        }, 3000);
+      }
+
+      async function requestWakeLock() {
+        try {
+          await navigator.wakeLock?.request("screen");
+        } catch {}
+      }
+
+      // RPG Maker 2000/2003 caps save games at 15 slots (Save01..Save15.lsd)
+      const saveSlotCount = 15;
+      const saveHintStorageKey = "easyrpg-player-save-hint-seen";
+      const iconDownload = `<svg width="18" height="18" aria-hidden="true"><use href="#icon-download"/></svg>`;
+      const iconUpload = `<svg width="18" height="18" aria-hidden="true"><use href="#icon-upload"/></svg>`;
+      /**
+       * Save slots captured at the first poll – the baseline a later write is compared against
+       * @type {Map<number, number> | undefined}
+       */
+      let saveSlotBaseline;
+      let saveHintPollId = 0;
+      let saveWatchId = 0;
+      const relativeTimeFormatter = new Intl.RelativeTimeFormat("en", {
+        numeric: "auto",
+      });
+
+      /**
+       * Wire up the save panel and its one-time backup hint
+       */
+      function setupSaveManager() {
+        const savesButton = document.getElementById("controls-saves");
+        savesButton.addEventListener("click", (event) => {
+          // Don't let #controls' click handler yank focus back to the canvas
+          event.stopPropagation();
+          openSaveDialog();
+        });
+
+        document
+          .getElementById("save-close")
+          .addEventListener("click", () => saveDialog.close());
+
+        saveDialog.addEventListener("click", (event) => {
+          if (event.target === saveDialog) saveDialog.close();
+        });
+
+        // Hand the keyboard back to the game whenever the panel closes
+        saveDialog.addEventListener("close", () =>
+          canvas.focus({ preventScroll: true }),
+        );
+
+        setupSaveHint();
+      }
+
+      function openSaveDialog() {
+        if (saveDialog.open) return;
+        renderSaveSlots();
+        saveDialog.showModal();
+      }
+
+      /**
+       * Absolute path of the IDBFS-backed save directory, mounted at `Save`
+       * inside the running game's working directory
+       */
+      function getSavePath() {
+        return `${player.FS.cwd()}/Save`;
+      }
+
+      /**
+       * Map each populated save slot to its modification time in ms. An
+       * empty or not-yet-mounted directory yields an empty map.
+       *
+       * @returns {Map<number, number>}
+       */
+      function readSaveSlots() {
+        const slots = new Map();
+        try {
+          const savePath = getSavePath();
+          for (const entry of player.FS.readdir(savePath)) {
+            const match = /^Save(\d{2})\.lsd$/i.exec(entry);
+            if (!match) continue;
+            const { mtime } = player.FS.stat(`${savePath}/${entry}`);
+            slots.set(Number(match[1]), mtime.getTime());
+          }
+        } catch {
+          // The save directory does not exist until the first save
+        }
+        return slots;
+      }
+
+      /**
+       * Rebuild the slot list: a download/replace row per existing save,
+       * with the import button pointed at the lowest free slot
+       */
+      function renderSaveSlots() {
+        const slots = readSaveSlots();
+        const usedSlots = [...slots.keys()].sort((a, b) => a - b);
+        const saveList = document.getElementById("save-list");
+        saveList.replaceChildren();
+
+        if (usedSlots.length === 0) {
+          const emptyMessage = document.createElement("p");
+          emptyMessage.className = "save-empty";
+          emptyMessage.textContent =
+            "No saves yet. Save inside the game first.";
+          saveList.append(emptyMessage);
+        } else {
+          for (const slot of usedSlots) {
+            saveList.append(createSaveRow(slot, slots.get(slot)));
+          }
+        }
+
+        const freeSlot = firstFreeSlot(usedSlots);
+        const importButton = document.getElementById("save-import");
+        importButton.disabled = freeSlot === undefined;
+        importButton.title =
+          freeSlot === undefined
+            ? "All 15 slots are full – replace one instead"
+            : `Import into file ${freeSlot}`;
+        // Reassigned, not addEventListener: this runs on every open, and the
+        // import button persists across renders, so listeners would stack up
+        importButton.onclick =
+          freeSlot === undefined ? null : () => uploadToSlot(freeSlot);
+      }
+
+      /**
+       * Build one slot row with download and replace controls
+       *
+       * @param {number} slot 1-based save slot
+       * @param {number} modifiedAt Slot modification time in ms
+       */
+      function createSaveRow(slot, modifiedAt) {
+        const row = document.createElement("div");
+        row.className = "save-row";
+
+        const name = document.createElement("span");
+        name.className = "save-name";
+        name.textContent = `File ${slot}`;
+
+        const age = document.createElement("span");
+        age.className = "save-age";
+        age.textContent = formatSaveAge(modifiedAt);
+        name.append(age);
+
+        row.append(
+          name,
+          createSaveButton(iconDownload, `Download file ${slot}`, () =>
+            player.api.downloadSavegame(slot),
+          ),
+          createSaveButton(iconUpload, `Replace file ${slot}`, () =>
+            uploadToSlot(slot),
+          ),
+        );
+        return row;
+      }
+
+      /**
+       * Icon-only button whose label doubles as aria-label and tooltip
+       */
+      function createSaveButton(icon, label, onClick) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "save-button save-button-icon";
+        button.setAttribute("aria-label", label);
+        button.title = label;
+        button.innerHTML = icon;
+        button.addEventListener("click", onClick);
+        return button;
+      }
+
+      /**
+       * Lowest unoccupied slot, or `undefined` when every slot is taken
+       *
+       * @param {number[]} usedSlots Occupied slot numbers
+       * @returns {number | undefined}
+       */
+      function firstFreeSlot(usedSlots) {
+        for (let slot = 1; slot <= saveSlotCount; slot++) {
+          if (!usedSlots.includes(slot)) return slot;
+        }
+        return undefined;
+      }
+
+      /**
+       * Friendly relative age of a save, e.g. "just now" or "2 days ago".
+       * Relies on IDBFS persisting each slot's mtime across sessions.
+       *
+       * @param {number} timestamp Modification time in ms
+       */
+      function formatSaveAge(timestamp) {
+        const ageSeconds = (Date.now() - timestamp) / 1000;
+        const units = [
+          ["year", 31536000],
+          ["month", 2592000],
+          ["day", 86400],
+          ["hour", 3600],
+          ["minute", 60],
+        ];
+        for (const [unit, secondsPerUnit] of units) {
+          if (ageSeconds >= secondsPerUnit) {
+            return relativeTimeFormatter.format(
+              -Math.floor(ageSeconds / secondsPerUnit),
+              unit,
+            );
+          }
+        }
+        return "just now";
+      }
+
+      /**
+       * Hand a slot to the engine's upload picker, then refresh the list.
+       * The picker writes straight into the in-memory FS, but its hidden
+       * <input> is detached from the document, so no change event reaches us –
+       * poll the directory until the slot actually lands instead.
+       *
+       * @param {number} slot 1-based slot to write the chosen file into
+       */
+      function uploadToSlot(slot) {
+        player.api.uploadSavegame(slot);
+        watchForSaveChange();
+      }
+
+      /**
+       * Poll until the picked file lands, then refresh the list. Gives up after
+       * a minute or once the panel closes – the user dismissed the picker
+       * without choosing a file.
+       */
+      function watchForSaveChange() {
+        clearInterval(saveWatchId);
+        const slotsBeforeUpload = readSaveSlots();
+        let elapsedMs = 0;
+        saveWatchId = setInterval(() => {
+          elapsedMs += 500;
+          if (slotsChanged(slotsBeforeUpload, readSaveSlots())) {
+            renderSaveSlots();
+            clearInterval(saveWatchId);
+          } else if (elapsedMs >= 60000 || !saveDialog.open) {
+            clearInterval(saveWatchId);
+          }
+        }, 500);
+      }
+
+      /**
+       * Whether a later slot read differs – a slot appeared or was overwritten
+       */
+      function slotsChanged(previousSlots, currentSlots) {
+        if (previousSlots.size !== currentSlots.size) return true;
+        for (const [slot, mtime] of currentSlots) {
+          if (previousSlots.get(slot) !== mtime) return true;
+        }
+        return false;
+      }
+
+      /**
+       * Watch for the first save write and, once it lands, reveal a
+       * one-time hint that saves can be backed up. Skipped entirely if the
+       * hint was already shown in an earlier session.
+       */
+      function setupSaveHint() {
+        const toast = document.getElementById("save-toast");
+        toast.querySelector("span").textContent =
+          `Game saved – ${hasTouchscreen ? "tap" : "click"} to back up`;
+        toast.addEventListener("click", () => {
+          hideSaveToast();
+          openSaveDialog();
+        });
+
+        let alreadySeen = false;
+        try {
+          alreadySeen = Boolean(localStorage.getItem(saveHintStorageKey));
+        } catch {}
+        if (alreadySeen) return;
+
+        saveHintPollId = setInterval(pollForNewSave, 4000);
+      }
+
+      /**
+       * Compare the current slots against the first observed snapshot; a
+       * new or freshly overwritten slot reveals the hint once
+       */
+      function pollForNewSave() {
+        const currentSlots = readSaveSlots();
+        if (saveSlotBaseline === undefined) {
+          // The first read is the baseline, never itself a "new save"
+          saveSlotBaseline = currentSlots;
+          return;
+        }
+        for (const [slot, mtime] of currentSlots) {
+          const previousMtime = saveSlotBaseline.get(slot);
+          if (previousMtime === undefined || mtime > previousMtime) {
+            revealSaveHint();
+            return;
+          }
+        }
+        saveSlotBaseline = currentSlots;
+      }
+
+      function revealSaveHint() {
+        clearInterval(saveHintPollId);
+        try {
+          localStorage.setItem(saveHintStorageKey, "1");
+        } catch {}
+        document.getElementById("save-toast").classList.add("visible");
+        setTimeout(hideSaveToast, 6000);
+      }
+
+      function hideSaveToast() {
+        document.getElementById("save-toast").classList.remove("visible");
+      }
+    </script>
+  </body>
 </html>
