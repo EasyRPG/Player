@@ -35,6 +35,7 @@
 #include "flash.h"
 #include "shake.h"
 #include "rand.h"
+#include "main_data.h"
 
 Game_Screen::Game_Screen()
 {
@@ -312,6 +313,7 @@ void Game_Screen::UpdateScreenEffects() {
 		data.tint_time_left = data.tint_time_left - 1;
 	}
 
+	UpdateZoom();
 	Flash::Update(data.flash_current_level,
 			data.flash_time_left,
 			data.flash_continuous,
@@ -355,6 +357,62 @@ void Game_Screen::Update() {
 	UpdateMovie();
 	UpdateWeather();
 	UpdateBattleAnimation();
+}
+
+void Game_Screen::SetZoom(int x, int y, int rate, int duration, int layer) {
+	double real_rate = static_cast<double>(rate) / 100.0;
+
+	// Calculate the anchor point such that (x,y) appears at the screen center
+	double tx = x;
+	double ty = y;
+
+	if (std::abs(real_rate - 1.0) > 0.001) {
+		tx = (Player::screen_width / 2.0 - x * real_rate) / (1.0 - real_rate);
+		ty = (Player::screen_height / 2.0 - y * real_rate) / (1.0 - real_rate);
+	}
+
+	// Cap the anchor point to the screen borders to prevent large offsets
+	tx = Utils::Clamp(tx, 0.0, static_cast<double>(Player::screen_width));
+	ty = Utils::Clamp(ty, 0.0, static_cast<double>(Player::screen_height));
+
+	// If layer is newly activated (was 0), snap current pos to target to avoid flying in from default/previous
+	if (maniac_zoom_layer == 0 && layer != 0) {
+		maniac_zoom_current_x = tx;
+		maniac_zoom_current_y = ty;
+		maniac_zoom_current_rate = 1.0;
+	}
+
+	maniac_zoom_target_x = static_cast<int>(std::round(tx));
+	maniac_zoom_target_y = static_cast<int>(std::round(ty));
+	maniac_zoom_target_rate = real_rate;
+	maniac_zoom_time_left = duration;
+	maniac_zoom_layer = layer;
+
+	// If duration is 0, apply immediately
+	if (duration <= 0) {
+		maniac_zoom_current_rate = maniac_zoom_target_rate;
+		maniac_zoom_current_x = static_cast<double>(maniac_zoom_target_x);
+		maniac_zoom_current_y = static_cast<double>(maniac_zoom_target_y);
+	}
+}
+
+
+void Game_Screen::UpdateZoom() {
+	if (maniac_zoom_time_left > 0) {
+		maniac_zoom_time_left--;
+		// Linear interpolation
+		double dt = static_cast<double>(maniac_zoom_time_left + 1);
+
+		maniac_zoom_current_rate += (maniac_zoom_target_rate - maniac_zoom_current_rate) / dt;
+
+		maniac_zoom_current_x += (static_cast<double>(maniac_zoom_target_x) - maniac_zoom_current_x) / dt;
+		maniac_zoom_current_y += (static_cast<double>(maniac_zoom_target_y) - maniac_zoom_current_y) / dt;
+	}
+	else {
+		maniac_zoom_current_rate = maniac_zoom_target_rate;
+		maniac_zoom_current_x = static_cast<double>(maniac_zoom_target_x);
+		maniac_zoom_current_y = static_cast<double>(maniac_zoom_target_y);
+	}
 }
 
 int Game_Screen::ShowBattleAnimation(int animation_id, int target_id, bool global, int start_frame) {

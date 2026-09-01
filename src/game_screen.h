@@ -132,6 +132,15 @@ public:
 	 */
 	void CancelBattleAnimation();
 
+	// Maniac Zoom Support
+	void SetZoom(int x, int y, int rate, int duration, int layer);
+	void UpdateZoom();
+
+	int GetZoomLayer() const { return maniac_zoom_layer; }
+	double GetZoomRate() const { return maniac_zoom_current_rate; }
+	int GetZoomX() const { return Utils::RoundTo<int>(maniac_zoom_current_x); }
+	int GetZoomY() const { return Utils::RoundTo<int>(maniac_zoom_current_y); }
+
 	/**
 	 * Whether or not a battle animation is currently playing.
 	 */
@@ -193,6 +202,17 @@ private:
 
 protected:
 	std::vector<Particle> particles;
+
+	// Maniac Zoom State
+	double maniac_zoom_current_x = 0.0;
+	double maniac_zoom_current_y = 0.0;
+	int maniac_zoom_target_x = 0;
+	int maniac_zoom_target_y = 0;
+
+	double maniac_zoom_current_rate = 1.0;
+	double maniac_zoom_target_rate = 1.0;
+	int maniac_zoom_time_left = 0;
+	int maniac_zoom_layer = 0; // 0 = Disabled
 
 	void StopWeather();
 	void UpdateRain();
