@@ -2795,7 +2795,7 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 	int pos_mode = ManiacBitmask(com.parameters[1], 0xFF);
 	params.position_x = ValueOrVariable(pos_mode, com.parameters[2]);
 	params.position_y = ValueOrVariable(pos_mode, com.parameters[3]);
-	params.fixed_to_map = com.parameters[4] > 0;
+	params.fixed_to_map = (com.parameters[4] & 1) != 0;
 	params.magnify_width = com.parameters[5];
 	params.magnify_height = params.magnify_width;
 	params.use_transparent_color = com.parameters[7] > 0;
@@ -2850,7 +2850,8 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 		if (Player::IsPatchManiac() && com.parameters.size() > 31 && com.parameters[20] >= 16) {
 			// The >= 16 check is needed because this bit is set when independent width/height scaling is used
 			// Since version 240423, Maniacs supports width/height scaling for special effects pictures.
-			params.magnify_height = ValueOrVariableBitfield((com.parameters[20] >> 1), 1, com.parameters[31]);
+			int scale_y_mode = ((com.parameters[20] >> 4) & 0xF) - 1;
+			params.magnify_height = ValueOrVariable(scale_y_mode, com.parameters[31]);
 		} else {
 			params.magnify_height = params.magnify_width;
 		}
@@ -2862,9 +2863,20 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 			params.spritesheet_rows = com.parameters[23];
 
 			// Animate and index selection are exclusive
-			if (com.parameters[24] == 2) {
+			int anim_mode = com.parameters[24];
+			if (anim_mode == 2 || anim_mode == 3) {
 				params.spritesheet_speed = com.parameters[25];
-				params.spritesheet_play_once = com.parameters[26];
+				params.spritesheet_play_once = com.parameters[26] != 0;
+				if (anim_mode == 3 && com.parameters.size() >= 34) {
+					int start_mode = (com.parameters[17] >> 24) & 0xF;
+					int end_mode = (com.parameters[17] >> 28) & 0xF;
+					params.spritesheet_start = ValueOrVariable(start_mode, com.parameters[32]) - 1;
+					params.spritesheet_end = ValueOrVariable(end_mode, com.parameters[33]) - 1;
+					params.spritesheet_frame = params.spritesheet_start;
+				} else {
+					params.spritesheet_start = 0;
+					params.spritesheet_end = (params.spritesheet_cols * params.spritesheet_rows) - 1;
+				}
 			} else {
 				// Picture data / LSD data frame number is 0 based, while event parameter counts from 1.
 				params.spritesheet_frame = ValueOrVariable(com.parameters[24], com.parameters[25]) - 1;
@@ -2887,7 +2899,12 @@ bool Game_Interpreter::CommandShowPicture(lcf::rpg::EventCommand const& com) { /
 			}
 			params.flip_x = (flags & 16) == 16;
 			params.flip_y = (flags & 32) == 32;
-			params.origin = com.parameters[1] >> 8;
+			
+			int origin_val = com.parameters[1] >> 8;
+			if ((com.parameters[4] & 256) != 0) {
+				origin_val += 100;
+			}
+			params.origin = origin_val;
 
 			if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
 				params.effect_power = ValueOrVariableBitfield(com.parameters[16], 0, params.effect_power);
@@ -2954,33 +2971,14 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 
 	struct {
 		bool wait = false;
-		// Starting from here are Maniac Extensions
-		// TODO: The extensions are not implemented
-		bool relative = false; // new position is relative to current
-		// when true these values preserve the values from a previous Show/MovePicture call
+		bool relative = false;
 		bool preserve_tone = false;
 		bool preserve_effect_mode = false;
 		bool preserve_blend_mode = false;
 		bool preserve_flip = false;
 		bool preserve_duration = false;
-		// Coordinates consider the scaled picture (when the origin is not centered)
 		bool position_scaled = false;
 	} options;
-
-	if (Player::IsPatchManiac()) {
-		int opts = com.parameters[15];
-		options.wait = (opts & (1 << 0)) > 0;
-		options.relative = (opts & (1 << 1)) > 0;
-		options.preserve_tone = (opts & (1 << 2)) > 0;
-		options.preserve_effect_mode = (opts & (1 << 3)) > 0;
-		options.preserve_blend_mode = (opts & (1 << 4)) > 0;
-		options.preserve_flip = (opts & (1 << 5)) > 0;
-		options.preserve_duration = (opts & (1 << 6)) > 0;
-		// Bit 7 is unused
-		options.position_scaled = (opts & (1 << 8)) > 0;
-	} else {
-		options.wait = com.parameters[15] != 0;
-	}
 
 	size_t param_size = com.parameters.size();
 
@@ -3011,7 +3009,8 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			if (Player::IsPatchManiac() && com.parameters.size() > 20 && com.parameters[20] >= 16) {
 				// The >= 16 check is needed because this bit is set when independent width/height scaling is used
 				// Since version 240423, Maniacs supports width/height scaling for special effects pictures.
-				params.magnify_height = ValueOrVariableBitfield((com.parameters[20] >> 1), 1, com.parameters[18]);
+				int scale_y_mode = ((com.parameters[20] >> 4) & 0xF) - 1;
+				params.magnify_height = ValueOrVariable(scale_y_mode, com.parameters[18]);
 			} else {
 				params.magnify_height = params.magnify_width;
 			}
@@ -3038,7 +3037,6 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 			}
 			params.flip_x = (flags & 16) == 16;
 			params.flip_y = (flags & 32) == 32;
-			params.origin = com.parameters[1] >> 8;
 
 			if (params.effect_mode == lcf::rpg::SavePicture::Effect_maniac_fixed_angle) {
 				params.effect_power = ValueOrVariableBitfield(com.parameters[4], 0, params.effect_power);
@@ -3054,7 +3052,62 @@ bool Game_Interpreter::CommandMovePicture(lcf::rpg::EventCommand const& com) { /
 		params.bottom_trans = param_size > 16 ? com.parameters[16] : params.top_trans;
 	}
 
+	if (Player::IsPatchManiac()) {
+		int opts = com.parameters[15];
+		options.wait = (opts & (1 << 0)) > 0;
+		options.relative = (opts & (1 << 1)) > 0;
+		options.preserve_tone = (opts & (1 << 2)) > 0;
+		options.preserve_effect_mode = (opts & (1 << 3)) > 0;
+		options.preserve_blend_mode = (opts & (1 << 4)) > 0;
+		options.preserve_flip = (opts & (1 << 5)) > 0;
+		options.preserve_duration = (opts & (1 << 6)) > 0;
+		options.position_scaled = (opts & (1 << 8)) > 0;
+	} else {
+		options.wait = com.parameters[15] != 0;
+	}
+
+	int origin_val = com.parameters[1] >> 8;
+	if (options.position_scaled) {
+		origin_val += 100;
+	}
+	params.origin = origin_val;
+
 	PicPointerPatch::AdjustMoveParams(pic_id, params);
+
+	if (Player::IsPatchManiac()) {
+		auto* pic_ptr = Main_Data::game_pictures->GetPicturePtr(pic_id);
+		if (pic_ptr && pic_ptr->Exists()) {
+			const auto& data = pic_ptr->data;
+			if (options.relative) {
+				params.position_x += data.finish_x;
+				params.position_y += data.finish_y;
+				params.magnify_width += data.finish_magnify;
+				params.magnify_height += data.maniac_finish_magnify_height;
+				params.top_trans += data.finish_top_trans;
+				params.bottom_trans += data.finish_bot_trans;
+			}
+			if (options.preserve_tone) {
+				params.red = data.finish_red;
+				params.green = data.finish_green;
+				params.blue = data.finish_blue;
+				params.saturation = data.finish_sat;
+			}
+			if (options.preserve_effect_mode) {
+				params.effect_mode = data.effect_mode;
+				params.effect_power = data.finish_effect_power;
+			}
+			if (options.preserve_blend_mode) {
+				params.blend_mode = data.easyrpg_blend_mode;
+			}
+			if (options.preserve_flip) {
+				params.flip_x = (data.easyrpg_flip & lcf::rpg::SavePicture::EasyRpgFlip_x) != 0;
+				params.flip_y = (data.easyrpg_flip & lcf::rpg::SavePicture::EasyRpgFlip_y) != 0;
+			}
+			if (options.preserve_duration) {
+				params.duration = data.time_left;
+			}
+		}
+	}
 
 	// Sanitize input
 	params.magnify_width = std::max(0, std::min(params.magnify_width, 2000));
@@ -4616,7 +4669,8 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	if (com.parameters.size() > 23 && com.parameters[0] >= 0x10000000 && params.effect_mode == 0) {
 		// The >= 0x10000000 check is needed because this bit is set when independent width/height scaling is used
 		// When using special effects on Maniacs, Height is set to Width
-		params.magnify_height = ValueOrVariableBitfield((com.parameters[0] >> 1), 7, com.parameters[23]);
+		int scale_y_mode = ((com.parameters[0] >> 28) & 0xF) - 1;
+		params.magnify_height = ValueOrVariable(scale_y_mode, com.parameters[23]);
 	} else {
 		params.magnify_height = params.magnify_width;
 	}
