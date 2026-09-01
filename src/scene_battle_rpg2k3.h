@@ -213,8 +213,7 @@ protected:
 	BattleActionReturn ProcessBattleActionPostEvents(Game_BattleAlgorithm::AlgorithmBase* action);
 	BattleActionReturn ProcessBattleActionFinished(Game_BattleAlgorithm::AlgorithmBase* action);
 
-	std::vector<std::string> GetBattleCommandNames(const Game_Actor* actor);
-	void SetBattleCommandsDisable(Window_Command& window, const Game_Actor* actor);
+	void GetBattleCommandNames(const Game_Actor* actor, std::vector<std::string>* commands, std::vector<bool>* commands_enabled);
 
 	std::unique_ptr<Sprite> ally_cursor, enemy_cursor;
 
