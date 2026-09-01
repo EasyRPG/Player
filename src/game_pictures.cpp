@@ -148,7 +148,12 @@ int Game_Pictures::GetDefaultNumberOfPictures() {
 	return 0;
 }
 
+int Game_Pictures::GetPictureCount() const {
+	return static_cast<int>(pictures.size());
+}
+
 Game_Pictures::Picture& Game_Pictures::GetPicture(int id) {
+	assert(id > 0);
 	if (EP_UNLIKELY(id > static_cast<int>(pictures.size()))) {
 		pictures.reserve(id);
 		while (static_cast<int>(pictures.size()) < id) {
@@ -159,7 +164,7 @@ Game_Pictures::Picture& Game_Pictures::GetPicture(int id) {
 }
 
 Game_Pictures::Picture* Game_Pictures::GetPicturePtr(int id) {
-	return id <= static_cast<int>(pictures.size())
+	return id > 0 && id <= static_cast<int>(pictures.size())
 		? &pictures[id - 1] : nullptr;
 }
 
@@ -468,6 +473,9 @@ void Game_Pictures::Picture::ApplyOrigin(bool is_move) {
 	}
 	data.finish_x = x;
 	data.finish_y = y;
+
+	// Origin was applied, prevent applying again in later calls
+	origin = 0;
 }
 
 void Game_Pictures::Picture::OnMapScrolled(int dx16, int dy16) {
@@ -781,4 +789,77 @@ void Game_Pictures::Picture::SetNonEffectParams(const Params& params, bool set_p
 
 int Game_Pictures::Picture::NumSpriteSheetFrames() const {
 	return data.spritesheet_cols * data.spritesheet_rows;
+}
+
+void Game_Pictures::MovePicture(int src_id, int dst_id) {
+	if (src_id == dst_id) {
+		return;
+	}
+
+	// Delete the destination, then swap
+	if (dst_id > 0) {
+		auto& dst_pic = GetPicture(dst_id);
+		dst_pic.Erase();
+	}
+
+	SwapPicture(src_id, dst_id);
+}
+
+void Game_Pictures::SwapPicture(int id1, int id2) {
+	if (id1 == id2 || (id1 <= 0 && id2 <= 0)) {
+		return;
+	}
+
+	auto max_id = std::max(id1, id2);
+	GetPicture(max_id); // Preallocate to ensure references are stable
+
+	Picture bad_pic{0}; // Sentinel when one of the pictures is invalid
+
+	auto* src_pic = &bad_pic;
+	auto* dst_pic = &bad_pic;
+
+	if (id1 > 0) {
+		src_pic = &GetPicture(id1);
+	} else {
+		bad_pic = Picture(id1);
+	}
+
+	if (id2 > 0) {
+		dst_pic = &GetPicture(id2);
+	} else {
+		bad_pic = Picture(id2);
+	}
+
+	// Handle Window Data (String Pictures)
+	if (src_pic->IsWindowAttached() || dst_pic->IsWindowAttached()) {
+		Main_Data::game_windows->SwapWindow(id1, id2);
+	}
+
+	std::swap(src_pic->data.ID, dst_pic->data.ID);
+	if (src_pic->sprite) {
+		if (id2 <= 0) {
+			src_pic->sprite.reset();
+		} else {
+			src_pic->sprite->SetPictureId(id2);
+		}
+	}
+	if (dst_pic->sprite) {
+		if (id1 <= 0) {
+			dst_pic->sprite.reset();
+		} else {
+			dst_pic->sprite->SetPictureId(id1);
+		}
+	}
+
+	// Cancel pending requests and restart them
+	if (src_pic->IsRequestPending()) {
+		RequestPictureSprite(*src_pic);
+	}
+
+	if (dst_pic->IsRequestPending()) {
+		RequestPictureSprite(*dst_pic);
+	}
+
+	// Must be last (invalidates references)
+	std::swap(*src_pic, *dst_pic);
 }

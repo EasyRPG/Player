@@ -4802,12 +4802,15 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 	});
 
 	if (!picture || !picture->Exists()) {
-		Output::Debug("ManiacGetPictureInfo: Picture {} does not exist", pic_id);
+		// Disabled as this command can be used to check whether a picture
+		// exists, making this diagnostic very spammy
+		//Output::Debug("ManiacGetPictureInfo: Picture {} does not exist", pic_id);
 		return true;
 	}
 
 	if (picture->IsRequestPending()) {
 		// Cannot do anything useful here without the dimensions
+		error_handler.Dismiss();
 		picture->MakeRequestImportant();
 		_async_op = AsyncOp::MakeYieldRepeat();
 		return true;
@@ -5151,12 +5154,105 @@ bool Game_Interpreter::CommandManiacControlGlobalSave(lcf::rpg::EventCommand con
 	return true;
 }
 
-bool Game_Interpreter::CommandManiacChangePictureId(lcf::rpg::EventCommand const&) {
+bool Game_Interpreter::CommandManiacChangePictureId(lcf::rpg::EventCommand const& com) {
+	/*
+		TPC Structure Reference:
+		@pic[target1].setId .move(target2, size) .ignoreError
+		@pic[target1].setId .swap(target2, size) .ignoreError
+		@pic[target1].setId .slide(distance, size) .ignoreError
+
+		Parameters:
+		[0] Operation: 0 = Move, 1 = Swap, 2 = Slide
+		[1] Packing:
+			Bits 0-3: Target 1 Mode (0: Const, 1: Var, 2: Indirect)
+			Bits 4-7: Size Mode (0: Const, 1: Var, 2: Indirect)
+			Bits 8-11: Object 2 / Distance Mode (0: Const, 1: Var, 2: Indirect)
+		[2] Target 1 Value
+		[3] Size Value
+		[4] Object 2 / Distance Value
+		[5] Ignore Error (1 = Ignore)
+	*/
+
 	if (!Player::IsPatchManiac()) {
 		return true;
 	}
 
-	Output::Warning("Maniac Patch: Command ChangePictureId not supported");
+	enum class Op {
+		Move,
+		Swap,
+		Slide
+	};
+
+	int op = com.parameters[0];
+	int from_id = ValueOrVariableBitfield(com, 1, 0, 2);
+	int size = ValueOrVariableBitfield(com, 1, 1, 3);
+	int arg = ValueOrVariableBitfield(com, 1, 2, 4); // Target 2 or Distance
+
+	bool ignore_error = com.parameters.size() > 5 && com.parameters[5] != 0;
+
+	if (size <= 0) {
+		return true;
+	}
+
+	auto& pictures = *Main_Data::game_pictures;
+
+	auto checkValidId = [&](int id, const char* msg) {
+		bool valid = id > 0;
+
+		if (!valid) {
+			auto outmsg = fmt::format("Maniac ChangePictureId {}: Invalid Picture ID {}", msg, id);
+			if (ignore_error) {
+				Output::DebugStr(outmsg);
+			} else {
+				Output::WarningStr(outmsg);
+			}
+		}
+
+		return valid;
+	};
+
+	if (op < 0 || op > 2) {
+		Output::Warning("Maniac ChangePictureId: Unknown operation {}", op);
+		return true;
+	}
+
+	auto operation = static_cast<Op>(op);
+
+	if (operation == Op::Slide) {
+		arg = from_id + arg;
+	}
+
+	auto func = (operation == Op::Swap)
+		? &Game_Pictures::SwapPicture
+		: &Game_Pictures::MovePicture;
+
+	for (int i = 0; i < size; ++i) {
+		int idx = i;
+
+		// Handle overlapping ranges
+		if (arg > from_id) {
+			idx = size - 1 - i;
+		}
+
+		int src_id = from_id + idx;
+		int dst_id = arg + idx;
+
+		if (!checkValidId(src_id, (
+			operation == Op::Move ? "Move (Source)" :
+			operation == Op::Swap ? "Swap (Source)" : "Slide (Source)"))) {
+				if (operation == Op::Swap) {
+					// Based on tests swapping with an invalid src is a no-op
+					continue;
+				}
+		}
+
+		checkValidId(dst_id, (
+			operation == Op::Move ? "Move (Dest)" :
+			operation == Op::Swap ? "Swap (Dest)" : "Slide (Dest)"));
+
+		(pictures.*func)(src_id, dst_id);
+	}
+
 	return true;
 }
 
