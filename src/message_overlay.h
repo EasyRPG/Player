@@ -71,7 +71,7 @@ private:
 
 	bool dirty = false;
 
-	int counter = 0;
+	double counter = 0;
 
 	bool show_all = false;
 };

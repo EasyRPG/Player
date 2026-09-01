@@ -285,7 +285,7 @@ RETRO_API void retro_set_environment(retro_environment_t cb) {
 
 	static retro_frame_time_callback frame_time_definition = {
 		retro_time_update,
-		1000000 / Game_Clock::GetTargetGameFps()
+		1000000 / DEFAULT_FPS
 	};
 
 	static retro_audio_callback audio_callback_definition = {
@@ -394,7 +394,7 @@ RETRO_API void retro_get_system_av_info(struct retro_system_av_info* info) {
 	info->geometry.max_width = fb_max_width;
 	info->geometry.max_height = fb_max_height;
 	info->geometry.aspect_ratio = 0.0f;
-	info->timing.fps = Game_Clock::GetTargetGameFps();
+	info->timing.fps = DEFAULT_FPS;
 	info->timing.sample_rate = AUDIO_SAMPLERATE;
 }
 

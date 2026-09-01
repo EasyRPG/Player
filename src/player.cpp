@@ -135,6 +135,10 @@ namespace Player {
 	int rng_seed = -1;
 	Game_ConfigPlayer player_config;
 	Game_ConfigGame game_config;
+
+	int frame_draw_accumulator = 0;
+	int frame_draw_percentage = 100;
+
 #ifdef __EMSCRIPTEN__
 	std::string emscripten_game_name;
 #endif
@@ -296,6 +300,11 @@ void Player::MainLoop() {
 	}
 }
 
+void Player::SetFrameSkip(int percentage) {
+	frame_draw_percentage = percentage;
+	frame_draw_accumulator = 0;
+}
+
 void Player::Pause() {
 	Audio().BGM_Pause();
 }
@@ -391,7 +400,13 @@ void Player::Update(bool update_scene) {
 
 void Player::Draw() {
 	Graphics::Update();
-	Graphics::Draw(*DisplayUi->GetDisplaySurface());
+
+	frame_draw_accumulator += frame_draw_percentage;
+	if (frame_draw_accumulator >= 100) {
+		frame_draw_accumulator -= 100;
+		Graphics::Draw(*DisplayUi->GetDisplaySurface());
+	}
+
 	DisplayUi->UpdateDisplay();
 }
 
@@ -990,6 +1005,11 @@ void Player::ResetGameObjects() {
 	RuntimePatches::OnResetGameObjects();
 
 	Input::ResetMask();
+
+	// Reset SetGameOption global settings
+	// Differs from Maniac Patch which simply keeps them upon reset
+	Player::SetFrameSkip(100);
+	Game_Clock::SetTargetGameFps(DEFAULT_FPS);
 }
 
 static bool DefaultLmuStartFileExists(const FilesystemView& fs) {

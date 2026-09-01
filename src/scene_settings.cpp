@@ -560,7 +560,7 @@ void Scene_Settings::UpdateButtonAdd() {
 	int& started = frame.scratch;
 	int& cancel_timer = frame.scratch2;
 
-	if (cancel_timer == Game_Clock::GetTargetGameFps() * 3) {
+	if (cancel_timer == DEFAULT_FPS * 3) {
 		options_window->Pop();
 		input_window->Refresh();
 		return;
@@ -607,9 +607,10 @@ bool Scene_Settings::RefreshInputEmergencyReset() {
 			Output::InfoStr("Input emergency reset started");
 			Output::InfoStr("Hold the keys for 3 seconds");
 		}
-		input_reset_counter++;
 
-		if (input_reset_counter == Game_Clock::GetTargetGameFps() * 3) {
+		input_reset_counter += static_cast<double>(DEFAULT_FPS) / Game_Clock::GetTargetGameFps();
+
+		if (input_reset_counter >= DEFAULT_FPS * 3) {
 			if (input_window->GetInputButton() == Input::InputButton::BUTTON_COUNT) {
 				// No last button yet: reset everything
 				Output::InfoStr("All buttons reset to default");
@@ -625,7 +626,7 @@ bool Scene_Settings::RefreshInputEmergencyReset() {
 				}
 				input_window->ResetMapping();
 			}
-		} else if (input_reset_counter == Game_Clock::GetTargetGameFps() * 6) {
+		} else if (input_reset_counter >= DEFAULT_FPS * 6) {
 			Output::InfoStr("All buttons reset to default");
 			if (input_window->GetActive()) {
 				input_window->SetIndex(0);

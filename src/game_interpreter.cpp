@@ -52,6 +52,7 @@
 #include "maniac_patch.h"
 #include "memory_management.h"
 #include "pixel_format.h"
+#include "options.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
 #include "scene_gameover.h"
@@ -485,7 +486,7 @@ void Game_Interpreter::Update(bool reset_loop_count) {
 			if (_keyinput.timed) {
 				// 10 per second
 				Main_Data::game_variables->Set(_keyinput.time_variable,
-						(_keyinput.wait_frames * 10) / Game_Clock::GetTargetGameFps());
+						(_keyinput.wait_frames * 10) / DEFAULT_FPS);
 				Game_Map::SetNeedRefreshForVarChange(_keyinput.time_variable);
 				RuntimePatches::OnVariableChanged(_keyinput.time_variable);
 			}
@@ -5165,17 +5166,102 @@ bool Game_Interpreter::CommandManiacSetGameOption(lcf::rpg::EventCommand const& 
 		return true;
 	}
 
-	int operation = com.parameters[1];
-	//int value = ValueOrVariable(com.parameters[0], com.parameters[2]);
+	const auto option_type = com.parameters[1];
 
-	switch (operation) {
-		case 2: // Change Picture Limit (noop, we support arbitrary amount of pictures)
-			break;
-		default:
-			Output::Warning("Maniac SetGameOption: Operation {} not supported", operation);
+	switch (option_type) {
+	case 0: { // .runWhenInactive or .pauseWhenInactive
+		const bool run_when_inactive = (ValueOrVariable(com.parameters[0], com.parameters[2]) != 0);
+
+		if (DisplayUi) {
+			DisplayUi->SetPauseWhenFocusLost(!run_when_inactive);
+		}
+		return true;
 	}
+	case 1: { // FatalMix: .fatal fps, testPlayMode, fastForwardText
+		int fps = ValueOrVariable(com.parameters[0], com.parameters[2]); // Game Speed
+		const int test_play_mode = com.parameters[3] & 3; // 0: Keep, 1: Off, 2: On
+		const bool enable_fast_forward_text = (com.parameters[3] & 16) != 0;
 
-	return true;
+		// Implementation difference: We reset the frame rate when the game ends
+		if (fps > 0) {
+			Game_Clock::SetTargetGameFps(fps);
+		}
+
+		switch (test_play_mode) {
+		case 1:
+			Player::debug_flag = false;
+			break;
+		case 2:
+			Player::debug_flag = true;
+			break;
+		}
+
+		// Implementation difference: We always enable this while in TestPlay mode
+		// This option only configures the behaviour outside of TestPlay
+		Main_Data::game_system->SetFastForwardText(enable_fast_forward_text);
+		return true;
+	}
+	case 2: { // .picLimit limit
+		// Change Picture Limit (noop, we support arbitrary amount of pictures)
+		const int pic_limit = ValueOrVariable(com.parameters[0], com.parameters[2]);
+		Output::Debug("Maniac SetGameOption: Picture Limit set to {}", pic_limit);
+		return true;
+	}
+	case 3: { // .fullFrame, .oneFifth, .oneThird, .oneHalf
+		// Frame Skip
+		const int skip_mode = com.parameters[2];
+		int percentage = 100;
+		switch (skip_mode) {
+			case 1:
+				percentage = 20;
+				break; // 1/5
+			case 2:
+				percentage = 33;
+				break; // 1/3
+			case 3:
+				percentage = 50;
+				break; // 1/2
+		}
+		Player::SetFrameSkip(percentage);
+		return true;
+	}
+	case 4: { // .mouse.disableMsgProcession value
+		// Left Mouse button can continue messages
+		const bool enable_mouse_for_messages = (ValueOrVariable(com.parameters[0], com.parameters[2]) == 0);
+		Main_Data::game_system->SetMessageMouseEnabled(enable_mouse_for_messages);
+		return true;
+	}
+	case 5: { // .btlOrigin position
+		// Battle UI position
+		// 0: center, 1: topLeft, 2: bottomLeft, 3: topRight, 4: bottomRight,
+		// 5: top, 6: bottom, 7: left, 8: right
+		const int battle_origin = com.parameters[2];
+
+		// TODO: This sets the rendering location for the battle scene
+		// Needs modifying all the drawing code in the battle system
+		Output::Warning("Maniac SetGameOption: Reposition Battle UI (position: {}) not implemented.", battle_origin);
+		Main_Data::game_system->SetBattleOrigin(battle_origin);
+		return true;
+	}
+	case 6: { // .animLimit limit
+		// Battle Animation Limit
+		Output::Warning("Maniac SetGameOption: Battle Animation limit not implemented.");
+		return true;
+	}
+	case 7: { // .winFaceSize width, height
+		const int width = ValueOrVariable(com.parameters[0], com.parameters[2]);
+		const int height = ValueOrVariable(com.parameters[0], com.parameters[3]);
+
+		Output::Warning("Maniac SetGameOption: Custom WinFaceSize ({}x{}) not implemented.", width, height);
+		// TODO: Values must be used in OnFaceReady. Maniacs appears to not hardcode 4 faces per line so this needs
+		// further testing
+		Main_Data::game_system->SetMessageFaceSize(width, height);
+		return true;
+	}
+	default:
+		Output::Warning("Maniac SetGameOption: Unknown Operation {}", static_cast<int>(option_type));
+		return true;
+	}
 }
 
 bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const& com) {
