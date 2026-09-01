@@ -63,7 +63,7 @@ static uint32_t GetDefaultFormat() {
 #ifdef WORDS_BIGENDIAN
 	return SDL_PIXELFORMAT_ABGR32;
 #else
-	return SDL_PIXELFORMAT_RGBA32;
+	return SDL_PIXELFORMAT_BGRA32;
 #endif
 }
 
@@ -88,7 +88,7 @@ static int GetFormatRank(uint32_t fmt) {
 		case SDL_PIXELFORMAT_RGBA32:
 			return 2;
 		case SDL_PIXELFORMAT_BGRA32:
-			return 2;
+			return 3;
 		case SDL_PIXELFORMAT_ARGB32:
 			return 1;
 		case SDL_PIXELFORMAT_ABGR32:

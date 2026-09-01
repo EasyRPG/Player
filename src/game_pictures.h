@@ -20,7 +20,6 @@
 
 // Headers
 #include <string>
-#include <deque>
 #include "async_handler.h"
 #include <lcf/rpg/savepicture.h>
 #include "sprite_picture.h"
@@ -127,7 +126,12 @@ public:
 		void OnMapScrolled(int dx, int dy);
 
 		void AttachWindow(const Window_Base& window);
+		void LoadCanvas();
+		lcf::rpg::SavePicture OnSave() const;
+
+		bool IsNormalPicture() const;
 		bool IsWindowAttached() const;
+		bool IsCanvas() const;
 	};
 
 	Picture& GetPicture(int id);

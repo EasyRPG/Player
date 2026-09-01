@@ -586,7 +586,7 @@ void Window_Message::UpdateMessage() {
 						text_color = pres.values[1] * 10 + pres.values[0];
 					} else {
 						// Maniacs \C[n] (arbitrary amount of colors)
-						text_color = pres.values[0];
+						text_color = pres.values.empty() ? 0 : pres.values[0];
 					}
 				}
 				else {

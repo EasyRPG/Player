@@ -248,6 +248,7 @@ namespace {
 		BitmapRef bmp;
 
 		const auto key = MakeHashKey(s.directory, filename, transparent, extra_flags);
+
 		auto it = cache.find(key);
 		if (it == cache.end()) {
 			if (filename == CACHE_DEFAULT_BITMAP) {
@@ -475,7 +476,7 @@ BitmapRef Cache::Tile(std::string_view filename, int tile_id) {
 	} else { return it->second.lock(); }
 }
 
-BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, bool flip_x, bool flip_y, const Tone& tone, const Color& blend) {
+BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, bool flip_x, bool flip_y, const Tone& tone, const Color& blend, bool invalidate) {
 	std::string id = ToString(src_bitmap->GetId());
 
 	if (id.empty()) {
@@ -497,7 +498,7 @@ BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, boo
 
 	const auto it = cache_effects.find(key);
 
-	if (it == cache_effects.end() || it->second.expired()) {
+	if (it == cache_effects.end() || it->second.expired() || invalidate) {
 		BitmapRef bitmap_effects;
 
 		auto create = [&rect] () -> BitmapRef {
@@ -533,6 +534,16 @@ BitmapRef Cache::SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, boo
 
 		return(cache_effects[key] = bitmap_effects).lock();
 	} else { return it->second.lock(); }
+}
+
+void Cache::Invalidate(std::string_view section) {
+	for (auto it = cache.begin(); it != cache.end(); ) {
+		if (StartsWith(it->first, section)) {
+			it = cache.erase(it);
+		} else {
+			++it;
+		}
+	}
 }
 
 void Cache::Clear() {

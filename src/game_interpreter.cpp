@@ -20,6 +20,7 @@
 #include <ctime>
 #include <iomanip>
 #include <iostream>
+#include <lcf/scope_guard.h>
 #include <regex>
 #include <sstream>
 #include <string>
@@ -47,7 +48,10 @@
 #include "game_interpreter_control_variables.h"
 #include "game_windows.h"
 #include "json_helper.h"
+#include "lcf/rpg/savepicture.h"
 #include "maniac_patch.h"
+#include "memory_management.h"
+#include "pixel_format.h"
 #include "spriteset_map.h"
 #include "sprite_character.h"
 #include "scene_gameover.h"
@@ -70,6 +74,8 @@
 #include "transition.h"
 #include "baseui.h"
 #include "algo.h"
+#include "sprite_picture.h"
+#include "bitmap.h"
 
 using namespace Game_Interpreter_Shared;
 
@@ -809,14 +815,16 @@ bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
 			return CmdSetup<&Game_Interpreter::CommandManiacChangePictureId, 6>(com);
 		case Cmd::Maniac_SetGameOption:
 			return CmdSetup<&Game_Interpreter::CommandManiacSetGameOption, 4>(com);
-		case Cmd::Maniac_ControlStrings:
-			return CmdSetup<&Game_Interpreter::CommandManiacControlStrings, 8>(com);
-		case Cmd::Maniac_WritePicture:
-			return CmdSetup<&Game_Interpreter::CommandManiacWritePicture, 5>(com);
 		case Cmd::Maniac_CallCommand:
 			return CmdSetup<&Game_Interpreter::CommandManiacCallCommand, 6>(com);
+		case Cmd::Maniac_ControlStrings:
+			return CmdSetup<&Game_Interpreter::CommandManiacControlStrings, 8>(com);
 		case Cmd::Maniac_GetGameInfo:
 			return CmdSetup<&Game_Interpreter::CommandManiacGetGameInfo, 8>(com);
+		case Cmd::Maniac_EditPicture:
+			return CmdSetup<&Game_Interpreter::CommandManiacEditPicture, 8>(com);
+		case Cmd::Maniac_WritePicture:
+			return CmdSetup<&Game_Interpreter::CommandManiacWritePicture, 5>(com);
 		case Cmd::EasyRpg_SetInterpreterFlag:
 			return CmdSetup<&Game_Interpreter::CommandEasyRpgSetInterpreterFlag, 2>(com);
 		case Cmd::EasyRpg_ProcessJson:
@@ -4251,9 +4259,27 @@ bool Game_Interpreter::CommandManiacGetGameInfo(lcf::rpg::EventCommand const& co
 			Main_Data::game_variables->Set(var + 1, Player::screen_height);
 			break;
 		case 3: // Get pixel info
-			// FIXME: figure out how 'Pixel info' works
-			Output::Warning("GetGameInfo: Option 'Pixel Info' not implemented.");
+		{
+			// [0] Packing: x pos, y pos, width, height
+			int pic_x = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[3]);
+			int pic_y = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[4]);
+			int pic_w = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[5]);
+			int pic_h = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[6]);
+			int dst_var_id = com.parameters[7];
+
+			// Bit 0: Ignore Alpha (return 0x00RRGGBB instead of 0xFFRRGGBB)
+			bool ignore_alpha = (com.parameters[2] & 1) != 0;
+
+			// Creates a snapshot of the current frame
+			BitmapRef screen = DisplayUi->CaptureScreen();
+			Rect frame_rect{pic_x, pic_y, pic_w, pic_h};
+
+			if (!ManiacPatch::WritePixelsFromBitmapToVariable(*screen, frame_rect, dst_var_id, ignore_alpha, *Main_Data::game_variables)) {
+				return true;
+			}
+
 			break;
+		}
 		case 4: // Get command interpreter state
 		{
 			// Parameter "Nest" in the English version of Maniacs
@@ -4750,24 +4776,98 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 		return true;
 	}
 
-	int pic_id = ValueOrVariable(com.parameters[0], com.parameters[3]);
-	auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
+	int pic_id = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[3]);
+	if (pic_id <= 0) {
+		Output::Warning("ManiacGetPictureInfo: Invalid picture ID {}", pic_id);
+		return true;
+	}
 
-	if (pic.IsRequestPending()) {
+	auto* picture = Main_Data::game_pictures->GetPicturePtr(pic_id);
+
+	int info_type = com.parameters[1];
+
+	auto error_handler = lcf::makeScopeGuard([&]() {
+		if (info_type != 3) {
+			// In case of missing image the non-pixel functions set the
+			// output variables to 0
+			Main_Data::game_variables->Set(com.parameters[4], 0);
+			Main_Data::game_variables->Set(com.parameters[5], 0);
+			Main_Data::game_variables->Set(com.parameters[6], 0);
+			Main_Data::game_variables->Set(com.parameters[7], 0);
+
+			for (int i = 4; i <= 7; ++i) {
+				Game_Map::SetNeedRefreshForVarChange(com.parameters[i]);
+			}
+		}
+	});
+
+	if (!picture || !picture->Exists()) {
+		Output::Debug("ManiacGetPictureInfo: Picture {} does not exist", pic_id);
+		return true;
+	}
+
+	if (picture->IsRequestPending()) {
 		// Cannot do anything useful here without the dimensions
-		pic.MakeRequestImportant();
+		picture->MakeRequestImportant();
 		_async_op = AsyncOp::MakeYieldRepeat();
 		return true;
 	}
 
-	const auto& data = pic.data;
+	if (!picture->sprite) {
+		Output::Debug("ManiacGetPictureInfo: Picture {} has no sprite", pic_id);
+		return true;
+	}
 
+	error_handler.Dismiss();
+
+	auto* sprite = picture->sprite.get();
+	sprite->RefreshPictureState();
+
+	const auto& data = picture->data;
+
+	// Type 3: Pixel Data Extraction
+	if (info_type == 3) {
+		auto bitmap = sprite->GetBitmap();
+		// Determine Spritesheet frame
+		auto src_rect = sprite->GetSrcRect();
+
+		// Packing: x pos, y pos, width, height, var_id
+		int pic_x = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[4]);
+		int pic_y = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[5]);
+		int pic_w = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[6]);
+		int pic_h = ValueOrVariableBitfield(com.parameters[0], 4, com.parameters[7]);
+		int dst_var_id = ValueOrVariableBitfield(com.parameters[0], 5, com.parameters[8]);
+
+		bool apply_effects = (com.parameters[2] & 1) != 0;
+		// Bit 0: Ignore Alpha (return 0x00RRGGBB instead of 0xFFRRGGBB)
+		bool ignore_alpha = (com.parameters[2] & 2) != 0;
+
+		Rect frame_rect = src_rect;
+		frame_rect.width = pic_w;
+		frame_rect.height = pic_h;
+		frame_rect.x += pic_x;
+		frame_rect.y += pic_y;
+
+		if (apply_effects && sprite->IsSpriteEffectActive()) {
+			// .dynamic: Reflect color tone, flash, and other effects
+			bitmap = sprite->RefreshBitmap();
+		}
+
+		if (!ManiacPatch::WritePixelsFromBitmapToVariable(*bitmap, frame_rect, dst_var_id, ignore_alpha, *Main_Data::game_variables)) {
+			return true;
+		}
+
+		Game_Map::SetNeedRefresh(true);
+		return true;
+	}
+
+	// Logic for Info Types 0, 1, 2
 	int x = 0;
 	int y = 0;
-	int width = pic.sprite ? pic.sprite->GetWidth() : 0;
-	int height = pic.sprite ? pic.sprite->GetHeight() : 0;
+	int width = sprite->GetWidth();
+	int height = sprite->GetHeight();
 
-	switch (com.parameters[1]) {
+	switch (info_type) {
 		case 0:
 			x = Utils::RoundTo<int>(data.current_x);
 			y = Utils::RoundTo<int>(data.current_y);
@@ -4784,9 +4884,14 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 			width = Utils::RoundTo<int>(width * data.finish_magnify / 100.0);
 			height = Utils::RoundTo<int>(height * data.maniac_finish_magnify_height / 100.0);
 			break;
+		default:
+			Output::Warning("ManiacGetPictureInfo: Unknown info type {}", info_type);
 	}
 
 	switch (com.parameters[2]) {
+		case 0:
+			// X/Y is center
+			break;
 		case 1:
 			// X/Y is top-left corner
 			x -= (width / 2);
@@ -4800,6 +4905,8 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 			height += y;
 			break;
 		}
+		default:
+			Output::Warning("ManiacGetPictureInfo: Unknown origin {}", com.parameters[2]);
 	}
 
 	Main_Data::game_variables->Set(com.parameters[4], x);
@@ -4807,7 +4914,9 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 	Main_Data::game_variables->Set(com.parameters[6], width);
 	Main_Data::game_variables->Set(com.parameters[7], height);
 
-	Game_Map::SetNeedRefresh(true);
+	for (int i = 4; i <= 7; ++i) {
+		Game_Map::SetNeedRefreshForVarChange(com.parameters[i]);
+	}
 
 	return true;
 }
@@ -5363,6 +5472,94 @@ bool Game_Interpreter::CommandManiacControlStrings(lcf::rpg::EventCommand const&
 	return true;
 }
 
+bool Game_Interpreter::CommandManiacEditPicture(lcf::rpg::EventCommand const& com) {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	int pic_id = ValueOrVariableBitfield(com.parameters[0], 0, com.parameters[1]);
+	if (pic_id <= 0) {
+		Output::Warning("ManiacEditPicture: Invalid picture ID {}", pic_id);
+		return true;
+	}
+
+	auto* picture = Main_Data::game_pictures->GetPicturePtr(pic_id);
+
+	if (!picture || !picture->Exists()) {
+		Output::Debug("ManiacEditPicture: Picture {} does not exist", pic_id);
+		return true;
+	}
+
+	if (picture->IsRequestPending()) {
+		picture->MakeRequestImportant();
+		_async_op = AsyncOp::MakeYieldRepeat();
+		return true;
+	}
+
+	if (!picture->sprite) {
+		Output::Debug("ManiacEditPicture: Picture {} has no sprite", pic_id);
+		return true;
+	}
+
+	auto* sprite = picture->sprite.get();
+	sprite->RefreshPictureState();
+	Rect src_rect = sprite->GetSrcRect();
+
+	auto bitmap = sprite->GetBitmap();
+
+	BitmapRef writable_bitmap = bitmap;
+
+	if (picture->IsWindowAttached()) {
+		// If this is a Window (String Picture), the visual content is generated by the Window class.
+		// We force a refresh/draw cycle here to ensure we read the actual text/window graphics.
+		const auto& window = Main_Data::game_windows->GetWindow(pic_id);
+		if (window.window) {
+			bitmap->Clear();
+			window.window->Draw(*bitmap);
+		}
+	} else if (picture->IsCanvas()) {
+		// no-op
+	} else {
+		// Must be copied to avoid modifiying the original picture
+		writable_bitmap = Bitmap::Create(*bitmap, bitmap->GetRect(), true);
+		writable_bitmap->SetId(fmt::format("Canvas://{}", bitmap->GetId()));
+		sprite->SetBitmap(writable_bitmap);
+		sprite->SetSrcRect(src_rect);
+	}
+
+	picture->data.name = {};
+	picture->data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_canvas;
+
+	// Packing: x pos, y pos, width, height, var_id
+	int pic_x = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[2]);
+	int pic_y = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[3]);
+	int pic_w = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[4]);
+	int pic_h = ValueOrVariableBitfield(com.parameters[0], 4, com.parameters[5]);
+	int start_var_id = ValueOrVariableBitfield(com.parameters[0], 5, com.parameters[6]);
+
+	int flags = com.parameters[7];
+	// When no flag is set the area is cleared and a OP_OVER blit occurs
+	bool flag_opaq = (flags & 1) != 0; // Blit with OP_SRC
+	bool flag_skip_trans = (flags & 2) != 0; // Blit with OP_OVER
+
+	bool clear_dst = !flag_opaq && !flag_skip_trans;
+	bool ignore_alpha = flag_opaq;
+
+	// Calculate Spritesheet Offset
+	// Operations are relative to the currently active cell
+	Rect frame_rect = src_rect;
+	frame_rect.x += pic_x;
+	frame_rect.y += pic_y;
+	frame_rect.width = pic_w;
+	frame_rect.height = pic_h;
+
+	if (ManiacPatch::WritePixelsFromVariableToBitmap(*writable_bitmap, frame_rect, start_var_id, clear_dst, ignore_alpha, *Main_Data::game_variables)) {
+		sprite->SetDirty(true);
+	}
+
+	return true;
+}
+
 bool Game_Interpreter::CommandManiacWritePicture(lcf::rpg::EventCommand const& com) {
 	if (!Player::IsPatchManiac()) {
 		return true;
@@ -5402,58 +5599,62 @@ bool Game_Interpreter::CommandManiacWritePicture(lcf::rpg::EventCommand const& c
 	// Prepare Bitmap
 	BitmapRef bitmap;
 
+	Rect src_rect;
+
 	if (target_type == 0) {
 		// Target: Screen (.screen)
 		bitmap = DisplayUi->CaptureScreen();
+		src_rect = bitmap->GetRect();
 	} else if (target_type == 1) {
 		// Target: Picture (.pic)
 		int pic_id = ValueOrVariableBitfield(com, 0, 0, 2);
 
 		if (pic_id <= 0) {
-			Output::Warning("ManiacSaveImage: Invalid Picture ID {}", pic_id);
+			Output::Warning("ManiacWriteImage: Invalid picture ID {}", pic_id);
 			return true;
 		}
 
-		auto& picture = Main_Data::game_pictures->GetPicture(pic_id);
+		auto* picture = Main_Data::game_pictures->GetPicturePtr(pic_id);
 
-		if (picture.IsRequestPending()) {
-			picture.MakeRequestImportant();
+		if (!picture || !picture->Exists()) {
+			Output::Debug("ManiacWriteImage: Picture {} does not exist", pic_id);
+			return true;
+		}
+
+		if (picture->IsRequestPending()) {
+			picture->MakeRequestImportant();
 			_async_op = AsyncOp::MakeYieldRepeat();
 			return true;
 		}
 
-		const auto sprite = picture.sprite.get();
+		if (!picture->sprite) {
+			Output::Debug("ManiacWriteImage: Picture {} has no sprite", pic_id);
+			return true;
+		}
+
+		auto& sprite = picture->sprite;
+		sprite->RefreshPictureState();
+
+		bitmap = picture->sprite->GetBitmap();
+
+		// Determine Spritesheet frame
+		src_rect = sprite->GetSrcRect();
 
 		// Retrieve bitmap
-		if (picture.IsWindowAttached()) {
-			// Maniac ignores the opaque setting for String Picture
-			bitmap = picture.sprite->GetBitmap();
-		} else if (picture.data.name.empty()) {
-			// Not much we can do here (also shouldn't happen normally)
-			bitmap = picture.sprite->GetBitmap();
-		} else {
+		// Cannot change transparency of images that are not reloadable from a file (window and canvas)
+		// Appears to match Maniacs behaviour
+		if (picture->IsNormalPicture()) {
 			// Fetch picture with correct transparency
-			bitmap = Cache::Picture(picture.data.name, !is_opaque);
+			bitmap = Cache::Picture(picture->data.name, !is_opaque);
 		}
 
 		if (bitmap) {
-			// Determine Spritesheet frame
-			Rect src_rect = picture.sprite->GetSrcRect();
-
-			if (apply_effects) {
+			if (apply_effects && sprite->IsSpriteEffectActive()) {
 				// .dynamic: Reflect color tone, flash, and other effects
-				auto tone = sprite->GetTone();
-				auto flash = sprite->GetFlashEffect();
-				auto flip_x = sprite->GetFlipX();
-				auto flip_y = sprite->GetFlipY();
-				bitmap = Cache::SpriteEffect(bitmap, src_rect, flip_x, flip_y, tone, flash);
-			} else if (src_rect != bitmap->GetRect()) {
-				// .static: Crop specific cell if it's a spritesheet
-				bitmap = Bitmap::Create(*bitmap, src_rect);
+				bitmap = sprite->RefreshBitmap();
 			}
 		}
-	}
-	else {
+	} else {
 		Output::Warning("ManiacSaveImage: Unsupported target type {}", target_type);
 		return true;
 	}
@@ -5466,11 +5667,11 @@ bool Game_Interpreter::CommandManiacWritePicture(lcf::rpg::EventCommand const& c
 			filename += ".png";
 		}
 
-		auto found_file = FileFinder::Save().FindFile(filename);
-
-		auto os = FileFinder::Save().OpenOutputStream(found_file.empty() ? filename : found_file);
-		if (os) {
-			bitmap->WritePNG(os);
+		auto img_out = FileFinder::OpenWrite(filename);
+		if (img_out) {
+			bitmap->WritePNG(img_out, src_rect);
+			// Not ideal but figuring out the exact cache entry is complicated
+			Cache::Invalidate("Picture");
 		} else {
 			Output::Warning("ManiacSaveImage: Failed to open file for writing: {}", filename);
 		}
