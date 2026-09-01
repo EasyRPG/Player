@@ -4802,12 +4802,15 @@ bool Game_Interpreter::CommandManiacGetPictureInfo(lcf::rpg::EventCommand const&
 	});
 
 	if (!picture || !picture->Exists()) {
-		Output::Debug("ManiacGetPictureInfo: Picture {} does not exist", pic_id);
+		// Disabled as this command can be used to check whether a picture
+		// exists, making this diagnostic very spammy
+		//Output::Debug("ManiacGetPictureInfo: Picture {} does not exist", pic_id);
 		return true;
 	}
 
 	if (picture->IsRequestPending()) {
 		// Cannot do anything useful here without the dimensions
+		error_handler.Dismiss();
 		picture->MakeRequestImportant();
 		_async_op = AsyncOp::MakeYieldRepeat();
 		return true;
