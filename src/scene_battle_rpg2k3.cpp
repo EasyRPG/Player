@@ -987,6 +987,7 @@ void Scene_Battle_Rpg2k3::vUpdate() {
 		}
 	}
 
+	UpdateCommonEvents();
 	UpdateAnimations();
 	UpdateGraphics();
 }
@@ -1029,6 +1030,10 @@ bool Scene_Battle_Rpg2k3::CheckBattleEndAndScheduleEvents(EventTriggerType tt, G
 	}
 
 	if (CheckBattleEndConditions()) {
+		return false;
+	}
+
+	if (ScheduleNextBattleBeginCommonEvent()) {
 		return false;
 	}
 

@@ -39,14 +39,6 @@ public:
 	using Game_Interpreter::Game_Interpreter;
 
 	/**
-	 * Sets up the interpreter with given state.
-	 *
-	 * @param save event to load.
-	 *
-	 */
-	void SetState(const lcf::rpg::SaveEventExecState& save);
-
-	/**
 	 * Called when we change maps.
 	 */
 	void OnMapChange();
@@ -87,12 +79,6 @@ private:
 	bool CommandEasyRpgPathfinder(lcf::rpg::EventCommand const& com);
 	bool CommandEasyRpgWaitForSingleMovement(lcf::rpg::EventCommand const& com);
 	AsyncOp ContinuationShowInnStart(int indent, int choice_result, int price);
-
-	bool CommandSmartMoveRoute(
-		lcf::rpg::EventCommand const& com,
-		int maxRouteStepsDefault, int maxSearchStepsDefault,
-		int abortIfAlreadyMovingDefault
-	);  // Internal generic path finder function.
 
 	static std::vector<Game_Character*> pending;
 };
