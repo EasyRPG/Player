@@ -1,0 +1,14 @@
+utilities:
+  Game_Character* Game_Character::GetCharacter(int character_id, int event_id);
+  Game_Character& Game_Character::GetPlayer();
+
+helps:
+Ghabry — ??:??
+  every chara on the map is an event. All the map data is stored in Game_Map (variable is called `events`).
+  Events can have their own interpreters that run in the background (called a "Parallel Process").
+  For every event a Sprite_Character is created (all the assets are in Spriteset_map) which does the rendering.
+
+Ghabry — 23:51
+  yeah it only splits into individual lines. The positioning of the lines is your task again. Though actually I think Text::Draw supports \n
+  Use FontRef Font::CreateFtFont(Filesystem_Stream::InputStream is, int size, bool bold, bool italic) to get a Handle to a Font
+  (Player must be compiled with FreeType or FreeType+Harfbuzz). Bold and Italic rendering are unsupported.

@@ -72,9 +72,9 @@ namespace leasy::metadata {
       return Map()
              .add("name", name)
              .add("arguments", kits::select(arguments, [](const std::shared_ptr<Class> &info) { 
-                return info->minimal_dump();
+                return info->minimalDump();
               }))
-             .add("return", return_type->minimal_dump());
+             .add("return", return_type->minimalDump());
     }
 
     inline function() : arguments({}), return_type(typeidof<void>()) {

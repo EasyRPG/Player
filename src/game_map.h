@@ -242,7 +242,7 @@ namespace Game_Map {
 	 * @param from_y from tile y.
 	 * @param to_x to new tile x.
 	 * @param to_y to new tile y.
-	 * @param check_events_and_events (Optional) Whether to check
+	 * @param check_events_and_vehicles (Optional) Whether to check
 	 * events, or only consider map collision.
 	 * @param ignore_some_events_by_id (Optional) A set of
 	 * specific event IDs to ignore.

@@ -22,15 +22,17 @@
 
 #pragma once
 
-#include <vector>
+#include <functional>
 #include <string>
 
 #include "ily3/ily3.hpp"
 #include "lio.hpp"
 
+class Bitmap;
+
 namespace leasy::engine {
   template <class...Args>
-  inline void event(const std::string &name, Args...args) {
+  void event(const std::string &name, Args...args) {
     std::string rname = "leasy.Engine." + name;
     try {
       ily3::global::state.call<void>(rname, args...);
@@ -42,5 +44,59 @@ namespace leasy::engine {
     } catch (const std::exception &e) {
       io().Warning.writeln("error (stdc++) during event invocation: ", e.what());
     }
+  }
+
+  namespace NativeEvents {
+    template <typename... Args>
+    class Event {
+    public:
+      using Callback = std::function<void(Args...)>;
+
+      void call(Args... args) {
+        for (auto& cb : callbacks) {
+          if (cb && *cb) {
+            (*cb)(args...);
+          }
+        }
+
+        callbacks.erase(
+          std::remove_if(callbacks.begin(), callbacks.end(),
+            [](const auto& cb) {
+              return !cb || !*cb;
+            }),
+          callbacks.end()
+        );
+      }
+
+      std::shared_ptr<Callback> addCallback() {
+        callbacks.push_back(std::make_shared<Callback>());
+        return callbacks.back();
+      }
+
+      template <typename F>
+      std::shared_ptr<Callback> addCallback(F fun) {
+        callbacks.push_back(std::make_shared<Callback>(fun));
+        return callbacks.back();
+      }
+
+    private:
+      std::vector<std::shared_ptr<Callback>> callbacks;
+    };
+
+    template <typename... Args>
+    constexpr auto makeInlineEvent() {
+      return [] {
+        static Event<Args...> event{};
+        return event;
+      };
+    }
+
+    extern Event<> onMapInit;
+    extern Event<std::string> onMapLoaded;
+    extern Event<> onMapQuit;
+    extern Event<long double> onProcess;
+    extern Event<> onReady;
+    extern Event<Bitmap*> onDraw;
+    extern Event<> onExit;
   }
 }

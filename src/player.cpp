@@ -436,7 +436,7 @@ void Player::Exit() {
 	Output::Quit();
 	FileFinder::Quit();
 	DisplayUi.reset();
-	leasy::engine::event("on_exit");
+	leasy::engine::event("onExit");
 	leasy::app::exit();
 }
 
@@ -863,8 +863,8 @@ void Player::CreateGameObjects() {
 		Main_Data::game_destiny->Load();
 	}
 
-	// i fire the event at THE END, otherwise, those dummy modders will block and make the engine explose lol.
-	leasy::engine::event("on_game_loaded", game_title.empty() ? "unknown" : game_title, game_path);
+	// i fire the event at THE END, otherwise, those dummy modders will block and make the engine explode lol.
+	leasy::engine::event("onGameLoaded", game_title.empty() ? "unknown" : game_title, game_path);
 }
 
 void Player::UpdateTitle(std::string new_game_title) {

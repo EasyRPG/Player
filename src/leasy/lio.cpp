@@ -25,7 +25,7 @@
 
 namespace leasy {
   ios::io_system &io() {
-    static ios::io_system *system = new ios::io_system();
+    static auto *system = new ios::io_system();
     return *system;
   }
 }

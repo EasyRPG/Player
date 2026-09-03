@@ -111,7 +111,7 @@ void Game_Map::OnContinueFromBattle() {
 static Game_Map::Parallax::Params GetParallaxParams();
 
 void Game_Map::Init() {
-	leasy::engine::event("on_map_init");
+	leasy::engine::event("onMapInit");
 	Dispose();
 
 	map_info = {};
@@ -146,7 +146,7 @@ void Game_Map::Dispose() {
 }
 
 void Game_Map::Quit() {
-	leasy::engine::event("on_map_quit");
+	leasy::engine::event("onMapQuit");
 	Dispose();
 	common_events.clear();
 	interpreter.reset();
@@ -370,7 +370,8 @@ std::unique_ptr<lcf::rpg::Map> Game_Map::LoadMapFile(int map_id) {
 	}
 
 	Output::Debug("Loaded Map {}", map_name);
-	leasy::engine::event("on_map_loaded", map_name);
+	leasy::engine::event("onMapLoaded", map_name);
+	leasy::engine::NativeEvents::onMapLoaded.call(map_name);
 
 	if (map.get() == NULL) {
 		Output::ErrorStr(lcf::LcfReader::GetError());

@@ -62,13 +62,15 @@ namespace leasy::metadata {
   class Class : public Data, public SizeDescriptor {
   protected:
     std::type_index _cindex;
-    std::unordered_map<std::string, std::shared_ptr<function_base_t> > _methods;
+    std::unordered_map<std::string, std::shared_ptr<function_base_t>> _methods;
+    std::unordered_map<std::string, std::vector<String>> _enums;
     std::vector<std::shared_ptr<Class> > _bases;
     size_t _size;
-    std::string _fullname;
+    String _fullname;
     bool _resolved = true;
 
   public:
+
     virtual std::any call(const std::string &name, std::vector<std::any> &args) const {
       if (_methods.find(name) != _methods.end()) return _methods.at(name)->call(args);
       else {
@@ -88,13 +90,13 @@ namespace leasy::metadata {
       }
     }
 
-    std::shared_ptr<function_base_t> get_method(const std::string &name) const {
+    std::shared_ptr<function_base_t> getMethod(const std::string &name) const {
       if (const auto it = _methods.find(name); it != _methods.end()) return it->second;
 
       for (auto &base: _bases) {
         if (!base) continue;
 
-        auto fn = base->get_method(name);
+        auto fn = base->getMethod(name);
         if (fn)
           return fn;
       }
@@ -106,7 +108,7 @@ namespace leasy::metadata {
       return call("activate", args);
     }
 
-    virtual std::string fullname() const { return _fullname; }
+    virtual String fullname() const { return _fullname; }
     virtual std::type_index cindex() const { return _cindex; }
     virtual size_t size() const { return _size; }
     virtual std::vector<std::shared_ptr<Class> > bases() const { return _bases; }
@@ -250,7 +252,7 @@ namespace leasy::metadata {
                                              })));
     }
 
-    inline Object minimal_dump() const {
+    Object minimalDump() const {
       return Map()
           .add("name", _fullname)
           .add("cindex", Map()
@@ -266,7 +268,7 @@ namespace leasy::metadata {
     }
 
     template<typename T>
-    inline static std::shared_ptr<Class> from() {
+    static std::shared_ptr<Class> from() {
       return typeidof(typeid(T));
     }
 
@@ -313,19 +315,19 @@ namespace leasy::metadata {
 
   class UnresolvedClass : public Class {
   public:
-    inline UnresolvedClass(const std::type_index &poor_data) {
+    UnresolvedClass(const std::type_index &poor_data) {
       _fullname = poor_data.name();
       _cindex = poor_data;
       _resolved = false;
     }
 
-    inline UnresolvedClass(const std::type_index &poor_data, const std::string &ful) {
+    UnresolvedClass(const std::type_index &poor_data, const std::string &ful) {
       _fullname = ful;
       _cindex = poor_data;
       _resolved = false;
     }
 
-    inline Object dump() const override {
+    Object dump() const override {
       auto resolved = this->resolve();
 
       return Map()
@@ -345,7 +347,7 @@ namespace leasy::metadata {
   template<typename T, typename... Bases>
   class DynamicClass : public Class {
   public:
-    inline DynamicClass() {
+    DynamicClass() {
       this->_cindex = typeid(T);
       this->_fullname = nameof<T>();
       this->_size = safe_sizeof<T>();
@@ -353,12 +355,17 @@ namespace leasy::metadata {
     }
 
     template<typename... Fs>
-    inline DynamicClass &method(const std::string &name, Fs &&... funcs) {
+    DynamicClass &method(const std::string &name, Fs &&... funcs) {
       this->_methods[name] = make_function(name, std::forward<Fs>(funcs)...);
       return *this;
     }
 
-    inline std::shared_ptr<Class> done() const {
+    DynamicClass &enu(const String &name, const std::vector<String> &en) {
+      this->_enums[name] = en;
+      return *this;
+    }
+
+    std::shared_ptr<Class> done() const {
       return std::make_shared<DynamicClass>(*this);
     }
   };
@@ -369,22 +376,8 @@ namespace leasy::metadata {
   protected:
     std::shared_ptr<DynamicClass<T, Bases...> > local;
 
-  public:
-    inline ClassBuilder() {
-      this->local = std::make_shared<DynamicClass<T, Bases...> >();
-
-      if constexpr (! std::is_abstract_v<T> && kits::well<T>()) {
-        using U = std::remove_reference_t<T>;
-
-        if constexpr (!std::is_void_v<U>) {
-          this->local->method("ptr", [](U &i) { return &i; }, [](const U &i) { return &i; });
-          this->local->method("ref", [](U &i) -> U& { return i; }, [](const U &i) -> const U & { return i; });
-          this->local->method("makeShared", [](U i) {
-            return std::make_shared<U>(i);
-          });
-        }
-      }
-
+  private:
+    void makeMetadata() {
       this->local->method("type", [] { return std::type_index(typeid(T)); });
       this->local->method("isAbstract", [] { return std::is_abstract_v<T>; });
       this->local->method("isArray", []{ return std::is_array_v<T>; });
@@ -407,6 +400,47 @@ namespace leasy::metadata {
       this->local->method("isNothrowMoveConstructible", []{ return std::is_nothrow_move_constructible_v<T>; });
     }
 
+  public:
+    inline ClassBuilder() {
+      this->local = std::make_shared<DynamicClass<T, Bases...> >();
+
+      if constexpr (! std::is_abstract_v<T> && kits::well<T>()) {
+        using U = std::remove_reference_t<T>;
+
+        if constexpr (!std::is_void_v<U>) {
+          this->local->method("ptr", [](U &i) { return &i; }, [](const U &i) { return &i; });
+          this->local->method("ref", [](U &i) -> U& { return i; }, [](const U &i) -> const U & { return i; });
+          this->local->method("makeShared", [](U i) {
+            return std::make_shared<U>(i);
+          });
+        }
+
+        if constexpr (std::is_destructible_v<T>) {
+          this->local->method("destroy", [](U &self) {
+            self.~U();
+          });
+        }
+
+        if constexpr (std::is_copy_assignable_v<T>) {
+          this->local->method("copyTo", [](const U &self, U &to) { to = self;});
+          this->local->method("copyFrom", [](U &self, const U &from) { self = from;});
+        }
+
+        if constexpr (std::is_move_assignable_v<T>) {
+          this->local->method("moveTo", [](U &self, U &to) { to = std::move(self);});
+          this->local->method("moveFrom", [](U &self, U &from) { self = std::move(from);});
+        }
+
+        if constexpr(std::is_default_constructible_v<T>) {
+          this->local->method("constructDefault", []{ return T{}; });
+        }
+
+        if constexpr (std::is_copy_constructible_v<T>) this->local->method("makeCopy", [](T self) -> T { return self;});
+      }
+
+      makeMetadata();
+    }
+
     template<typename... Fs>
     ClassBuilder &method(const std::string &name, Fs &&... funcs) {
       this->local->method(name, std::forward<Fs>(funcs)...);
@@ -415,6 +449,10 @@ namespace leasy::metadata {
 
     std::shared_ptr<Class> done() const {
       return this->local;
+    }
+
+    ClassBuilder &enu(const String &name, const std::vector<String> &en) {
+      return this->local->enu(name, en);
     }
   };
 

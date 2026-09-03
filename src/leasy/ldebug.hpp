@@ -26,4 +26,5 @@
 #include <iostream>
 
 #define LDBG(X) std::cout << "[leasy.Debug]: " << __FILE__ << ":" << __LINE__ << ":" << __func__ << "\t" << X << std::endl;
-#define LDBG_RECORD(X) LDBG("[RECORD]: " #X); X;
+#define LDBG_RECORD(X) LDBG("[RECORD]: " #X << ": " << X);
+#define LDBG_RECORD2(X) LDBG("[RECORD]: " #X);

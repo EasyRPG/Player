@@ -148,7 +148,7 @@ public:
 	void SetOriginalMoveRouteIndex(int new_index);
 
 	/**
-	 * Returns the event page or nullptr is page does not exist.
+	 * Returns the event page or nullptr if page does not exist.
 	 *
 	 * @param page Page number (starting from 1)
 	 *

@@ -35,8 +35,8 @@
 #include "Assembly.hpp"
 
 namespace leasy::metadata {
-  inline const char *luaExportAssemblyPrefix = "EasyRPGPlayer::Assembly";
-  inline const char *luaExportAssemblyPrefixNiceNice = "EasyRPGPlayer.Assembly.";
+  inline const char *luaExportAssemblyPrefix = "ep::Assembly";
+  inline const char *luaExportAssemblyPrefixNiceNice = "ep.Assembly.";
 
   /**
    * Prefer not qualify this class as const!

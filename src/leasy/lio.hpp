@@ -410,37 +410,47 @@ public:
   channel Debug;
   channel Warning;
   channel Error;
+  channel Info;
+  channel Gui;
 
   inline io_system() {
-    System .prefix("leasy.io.System");
-    Debug  .prefix("leasy.io.Debug");
+    System.prefix("leasy.io.System");
+    Debug.prefix("leasy.io.Debug");
     Warning.prefix("leasy.io.Warning");
-    Error  .prefix("leasy.io.Error");
+    Error.prefix("leasy.io.Error");
+    Info.prefix("leasy.io.Info");
     basicsetup();
   }
 
 private:
   inline void basicsetup() {
-    system_console_  = System .attach(console());
-    debug_console_   = Debug  .attach(console());
+    system_console_ = System.attach(console());
+    debug_console_ = Debug.attach(console());
+    info_console_ = Info.attach(console());
+    gui_ = Gui.attach(console());
     warning_console_ = Warning.attach(console(std::cerr));
-    error_console_   = Error  .attach(console(std::cerr));
+    error_console_   = Error.attach(console(std::cerr));
 
-    System .timestamp(true);
-    Debug  .timestamp(true);
+    System.timestamp(true);
+    Debug.timestamp(true);
     Warning.timestamp(true);
-    Error  .timestamp(true);
+    Error.timestamp(true);
+    Info.timestamp(true);
+    Gui.timestamp(false);
 
-    System .color(std::string(ansi::white));
-    Debug  .color(std::string(ansi::bright_blue));
+    System.color(std::string(ansi::white));
+    Debug.color(std::string(ansi::bright_blue));
     Warning.color(std::string(ansi::yellow));
-    Error  .color(std::string(ansi::bright_red));
+    Error.color(std::string(ansi::bright_red));
+    Info.color(std::string(ansi::bright_cyan));
   }
 
   attachment system_console_;
   attachment debug_console_;
   attachment warning_console_;
   attachment error_console_;
+  attachment info_console_;
+  attachment gui_;
 };
 
 } // namespace leasy::ios

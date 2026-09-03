@@ -225,7 +225,7 @@ namespace leasy {
 	using namespace metadata;
 
 	static bool reg = [] {
-		auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer::Sounding");
+		auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("Sounding");
 
 		a->addType<AudioDecoder>(make_class<AudioDecoder>()
 			.method("create", [](const std::shared_ptr<Filesystem_Stream::InputStream>& stream, bool resample = true) {

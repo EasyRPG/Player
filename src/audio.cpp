@@ -150,7 +150,7 @@ namespace leasy {
 
   namespace {
     bool reg = [] {
-      auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer::Sounding");
+      auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("Sounding");
 
       a->addType<AudioInterface>(make_class<AudioInterface>()
         .method("BGMPause", stl2::pass<&AudioInterface::BGM_Pause>())

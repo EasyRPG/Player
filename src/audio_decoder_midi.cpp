@@ -489,7 +489,7 @@ namespace leasy {
 	using namespace metadata;
 
 	static bool reg = [] {
-		auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer::Sounding");
+		auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("Sounding");
 		a->addType<AudioDecoderMidi>(make_class<AudioDecoderMidi>()
 			.method("fileBuffer", field(&AudioDecoderMidi::file_buffer), readonly(&AudioDecoderMidi::file_buffer_pos))
 			.method("fileBufferPos", field(&AudioDecoderMidi::file_buffer_pos), readonly(&AudioDecoderMidi::file_buffer_pos))

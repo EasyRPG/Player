@@ -28,86 +28,150 @@
 #include "baseui.h"
 #include "bitmap.h"
 #include "drawable.h"
+#include "game_message.h"
 #include "../lio.hpp"
 #include "../leasy.hpp"
 #include "../ily3/basetypes.hpp"
 #include "../ily3/math.hpp"
 
 namespace leasy::ui3 {
+  inline String removeAnsiEscapes(const String &input) {
+    String output;
+    output.reserve(input.size());
+
+    for (size_t i = 0; i < input.size();) {
+      if (input[i] == '\x1B' &&
+          i + 1 < input.size() &&
+          input[i + 1] == '[') {
+        i += 2;
+
+        while (i < input.size() &&
+               !(input[i] >= 0x40 && input[i] <= 0x7E)) {
+          ++i;
+        }
+
+        if (i < input.size()) ++i;
+
+        continue;
+      }
+
+      if (input[i] == '\x1B' && i + 1 < input.size()) {
+        i += 2;
+        continue;
+      }
+
+      output += input[i++];
+    }
+
+    return output;
+  }
+
   using clock = std::chrono::high_resolution_clock;
+
   struct GraphicalString {
-    std::string       text;
-    Color             color;
-    unsigned int      lifetime; // In seconds!
+    String text;
+    Color color;
+    size_t height;
+    unsigned int lifetime; // In seconds!
     clock::time_point point;
-    int               linealpha;
+    int lineAlpha;
   };
 
   class GraphicalConsole : public Drawable {
   private:
     std::vector<GraphicalString> queue;
     ily3::twin<int> start;
-    int last_y;
+    int last_y{};
 
-    inline void drawitactually(const GraphicalString &string, Bitmap &map) {
-      auto rect = Text::GetSize((*Font::Default()), string.text);
-      map.FillRect(Rect(0, last_y, DisplayUi->GetWidth(), rect.height), Color(0, 0, 0, string.linealpha));
+    void drawItActually(const GraphicalString &string, Bitmap &map) {
+      auto rect = Text::GetSize(*Font::Default(), string.text);
+
+      // That's the black-transparent thingy underneath the text (idk hows called)
+      map.FillRect(Rect(0, last_y, DisplayUi->GetWidth(), string.height), Color(0, 0, 0, string.lineAlpha));
+
       map.TextDraw(start.x, last_y, string.color, string.text);
-      last_y += rect.height;
+      last_y += string.height;
     }
 
   public:
-    inline GraphicalConsole(const ily3::twin<int> &st) 
-      : Drawable(0x1000), start(st) {}
+    GraphicalConsole(const ily3::twin<int> &st): Drawable(0x1000), start(st) {}
+
     // FIXME: (please!) shall i change Z_t ? cuz ugh.
 
-    inline void gwrite(const std::string &text, unsigned int lifetime = 3, const Color &color = Color(0, 0, 0xFF, 0xFF)) {
+    void gWrite(const String &text, unsigned int lifetime = 6, const Color &color = Color(0x02, 230, 150, 0xFF)) {
+      auto getGlyphSize = [](char c) -> size_t {
+        return Text::GetSize(*Font::Default(), String::from(c)).width;
+      };
+
+      auto modified = text.fitToWidth(DisplayUi->GetWidth(), getGlyphSize);
+
       queue.emplace_back(GraphicalString{
-        .text = text,
+        .text = modified,
         .color = color,
+        .height = modified.countOf('\n') * Text::GetSize(*Font::Default(), "A").height,
         .lifetime = lifetime,
         .point = clock::now(),
-        .linealpha = 0xAA,
+        .lineAlpha = 0xEE,
       });
     }
-    
-    inline void Draw(Bitmap &map) override {
-      auto now = clock::now();
+
+    void Draw(Bitmap &map) override {
+      const auto now = clock::now();
       last_y = start.y;
-      std::vector<GraphicalString> preceders; // Candidates for the next draw()!
-      
-      for (auto &string: queue) {
-        if (now - string.point < std::chrono::seconds(string.lifetime)) { // We have time to draw it!
-          drawitactually(string, map);
+      std::vector<GraphicalString> preceders;
+
+      for (const auto &string : queue) {
+        const auto elapsed = now - string.point;
+        const auto lifetime = std::chrono::seconds(string.lifetime);
+        constexpr auto fadeDuration = std::chrono::seconds(1);
+
+        if (elapsed < lifetime) {
+          drawItActually(string, map);
           preceders.push_back(string);
-        } else if (now - string.point < std::chrono::seconds(string.lifetime + 1)) { // so there, text died, so we'll shade it out!
-          auto alpha = ily3::clamp(0x00, 0xFF, string.color.alpha - 20);
-          string.color = Color(string.color.red, string.color.green, string.color.blue, alpha);
-          string.linealpha = ily3::clamp(alpha + 60, 0xAA, string.linealpha - 1);
-          drawitactually(string, map);
+          continue;
+        }
+
+        const auto fadeElapsed = elapsed - lifetime;
+
+        if (fadeElapsed < fadeDuration) {
+          const float t = std::chrono::duration<float>(fadeElapsed).count();
+          const int alpha = static_cast<int>(string.color.alpha * (1.0f - t));
+          const int lineAlpha = static_cast<int>(string.lineAlpha * (1.0f - t));
+          GraphicalString faded = string;
+
+          faded.color = Color(
+            string.color.red,
+            string.color.green,
+            string.color.blue,
+            ily3::clamp(0, 255, alpha)
+          );
+
+          faded.lineAlpha = ily3::clamp(0, 255, lineAlpha);
+          drawItActually(faded, map);
           preceders.push_back(string);
         }
       }
 
-      this->queue.swap(preceders);
+      queue.swap(preceders);
     }
   };
 
   class gui_sink final : public ios::sink, public GraphicalConsole {
   public:
-    inline gui_sink(const ily3::twin<int>& st)
-      : GraphicalConsole(st) {
+    gui_sink(const ily3::twin<int> &startRect) : GraphicalConsole(startRect) {
       // Self-subscribe haha
-      leasy::draw.connect([this](Bitmap* map) {
+      engine::NativeEvents::onDraw.addCallback([this](Bitmap *map) {
         this->Draw(*map);
       });
     }
 
-    // TODO?: Make it draw on another screen but man am lazy asf.
+    // FIXME: Make it draw on another screen but man am lazy asf.
+    // FIXME: Make longer messages on multiple lines
+    // TODO: Implement this in Lua bindings!
+    // TODO: expose io() to Lua!
 
-    inline void write(std::string_view text) override {
-      GraphicalConsole::gwrite(std::string(text));
+    void write(std::string_view text) override {
+      gWrite(removeAnsiEscapes(ToString(text)));
     }
   };
 }
-

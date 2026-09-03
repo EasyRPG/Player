@@ -258,7 +258,7 @@ namespace leasy::ul2 {
     static int lookup(lua_State *L) {
       static auto type = metadata::typeidof<T>();
       auto method_name = luaL_checkstring(L, 2);
-      auto method = type->get_method(method_name);
+      auto method = type->getMethod(method_name);
 
       if (method) {
         push_function2(L, method->lua());

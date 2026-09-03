@@ -506,7 +506,7 @@ namespace leasy {
 
   namespace {
     bool reg = [] {
-      auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer::Sounding");
+      auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("Sounding");
       a->addType<midi_message>(make_class<midisequencer::midi_message>()
         .method("time", field(&midi_message::time), readonly(&midi_message::time))
         .method("message", field(&midi_message::message), readonly(&midi_message::message))

@@ -27,14 +27,10 @@
 #include <unordered_set>
 
 #include "ily3/ily3.hpp"
-#include "signals.hpp"
 #include "baseui.h"
 #include "dec.h"
 
 namespace leasy {
-  extern Signal<> ready;
-  extern Signal<double> process;
-  extern Signal<Bitmap*> draw;
 
   namespace app {
     /** 

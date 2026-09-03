@@ -142,7 +142,7 @@ namespace leasy {
 	using namespace metadata;
 
 	static bool reg = [] {
-		auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer::Sounding");
+		auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("Sounding");
 		a->addType<AudioDecoderBase>(make_class<AudioDecoderBase>()
 			.method("adjustVolume", AudioDecoderBase::AdjustVolume)
 			.method("decode", [](AudioDecoderBase &base, uint8_t *buffer, int size) {

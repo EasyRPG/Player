@@ -1,25 +1,22 @@
 local rpg = require('assembly.appdomain')
 
-local node = EasyRPGPlayer.Assembly.leasy.meta2.node;
-local sounding = EasyRPGPlayer.Assembly.EasyRPGPlayer.Sounding
+local node = {}
+
+local image1 = 'icon.png'
+local image2 = 'resources/psvita/icon0.png';
 
 function leasy.User.ready() -- Called when the engine boots
-  sprite = node.Sprite2D.new('/Users/wys/Pictures/pixel_art_large.png', true) -- transparent? true
+  sprite = node.Sprite2D.new(image1, true) -- transparent? true
   node.addChildToMain(sprite)
 end
 
 function leasy.User.process(delta)
-  local x, y = sprite:pos()
+  sprite:move(100 + math.random(0, 3), 100+ math.random(0, 3));
+end
 
-  if x >= 400 then
-    x = 0
-  end
+function leasy.Engine.onGameLoaded(map)
+  print('new game name:', map)
 
-  if y  >= 300 then
-    y = 0
-  end
-
-
-
-  sprite:move((x + 2), (y + 2));
+  local sprite2 = node.Sprite2D.new(image2, false) -- no transparent.
+  sprite:moveFrom(sprite2)
 end

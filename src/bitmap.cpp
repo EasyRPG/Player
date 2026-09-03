@@ -1311,8 +1311,7 @@ void Bitmap::EdgeMirrorBlit(int x, int y, Bitmap const& src, Rect const& src_rec
 namespace {
 	using namespace leasy::metadata;
 	auto ok = []() {
-		// FIXME: EasyRPGPlayer DOES NOT store its types in namespaces. WHY.
-		auto assembly = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("EasyRPGPlayer::bitmap");
+		auto assembly = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("Drawing");
 		assembly->addType<ImageOut>(
 			make_class<ImageOut>()
 			.method("width", [](const ImageOut &img) { return img.width; })

@@ -94,3 +94,32 @@ Drawable::Z_t Drawable::GetPriorityForBattleLayer(int which) {
 
 	return layer + (1ULL << z_offset);
 }
+
+#include "leasy/metadata/Domain.hpp"
+
+namespace {
+	using namespace leasy;
+	using namespace leasy::metadata;
+
+	auto ok = [] {
+		auto a = AppDomain().getAssemblyOrCreate<BuiltInAssembly>("ep");
+		a->addType<Drawable>(make_class<Drawable>()
+			.method("draw", [](Bitmap*){})
+			.method("getZ", [](const Drawable &draw){ return draw.GetZ(); })
+			.method("setZ", [](Drawable &draw, Drawable::Z_t v){ return draw.SetZ(v); })
+			.method("isGlobal", [](const Drawable &draw){ return draw.IsGlobal(); })
+			.method("isShared", [](const Drawable &draw){ return draw.IsShared(); })
+			.method("isVisible", [](const Drawable &draw){ return draw.IsVisible(); })
+			.method("SetVisible", [](Drawable &draw, bool v){ return draw.SetVisible(v); })
+			.method("getRenderOx", [](const Drawable &draw){ return draw.GetRenderOx(); })
+			.method("setRenderOx", [](Drawable &draw, int offset_x){ return draw.SetRenderOx(offset_x); })
+			.method("getRenderOy", [](const Drawable &draw){ return draw.GetRenderOy(); })
+			.method("setRenderOy", [](Drawable &draw, int offset_y){ return draw.SetRenderOy(offset_y); })
+			.method("GetPriorityForMapLayer", Drawable::GetPriorityForMapLayer)
+			.method("GetPriorityForBattleLayer", Drawable::GetPriorityForBattleLayer)
+			.done()
+		);
+
+		return false;
+	}();
+}

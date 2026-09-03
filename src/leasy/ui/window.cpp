@@ -19,6 +19,7 @@
  *  0xEF9087A
  * 
  * **********************************************************************/
+
 #include "window.h"
 
 #include <memory>
@@ -28,7 +29,11 @@
 #include "game_config.h"
 
 namespace leasy::ui3 {
-  std::unordered_map<unsigned long long, std::weak_ptr<BaseUi>> windows;
+  static std::unordered_map<unsigned long long, std::weak_ptr<BaseUi>> &windows() {
+    static auto p = new std::unordered_map<unsigned long long, std::weak_ptr<BaseUi>>();
+    return *p;
+  }
+
   unsigned long long id = 0;
 
   std::shared_ptr<BaseUi> make_win(int w, int h, int xpos, int ypos, int maxfps) {
@@ -42,7 +47,7 @@ namespace leasy::ui3 {
     auto win = BaseUi::CreateUi(w, h, cfg);
     
     win->SetPauseWhenFocusLost(false);
-    windows[id++] = win;
+    windows()[id++] = win;
     
     return win;
   }
@@ -51,7 +56,7 @@ namespace leasy::ui3 {
     // As we may not modify an unordered map during its iteration, we gon' free 'em later.
     std::vector<unsigned long long> tofree;
 
-    for (const auto&[i, win]: windows) {
+    for (const auto&[i, win]: windows()) {
       if (win.expired()) {
         tofree.push_back(i);
       } else {
@@ -60,7 +65,7 @@ namespace leasy::ui3 {
     }
 
     for (const auto&id: tofree) {
-      windows.erase(id);
+      windows().erase(id);
     }
   }
 }
