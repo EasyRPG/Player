@@ -33,6 +33,7 @@
 #include "structs/metadata.hpp"
 #include "function_base.hpp"
 #include "leasy/kits/select.hpp"
+#include "leasy/kits/strings.hpp"
 
 namespace leasy::metadata {
   class Class;
@@ -67,7 +68,6 @@ namespace leasy::metadata {
     std::vector<std::shared_ptr<Class> > _bases;
     size_t _size;
     String _fullname;
-    bool _resolved = true;
 
   public:
 
@@ -263,7 +263,7 @@ namespace leasy::metadata {
 
     void bind(ul2::lstate &state) const override;
 
-    inline Class() : _cindex(typeid(void)), _size(0), _fullname("void") {
+    Class() : _cindex(typeid(void)), _size(0), _fullname("void") {
       /** Null class creation */
     }
 
@@ -272,8 +272,10 @@ namespace leasy::metadata {
       return typeidof(typeid(T));
     }
 
-    inline virtual std::shared_ptr<Class> resolve() const {
+    virtual std::shared_ptr<Class> resolve() const {
       auto type = typeidof(this->cindex());
+      io().Debug.writeln("resolving type ", this->fullname(), " (", this->cindex().name(), ")");
+      auto now = this->getMetadataSize();
 
       if (!type->resolved()) {
         io().Warning.writeln("unable to resolve type ", type->cindex().name(), " (", type->fullname(), ')');
@@ -282,7 +284,7 @@ namespace leasy::metadata {
       return type;
     }
 
-    inline bool resolved() const { return this->_resolved; }
+    virtual bool resolved() const { return true; }
 
     size_t getMetadataSize() const override {
       size_t total = sizeof(*this);
@@ -295,16 +297,11 @@ namespace leasy::metadata {
         if (b)
           total += b->getMetadataSize();
 
-      total += sizeof(
-        std::unordered_map<
-          std::string,
-          std::shared_ptr<function_base_t>
-        >);
-
+      total += sizeof(_methods);
       total += _methods.bucket_count() * sizeof(void *);
 
       for (auto const &[name, fn]: _methods) {
-        total += name.capacity();
+        total += name.capacity() + sizeof(fn);
 
         if (fn) total += fn->getMetadataSize();
       }
@@ -318,22 +315,15 @@ namespace leasy::metadata {
     UnresolvedClass(const std::type_index &poor_data) {
       _fullname = poor_data.name();
       _cindex = poor_data;
-      _resolved = false;
     }
 
     UnresolvedClass(const std::type_index &poor_data, const std::string &ful) {
       _fullname = ful;
       _cindex = poor_data;
-      _resolved = false;
     }
 
-    Object dump() const override {
-      auto resolved = this->resolve();
-
-      return Map()
-          .add("name", _fullname)
-          .add("cindex", Map().add("name", _cindex.name()).add("hash", _cindex.hash_code()))
-          .add("resolved", false);
+    bool resolved() const override {
+      return true;
     }
   };
 

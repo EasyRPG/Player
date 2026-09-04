@@ -30,6 +30,8 @@
 
 #include "nameof.hpp"
 
+#include "leasy/metadata/Domain.hpp"
+
 namespace detail {
 
   static std::unordered_map<std::type_index, std::string> &nameof_cache() {

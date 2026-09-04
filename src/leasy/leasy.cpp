@@ -41,6 +41,21 @@ namespace leasy {
 
   namespace ily3 {
     extern std::vector<std::shared_ptr<Drawable>> leasy_draw_queue;
+
+    template <typename... Args>
+    static void call(const std::string &name, Args... args) {
+      try {
+        global::state.call<void>(name, args...);
+      } catch (const ul2::ulexception2 &exception) {
+        io().Error.writeln(">>> ul2 exception caught!!");
+        io().Error.writeln(">>> ", exception.what());
+      } catch (const std::exception &exception) {
+        io().Error.writeln(">>> stdc++ exception caught!!");
+        io().Error.writeln(">>> ", exception.what());
+      } catch (...) {
+        io().Error.writeln(">>> unspecified exception caught!!");
+      }
+    }
   }
 
   static void leasy_secondary_tests() {
@@ -62,7 +77,7 @@ namespace leasy {
     static auto last = std::chrono::high_resolution_clock::now();
     static bool leasy_enabled = true;
     static auto infoGuiSink = std::make_shared<ui3::gui_sink>(ily3::make_twin<int>(0, 0));
-    static auto r = io().Info.attach(infoGuiSink);
+    static auto r = io().Gui.attach(infoGuiSink);
 
     bool exit_requested() {
       return should_exit;
@@ -78,7 +93,7 @@ namespace leasy {
 
       io().Info.writeln("binding EasyRPGPlayer!");
       metadata::AppDomain().bind(ily3::global::state);
-      ily3::global::state.call<void>("leasy.User.ready");
+      ily3::call("leasy.User.ready");
       io().Info.writeln("reflection metadata size: ", kits::format_bytes(metadata::AppDomain().getMetadataSize()));
       meta2::node::meta2Context.ready();
 
@@ -96,7 +111,7 @@ namespace leasy {
       long double delta = std::chrono::duration<long double>(now - last).count();
 
       engine::NativeEvents::onProcess.call(delta);
-      ily3::global::state.call<void>("leasy.User.process", delta);
+      ily3::call("leasy.User.process", delta);
       meta2::node::meta2Context.update(delta);
     }
 
@@ -104,8 +119,8 @@ namespace leasy {
       if (! leasy_enabled) return;
 
       engine::NativeEvents::onDraw.call(map);
-      ily3::global::state.call<void>("leasy.User.draw");
-      
+      ily3::call("leasy.User.draw");
+
       for (const auto &drawable: ily3::leasy_draw_queue) {
         drawable->Draw(*map);
       }

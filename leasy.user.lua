@@ -1,11 +1,14 @@
+local inspect = require('inspect')
 local rpg = require('assembly.appdomain')
 
-local node = {}
+local node = ep.Assembly.leasy.meta2.node
 
 local image1 = 'icon.png'
 local image2 = 'resources/psvita/icon0.png';
 
 function leasy.User.ready() -- Called when the engine boots
+  io.open('dump.txt', "w"):write(inspect.inspect(_G)):close()
+
   sprite = node.Sprite2D.new(image1, true) -- transparent? true
   node.addChildToMain(sprite)
 end
