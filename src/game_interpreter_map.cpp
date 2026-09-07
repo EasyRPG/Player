@@ -83,12 +83,6 @@ enum InnSubcommand {
 
 using namespace Game_Interpreter_Shared;
 
-void Game_Interpreter_Map::SetState(const lcf::rpg::SaveEventExecState& save) {
-	Clear();
-	_state = save;
-	_keyinput.fromSave(save);
-}
-
 void Game_Interpreter_Map::OnMapChange() {
 	// When we change the map, we reset all event id's to 0.
 	for (auto& frame: _state.stack) {

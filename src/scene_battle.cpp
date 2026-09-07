@@ -25,6 +25,7 @@
 #include "player.h"
 #include "transition.h"
 #include "game_battlealgorithm.h"
+#include "game_commonevent.h"
 #include "game_interpreter_battle.h"
 #include "game_message.h"
 #include "game_system.h"
@@ -270,11 +271,7 @@ void Scene_Battle::UpdateUi() {
 	Game_Message::Update();
 }
 
-bool Scene_Battle::UpdateEvents() {
-	auto& interp = Game_Battle::GetInterpreterBattle();
-	interp.Update();
-	status_window->Refresh();
-
+bool Scene_Battle::CheckInterpreter(const Game_Interpreter_Battle& interp) {
 	if (interp.IsForceFleeEnabled()) {
 		if (state != State_Escape) {
 			SetState(State_Escape);
@@ -302,6 +299,37 @@ bool Scene_Battle::UpdateEvents() {
 	return true;
 }
 
+bool Scene_Battle::UpdateEvents() {
+	auto& interp = Game_Battle::GetInterpreterBattle();
+	interp.Update();
+	status_window->Refresh();
+
+	return CheckInterpreter(Game_Battle::GetInterpreterBattle());
+}
+
+bool Scene_Battle::UpdateCommonEvents() {
+	if (!Player::IsPatchManiac()) {
+		return true;
+	}
+
+	auto& common_events = Game_Battle::GetCommonEvents();
+
+	// TODO: Async handling not properly implemented
+	// Async requests that yield the Web Player will not work correctly
+	for (auto& ce: common_events) {
+		ce.Update(false);
+		const auto* interp = static_cast<const Game_Interpreter_Battle*>(ce.GetInterpreter());
+		if (interp && !CheckInterpreter(*interp)) {
+			status_window->Refresh();
+			return false;
+		}
+	}
+
+	status_window->Refresh();
+
+	return true;
+}
+
 bool Scene_Battle::UpdateTimers() {
 	const int timer1 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer1);
 	const int timer2 = Main_Data::game_party->GetTimerSeconds(Game_Party::Timer2);
@@ -321,6 +349,25 @@ bool Scene_Battle::UpdateTimers() {
 
 void Scene_Battle::UpdateGraphics() {
 	Game_Battle::UpdateGraphics();
+}
+
+bool Scene_Battle::ScheduleNextBattleBeginCommonEvent() {
+	if (!Player::IsPatchManiac()) {
+		return false;
+	}
+
+	auto& common_events = Game_Battle::GetCommonEvents();
+
+	for (size_t i = last_scheduled_start_battle_event + 1; i < common_events.size(); ++i) {
+		auto& ce = common_events[i];
+		last_scheduled_start_battle_event = i;
+		if (ce.IsWaitingBattleStartExecution()) {
+			Game_Battle::GetInterpreterBattle().Push<InterpreterExecutionType::BattleParallel>(&ce);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool Scene_Battle::IsWindowMoving() {

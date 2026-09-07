@@ -40,7 +40,7 @@ class Game_Interpreter_Battle : public Game_Interpreter
 {
 public:
 	explicit Game_Interpreter_Battle(Span<const lcf::rpg::TroopPage> pages);
-	explicit Game_Interpreter_Battle();
+	explicit Game_Interpreter_Battle(bool main_flag = true);
 
 	int GetNumPages() const;
 
