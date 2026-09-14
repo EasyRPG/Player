@@ -365,16 +365,15 @@
       /** @type {Set<number>} */
       const connectedGamepads = new Set();
       let controlsIdleTimeoutId;
-      let player;
 
       // Launch the Player; it reads the game from the query string itself
       window.addEventListener("load", async () => {
         try {
-          player = await createEasyRpgPlayer({
+          window.easyrpgPlayer = await createEasyRpgPlayer({
             game: undefined,
             saveFs: undefined,
           });
-          player.initApi();
+          easyrpgPlayer.initApi();
           canvas.focus();
           document.getElementById("boot").classList.add("done");
         } catch (error) {
