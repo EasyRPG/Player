@@ -612,41 +612,26 @@ void Scene_Battle_Rpg2k3::CreateBattleStatusWindow() {
 	status_window->SetZ(Priority_Window + 1);
 }
 
-std::vector<std::string> Scene_Battle_Rpg2k3::GetBattleCommandNames(const Game_Actor* actor) {
-	std::vector<std::string> commands;
+void Scene_Battle_Rpg2k3::GetBattleCommandNames(const Game_Actor* actor, std::vector<std::string>* commands, std::vector<bool>* commands_enabled) {
 	if (actor) {
 		for (auto* cmd: actor->GetBattleCommands()) {
-			commands.push_back(ToString(cmd->name));
+			commands->push_back(ToString(cmd->name));
+			bool is_enabled = !(cmd->type == lcf::rpg::BattleCommand::Type_escape && !IsEscapeAllowedFromActorCommand());
+			commands_enabled->push_back(is_enabled);
 		}
 	}
 	if (Feature::HasRow() && lcf::Data::battlecommands.easyrpg_enable_battle_row_command) {
-		commands.push_back(ToString(lcf::Data::terms.row));
-	}
-
-	return commands;
-}
-
-void Scene_Battle_Rpg2k3::SetBattleCommandsDisable(Window_Command& window, const Game_Actor* actor) {
-	if (actor) {
-		const auto& cmds = actor->GetBattleCommands();
-		for (size_t i = 0; i < cmds.size(); ++i) {
-			auto* cmd = cmds[i];
-			if (cmd->type == lcf::rpg::BattleCommand::Type_escape && !IsEscapeAllowedFromActorCommand()) {
-				window.DisableItem(i);
-			} else {
-				window.EnableItem(i);
-			}
-		}
+		commands->push_back(ToString(lcf::Data::terms.row));
+		commands_enabled->push_back(true);
 	}
 }
 
 void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 	auto* actor = Main_Data::game_party->GetActor(0);
-	auto commands = GetBattleCommandNames(actor);
-
-	command_window.reset(new Window_Command(std::move(commands), option_command_mov));
-
-	SetBattleCommandsDisable(*command_window, actor);
+	std::vector<std::string> commands;
+	std::vector<bool> commands_enabled;
+	GetBattleCommandNames(actor, &commands, &commands_enabled);
+	command_window.reset(new Window_Command(std::move(commands), option_command_mov, -1, &commands_enabled));
 
 	int height = 80;
 
@@ -675,9 +660,10 @@ void Scene_Battle_Rpg2k3::CreateBattleCommandWindow() {
 }
 
 void Scene_Battle_Rpg2k3::RefreshCommandWindow(const Game_Actor* actor) {
-	auto commands = GetBattleCommandNames(actor);
-	command_window->ReplaceCommands(std::move(commands));
-	SetBattleCommandsDisable(*command_window, actor);
+	std::vector<std::string> commands;
+	std::vector<bool> commands_enabled;
+	GetBattleCommandNames(actor, &commands, &commands_enabled);
+	command_window->ReplaceCommands(std::move(commands), &commands_enabled);
 	command_window->SetIndex(-1);
 }
 
