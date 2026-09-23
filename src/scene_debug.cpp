@@ -34,6 +34,7 @@
 #include "scene_menu.h"
 #include "scene_save.h"
 #include "scene_map.h"
+#include "window_debug_picture.h"
 #include "scene_battle.h"
 #include "player.h"
 #include "window_command.h"
@@ -41,6 +42,7 @@
 #include "window_numberinput.h"
 #include "bitmap.h"
 #include "game_party.h"
+#include "game_pictures.h"
 #include "game_player.h"
 #include <lcf/data.h>
 #include "output.h"
@@ -74,6 +76,7 @@ void Scene_Debug::Start() {
 	CreateChoicesWindow();
 	CreateStringViewWindow();
 	CreateInterpreterWindow();
+	CreatePictureInfoWindow();
 
 	SetupUiRangeList();
 
@@ -138,6 +141,9 @@ void Scene_Debug::UpdateFrameValueFromUi() {
 			idx.range_page_index = interpreter_window->GetIndex();
 			frame.value = GetSelectedIndexFromRange() + interpreter_window->GetIndex();
 			state_interpreter.selected_frame = interpreter_window->GetSelectedStackFrameLine();
+			break;
+		case eUiPictureView:
+			// Window is not interactive
 			break;
 	}
 }
@@ -308,6 +314,31 @@ void Scene_Debug::PushUiStringView() {
 	stringview_window->Refresh();
 }
 
+void Scene_Debug::PushUiPictureView() {
+	const auto pic_id = GetFrame().value;
+
+	if (pic_id <= 0) {
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+		return;
+	}
+
+	auto* pic = Main_Data::game_pictures->GetPicturePtr(pic_id);
+	if (!pic || (!pic->Exists())) {
+		Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Buzzer));
+		return;
+	}
+
+	Push(eUiPictureView);
+
+	var_window->SetActive(false);
+	picture_info_window->SetVisible(true);
+
+	Main_Data::game_system->SePlay(Main_Data::game_system->GetSystemSE(Main_Data::game_system->SFX_Decision));
+
+	picture_info_window->SetPictureId(pic_id);
+	picture_info_window->Refresh();
+}
+
 void Scene_Debug::PushUiInterpreterView() {
 	const bool was_range_list = (GetFrame().uimode == eUiRangeList);
 
@@ -343,6 +374,7 @@ void Scene_Debug::Pop() {
 	stringview_window->SetActive(false);
 	stringview_window->SetVisible(false);
 	interpreter_window->SetActive(false);
+	picture_info_window->SetVisible(false);
 
 	if (mode == eInterpreter) {
 		interpreter_window->SetIndex(-1);
@@ -400,6 +432,11 @@ void Scene_Debug::Pop() {
 			interpreter_window->SetIndex(frame.value - 1);
 			var_window->SetVisible(false);
 			interpreter_window->SetVisible(true);
+			break;
+		case eUiPictureView:
+			picture_info_window->SetVisible(true);
+			picture_info_window->SetPictureId(frame.value);
+			picture_info_window->Refresh();
 			break;
 	}
 
@@ -621,6 +658,15 @@ void Scene_Debug::vUpdate() {
 					PushUiRangeList();
 				}
 				break;
+			case ePictureTool:
+				if (sz > 2) {
+					PushUiPictureView();
+				} else if (sz > 1) {
+					PushUiVarList();
+				} else {
+					PushUiRangeList();
+				}
+				break;
 			case eInterpreter:
 				if (sz == 3) {
 					auto action = interpreter_window->GetSelectedAction();
@@ -776,6 +822,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 				addItem("Call MapEvent", Scene::Find(Scene::Map) != nullptr);
 				addItem("Call BtlEvent", is_battle);
 				addItem("Strings", Player::IsPatchManiac());
+				addItem("Pictures");
 				addItem("Interpreter");
 				addItem("Open Menu", !is_battle);
 			}
@@ -785,6 +832,7 @@ void Scene_Debug::UpdateRangeListWindow() {
 		case eItem:
 		case eBattle:
 		case eString:
+		case ePictureTool:
 			fillRange(GetWindowMode());
 			break;
 		case eMap:
@@ -947,6 +995,16 @@ void Scene_Debug::CreateInterpreterWindow() {
 	interpreter_window->SetIndex(-1);
 }
 
+void Scene_Debug::CreatePictureInfoWindow() {
+	picture_info_window = std::make_unique<Window_DebugPictureInfo>(
+		Player::menu_offset_x + 20,
+		Player::menu_offset_y + 16,
+		MENU_WIDTH - 40,
+		MENU_HEIGHT - 32
+	);
+	picture_info_window->SetVisible(false);
+}
+
 int Scene_Debug::GetNumMainMenuItems() const {
 	return static_cast<int>(eLastMainMenuOption) - 1;
 }
@@ -985,6 +1043,9 @@ int Scene_Debug::GetLastPage() const {
 			break;
 		case eString:
 			num_elements = Main_Data::game_strings->GetSizeWithLimit();
+			break;
+		case ePictureTool:
+			num_elements = Main_Data::game_pictures->GetPictureCount();
 			break;
 		case eInterpreter:
 			num_elements = 1 + state_interpreter.background_states.Count();
