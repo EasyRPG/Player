@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18...3.31 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.22...4.4 FATAL_ERROR)
 
 project(EasyRPG_Player VERSION 0.8.1
 	DESCRIPTION "Interpreter for RPG Maker 2000/2003 games"
@@ -643,7 +643,7 @@ elseif(PLAYER_TARGET_PLATFORM STREQUAL "SDL1")
 		USE_SDL=1
 		EASYRPG_CONFIG_NAME="config_sdl1.ini")
 elseif(PLAYER_TARGET_PLATFORM STREQUAL "libretro")
-	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=LibretroUi USE_LIBRETRO=1)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=LibretroUi USE_LIBRETRO)
 	set(PLAYER_BUILD_EXECUTABLE OFF)
 	add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/builds/libretro)
 	target_link_libraries(${PROJECT_NAME} retro_common)
@@ -753,7 +753,7 @@ elseif(PLAYER_AUDIO_BACKEND STREQUAL "AESND")
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/wii/audio.cpp
 		src/platform/wii/audio.h)
-	target_compile_definitions(${PROJECT_NAME} PUBLIC AUDIO_AESND=1)
+	target_compile_definitions(${PROJECT_NAME} PUBLIC AUDIO_AESND)
 elseif(PLAYER_AUDIO_BACKEND STREQUAL ${PLAYER_TARGET_PLATFORM})
 
 elseif(PLAYER_AUDIO_BACKEND STREQUAL "OFF")
@@ -870,16 +870,8 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Emscripten")
 endif()
 
 # Endianess check
-if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.20)
-	if(CMAKE_CXX_BYTE_ORDER STREQUAL "BIG_ENDIAN")
-		target_compile_definitions(${PROJECT_NAME} PRIVATE WORDS_BIGENDIAN=1)
-	endif()
-else()
-	include(TestBigEndian)
-	test_big_endian(WORDS_BIGENDIAN)
-	if(WORDS_BIGENDIAN)
-		target_compile_definitions(${PROJECT_NAME} PRIVATE WORDS_BIGENDIAN=1)
-	endif()
+if(CMAKE_CXX_BYTE_ORDER STREQUAL "BIG_ENDIAN")
+	target_compile_definitions(${PROJECT_NAME} PRIVATE WORDS_BIGENDIAN)
 endif()
 
 # App Icon (for macOS)
@@ -1064,18 +1056,14 @@ if(PLAYER_HAS_AUDIO)
 	set(PLAYER_AUDIO_RESAMPLER "Auto" CACHE STRING "Audio resampler to use. Options: Auto speexdsp samplerate OFF")
 	set_property(CACHE PLAYER_AUDIO_RESAMPLER PROPERTY STRINGS Auto speexdsp samplerate OFF)
 
-	if(PLAYER_AUDIO_RESAMPLER STREQUAL "Auto")
-		set(PLAYER_AUDIO_RESAMPLER_IS_AUTO ON)
-	endif()
-
 	cmake_dependent_option(PLAYER_WITH_SPEEXDSP
 		"Use speexdsp as resampler when available." ON
-		"PLAYER_HAS_AUDIO;PLAYER_AUDIO_RESAMPLER_IS_AUTO" OFF)
+		[[PLAYER_AUDIO_RESAMPLER STREQUAL "Auto"]] OFF)
 	cmake_dependent_option(PLAYER_WITH_SAMPLERATE
 		"Use libsamplerate as resampler when available." ON
-		"PLAYER_HAS_AUDIO;PLAYER_AUDIO_RESAMPLER_IS_AUTO" OFF)
+		[[PLAYER_AUDIO_RESAMPLER STREQUAL "Auto"]] OFF)
 
-	if(PLAYER_AUDIO_RESAMPLER_IS_AUTO)
+	if(PLAYER_AUDIO_RESAMPLER STREQUAL "Auto")
 		player_find_package(NAME speexdsp
 			CONDITION PLAYER_WITH_SPEEXDSP
 			DEFINITION HAVE_LIBSPEEXDSP
