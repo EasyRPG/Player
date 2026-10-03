@@ -73,6 +73,7 @@ XMPDecoder::~XMPDecoder() {
 
 bool XMPDecoder::Open(Filesystem_Stream::InputStream stream) {
 	finished = false;
+	frame_bytes_left = 0;
 
 	if (!ctx)
 		return false;
@@ -106,6 +107,7 @@ bool XMPDecoder::Seek(std::streamoff offset, std::ios_base::seekdir origin) {
 
 	if (offset == 0 && origin == std::ios_base::beg) {
 		xmp_restart_module(ctx);
+		frame_bytes_left = 0;
 		finished = false;
 		return true;
 	}
@@ -138,6 +140,8 @@ bool XMPDecoder::SetFormat(int freq, AudioDecoder::Format frmt, int chans) {
 
 	// restart the player, apply new format flags
 	xmp_end_player(ctx);
+	frame_bytes_left = 0;
+	finished = false;
 
 	channels = chans;
 	format = frmt;
@@ -176,21 +180,62 @@ int XMPDecoder::FillBuffer(uint8_t* buffer, int length) {
 	if (!ctx)
 		return -1;
 
-	/* FIXME: `xmp_play_buffer()` is a loop around `xmp_play_frame()` that may add
-	 * silence at the end of the buffer, when there is not enough audio data left.
-	 * We may need to use the latter directly, to have no gap between two loops.
-	 */
-	int ret = xmp_play_buffer(ctx, buffer, length, 1);
+	if (finished)
+		return 0;
 
-	// end of file
-	if (ret == -XMP_END)
-		finished = true;
+	int filled = 0;
 
-	// error
-	if (ret == -XMP_ERROR_STATE)
-		return -1;
+	// xmp_play_frame renders a single frame of the module
+	// xmp_play_buffer is not used here as this inserts silence at the end
+	// Also gives more control about the loop handling
+	while (filled < length) {
+		if (frame_bytes_left == 0) {
+			int ret = xmp_play_frame(ctx);
 
-	return length;
+			// error
+			if (ret == -XMP_ERROR_STATE)
+				return -1;
+
+			// end of module
+			if (ret < 0) {
+				finished = true;
+				break;
+			}
+
+			xmp_frame_info info;
+			xmp_get_frame_info(ctx, &info);
+
+			// libxmp handles jump commands (built-in loops) automatically
+			// When looping is enabled for the AudioDecoder manually increment
+			// our own loop counter
+			if (info.loop_count != GetLoopCount()) {
+				if (!GetLooping()) {
+					// Play the module once, then report it as finished
+					finished = true;
+					break;
+				}
+
+				// Manually set the loop count as IsFinished which handles this
+				// normally will never return true
+				loop_count = info.loop_count;
+			}
+
+			frame_buffer = reinterpret_cast<const uint8_t*>(info.buffer);
+			frame_bytes_left = info.buffer_size;
+		}
+
+		int copy_size = length - filled;
+		if (copy_size > frame_bytes_left)
+			copy_size = frame_bytes_left;
+
+		memcpy(buffer + filled, frame_buffer, copy_size);
+
+		frame_buffer += copy_size;
+		frame_bytes_left -= copy_size;
+		filled += copy_size;
+	}
+
+	return filled;
 }
 
 #endif
