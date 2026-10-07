@@ -365,7 +365,6 @@
       /** @type {Set<number>} */
       const connectedGamepads = new Set();
       let controlsIdleTimeoutId;
-      let resizeFrameId = 0;
 
       // Launch the Player; it reads the game from the query string itself
       window.addEventListener("load", async () => {
@@ -383,15 +382,6 @@
           throw error;
         }
       });
-
-      // SDL re-reads the canvas size only on window `resize`, which can fire
-      // before the layout settles, e.g. when leaving fullscreen.
-      new ResizeObserver(() => {
-        cancelAnimationFrame(resizeFrameId);
-        resizeFrameId = requestAnimationFrame(() =>
-          window.dispatchEvent(new Event("resize")),
-        );
-      }).observe(canvas);
 
       // Focus the canvas on hover/click so keyboard input reaches the game
       // (e.g. when embedded in another page)
