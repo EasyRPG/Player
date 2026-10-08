@@ -42,6 +42,7 @@ using dynfunc = bool(*)(dyn_arg_list);
 /** Contains helper functions for parsing */
 namespace DynRpg {
 	class EasyRpgPlugin;
+	class ParamsPlugin;
 
 	std::string ParseVarArg(std::string_view func_name, dyn_arg_list args, int index, bool& parse_okay);
 	std::string ParseCommand(std::string command, std::vector<std::string>& params);
@@ -134,8 +135,25 @@ public:
 	void Load(int slot);
 	void Save(int slot);
 
+	/**
+	 * DynParams plugin: applies the parameter overrides queued by
+	 * "@dynparams_overwrite_next" to the next executed event command.
+	 *
+	 * @param com command about to be executed (modified in place)
+	 * @return true when overrides were applied
+	 */
+	bool ApplyParamOverrides(lcf::rpg::EventCommand& com);
+
+	/** @return whether the next event command has parameter overrides */
+	bool HasParamOverrides() const { return !next_command_params.empty(); }
+
 private:
 	friend DynRpg::EasyRpgPlugin;
+	friend DynRpg::ParamsPlugin;
+
+	// DynParams: (1-based parameter index, value)
+	std::vector<std::pair<int, int32_t>> pending_params;
+	std::vector<std::pair<int, int32_t>> next_command_params;
 
 	bool Invoke(std::string_view func, dyn_arg_list args, Game_Interpreter* interpreter = nullptr);
 	void InitPlugins();

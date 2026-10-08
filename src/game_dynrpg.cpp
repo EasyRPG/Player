@@ -30,6 +30,7 @@
 
 #include "dynrpg_easyrpg.h"
 #include "dynrpg_textplugin.h"
+#include "dynrpg_params.h"
 
 enum DynRpg_ParseMode {
 	ParseMode_Function,
@@ -124,7 +125,7 @@ static std::string ParseToken(std::string token, std::string_view function_name)
 				return token;
 			}
 
-			// Convert backwards
+			// Convert backwards (var_part is stored uppercase)
 			for (std::string::reverse_iterator it = tmp.rbegin(); it != tmp.rend(); ++it) {
 				if (*it == 'N') {
 					if (!Main_Data::game_actors->ActorExists(number)) {
@@ -149,18 +150,19 @@ static std::string ParseToken(std::string token, std::string_view function_name)
 		} else if (number_encountered || (chr >= '0' && chr <= '9')) {
 			number_encountered = true;
 			number_part << chr;
-		} else if (chr == 'N') {
+		} else if (chr == 'N' || chr == 'n') {
+			// DynRPG tokens are case-insensitive ("v12" == "V12")
 			if (!first) {
 				break;
 			}
-			var_part << chr;
-		} else if (chr == 'V') {
-			var_part << chr;
-		} else if (chr == 'T' && Player::IsPatchManiac()) {
+			var_part << 'N';
+		} else if (chr == 'V' || chr == 'v') {
+			var_part << 'V';
+		} else if ((chr == 'T' || chr == 't') && Player::IsPatchManiac()) {
 			if (!first) {
 				break;
 			}
-			var_part << chr;
+			var_part << 'T';
 		} else {
 			break;
 		}
@@ -185,6 +187,7 @@ void Game_DynRpg::InitPlugins() {
 
 	if (Player::IsPatchDynRpg()) {
 		plugins.emplace_back(new DynRpg::TextPlugin(*this));
+		plugins.emplace_back(new DynRpg::ParamsPlugin(*this));
 	}
 
 	plugins_loaded = true;
@@ -421,7 +424,9 @@ void Game_DynRpg::Load(int slot) {
 	auto in = FileFinder::Save().OpenInputStream(filename);
 
 	if (!in) {
-		Output::Warning("Couldn't read DynRPG save: {}", filename);
+		// Normal for saves made before DynRPG state was stored (e.g. by RPG_RT)
+		Output::Debug("No DynRPG save data: {}", filename);
+		return;
 	}
 
 	std::vector<uint8_t> in_buffer;
@@ -516,4 +521,21 @@ void Game_DynRpg::Update() {
 	for (auto& plugin : plugins) {
 		plugin->Update();
 	}
+}
+
+bool Game_DynRpg::ApplyParamOverrides(lcf::rpg::EventCommand& com) {
+	if (next_command_params.empty()) {
+		return false;
+	}
+
+	std::vector<int32_t> params(com.parameters.begin(), com.parameters.end());
+	for (const auto& [index, value] : next_command_params) {
+		if (static_cast<size_t>(index) > params.size()) {
+			params.resize(index, 0);
+		}
+		params[index - 1] = value;
+	}
+	com.parameters = lcf::DBArray<int32_t>(params.begin(), params.end());
+	next_command_params.clear();
+	return true;
 }

@@ -612,6 +612,15 @@ void Game_Interpreter::SkipToNextConditional(std::initializer_list<Cmd> codes, i
 bool Game_Interpreter::ExecuteCommand() {
 	auto& frame = GetFrame();
 	const auto& com = frame.commands[frame.current_command];
+
+	// DynRPG DynParams plugin: parameters of this command were replaced
+	auto code = static_cast<Cmd>(com.code);
+	if (Main_Data::game_dynrpg->HasParamOverrides() && code != Cmd::Comment && code != Cmd::Comment_2) {
+		lcf::rpg::EventCommand overridden = com;
+		Main_Data::game_dynrpg->ApplyParamOverrides(overridden);
+		return ExecuteCommand(overridden);
+	}
+
 	return ExecuteCommand(com);
 }
 
