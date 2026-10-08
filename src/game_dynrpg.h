@@ -42,7 +42,6 @@ using dynfunc = bool(*)(dyn_arg_list);
 /** Contains helper functions for parsing */
 namespace DynRpg {
 	class EasyRpgPlugin;
-	class ParamsPlugin;
 
 	std::string ParseVarArg(std::string_view func_name, dyn_arg_list args, int index, bool& parse_okay);
 	std::string ParseCommand(std::string command, std::vector<std::string>& params);
@@ -136,24 +135,21 @@ public:
 	void Save(int slot);
 
 	/**
-	 * DynParams plugin: applies the parameter overrides queued by
-	 * "@dynparams_overwrite_next" to the next executed event command.
+	 * DynRPG onEventCommand: called before each event command is executed.
+	 * Plugins (e.g. DynParams) may rewrite the command in place, like DynRPG
+	 * plugins rewrite the script line in RPG_RT.
 	 *
-	 * @param com command about to be executed (modified in place)
-	 * @return true when overrides were applied
+	 * @param com command about to be executed (in the interpreter's own copy)
 	 */
-	bool ApplyParamOverrides(lcf::rpg::EventCommand& com);
+	void OnEventCommand(lcf::rpg::EventCommand& com);
 
-	/** @return whether the next event command has parameter overrides */
-	bool HasParamOverrides() const { return !next_command_params.empty(); }
+	/** @return raw text of the DynRPG comment being invoked (e.g. "@func 1, 2") */
+	std::string_view GetCurrentComment() const { return current_comment; }
 
 private:
 	friend DynRpg::EasyRpgPlugin;
-	friend DynRpg::ParamsPlugin;
 
-	// DynParams: (1-based parameter index, value)
-	std::vector<std::pair<int, int32_t>> pending_params;
-	std::vector<std::pair<int, int32_t>> next_command_params;
+	std::string current_comment;
 
 	bool Invoke(std::string_view func, dyn_arg_list args, Game_Interpreter* interpreter = nullptr);
 	void InitPlugins();
@@ -181,6 +177,8 @@ public:
 	virtual void Update() {}
 	virtual void Load(const std::vector<uint8_t>&) {}
 	virtual std::vector<uint8_t> Save() { return {}; }
+	/** DynRPG onEventCommand, see Game_DynRpg::OnEventCommand */
+	virtual void OnEventCommand(lcf::rpg::EventCommand&) {}
 
 protected:
 	Game_DynRpg& instance;

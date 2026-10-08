@@ -380,7 +380,10 @@ bool Game_DynRpg::Invoke(std::string_view command, Game_Interpreter* interpreter
 		return true;
 	}
 
-	return Invoke(function_name, args, interpreter);
+	current_comment = ToString(command);
+	bool result = Invoke(function_name, args, interpreter);
+	current_comment.clear();
+	return result;
 }
 
 bool Game_DynRpg::Invoke(std::string_view func, dyn_arg_list args, Game_Interpreter* interpreter) {
@@ -523,19 +526,8 @@ void Game_DynRpg::Update() {
 	}
 }
 
-bool Game_DynRpg::ApplyParamOverrides(lcf::rpg::EventCommand& com) {
-	if (next_command_params.empty()) {
-		return false;
+void Game_DynRpg::OnEventCommand(lcf::rpg::EventCommand& com) {
+	for (auto& plugin : plugins) {
+		plugin->OnEventCommand(com);
 	}
-
-	std::vector<int32_t> params(com.parameters.begin(), com.parameters.end());
-	for (const auto& [index, value] : next_command_params) {
-		if (static_cast<size_t>(index) > params.size()) {
-			params.resize(index, 0);
-		}
-		params[index - 1] = value;
-	}
-	com.parameters = lcf::DBArray<int32_t>(params.begin(), params.end());
-	next_command_params.clear();
-	return true;
 }
