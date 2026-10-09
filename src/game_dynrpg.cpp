@@ -320,6 +320,8 @@ std::string DynRpg::ParseCommand(std::string command, std::vector<std::string>& 
 					token.str("");
 					break;
 			}
+		} else if ((chr == '\r' || chr == '\n') && mode != ParseMode_Function) {
+			// DynRPG skips the line breaks between comment lines, even in strings
 		} else {
 			// Anything else that isn't special purpose
 			switch (mode) {

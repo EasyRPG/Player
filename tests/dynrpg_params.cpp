@@ -111,18 +111,23 @@ TEST_CASE("Comment lines are overwritten too") {
 	CHECK(interp.GetFrame().commands[3].string == "@easyrpg_add 1, 0, 0");
 }
 
-TEST_CASE("Continuation lines are not commands") {
+TEST_CASE("Comments are read as a whole") {
 	const MockGame mg(MockMap::ePass40x30);
 	DynRpgGuard g;
 	TestInterpreter interp;
 
-	// DynRPG only reads the first line of a comment
 	interp.Push({
+		// A note, its @ line is not a command
 		Comment("Use the command"),
 		MakeCommand(Cmd::Comment_2, {}, "@easyrpg_add 1, 2, 4"),
+		// A command over several lines, empty ones included
+		Comment("@easyrpg_add 2, 2,"),
+		MakeCommand(Cmd::Comment_2, {}, ""),
+		MakeCommand(Cmd::Comment_2, {}, "4"),
 	});
-	interp.RunTo(2);
+	interp.RunTo(5);
 	CHECK(Main_Data::game_variables->Get(1) == 0);
+	CHECK(Main_Data::game_variables->Get(2) == 6);
 }
 
 TEST_CASE("State belongs to the script") {

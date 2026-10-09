@@ -2161,8 +2161,8 @@ std::optional<bool> Game_Interpreter::HandleDynRpgScript(const lcf::rpg::EventCo
 			}
 		}
 
-		// DynRPG only reads the first line of a comment: the following lines are
-		// part of it, even when they start with @ (EasyRPG runs those as commands)
+		// DynRPG reads a comment as a whole: its other lines are appended after a
+		// line break and are never commands of their own, even starting with @
 		const bool dynrpg = Player::IsPatchDynRpg();
 		if (dynrpg && com.code == static_cast<int32_t>(Cmd::Comment_2)) {
 			return {};
@@ -2177,12 +2177,15 @@ std::optional<bool> Game_Interpreter::HandleDynRpgScript(const lcf::rpg::EventCo
 		// Concat everything that is not another command or a new comment block
 		for (size_t i = index + 1; i < list.size(); ++i) {
 			const auto& cmd = ResolveEventCommand(list[i]);
-			if (cmd.code == static_cast<uint32_t>(Cmd::Comment_2) &&
-					!cmd.string.empty() && (dynrpg || cmd.string[0] != '@')) {
-				command += ToString(cmd.string);
-			} else {
+			if (cmd.code != static_cast<uint32_t>(Cmd::Comment_2)) {
 				break;
 			}
+			if (dynrpg) {
+				command += "\r\n";
+			} else if (cmd.string.empty() || cmd.string[0] == '@') {
+				break;
+			}
+			command += ToString(cmd.string);
 		}
 
 		return Main_Data::game_dynrpg->Invoke(command, this);

@@ -49,6 +49,16 @@ TEST_CASE("Tokens") {
 	CHECK(args[3] == "ab\"c\"de");
 }
 
+TEST_CASE("Line breaks") {
+	// Comment lines are joined with line breaks, which DynRPG skips (even in strings)
+	std::vector<std::string> args;
+	CHECK(DynRpg::ParseCommand("@FunC 4\r\n2, \"Hello \r\nWorld\",\r\nab\r\nc", args) == "func");
+	CHECK(args.size() == 3);
+	CHECK(args[0] == "42");
+	CHECK(args[1] == "Hello World");
+	CHECK(args[2] == "abc");
+}
+
 TEST_CASE("Variable names") {
 	const MockActor m;
 
