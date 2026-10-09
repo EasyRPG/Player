@@ -171,7 +171,7 @@ public:
 		auto it = graphics.find(new_id);
 		if (it == graphics.end()) {
 			if (!silent) {
-				Output::Warning("No text with ID %s found", new_id.c_str());
+				Output::Warning("No text with ID {} found", new_id);
 			}
 			return nullptr;
 		}

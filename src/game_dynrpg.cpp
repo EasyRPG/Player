@@ -27,9 +27,11 @@
 
 #include <cstring>
 #include <fstream>
+#include <lcf/rpg/saveeventexecframe.h>
 
 #include "dynrpg_easyrpg.h"
 #include "dynrpg_textplugin.h"
+#include "dynrpg_params.h"
 
 enum DynRpg_ParseMode {
 	ParseMode_Function,
@@ -124,7 +126,7 @@ static std::string ParseToken(std::string token, std::string_view function_name)
 				return token;
 			}
 
-			// Convert backwards
+			// Convert backwards (var_part is stored uppercase)
 			for (std::string::reverse_iterator it = tmp.rbegin(); it != tmp.rend(); ++it) {
 				if (*it == 'N') {
 					if (!Main_Data::game_actors->ActorExists(number)) {
@@ -149,18 +151,19 @@ static std::string ParseToken(std::string token, std::string_view function_name)
 		} else if (number_encountered || (chr >= '0' && chr <= '9')) {
 			number_encountered = true;
 			number_part << chr;
-		} else if (chr == 'N') {
+		} else if (chr == 'N' || chr == 'n') {
+			// DynRPG tokens are case-insensitive ("v12" == "V12")
 			if (!first) {
 				break;
 			}
-			var_part << chr;
-		} else if (chr == 'V') {
-			var_part << chr;
-		} else if (chr == 'T' && Player::IsPatchManiac()) {
+			var_part << 'N';
+		} else if (chr == 'V' || chr == 'v') {
+			var_part << 'V';
+		} else if ((chr == 'T' || chr == 't') && Player::IsPatchManiac()) {
 			if (!first) {
 				break;
 			}
-			var_part << chr;
+			var_part << 'T';
 		} else {
 			break;
 		}
@@ -185,6 +188,7 @@ void Game_DynRpg::InitPlugins() {
 
 	if (Player::IsPatchDynRpg()) {
 		plugins.emplace_back(new DynRpg::TextPlugin(*this));
+		plugins.emplace_back(new DynRpg::ParamsPlugin(*this));
 	}
 
 	plugins_loaded = true;
@@ -316,6 +320,8 @@ std::string DynRpg::ParseCommand(std::string command, std::vector<std::string>& 
 					token.str("");
 					break;
 			}
+		} else if ((chr == '\r' || chr == '\n') && mode != ParseMode_Function) {
+			// DynRPG skips the line breaks between comment lines, even in strings
 		} else {
 			// Anything else that isn't special purpose
 			switch (mode) {
@@ -377,7 +383,10 @@ bool Game_DynRpg::Invoke(std::string_view command, Game_Interpreter* interpreter
 		return true;
 	}
 
-	return Invoke(function_name, args, interpreter);
+	current_comment = ToString(command);
+	bool result = Invoke(function_name, args, interpreter);
+	current_comment.clear();
+	return result;
 }
 
 bool Game_DynRpg::Invoke(std::string_view func, dyn_arg_list args, Game_Interpreter* interpreter) {
@@ -421,7 +430,9 @@ void Game_DynRpg::Load(int slot) {
 	auto in = FileFinder::Save().OpenInputStream(filename);
 
 	if (!in) {
-		Output::Warning("Couldn't read DynRPG save: {}", filename);
+		// Normal for saves made before DynRPG state was stored (e.g. by RPG_RT)
+		Output::Debug("No DynRPG save data: {}", filename);
+		return;
 	}
 
 	std::vector<uint8_t> in_buffer;
@@ -515,5 +526,26 @@ void Game_DynRpg::Save(int slot) {
 void Game_DynRpg::Update() {
 	for (auto& plugin : plugins) {
 		plugin->Update();
+	}
+}
+
+std::optional<lcf::rpg::EventCommand> Game_DynRpg::OnEventCommand(const Game_Interpreter& interpreter, lcf::rpg::SaveEventExecFrame& frame) {
+	std::optional<lcf::rpg::EventCommand> original;
+	for (auto& plugin : plugins) {
+		auto rewritten = plugin->OnEventCommand(interpreter, frame);
+		if (rewritten) {
+			auto& com = frame.commands[frame.current_command];
+			if (!original) {
+				original = std::move(com);
+			}
+			com = std::move(*rewritten);
+		}
+	}
+	return original;
+}
+
+void Game_DynRpg::OnFramesReset(const Game_Interpreter* interpreter, int first_frame) {
+	for (auto& plugin : plugins) {
+		plugin->OnFramesReset(interpreter, first_frame);
 	}
 }

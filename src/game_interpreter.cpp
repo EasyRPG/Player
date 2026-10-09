@@ -91,10 +91,12 @@ Game_Interpreter::Game_Interpreter(bool _main_flag) {
 }
 
 Game_Interpreter::~Game_Interpreter() {
+	ResetDynRpgFrames(0);
 }
 
 // Clear.
 void Game_Interpreter::Clear() {
+	ResetDynRpgFrames(0);
 	_state = {};
 	_keyinput = {};
 	_async_op = {};
@@ -148,6 +150,7 @@ void Game_Interpreter::PushInternal(
 		Main_Data::game_player->SetEncounterCalling(false);
 	}
 
+	ResetDynRpgFrames(_state.stack.size());
 	_state.stack.push_back(std::move(frame));
 }
 
@@ -611,8 +614,42 @@ void Game_Interpreter::SkipToNextConditional(std::initializer_list<Cmd> codes, i
 // Execute Command.
 bool Game_Interpreter::ExecuteCommand() {
 	auto& frame = GetFrame();
-	const auto& com = frame.commands[frame.current_command];
-	return ExecuteCommand(com);
+	const int frame_index = static_cast<int>(_state.stack.size()) - 1;
+	const int index = frame.current_command;
+
+	// DynRPG plugins (DynParams) may rewrite the command. Like DynRPG in RPG_RT,
+	// the original is restored once the command was executed, i.e. when another
+	// command runs: a command repeated until it is done stays rewritten.
+	if (_dynrpg_restore && (_dynrpg_restore->frame != frame_index || _dynrpg_restore->index != index)) {
+		RestoreDynRpgCommand();
+	}
+	auto original = Main_Data::game_dynrpg->OnEventCommand(*this, frame);
+	if (original && !_dynrpg_restore) {
+		_dynrpg_restore = DynRpgRestore{frame_index, index, std::move(*original)};
+	}
+
+	return ExecuteCommand(frame.commands[index]);
+}
+
+void Game_Interpreter::RestoreDynRpgCommand() {
+	auto restore = std::move(*_dynrpg_restore);
+	_dynrpg_restore.reset();
+
+	if (restore.frame < static_cast<int>(_state.stack.size())) {
+		auto& commands = _state.stack[restore.frame].commands;
+		if (restore.index < static_cast<int>(commands.size())) {
+			commands[restore.index] = std::move(restore.original);
+		}
+	}
+}
+
+void Game_Interpreter::ResetDynRpgFrames(int first_frame) {
+	if (_dynrpg_restore && _dynrpg_restore->frame >= first_frame) {
+		_dynrpg_restore.reset();
+	}
+	if (Main_Data::game_dynrpg) {
+		Main_Data::game_dynrpg->OnFramesReset(this, first_frame);
+	}
 }
 
 bool Game_Interpreter::ExecuteCommand(lcf::rpg::EventCommand const& com) {
@@ -2124,6 +2161,13 @@ std::optional<bool> Game_Interpreter::HandleDynRpgScript(const lcf::rpg::EventCo
 			}
 		}
 
+		// DynRPG reads a comment as a whole: its other lines are appended after a
+		// line break and are never commands of their own, even starting with @
+		const bool dynrpg = Player::IsPatchDynRpg();
+		if (dynrpg && com.code == static_cast<int32_t>(Cmd::Comment_2)) {
+			return {};
+		}
+
 		auto& frame = GetFrame();
 		const auto& list = frame.commands;
 		auto& index = frame.current_command;
@@ -2133,12 +2177,15 @@ std::optional<bool> Game_Interpreter::HandleDynRpgScript(const lcf::rpg::EventCo
 		// Concat everything that is not another command or a new comment block
 		for (size_t i = index + 1; i < list.size(); ++i) {
 			const auto& cmd = ResolveEventCommand(list[i]);
-			if (cmd.code == static_cast<uint32_t>(Cmd::Comment_2) &&
-					!cmd.string.empty() && cmd.string[0] != '@') {
-				command += ToString(cmd.string);
-			} else {
+			if (cmd.code != static_cast<uint32_t>(Cmd::Comment_2)) {
 				break;
 			}
+			if (dynrpg) {
+				command += "\r\n";
+			} else if (cmd.string.empty() || cmd.string[0] == '@') {
+				break;
+			}
+			command += ToString(cmd.string);
 		}
 
 		return Main_Data::game_dynrpg->Invoke(command, this);
