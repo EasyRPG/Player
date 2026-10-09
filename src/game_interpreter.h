@@ -20,6 +20,7 @@
 
 #include <cstdint>
 #include <map>
+#include <optional>
 #include <string>
 #include <vector>
 #include "async_handler.h"
@@ -375,6 +376,17 @@ protected:
 	lcf::rpg::EventCommand resolved_cmd;
 
 private:
+	/** DynRPG: a command a plugin rewrote, restored once it was executed */
+	struct DynRpgRestore {
+		int frame = 0;
+		int index = 0;
+		lcf::rpg::EventCommand original;
+	};
+	std::optional<DynRpgRestore> _dynrpg_restore;
+
+	void RestoreDynRpgCommand();
+	void ResetDynRpgFrames(int first_frame);
+
 	void PushInternal(
 		InterpreterPush push_info,
 		std::vector<lcf::rpg::EventCommand> _list,

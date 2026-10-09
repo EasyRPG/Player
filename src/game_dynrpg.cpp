@@ -27,6 +27,7 @@
 
 #include <cstring>
 #include <fstream>
+#include <lcf/rpg/saveeventexecframe.h>
 
 #include "dynrpg_easyrpg.h"
 #include "dynrpg_textplugin.h"
@@ -526,8 +527,23 @@ void Game_DynRpg::Update() {
 	}
 }
 
-void Game_DynRpg::OnEventCommand(lcf::rpg::EventCommand& com) {
+std::optional<lcf::rpg::EventCommand> Game_DynRpg::OnEventCommand(const Game_Interpreter& interpreter, lcf::rpg::SaveEventExecFrame& frame) {
+	std::optional<lcf::rpg::EventCommand> original;
 	for (auto& plugin : plugins) {
-		plugin->OnEventCommand(com);
+		auto rewritten = plugin->OnEventCommand(interpreter, frame);
+		if (rewritten) {
+			auto& com = frame.commands[frame.current_command];
+			if (!original) {
+				original = std::move(com);
+			}
+			com = std::move(*rewritten);
+		}
+	}
+	return original;
+}
+
+void Game_DynRpg::OnFramesReset(const Game_Interpreter* interpreter, int first_frame) {
+	for (auto& plugin : plugins) {
+		plugin->OnFramesReset(interpreter, first_frame);
 	}
 }
