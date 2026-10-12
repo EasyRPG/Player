@@ -35,10 +35,13 @@ public:
 	 * @param width window width, if no width is passed
 	 *              the width is autocalculated.
 	 * @param max_item forces a window height for max_item
-	 *                 items, if no height is passed
-	 *                 the height is autocalculated.
+	 *             	items, if no height is passed
+	 *              the height is autocalculated.
+	 * @param commands_enabled whether each command is 
+	 * 				selectable. if NULL, all commands 
+	 * 				are enabled.
 	 */
-	Window_Command(std::vector<std::string> commands, int width = -1, int max_item = -1);
+	Window_Command(std::vector<std::string> commands, int width = -1, int max_item = -1, std::vector<bool>* commands_enabled=NULL);
 
 	/**
 	 * Refreshes the window contents.
@@ -87,15 +90,19 @@ public:
 	 * Replace all commands with a new command set.
 	 *
 	 * @param commands the commands to replace with
+	 * @param commands_enabled whether each command is selectable. 
+	 * 				if NULL, all commands are enabled.
 	 * @note auto-generating width and height is not supported.
 	 */
-	void ReplaceCommands(std::vector<std::string> commands);
+	void ReplaceCommands(std::vector<std::string> commands, std::vector<bool>* commands_enabled=NULL);
 
 protected:
 	std::vector<std::string> commands;
 	std::vector<bool> commands_enabled;
 
+	virtual void ClearItem(int index);
 	virtual void DrawItem(int index, Font::SystemColor color);
+	Font::SystemColor GetItemColor(int index);
 };
 
 #endif

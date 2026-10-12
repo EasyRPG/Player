@@ -39,10 +39,13 @@ Window_Command_Horizontal::Window_Command_Horizontal(std::vector<std::string> in
 	ReplaceCommands(std::move(in_commands));
 }
 
+void Window_Command_Horizontal::ClearItem(int index) {
+	Rect rect = GetItemRect(index);
+	contents->ClearRect(rect);
+}
+
 void Window_Command_Horizontal::DrawItem(int index, Font::SystemColor color) {
 	Rect rect = GetItemRect(index);
-
-	contents->ClearRect(rect);
 	contents->TextDraw(rect.x, rect.y, color, commands[index]);
 }
 
