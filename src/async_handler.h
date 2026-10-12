@@ -70,6 +70,25 @@ namespace AsyncHandler {
 	FileRequestAsync* RequestFile(std::string_view file_name);
 
 	/**
+	 * Creates a request to a file that may reside in one of two possible
+	 * directories, e.g. because a project can store it in a preferred
+	 * subfolder or (for compatibility) in the project root.
+	 * The file is requested from preferred_dir first. On platforms with
+	 * synchronous file access (i.e. everywhere except Emscripten) whether
+	 * the file actually exists there is already known at this point.
+	 * On platforms without synchronous access, existence can only be
+	 * determined by attempting the download: if that attempt fails, a
+	 * fallback request for fallback_dir is issued automatically, and the
+	 * request is only considered finished once that also completes.
+	 *
+	 * @param preferred_dir directory to try first
+	 * @param fallback_dir directory to fall back to when the file isn't in preferred_dir
+	 * @param file_name Name of the requested file requested.
+	 * @return The async request.
+	 */
+	FileRequestAsync* RequestFile(std::string_view preferred_dir, std::string_view fallback_dir, std::string_view file_name);
+
+	/**
 	 * Checks if any file with important-flag hasn't finished downloading yet.
 	 *
 	 * @return If any file with important-flag is pending.
@@ -160,6 +179,17 @@ public:
 	void SetGraphicFile(bool graphic);
 
 	/**
+	 * Sets a fallback directory to retry the request in when it fails in
+	 * its current directory (see AsyncHandler::RequestFile with a
+	 * preferred/fallback directory pair). Only one fallback attempt is
+	 * made.
+	 * This must be set before Start() is invoked.
+	 *
+	 * @param dir directory to retry the request in on failure.
+	 */
+	void SetFallbackDirectory(std::string_view dir);
+
+	/**
 	 * Starts the async requests.
 	 * When the request was already started earlier and is pending this call
 	 * does nothing. When the request is already all binded event handlers are
@@ -218,6 +248,7 @@ private:
 	std::string directory;
 	std::string file;
 	std::string path;
+	std::string fallback_directory;
 	int state = State_DoneFailure;
 	bool important = false;
 	bool graphic = false;
@@ -253,6 +284,10 @@ inline bool FileRequestAsync::IsImportantFile() const {
 
 inline void FileRequestAsync::SetImportantFile(bool important) {
 	this->important = important;
+}
+
+inline void FileRequestAsync::SetFallbackDirectory(std::string_view dir) {
+	fallback_directory = ToString(dir);
 }
 
 inline bool FileRequestAsync::IsGraphicFile() const {
