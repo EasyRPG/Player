@@ -38,7 +38,7 @@ public:
 	 *
 	 * @param common_event_id database common event ID.
 	 */
-	explicit Game_CommonEvent(int common_event_id);
+	explicit Game_CommonEvent(int common_event_id, bool on_map = true);
 
 	/**
 	 * Set savegame data.
@@ -109,19 +109,31 @@ public:
 	/** @return true if waiting for foreground execution */
 	bool IsWaitingForegroundExecution() const;
 
+	/** @return true if waiting for execution when battle starts */
+	bool IsWaitingBattleStartExecution() const;
+
 	/**
 	 * @param force_run force the event to execute even if conditions not met.
 	 * @return true if waiting for background execution
 	 */
 	bool IsWaitingBackgroundExecution(bool force_run) const;
 
+	const Game_Interpreter* GetInterpreter() const;
+
 private:
 	int common_event_id;
 
+	/** Indicates whether these common events run on the map (false = on battle) */
+	bool on_map;
+
 	/** Interpreter for parallel common events. */
-	std::unique_ptr<Game_Interpreter_Map> interpreter;
+	std::unique_ptr<Game_Interpreter> interpreter;
 
 	friend class Game_Interpreter_Inspector;
 };
+
+inline const Game_Interpreter* Game_CommonEvent::GetInterpreter() const {
+	return interpreter.get();
+}
 
 #endif

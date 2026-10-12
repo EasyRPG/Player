@@ -28,6 +28,7 @@
 #include "drawable.h"
 #include "game_actor.h"
 #include "game_enemy.h"
+#include "game_interpreter_battle.h"
 #include "scene.h"
 #include "spriteset_battle.h"
 #include "window_help.h"
@@ -84,9 +85,13 @@ public:
 	void UpdateScreen();
 	void UpdateBattlers();
 	void UpdateUi();
+	bool CheckInterpreter(const Game_Interpreter_Battle& interp);
 	bool UpdateEvents();
+	bool UpdateCommonEvents();
 	bool UpdateTimers();
 	void UpdateGraphics() override;
+
+	bool ScheduleNextBattleBeginCommonEvent();
 
 	void Continue(SceneType prev_scene) override;
 	void TransitionIn(SceneType prev_scene) override;
@@ -154,7 +159,7 @@ protected:
 
 	/**
 	 * Executed when selection an action (normal, skill, item, ...) and
-	 * (if needed) choosing an attack target was finished. 
+	 * (if needed) choosing an attack target was finished.
 	 *
 	 * @param for_battler Battler whose action was selected.
 	 */
@@ -205,6 +210,9 @@ protected:
 
 	/** Options available in the menu. */
 	std::vector<BattleOptionType> battle_options;
+
+	/** ID of last invoked start battle event */
+	int last_scheduled_start_battle_event = -1;
 };
 
 inline bool Scene_Battle::IsEscapeAllowed() const {

@@ -17,28 +17,37 @@
 
 // Headers
 #include "game_commonevent.h"
+#include "game_interpreter_battle.h"
 #include "game_map.h"
 #include "game_switches.h"
 #include "game_interpreter_map.h"
 #include "main_data.h"
 #include <lcf/reader_util.h>
 #include <cassert>
+#include <lcf/rpg/commonevent.h>
+#include <lcf/rpg/eventcommand.h>
 
-Game_CommonEvent::Game_CommonEvent(int common_event_id) :
-	common_event_id(common_event_id)
+Game_CommonEvent::Game_CommonEvent(int common_event_id, bool on_map) :
+	common_event_id(common_event_id), on_map(on_map)
 {
 	auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id);
 
-	if (ce->trigger == lcf::rpg::EventPage::Trigger_parallel
+	if (on_map && ce->trigger == lcf::rpg::CommonEvent::Trigger_parallel
 			&& !ce->event_commands.empty()) {
 		interpreter.reset(new Game_Interpreter_Map());
 		interpreter->Push<InterpreterExecutionType::Parallel>(this);
 	}
 
-
+	if (!on_map && ce->trigger == lcf::rpg::CommonEvent::Trigger_maniac_battle_parallel
+			&& !ce->event_commands.empty()) {
+		interpreter.reset(new Game_Interpreter_Battle(false));
+		interpreter->Push<InterpreterExecutionType::BattleParallel>(this);
+	}
 }
 
 void Game_CommonEvent::SetSaveData(const lcf::rpg::SaveEventExecState& data) {
+	assert(on_map);
+
 	// RPG_RT Savegames have empty stacks for parallel events.
 	// We are LSD compatible but don't load these into interpreter.
 	if (!data.stack.empty() && !data.stack.front().commands.empty()) {
@@ -94,11 +103,13 @@ std::vector<lcf::rpg::EventCommand>& Game_CommonEvent::GetList() {
 }
 
 lcf::rpg::SaveEventExecState Game_CommonEvent::GetSaveData() {
+	assert(on_map);
+
 	lcf::rpg::SaveEventExecState state;
 	if (interpreter) {
 		state = interpreter->GetSaveState();
 	}
-	if (GetTrigger() == lcf::rpg::EventPage::Trigger_parallel && state.stack.empty()) {
+	if (GetTrigger() == lcf::rpg::CommonEvent::Trigger_parallel && state.stack.empty()) {
 		// RPG_RT always stores an empty stack frame for parallel events.
 		state.stack.push_back({});
 	}
@@ -107,13 +118,24 @@ lcf::rpg::SaveEventExecState Game_CommonEvent::GetSaveData() {
 
 bool Game_CommonEvent::IsWaitingForegroundExecution() const {
 	auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id);
-	return ce->trigger == lcf::rpg::EventPage::Trigger_auto_start &&
+	return ce->trigger == lcf::rpg::CommonEvent::Trigger_automatic &&
+		(!ce->switch_flag || Main_Data::game_switches->Get(ce->switch_id))
+		&& !ce->event_commands.empty();
+}
+
+bool Game_CommonEvent::IsWaitingBattleStartExecution() const {
+	auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id);
+	return ce->trigger == lcf::rpg::CommonEvent::Trigger_maniac_battle_start &&
 		(!ce->switch_flag || Main_Data::game_switches->Get(ce->switch_id))
 		&& !ce->event_commands.empty();
 }
 
 bool Game_CommonEvent::IsWaitingBackgroundExecution(bool force_run) const {
 	auto* ce = lcf::ReaderUtil::GetElement(lcf::Data::commonevents, common_event_id);
-	return ce->trigger == lcf::rpg::EventPage::Trigger_parallel &&
+	const auto trigger = on_map ?
+		lcf::rpg::CommonEvent::Trigger_parallel :
+		lcf::rpg::CommonEvent::Trigger_maniac_battle_parallel;
+
+	return ce->trigger == trigger &&
 		(force_run || !ce->switch_flag || Main_Data::game_switches->Get(ce->switch_id));
 }
