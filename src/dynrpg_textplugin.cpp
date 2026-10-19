@@ -112,8 +112,9 @@ public:
 			return;
 		}
 
+		// The text only shows while its picture is shown: an erased picture keeps its sprite
 		const Game_Pictures::Picture* pic = Main_Data::game_pictures->GetPicturePtr(pic_id);
-		if (!pic) {
+		if (!pic || !pic->Exists()) {
 			return;
 		}
 		const Sprite_Picture* sprite = pic->sprite.get();
