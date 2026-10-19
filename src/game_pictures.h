@@ -41,6 +41,7 @@ public:
 	void InitGraphics();
 
 	static int GetDefaultNumberOfPictures();
+	int GetPictureCount() const;
 
 	struct Params {
 		int position_x = 0;
@@ -134,8 +135,33 @@ public:
 		bool IsCanvas() const;
 	};
 
+	/**
+	 * @param id Picture ID
+	 * @return Reference to a picture (allocates when necessary). Passing an invalid ID will abort!
+	 */
 	Picture& GetPicture(int id);
+
+	/**
+	 * @param id Picture ID
+	 * @return Pointer to an existing picture or nullptr if its an unused picture slot
+	 */
 	Picture* GetPicturePtr(int id);
+
+	/**
+	 * Moves picture data to a different ID
+	 *
+	 * @param src_id Source ID to move from
+	 * @param dst_id Destination ID to move to
+	 */
+	void MovePicture(int src_id, int dst_id);
+
+	/**
+	 * Swaps picture data between two IDs
+	 *
+	 * @param id1 First ID to swap with
+	 * @param id2 Second ID to swap with
+	 */
+	void SwapPicture(int id1, int id2);
 
 private:
 	void RequestPictureSprite(Picture& pic);

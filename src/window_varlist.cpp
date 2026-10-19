@@ -22,14 +22,17 @@
 #include "game_switches.h"
 #include "game_variables.h"
 #include "game_strings.h"
+#include "game_pictures.h"
 #include "bitmap.h"
 #include <lcf/data.h>
 #include <lcf/reader_util.h>
 #include "input.h"
+#include "main_data.h"
 #include "output.h"
 #include "game_party.h"
 #include "game_map.h"
 #include "game_system.h"
+#include <fmt/format.h>
 
 constexpr int LINE_COUNT = 10;
 
@@ -120,6 +123,18 @@ void Window_VarList::DrawItemValue(int index){
 		case eString:
 			DrawStringVarItem(index, y);
 		break;
+		case ePicture: {
+			auto* pic = Main_Data::game_pictures->GetPicturePtr(first_var + index);
+			if (pic && (pic->Exists())) {
+				auto pos_str = fmt::format("{:.0f},{:.0f}", pic->data.current_x, pic->data.current_y);
+				contents->TextDraw(GetWidth() - 16, y, Font::ColorHeal, pos_str, Text::AlignRight);
+			} else {
+				const int space_reserved = (GetDigitCount() + 2);
+				int x = space_reserved * 6;
+				contents->TextDraw(x, y, Font::ColorDisabled, "undefined");
+			}
+			break;
+		}
 		case eNone:
 			break;
 	}
@@ -197,6 +212,19 @@ void Window_VarList::UpdateList(int first_value){
 					ss << strvar_name;
 				}
 				break;
+			case ePicture: {
+				auto* pic = Main_Data::game_pictures->GetPicturePtr(first_value + i);
+				if (pic->IsWindowAttached()) {
+					ss << "[String]";
+				} else {
+					std::string name = ToString(pic->data.name);
+					if (name.length() > 14) {
+						name = name.substr(0, 11) + "...";
+					}
+					ss << name;
+				}
+				break;
+			}
 			default:
 				break;
 		}
@@ -239,6 +267,9 @@ bool Window_VarList::DataIsValid(int range_index) {
 			return Game_Map::GetEvent(range_index) != nullptr;
 		case eString:
 			return range_index > 0 && range_index <= Main_Data::game_strings->GetSizeWithLimit();
+		case ePicture: {
+			return range_index > 0 && range_index <= Main_Data::game_pictures->GetPictureCount();
+		}
 		default:
 			break;
 	}
@@ -263,6 +294,8 @@ int Window_VarList::GetNumElements(Mode mode) {
 			return Game_Map::GetHighestEventId();
 		case eString:
 			return Main_Data::game_strings->GetSizeWithLimit();
+		case ePicture:
+			return Main_Data::game_pictures->GetPictureCount();
 		default:
 			return -1;
 	}

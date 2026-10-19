@@ -103,6 +103,51 @@ Game_Windows::Window_User* Game_Windows::GetWindowPtr(int id) {
 		? &windows[id - 1] : nullptr;
 }
 
+void Game_Windows::MoveWindow(int src_id, int dst_id) {
+	if (src_id == dst_id) {
+		return;
+	}
+
+	// Delete the destination, then swap
+	if (dst_id > 0) {
+		auto& dst_win = GetWindow(dst_id);
+		dst_win.Erase();
+	}
+
+	SwapWindow(src_id, dst_id);
+}
+
+void Game_Windows::SwapWindow(int id1, int id2) {
+	if (id1 == id2 || (id1 <= 0 && id2 <= 0)) {
+		return;
+	}
+
+	auto max_id = std::max(id1, id2);
+	GetWindow(max_id); // Preallocate to ensure references are stable
+
+	Window_User bad_win{0};
+
+	auto* src_win = &bad_win;
+	auto* dst_win = &bad_win;
+
+	if (id1 > 0) {
+		src_win = &GetWindow(id1);
+	} else {
+		bad_win = Window_User(id1);
+	}
+
+	if (id2 > 0) {
+		dst_win = &GetWindow(id2);
+	} else {
+		bad_win = Window_User(id2);
+	}
+
+	std::swap(src_win->data.ID, dst_win->data.ID);
+
+	// Must be last (invalidates references)
+	std::swap(*src_win, *dst_win);
+}
+
 bool Game_Windows::Window_User::Create(const WindowParams& params) {
 	Erase();
 
