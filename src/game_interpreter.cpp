@@ -77,6 +77,7 @@
 #include "algo.h"
 #include "sprite_picture.h"
 #include "bitmap.h"
+#include "scene_load.h"
 
 using namespace Game_Interpreter_Shared;
 
@@ -2106,6 +2107,17 @@ bool Game_Interpreter::CommandPlaySound(lcf::rpg::EventCommand const& com) { // 
 }
 
 bool Game_Interpreter::CommandEndEventProcessing(lcf::rpg::EventCommand const& /* com */) { // code 12310
+	if (auto var_id = Player::game_config.patch_better_aep.Get()) {
+		switch (Main_Data::game_variables->Get(var_id)) {
+			case 1:
+				Scene::instance->SetRequestedScene(std::make_shared<Scene_Load>());
+				return true;
+			case 2:
+				Player::exit_flag = true;
+				return true;
+		}
+	}
+
 	EndEventProcessing();
 	return true;
 }

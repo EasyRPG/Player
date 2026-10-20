@@ -878,7 +878,11 @@ void Player::CreateGameObjects() {
 		if (!FileFinder::Game().FindFile("warp.dll").empty()) {
 			game_config.patch_powermode.Set(true);
 		}
+	}
 
+	if (game_config.patch_better_aep.Get()) {
+		// BetterAEP skips the built-in title so a map can draw a custom one
+		game_config.new_game.Set(true);
 	}
 
 	game_config.PrintActivePatches();
@@ -1519,6 +1523,9 @@ Engine options:
                       VAR.
  --patch-encounter-alert VAR
                       Set troop id to variable VAR and skip random battles.
+ --patch-better-aep VAR
+                      Emulates the "BetterAEP" patch: when VAR is 1 or 2,
+                      End Event Processing opens the load menu or quits.
  --patch-dynrpg       Enable support of DynRPG patch by Cherry (very limited).
  --patch-easyrpg      Enable EasyRPG extensions.
  --patch-key-patch    Enable Key Patch by Ineluki.
