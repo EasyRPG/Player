@@ -287,16 +287,25 @@ bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com
 		return true;
 	}
 
-	bool check = com.parameters[2] == 0;
+	// RPG_RT: Does nothing when the battle does not allow escape
+	auto* scene_battle = static_cast<Scene_Battle*>(Scene::Find(Scene::Battle).get());
+	if (scene_battle && !scene_battle->IsEscapeAllowed()) {
+		return true;
+	}
+
+	// "Ignore if the target is surrounded": The party does not flee in a pincer attack
+	// and the enemies do not flee in a surround attack
+	bool ignore_surrounded = com.parameters.size() > 2 && com.parameters[2] != 0;
+	const auto cond = Game_Battle::GetBattleCondition();
 
 	switch (com.parameters[0]) {
 	case 0:
-		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_pincers) {
+		if (!ignore_surrounded || cond != lcf::rpg::System::BattleCondition_pincers) {
 			this->force_flee_enabled = true;
 		}
 		break;
 	case 1:
-		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_surround) {
+		if (!ignore_surrounded || cond != lcf::rpg::System::BattleCondition_surround) {
 			int num_escaped = 0;
 			for (auto* enemy: Main_Data::game_enemyparty->GetEnemies()) {
 				if (enemy->Exists()) {
@@ -311,7 +320,8 @@ bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com
 		}
 		break;
 	case 2:
-		if (!check || Game_Battle::GetBattleCondition() != lcf::rpg::System::BattleCondition_surround) {
+		// RPG_RT: A single enemy never flees in a surround attack, the box is not read
+		if (cond != lcf::rpg::System::BattleCondition_surround) {
 			auto* enemy = Main_Data::game_enemyparty->GetEnemy(com.parameters[1]);
 			if (!enemy) {
 				Output::Warning("ForceFlee: Invalid enemy ID {}", com.parameters[1]);
