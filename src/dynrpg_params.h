@@ -23,13 +23,13 @@
 #include <optional>
 #include <string>
 #include <utility>
-#include <vector>
 #include "game_dynrpg.h"
 #include "filesystem_stream.h"
 
 namespace DynRpg {
 	/**
-	 * DynParams plugin: rewrites the next event command (behaviour of DynParams.dll).
+	 * DynParams plugin: rewrites the next event command (behaviour of DynParams.dll
+	 * 1.2.2.1 by Aubrey the Bard).
 	 *
 	 *   @dynparams_add_param I, V                    parameter I (1-based) := V
 	 *   @dynparams_add_param V                       parameter <index> := V, then index + 1
@@ -53,10 +53,13 @@ namespace DynRpg {
 	 * belongs to the running script: each frame of each interpreter has its own.
 	 * The rewritten command is restored once executed (DynRPG does that), but
 	 * the message lines and choices that follow it stay rewritten.
+	 *
+	 * [DynParams] DebugLog=1 of DynRPG.ini writes what it rewrites to the
+	 * Player's log (DynParams.dll: DynPlugins/DynParamsDebug<date>.txt).
 	 */
 	class ParamsPlugin : public DynRpgPlugin {
 	public:
-		ParamsPlugin(Game_DynRpg& instance) : DynRpgPlugin("DynParams", instance) {}
+		explicit ParamsPlugin(Game_DynRpg& instance);
 
 		bool Invoke(std::string_view func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
 		std::optional<lcf::rpg::EventCommand> OnEventCommand(const Game_Interpreter& interpreter, lcf::rpg::SaveEventExecFrame& frame) override;
@@ -68,7 +71,7 @@ namespace DynRpg {
 
 		/** Overwrite orders built by the comment commands of one script */
 		struct Script {
-			std::vector<std::pair<int, int>> params;
+			std::map<int, int> params;
 			std::string text;
 			bool text_set = false;
 			std::array<std::string, message_lines> lines;
@@ -85,8 +88,10 @@ namespace DynRpg {
 		void Apply(Script& script, lcf::rpg::EventCommand& com, lcf::rpg::SaveEventExecFrame& frame);
 		void List(const Script& script) const;
 		void Record(const lcf::rpg::EventCommand& com);
+		void Log(std::string_view text) const;
 
 		std::map<ScriptKey, Script> scripts;
+		bool debug_log = false;
 		bool record = false;
 		Filesystem_Stream::OutputStream record_file;
 	};

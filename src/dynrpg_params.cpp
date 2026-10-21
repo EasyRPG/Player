@@ -21,6 +21,7 @@
 #include "game_interpreter.h"
 #include "output.h"
 #include <cstdlib>
+#include <lcf/inireader.h>
 #include <lcf/rpg/eventcommand.h>
 #include <lcf/rpg/saveeventexecframe.h>
 
@@ -63,6 +64,14 @@ namespace {
 	}
 }
 
+DynRpg::ParamsPlugin::ParamsPlugin(Game_DynRpg& instance) : DynRpgPlugin("DynParams", instance) {
+	if (auto is = FileFinder::Game() ? FileFinder::Game().OpenFile("DynRPG.ini") : Filesystem_Stream::InputStream()) {
+		lcf::INIReader ini(is);
+		// DynParams.dll: any number but 0
+		debug_log = ini.GetInteger("DynParams", "DebugLog", 0) != 0;
+	}
+}
+
 DynRpg::ParamsPlugin::ScriptKey DynRpg::ParamsPlugin::KeyOf(const Game_Interpreter* interpreter) {
 	if (!interpreter) {
 		return {nullptr, 0};
@@ -84,10 +93,10 @@ bool DynRpg::ParamsPlugin::Invoke(std::string_view func, dyn_arg_list args, bool
 
 	if (func == "dynparams_add_param") {
 		if (args.size() == 1) {
-			script.params.emplace_back(script.index, ArgToInt(func, args, 0));
+			script.params[script.index] = ArgToInt(func, args, 0);
 			++script.index;
 		} else {
-			script.params.emplace_back(ArgToInt(func, args, 0), ArgToInt(func, args, 1));
+			script.params[ArgToInt(func, args, 0)] = ArgToInt(func, args, 1);
 		}
 		return true;
 	}
@@ -133,6 +142,11 @@ bool DynRpg::ParamsPlugin::Invoke(std::string_view func, dyn_arg_list args, bool
 	}
 	if (func == "dynparams_overwrite_next") {
 		script.overwrite = true;
+		if (debug_log) {
+			const auto* frame = interpreter && !interpreter->GetState().stack.empty() ? &interpreter->GetState().stack.back() : nullptr;
+			Log(fmt::format("Setting overwrite next flag to true: event {}, line {}",
+				frame ? frame->event_id : 0, frame ? frame->current_command : 0));
+		}
 		return true;
 	}
 	if (func == "dynparams_clear_params") {
@@ -174,24 +188,29 @@ void DynRpg::ParamsPlugin::OnFramesReset(const Game_Interpreter* interpreter, in
 void DynRpg::ParamsPlugin::Apply(Script& script, lcf::rpg::EventCommand& com, lcf::rpg::SaveEventExecFrame& frame) {
 	auto& commands = frame.commands;
 	const size_t current = frame.current_command;
+	Log(fmt::format("Overwriting event line: command {}, event {}, line {}", com.code, frame.event_id, current));
 
 	if (script.text_set) {
+		Log(fmt::format("Overwriting main string parameter with: '{}'", script.text));
 		com.string = lcf::DBString(script.text);
 	}
 
 	if (script.lines_set) {
 		// The first line, then the message lines that follow (not restored after execution)
+		Log("Overwriting message line string parameters");
 		com.string = lcf::DBString(script.lines[0]);
 		for (int line = 1; line < message_lines; ++line) {
 			size_t i = current + line;
 			if (i >= commands.size() || commands[i].code != static_cast<int>(Cmd::ShowMessage_2)) {
 				break;
 			}
+			Log(fmt::format("Line {}: '{}'", line, script.lines[line]));
 			commands[i].string = lcf::DBString(script.lines[line]);
 		}
 	}
 
 	if (!script.choices.empty()) {
+		Log("Overwriting choice case string parameters");
 		// The choices of this Show Choices, or of the one right after this message
 		size_t i = current;
 		if (com.code == static_cast<int>(Cmd::ShowMessage)) {
@@ -215,6 +234,7 @@ void DynRpg::ParamsPlugin::Apply(Script& script, lcf::rpg::EventCommand& com, lc
 				} else if (line.code == static_cast<int>(Cmd::ShowChoiceOption) && nesting == 0) {
 					auto text = script.choices.find(choice);
 					if (text != script.choices.end()) {
+						Log(fmt::format("Choice case {}: '{}'", choice + 1, text->second));
 						line.string = lcf::DBString(text->second);
 					}
 					++choice;
@@ -223,14 +243,19 @@ void DynRpg::ParamsPlugin::Apply(Script& script, lcf::rpg::EventCommand& com, lc
 		}
 	}
 
+	if (!script.params.empty()) {
+		Log("Overwriting number parameters");
+	}
 	for (const auto& [i, value] : script.params) {
 		// DynParams.dll writes out of bounds (RPG_RT crashes or corrupts memory)
 		if (i < 1 || static_cast<size_t>(i) > com.parameters.size()) {
 			Output::Warning("DynParams: Command {} has no parameter {} (it has {})", com.code, i, com.parameters.size());
 			continue;
 		}
+		Log(fmt::format("Number parameter {}: '{}'", i, value));
 		com.parameters[i - 1] = value;
 	}
+	Log("Overwriting of event line completed");
 }
 
 void DynRpg::ParamsPlugin::List(const Script& script) const {
@@ -244,6 +269,12 @@ void DynRpg::ParamsPlugin::List(const Script& script) const {
 	}
 	for (const auto& [choice, text] : script.choices) {
 		Output::Info("DynParams: Choice case {} parameter: \"{}\"", choice + 1, text);
+	}
+}
+
+void DynRpg::ParamsPlugin::Log(std::string_view text) const {
+	if (debug_log) {
+		Output::Debug("DynParams: {}", text);
 	}
 }
 
