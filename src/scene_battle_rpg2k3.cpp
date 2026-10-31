@@ -998,10 +998,15 @@ void Scene_Battle_Rpg2k3::NextTurn(Game_Battler* battler) {
 }
 
 bool Scene_Battle_Rpg2k3::CheckBattleEndConditions() {
-	if (state == State_Defeat || Game_Battle::CheckLose()) {
-		if (state != State_Defeat) {
-			SetState(State_Defeat);
+	if (state == State_Defeat) {
+		return true;
+	}
+
+	if (Game_Battle::CheckLose()) {
+		if (ScheduleDefeatEvents()) {
+			return false;
 		}
+		SetState(State_Defeat);
 		return true;
 	}
 
@@ -1015,6 +1020,26 @@ bool Scene_Battle_Rpg2k3::CheckBattleEndConditions() {
 	return false;
 }
 
+
+bool Scene_Battle_Rpg2k3::ScheduleDefeatEvents() {
+	// RPG_RT still runs a troop page conditioned on actor HP when the party is
+	// wiped out, before resolving the defeat. A page ending the battle itself
+	// (e.g. "actor at 0% HP" -> Terminate Battle) is how scripted losses work.
+	auto& interp = Game_Battle::GetInterpreterBattle();
+	if (interp.IsRunning()) {
+		return defeat_event_running;
+	}
+	defeat_event_running = false;
+
+	lcf::rpg::TroopPageCondition::Flags flags;
+	flags.actor_hp = true;
+	if (interp.ScheduleNextPage(flags, nullptr) == 0) {
+		return false;
+	}
+
+	defeat_event_running = true;
+	return true;
+}
 
 bool Scene_Battle_Rpg2k3::CheckBattleEndAndScheduleEvents(EventTriggerType tt, Game_Battler* source) {
 	auto& interp = Game_Battle::GetInterpreterBattle();
