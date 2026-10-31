@@ -18,6 +18,7 @@
 // Headers
 #include <map>
 #include <memory>
+#include <lcf/inireader.h>
 #include <lcf/reader_util.h>
 
 #include "dynrpg_textplugin.h"
@@ -25,6 +26,9 @@
 #include "bitmap.h"
 #include "drawable.h"
 #include "drawable_mgr.h"
+#include "filefinder.h"
+#include "game_actor.h"
+#include "game_actors.h"
 #include "game_map.h"
 #include "game_message.h"
 #include "game_pictures.h"
@@ -37,6 +41,8 @@ class DynRpgText;
 
 namespace {
 	std::map<std::string, std::unique_ptr<DynRpgText>> graphics;
+	// The picture of a text when write_text gives none: PictureID of [DynTextPlugin] in DynRPG.ini
+	int default_pic_id = 1;
 }
 
 class DynRpgText : public Drawable {
@@ -56,9 +62,22 @@ public:
 	}
 
 	void AddLine(const std::string& text) {
-		texts.push_back(text);
+		if (!bitmap) {
+			texts.push_back(text);
+			Refresh();
+			return;
+		}
 
-		Refresh();
+		// RPG_RT: Only the new line is drawn, the lines above stay as they were drawn (System graphic, font)
+		std::string line = ParseText(text);
+		Rect r = Text::GetSize(*Font::Default(), line);
+
+		BitmapRef old_bitmap = bitmap;
+		bitmap = Bitmap::Create(std::max(old_bitmap->GetWidth(), r.width), old_bitmap->GetHeight() + r.height + 2, true);
+		bitmap->Blit(0, 0, *old_bitmap, old_bitmap->GetRect(), Opacity::Opaque());
+		bitmap->TextDraw(0, old_bitmap->GetHeight(), color, line);
+
+		texts.push_back(line);
 	}
 
 	void AddText(const std::string& text) {
@@ -112,8 +131,9 @@ public:
 			return;
 		}
 
+		// The text only shows while its picture is shown: an erased picture keeps its sprite
 		const Game_Pictures::Picture* pic = Main_Data::game_pictures->GetPicturePtr(pic_id);
-		if (!pic) {
+		if (!pic || !pic->Exists()) {
 			return;
 		}
 		const Sprite_Picture* sprite = pic->sprite.get();
@@ -122,8 +142,9 @@ public:
 		}
 
 		// For unknown reasons the official plugin has an y-offset of 2
+		// RPG_RT: A text on the map does not shake with the screen
 		if (fixed) {
-			dst.Blit(x - Game_Map::GetDisplayX() / 16, y - Game_Map::GetDisplayY() / 16 + 2, *bitmap, bitmap->GetRect(), sprite->GetOpacity());
+			dst.Blit(x - Game_Map::GetPositionX() / 16, y - Game_Map::GetPositionY() / 16 + 2, *bitmap, bitmap->GetRect(), sprite->GetOpacity());
 		} else {
 			dst.Blit(x, y + 2, *bitmap, bitmap->GetRect(), sprite->GetOpacity());
 		}
@@ -163,16 +184,20 @@ public:
 		return data;
 	}
 
-	static DynRpgText* GetTextHandle(const std::string& id, bool silent = false) {
+	/** @return the text with its escapes (\v[1], \i[1]...) replaced, the IDs too are parsed */
+	static std::string ParseText(const std::string& text) {
 		PendingMessage pm(CommandCodeInserter);
-		pm.PushLine(id);
-		std::string new_id = pm.GetLines().front();
+		pm.PushLine(text);
+		return pm.GetLines().front();
+	}
+
+	static DynRpgText* GetTextHandle(const std::string& id) {
+		std::string new_id = ParseText(id);
 
 		auto it = graphics.find(new_id);
 		if (it == graphics.end()) {
-			if (!silent) {
-				Output::Warning("No text with ID %s found", new_id.c_str());
-			}
+			// RPG_RT: The command does nothing
+			Output::Debug("DynTextPlugin: No text with ID {} found", new_id);
 			return nullptr;
 		}
 
@@ -180,13 +205,14 @@ public:
 	}
 
 	static std::optional<std::string> CommandCodeInserter(char ch, const char** iter, const char* end, uint32_t escape_char) {
+		// RPG_RT: An invalid ID gives an empty text
 		if (ch == 'I' || ch == 'i') {
 			auto parse_ret = Game_Message::ParseParam('I', 'i', *iter, end, escape_char, true);
 			*iter = parse_ret.next;
 			int value = parse_ret.value;
 			const auto* item = lcf::ReaderUtil::GetElement(lcf::Data::items, value);
 			if (!item) {
-				Output::Warning("Invalid Item Id {} in DynTextPlugin text", value);
+				Output::Debug("DynTextPlugin: Invalid Item Id {}", value);
 				return "";
 			} else{
 				return ToString(ch == 'i' ? item->name : item->description);
@@ -197,10 +223,34 @@ public:
 			int value = parse_ret.value;
 			const auto* skill = lcf::ReaderUtil::GetElement(lcf::Data::skills, value);
 			if (!skill) {
-				Output::Warning("Invalid Item Id {} in DynTextPlugin text", value);
+				Output::Debug("DynTextPlugin: Invalid Skill Id {}", value);
 				return "";
 			} else{
 				return ToString(ch == 't' ? skill->name : skill->description);
+			}
+		} else if (ch == 'a') {
+			// The name of a condition
+			auto parse_ret = Game_Message::ParseParam('A', 'a', *iter, end, escape_char, true);
+			*iter = parse_ret.next;
+			int value = parse_ret.value;
+			const auto* state = lcf::ReaderUtil::GetElement(lcf::Data::states, value);
+			if (!state) {
+				Output::Debug("DynTextPlugin: Invalid Condition Id {}", value);
+				return "";
+			} else {
+				return ToString(state->name);
+			}
+		} else if (ch == 'N') {
+			// The title of a hero (\n is the name)
+			auto parse_ret = Game_Message::ParseActor(*iter, end, escape_char, true);
+			*iter = parse_ret.next;
+			int value = parse_ret.value;
+			const auto* actor = Main_Data::game_actors->GetActor(value);
+			if (!actor) {
+				Output::Warning("Invalid Actor Id {} in DynTextPlugin text", value);
+				return "";
+			} else {
+				return ToString(actor->GetTitle());
 			}
 		} else if (ch == 'x' || ch == 'X') {
 			auto parse_ret = Game_Message::ParseStringParam('X', 'x', *iter, end, escape_char, true);
@@ -230,9 +280,7 @@ private:
 		const FontRef& font = Font::Default();
 
 		for (auto& t : texts) {
-			PendingMessage pm(CommandCodeInserter);
-			pm.PushLine(t);
-			t = pm.GetLines().front();
+			t = ParseText(t);
 
 			Rect r = Text::GetSize(*font, t);
 			width = std::max(width, r.width);
@@ -269,10 +317,13 @@ static bool WriteText(dyn_arg_list args) {
 	if (!okay)
 		return true;
 
-	PendingMessage pm(DynRpgText::CommandCodeInserter);
-	pm.PushLine(id);
-	std::string new_id = pm.GetLines().front();
-	graphics[new_id] = std::make_unique<DynRpgText>(1, x, y, text);
+	// RPG_RT: Does nothing when the text exists, the ID is looked up before its escapes are parsed
+	if (graphics.find(id) != graphics.end()) {
+		return true;
+	}
+
+	std::string new_id = DynRpgText::ParseText(id);
+	graphics[new_id] = std::make_unique<DynRpgText>(default_pic_id, x, y, text);
 
 	if (args.size() > 4) {
 		std::string fixed = std::get<0>(DynRpg::ParseArgs<std::string>(func, args.subspan(4), &okay));
@@ -385,18 +436,22 @@ static bool RemoveText(dyn_arg_list args) {
 	if (!okay)
 		return true;
 
-	DynRpgText* handle = DynRpgText::GetTextHandle(id, true);
-	if (!handle) {
-		return true;
-	}
-
-	handle->ClearText();
+	// RPG_RT: The ID is deleted too, write_text can create it again
+	graphics.erase(DynRpgText::ParseText(id));
 	return true;
 }
 
 static bool RemoveAll(dyn_arg_list) {
 	graphics.clear();
 	return true;
+}
+
+DynRpg::TextPlugin::TextPlugin(Game_DynRpg& instance) : DynRpgPlugin("DynTextPlugin", instance) {
+	default_pic_id = 1;
+	if (auto is = FileFinder::Game() ? FileFinder::Game().OpenFile("DynRPG.ini") : Filesystem_Stream::InputStream()) {
+		lcf::INIReader ini(is);
+		default_pic_id = ini.GetInteger("DynTextPlugin", "PictureID", 1);
+	}
 }
 
 bool DynRpg::TextPlugin::Invoke(std::string_view func, dyn_arg_list args, bool&, Game_Interpreter*) {
