@@ -56,6 +56,10 @@ private:
 #ifdef HAVE_LIBXMP
 	xmp_context ctx = nullptr;
 #endif
+	/** Buffer filled by xmp_play_frame */
+	const uint8_t* frame_buffer = nullptr;
+	/** Remaining bytes in that buffer */
+	int frame_bytes_left = 0;
 	bool finished = false;
 
 	// defaults
