@@ -120,6 +120,10 @@ Game_Config Game_Config::Create(CmdlineParser& cp) {
 	cfg.player.log_enabled.Set(false);
 #endif
 
+#if defined(__EMSCRIPTEN__)
+	cfg.player.screenshot_scale.Set(4);
+#endif
+
 	cp.Rewind();
 
 	config_path = GetConfigPath(cp);
