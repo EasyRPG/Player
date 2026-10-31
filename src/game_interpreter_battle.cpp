@@ -295,7 +295,7 @@ bool Game_Interpreter_Battle::CommandForceFlee(lcf::rpg::EventCommand const& com
 
 	// "Ignore if the target is surrounded": The party does not flee in a pincer attack
 	// and the enemies do not flee in a surround attack
-	bool ignore_surrounded = com.parameters.size() > 2 && com.parameters[2] != 0;
+	bool ignore_surrounded = com.parameters[2] != 0;
 	const auto cond = Game_Battle::GetBattleCondition();
 
 	switch (com.parameters[0]) {
