@@ -27,6 +27,8 @@
 #include "window_varlist.h"
 #include "window_stringview.h"
 #include "window_interpreter.h"
+#include "window_debug_picture.h"
+
 
 /**
  * Scene Equip class.
@@ -72,6 +74,7 @@ public:
 		eCallMapEvent,
 		eCallBattleEvent,
 		eString,
+		ePictureTool,
 		eInterpreter,
 		eOpenMenu,
 		eLastMainMenuOption,
@@ -84,7 +87,8 @@ public:
 		eUiNumberInput,
 		eUiStringView,
 		eUiChoices,
-		eUiInterpreterView
+		eUiInterpreterView,
+		eUiPictureView
 	};
 private:
 	Mode mode = eMain;
@@ -111,6 +115,9 @@ private:
 
 	/** Creates interpreter window. */
 	void CreateInterpreterWindow();
+
+	/** Creates picture info window. */
+	void CreatePictureInfoWindow();
 
 	/** Get the last page for the current mode */
 	int GetLastPage() const;
@@ -152,6 +159,8 @@ private:
 	std::unique_ptr<Window_StringView> stringview_window;
 	/** Displays the currently running inteprreters. */
 	std::unique_ptr<Window_Interpreter> interpreter_window;
+	/** Displays picture debug info. */
+	std::unique_ptr<Window_DebugPictureInfo> picture_info_window;
 
 	struct StackFrame {
 		UiMode uimode = eUiMain;
@@ -175,6 +184,7 @@ private:
 	void PushUiChoices(std::vector<std::string> choices, std::vector<bool> choices_enabled);
 	void PushUiStringView();
 	void PushUiInterpreterView();
+	void PushUiPictureView();
 
 	Window_VarList::Mode GetWindowMode() const;
 	static constexpr Window_VarList::Mode GetWindowMode(Mode mode);
@@ -225,6 +235,8 @@ constexpr Window_VarList::Mode Scene_Debug::GetWindowMode(Mode mode) {
 			return Window_VarList::eMapEvent;
 		case eString:
 			return Window_VarList::eString;
+		case ePictureTool:
+			return Window_VarList::ePicture;
 		default:
 			return Window_VarList::eNone;
 	}

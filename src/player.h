@@ -431,6 +431,12 @@ namespace Player {
 	/** game specific configuration */
 	extern Game_ConfigGame game_config;
 
+	/**
+	 * Sets the percentage of how many frames to draw per second
+	 * @param percentage 100 skips no frames, 50 skip half etc.
+	 */
+	void SetFrameSkip(int percentage);
+
 #ifdef __EMSCRIPTEN__
 	/** Name of game emscripten uses */
 	extern std::string emscripten_game_name;

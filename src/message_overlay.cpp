@@ -104,7 +104,7 @@ void MessageOverlay::Update() {
 	}
 
 	if (IsAnyMessageVisible()) {
-		++counter;
+		counter += static_cast<double>(DEFAULT_FPS) / Game_Clock::GetTargetGameFps();
 		if (counter > 150) {
 			counter = 0;
 			for (auto& message : messages) {

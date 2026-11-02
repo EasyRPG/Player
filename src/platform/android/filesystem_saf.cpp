@@ -95,6 +95,20 @@ int64_t SafFilesystem::GetFilesize(std::string_view path) const {
 	return static_cast<int64_t>(res);
 }
 
+bool SafFilesystem::vMakeDirectory(std::string_view path, bool) const {
+	auto obj = get_jni_handle(this, path);
+	if (!obj) {
+		return false;
+	}
+
+	JNIEnv* env = EpAndroid::env;
+	jclass cls = env->GetObjectClass(obj);
+	jmethodID jni_method = env->GetMethodID(cls, "makeDirectory", "()Z");
+	jboolean res = env->CallBooleanMethod(obj, jni_method);
+
+	return res > 0;
+}
+
 class FdStreamBufIn : public std::streambuf {
 public:
 	FdStreamBufIn(int fd, std::array<char, 4096> buffer, ssize_t bytes_read) : std::streambuf(), fd(fd), buffer(buffer) {
@@ -117,7 +131,7 @@ public:
 		return traits_type::to_int_type(*gptr());
 	}
 
-	std::streambuf::pos_type seekoff(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode mode) override {
+	std::streambuf::pos_type seekoff(std::streambuf::off_type offset, std::ios_base::seekdir dir, std::ios_base::openmode /*mode*/) override {
 		if (dir == std::ios_base::cur) {
 			offset += static_cast<std::streambuf::off_type>(gptr() - egptr());
 		}

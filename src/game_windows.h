@@ -96,6 +96,24 @@ public:
 	Window_User& GetWindow(int id);
 	Window_User* GetWindowPtr(int id);
 
+	/**
+	 * Moves window data to a different ID.
+	 * Do not call this function. Always use Game_Pictures::MovePicture.
+	 *
+	 * @param src_id Source ID to move from
+	 * @param dst_id Destination ID to move to
+	 */
+	void MoveWindow(int src_id, int dst_id);
+
+	/**
+	 * Swaps window data between two IDs.
+	 * Do not call this function. Always use Game_Pictures::SwapPicture.
+	 *
+	 * @param id1 First ID to swap with
+	 * @param id2 Second ID to swap with
+	 */
+	void SwapWindow(int id1, int id2);
+
 private:
 	std::vector<Window_User> windows;
 };

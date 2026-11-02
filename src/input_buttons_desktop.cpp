@@ -91,6 +91,7 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{DEBUG_THROUGH, Keys::RCTRL},
 		{DEBUG_SAVE, Keys::F11},
 		{DEBUG_ABORT_EVENT, Keys::F10},
+		{DEBUG_MESSAGE_FAST_FORWARD, Keys::RSHIFT},
 		{TAKE_SCREENSHOT, Keys::F7},
 		{TOGGLE_FPS, Keys::F2},
 		{SHOW_LOG, Keys::F3},

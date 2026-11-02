@@ -38,20 +38,18 @@ Game_Quit::Game_Quit()
 
 void Game_Quit::Update() {
 	if (Scene::instance == nullptr || Scene::instance->type == Scene::Title || !Scene::Find(Scene::Title) || !Input::IsPressed(Input::RESET)) {
-		if (time_left != start_time) {
-			Reset();
-		}
+		Reset();
 		return;
 	}
 
 	window.SetVisible(true);
 
 	if (time_left > 0) {
-		--time_left;
+		time_left -= static_cast<double>(DEFAULT_FPS) / Game_Clock::GetTargetGameFps();
 	}
 
 	// FIXME Need to write the text every frame in case system graphic changes..
-	auto s = (time_left + DEFAULT_FPS - 1) / DEFAULT_FPS;
+	auto s = static_cast<int>(time_left + DEFAULT_FPS - 1) / DEFAULT_FPS;
 	window.SetText("Restarting in " + std::to_string(s) + " sec ...");
 	window.Update();
 }
@@ -63,5 +61,5 @@ void Game_Quit::OnResolutionChange() {
 
 void Game_Quit::Reset() {
 	window.SetVisible(false);
-	time_left = DEFAULT_FPS * num_seconds;
+	time_left = DEFAULT_FPS * num_seconds + (Player::debug_flag ? 0 : 1);
 }

@@ -91,62 +91,48 @@ FilesystemView Filesystem::Create(std::string_view path) const {
 	// When the path doesn't exist check if the path contains a file that can
 	// be handled by another filesystem
 	if (!IsDirectory(path, true)) {
-		std::string dir_of_file;
-		std::string path_prefix;
-		std::vector<std::string> components = FileFinder::SplitPath(path);
-
-		// TODO this should probably move to a static function in the FS classes
 		// Search for the deepest directory
-		int i = 0;
-		for (const auto& comp : components) {
-			// Do not check stuff that looks like drives, such as C:, ux0: or sd:
-			// Some systems do not consider them directories
-			if (i > 0 || (!comp.empty() && comp.back() != ':')) {
-				if (!IsDirectory(FileFinder::MakePath(dir_of_file, comp), true)) {
-					break;
-				}
-			}
-			dir_of_file += comp + "/";
-			++i;
+		std::vector<std::string> components = FileFinder::SplitPathPrefixes(path);
+		// Prepend empty path for the root directory if not present
+		if (components.empty() || components.front() != "") {
+			components.insert(components.begin(), "");
 		}
 
-		if (!dir_of_file.empty()) {
-			dir_of_file.pop_back();
+		size_t archive_idx = components.size();
+		for (auto it = components.rbegin(); it != components.rend(); ++it) {
+			const std::string& p = *it;
+			// Do not check stuff that looks like drives, such as C:, ux0: or sd:
+			// Some systems do not consider them directories
+			if (archive_idx > 1 || (!p.empty() && p.back() != ':')) {
+				if (IsDirectory(p, true)) {
+					break;
+				}
+			} else {
+				break;
+			}
+			--archive_idx;
 		}
 
 		// The next component must be a file
 		// search for known file extensions and "do magic"
-		std::string internal_path;
-		bool handle_internal = false;
-		for (const auto& comp : lcf::MakeSpan(components).subspan(i)) {
-			if (handle_internal) {
-				internal_path += comp + "/";
-			} else {
-				path_prefix += comp + "/";
-				if (FileFinder::IsSupportedArchiveExtension(comp)) {
-					path_prefix.pop_back();
-					handle_internal = true;
-				}
-			}
-		}
+		std::string archive_full_path = components[archive_idx];
+		std::string archive_parent_path = components[archive_idx - 1];
+		std::string archive_name = FileFinder::GetPathAndFilename(archive_full_path).second;
+		std::string internal_path = FileFinder::GetPathInsidePath(archive_full_path, components.back());
 
-		if (!handle_internal) {
+		if (!IsFile(archive_full_path) || !FileFinder::IsSupportedArchiveExtension(archive_name)) {
 			// No supported archive type found
 			return {};
 		}
 
-		if (!internal_path.empty()) {
-			internal_path.pop_back();
-		}
-
-		std::shared_ptr<Filesystem> filesystem = std::make_shared<ZipFilesystem>(path_prefix, Subtree(dir_of_file));
+		std::shared_ptr<Filesystem> filesystem = std::make_shared<ZipFilesystem>(archive_name, Subtree(archive_parent_path));
 #if HAVE_LHASA
 		if (!filesystem->IsValid()) {
-			filesystem = std::make_shared<LzhFilesystem>(path_prefix, Subtree(dir_of_file));
+			filesystem = std::make_shared<LzhFilesystem>(archive_name, Subtree(archive_parent_path));
 		}
 #endif
 		if (!filesystem->IsValid()) {
-			filesystem = std::make_shared<TarFilesystem>(path_prefix, Subtree(dir_of_file));
+			filesystem = std::make_shared<TarFilesystem>(archive_name, Subtree(archive_parent_path));
 		}
 		if (!filesystem->IsValid()) {
 			return {};
@@ -184,7 +170,54 @@ FilesystemView Filesystem::Subtree(std::string sub_path) const {
 	return FilesystemView(shared_from_this(), sub_path);
 }
 
-bool Filesystem::MakeDirectory(std::string_view, bool) const {
+bool Filesystem::MakeDirectory(std::string_view path, bool follow_symlinks) const {
+	if (IsDirectory(path, follow_symlinks)) {
+		return true;
+	}
+
+	auto full_paths = FileFinder::SplitPathPrefixes(path);
+
+	if (full_paths.empty()) {
+		return true;
+	}
+
+	// Do not check stuff that looks like drives, such as C:, ux0: or sd:
+	// Some systems do not consider them directories
+	if (full_paths[0].back() == ':') {
+		full_paths.erase(full_paths.begin());
+	}
+
+	// Traverse from the longest subpath and find the first one that exists
+	// e.g. assuming "/a/b" exists:
+	// First it checks "/a/b/c/d" (*), then "/a/b/c" (*), then ends at "/a/b"
+	std::vector<std::string_view> to_create;
+	for (auto it = full_paths.rbegin(); it != full_paths.rend(); ++it) {
+		const std::string& p = *it;
+
+		if (IsDirectory(p, follow_symlinks)) {
+			break;
+		}
+
+		if (Exists(p)) {
+			// Exists but not a directory
+			return false;
+		}
+
+		to_create.push_back(p);
+	}
+
+	// (*) These paths will be created here
+	for (auto it = to_create.rbegin(); it != to_create.rend(); ++it) {
+		if (!vMakeDirectory(*it, follow_symlinks)) {
+			Output::Debug("MakeDirectory {} failed", *it);
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool Filesystem::vMakeDirectory(std::string_view, bool) const {
 	return false;
 }
 

@@ -18,6 +18,7 @@
 // Headers
 #include "audio.h"
 #include "audio_midi.h"
+#include "options.h"
 #include "system.h"
 #include "baseui.h"
 #include "player.h"
@@ -48,7 +49,7 @@ int EmptyAudio::BGM_GetTicks() const {
 	}
 
 	// Time since BGM_Play was called, works for everything except MIDI
-	return (Player::GetFrames() - bgm_starttick + 1) / Game_Clock::GetTargetGameFps();
+	return (Player::GetFrames() - bgm_starttick + 1) / DEFAULT_FPS;
 }
 
 void EmptyAudio::vGetConfig(Game_ConfigAudio&) const {
@@ -57,7 +58,7 @@ void EmptyAudio::vGetConfig(Game_ConfigAudio&) const {
 
 bool EmptyAudio::BGM_PlayedOnce() const {
 	// 5 seconds, arbitrary
-	return BGM_GetTicks() > (Game_Clock::GetTargetGameFps() * 5);
+	return BGM_GetTicks() > (DEFAULT_FPS * 5);
 }
 
 EmptyAudio::EmptyAudio(const Game_ConfigAudio& cfg) : AudioInterface(cfg) {

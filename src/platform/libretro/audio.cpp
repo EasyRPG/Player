@@ -66,7 +66,7 @@ LibretroAudio::LibretroAudio(const Game_ConfigAudio& cfg) :
 
 	SetFormat(AUDIO_SAMPLERATE, AudioDecoder::Format::S16, 2);
 
-	samples_per_frame = AUDIO_SAMPLERATE / Game_Clock::GetTargetGameFps();
+	samples_per_frame = AUDIO_SAMPLERATE / DEFAULT_FPS;
 }
 
 LibretroAudio::~LibretroAudio() {

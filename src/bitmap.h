@@ -92,7 +92,8 @@ public:
 	static BitmapRef Create(int width, int height, bool transparent = true, int bpp = 0);
 
 	/**
-	 * Creates a surface wrapper around existing pixel data.
+	 * Creates a surface wrapper around pixel data.
+	 * When the pixel data is NULL the data is allocated and managed by the bitmap.
 	 *
 	 * @param pixels pointer to pixel data.
 	 * @param width surface width.
@@ -203,6 +204,15 @@ public:
 	 * @return true if success, otherwise false.
 	 */
 	bool WritePNG(std::ostream& os) const;
+
+	/**
+	 * Writes PNG converted bitmap to output stream.
+	 *
+	 * @param os output stream that PNG will be output.
+	 * @param src_rect rect to save.
+	 * @return true if success, otherwise false.
+	 */
+	bool WritePNG(std::ostream& os, Rect const& src_rect) const;
 
 	/**
 	 * Gets the background color

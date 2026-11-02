@@ -45,6 +45,10 @@ namespace ControlVariables {
 	int Muldiv(int arg1, int arg2, int arg3);
 	int Divmul(int arg1, int arg2, int arg3);
 	int Between(int arg1, int arg2, int arg3);
+	int Lerp(int a, int b, int num, int den);
+	int ArraySum(int var_id, int length);
+	int ArrayMin(int var_id, int length);
+	int ArrayMax(int var_id, int length);
 }
 
 #endif

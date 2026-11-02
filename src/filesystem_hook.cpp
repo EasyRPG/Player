@@ -102,7 +102,7 @@ int64_t HookFilesystem::GetFilesize(std::string_view path) const {
 	return GetParent().GetFilesize(path);
 }
 
-bool HookFilesystem::MakeDirectory(std::string_view dir, bool follow_symlinks) const {
+bool HookFilesystem::vMakeDirectory(std::string_view dir, bool follow_symlinks) const {
 	return GetParent().MakeDirectory(dir, follow_symlinks);
 }
 

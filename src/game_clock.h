@@ -45,14 +45,25 @@ public:
 	template <typename R, typename P>
 	static void SleepFor(std::chrono::duration<R,P> dt);
 
-	/** Get the target frames per second for the game simulation */
-	static constexpr int GetTargetGameFps();
+	/**
+	 * Get the target frames per second for the game simulation.
+	 * Use this for everything that must run at the speed of the game.
+	 * Use DEFAULT_FPS for framerate independent behaviours such as global
+	 * timers.
+	 */
+	static int GetTargetGameFps();
+
+	/**
+	 * Set the target frames per second for the game simulation
+	 * @param fps new game fps
+	 */
+	static void SetTargetGameFps(int fps);
 
 	/** Get the amount of time each logical frame should take */
-	static constexpr duration GetTargetGameTimeStep();
+	static duration GetTargetGameTimeStep();
 
 	/** Get the timestep for a given frames per second value */
-	static constexpr duration TimeStepFromFps(int fps);
+	static duration TimeStepFromFps(int fps);
 
 	/** Get the name of the underlying clock type */
 	static constexpr const char* Name();
@@ -114,6 +125,7 @@ private:
 		time_point frame_time;
 		duration frame_accumulator;
 		duration max_frame_accumulator = std::chrono::duration_cast<duration>(std::chrono::milliseconds(200));
+		int target_fps = DEFAULT_FPS;
 		float speed = 1.0;
 		float fps = 0.0;
 		int frame = 0;
@@ -125,15 +137,21 @@ inline Game_Clock::time_point Game_Clock::now() {
 	return clock::now();
 }
 
-constexpr int Game_Clock::GetTargetGameFps() {
-	return DEFAULT_FPS;
+inline int Game_Clock::GetTargetGameFps() {
+	return data.target_fps;
 }
 
-constexpr Game_Clock::duration Game_Clock::GetTargetGameTimeStep() {
+inline void Game_Clock::SetTargetGameFps(int fps) {
+	// Prevent game from becoming unplayable
+	fps = std::clamp<int>(fps, 10, 500);
+	data.target_fps = fps;
+}
+
+inline Game_Clock::duration Game_Clock::GetTargetGameTimeStep() {
 	return TimeStepFromFps(GetTargetGameFps());
 }
 
-constexpr Game_Clock::duration Game_Clock::TimeStepFromFps(int fps) {
+inline Game_Clock::duration Game_Clock::TimeStepFromFps(int fps) {
 	auto ns = std::chrono::nanoseconds(std::chrono::seconds(1)) / fps;
 	return std::chrono::duration_cast<Game_Clock::duration>(ns);
 }
@@ -160,7 +178,7 @@ inline float Game_Clock::GetFPS() {
 }
 
 inline bool Game_Clock::NextGameTimeStep() {
-	constexpr auto dt = GetTargetGameTimeStep();
+	auto dt = GetTargetGameTimeStep();
 	if (data.frame_accumulator < dt) {
 		return false;
 	}

@@ -85,7 +85,7 @@
 			"displayName": "Android armeabi-v7a",
 			"cacheVariables": {
 				"CMAKE_ANDROID_ARCH_ABI": "armeabi-v7a",
-				"CMAKE_ANDROID_API": "16"
+				"CMAKE_ANDROID_API": "21"
 			},
 			"inherits": "android-user",
 			"easyrpg_platforms": ["libretro"]
@@ -105,7 +105,7 @@
 			"displayName": "Android x86",
 			"cacheVariables": {
 				"CMAKE_ANDROID_ARCH_ABI": "x86",
-				"CMAKE_ANDROID_API": "16"
+				"CMAKE_ANDROID_API": "21"
 			},
 			"inherits": "android-user",
 			"easyrpg_platforms": ["libretro"]
