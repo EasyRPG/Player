@@ -484,7 +484,7 @@ Java_org_easyrpg_player_settings_SettingsFontActivity_DrawText(JNIEnv *env, jcla
 	jbyte* buffer_raw = env->GetByteArrayElements(buffer_array, 0);
 
 	Bitmap::SetFormat(Bitmap::ChooseFormat(format_R8G8B8A8_a().format()));
-	auto sys = Cache::System(CACHE_DEFAULT_BITMAP);
+	auto sys = Cache::System(CACHE_DEFAULT_BITMAP, false);
 	BitmapRef draw_area = Bitmap::Create(reinterpret_cast<void*>(buffer_raw), width, height, 0, format_R8G8B8A8_a().format());
 	draw_area->Fill(Color(0, 0, 0, 255));
 

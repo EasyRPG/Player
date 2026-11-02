@@ -90,9 +90,9 @@ namespace Platform {
 		int64_t GetSize() const;
 
 		/**
-		 * Creates a directory recursively at the filename path.
+		 * Creates the directory at the filename path.
 		 * @param follow_symlinks Whether to follow symlinks (if supported on this platform)
-		 * @return true when the directory was created.
+		 * @return true when the directory was created or already exists.
 		 */
 		bool MakeDirectory(bool follow_symlinks) const;
 

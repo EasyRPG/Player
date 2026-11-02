@@ -30,6 +30,7 @@
 #include <cstdio>
 #include <ios>
 #include <istream>
+#include <string_view>
 #include <unordered_map>
 #include <vector>
 
@@ -230,6 +231,16 @@ namespace FileFinder {
 	Filesystem_Stream::InputStream OpenText(std::string_view name);
 
 	/**
+	 * Opens a given file for writing in the save directory.
+	 * Sanitizes the path and creates the directory hierarchy to the file when
+	 * necessary.
+	 *
+	 * @param name
+	 * @return Filesystem_Stream::OutputStream
+	 */
+	Filesystem_Stream::OutputStream OpenWrite(std::string_view name);
+
+	/**
 	 * Appends name to directory.
 	 *
 	 * @param dir base directory.
@@ -263,6 +274,16 @@ namespace FileFinder {
 	 * @return Vector containing path components
 	 */
 	std::vector<std::string> SplitPath(std::string_view path);
+
+	/**
+	 * Constructs a list of all the paths leading to the file.
+	 * e.g. for /a/b/c/d it creates
+	 * ["/a", "/a/b", "/a/b/c", "/a/b/c/d"]
+	 *
+	 * @param path Path to build prefixes from
+	 * @return all path prefixes
+	 */
+	std::vector<std::string> SplitPathPrefixes(std::string_view path);
 
 	/**
 	 * Splits a path into path and filename.

@@ -43,7 +43,7 @@ public:
 	bool IsDirectory(std::string_view path, bool follow_symlinks) const override;
 	bool Exists(std::string_view path) const override;
 	int64_t GetFilesize(std::string_view path) const override;
-	bool MakeDirectory(std::string_view dir, bool follow_symlinks) const override;
+	bool vMakeDirectory(std::string_view dir, bool follow_symlinks) const override;
 	bool IsFeatureSupported(Feature f) const override;
 	std::string Describe() const override;
 	/** @} */

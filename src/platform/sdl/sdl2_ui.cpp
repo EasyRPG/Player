@@ -63,7 +63,7 @@ static uint32_t GetDefaultFormat() {
 #ifdef WORDS_BIGENDIAN
 	return SDL_PIXELFORMAT_ABGR32;
 #else
-	return SDL_PIXELFORMAT_RGBA32;
+	return SDL_PIXELFORMAT_BGRA32;
 #endif
 }
 
@@ -88,7 +88,7 @@ static int GetFormatRank(uint32_t fmt) {
 		case SDL_PIXELFORMAT_RGBA32:
 			return 2;
 		case SDL_PIXELFORMAT_BGRA32:
-			return 2;
+			return 3;
 		case SDL_PIXELFORMAT_ARGB32:
 			return 1;
 		case SDL_PIXELFORMAT_ABGR32:
@@ -571,7 +571,6 @@ void Sdl2Ui::ToggleStretch() {
 }
 
 void Sdl2Ui::ToggleVsync() {
-#if SDL_VERSION_ATLEAST(2, 0, 18)
 	// Modifying vsync requires recreating the renderer
 	vcfg.vsync.Toggle();
 
@@ -581,9 +580,6 @@ void Sdl2Ui::ToggleVsync() {
 	} else {
 		Output::Warning("Unable to toggle vsync. This is likely a problem with your system configuration.");
 	}
-#else
-	Output::Warning("Cannot toogle vsync: SDL2 version too old (must be 2.0.18)");
-#endif
 }
 
 void Sdl2Ui::SetScreenScale(int scale) {
@@ -1285,9 +1281,7 @@ void Sdl2Ui::vGetConfig(Game_ConfigVideo& cfg) const {
 	cfg.renderer.Lock("SDL2 (Software)");
 #endif
 
-#if SDL_VERSION_ATLEAST(2, 0, 18)
 	cfg.vsync.SetOptionVisible(true);
-#endif
 	cfg.fullscreen.SetOptionVisible(true);
 	cfg.fps_limit.SetOptionVisible(true);
 #if defined(SUPPORT_ZOOM) && !defined(__ANDROID__)

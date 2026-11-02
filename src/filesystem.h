@@ -22,9 +22,6 @@
 #include <cassert>
 #include <cstdint>
 #include <memory>
-#include <istream>
-#include <ostream>
-#include <unordered_map>
 #include <vector>
 #include "directory_tree.h"
 
@@ -212,6 +209,16 @@ public:
 	operator FilesystemView();
 
 	/**
+	 * Recursively creates a new directory.
+	 * Not all filesystems support directory creation.
+	 *
+	 * @param dir Directory to create.
+	 * @param follow_symlinks Whether to follow symlinks (if supported by this filesystem)
+	 * @return true when the directory was created or already exists.
+	 */
+	bool MakeDirectory(std::string_view path, bool follow_symlinks) const;
+
+	/**
 	 * Abstract methods to be implemented by filesystems.
 	 */
 	/** @{ */
@@ -219,7 +226,7 @@ public:
 	virtual bool IsDirectory(std::string_view path, bool follow_symlinks) const = 0;
 	virtual bool Exists(std::string_view path) const = 0;
 	virtual int64_t GetFilesize(std::string_view path) const = 0;
-	virtual bool MakeDirectory(std::string_view dir, bool follow_symlinks) const;
+	virtual bool vMakeDirectory(std::string_view path, bool follow_symlinks) const;
 	virtual bool IsFeatureSupported(Feature f) const;
 	virtual std::string Describe() const = 0;
 	/** @} */
@@ -457,7 +464,7 @@ public:
 	 *
 	 * @param dir Directory to create.
 	 * @param follow_symlinks Whether to follow symlinks (if supported by this filesystem)
-	 * @return true when the path was created
+	 * @return true when the directory was created or already exists.
 	 */
 	bool MakeDirectory(std::string_view dir, bool follow_symlinks) const;
 

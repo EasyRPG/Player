@@ -116,6 +116,7 @@ bool Game_Ineluki::Execute(std::string_view ini_file) {
 			key_support = Utils::LowerCase(cmd.arg) == "true";
 
 #if !defined(SUPPORT_KEYBOARD)
+			(void)prev_key_support;
 			if (key_support) {
 				Output::Warning("Ineluki: Keyboard input is not supported on this platform");
 			}

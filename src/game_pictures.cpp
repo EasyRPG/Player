@@ -16,7 +16,9 @@
  */
 
 #include <cmath>
+#include <zlib.h>
 #include "bitmap.h"
+#include "lcf/rpg/savepicture.h"
 #include "options.h"
 #include "cache.h"
 #include "output.h"
@@ -103,7 +105,7 @@ std::vector<lcf::rpg::SavePicture> Game_Pictures::GetSaveData() const {
 	save.reserve(data_size);
 
 	for (auto& pic: pictures) {
-		save.push_back(pic.data);
+		save.push_back(pic.OnSave());
 	}
 
 	// RPG_RT Save game data always has a constant number of pictures
@@ -146,7 +148,12 @@ int Game_Pictures::GetDefaultNumberOfPictures() {
 	return 0;
 }
 
+int Game_Pictures::GetPictureCount() const {
+	return static_cast<int>(pictures.size());
+}
+
 Game_Pictures::Picture& Game_Pictures::GetPicture(int id) {
+	assert(id > 0);
 	if (EP_UNLIKELY(id > static_cast<int>(pictures.size()))) {
 		pictures.reserve(id);
 		while (static_cast<int>(pictures.size()) < id) {
@@ -157,7 +164,7 @@ Game_Pictures::Picture& Game_Pictures::GetPicture(int id) {
 }
 
 Game_Pictures::Picture* Game_Pictures::GetPicturePtr(int id) {
-	return id <= static_cast<int>(pictures.size())
+	return id > 0 && id <= static_cast<int>(pictures.size())
 		? &pictures[id - 1] : nullptr;
 }
 
@@ -327,9 +334,9 @@ void Game_Pictures::Picture::Erase() {
 		sprite->SetBitmap(nullptr);
 	}
 	if (IsWindowAttached()) {
-		data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_default;
 		Main_Data::game_windows->Erase(data.ID);
 	}
+	data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_default;
 }
 
 void Game_Pictures::Erase(int id) {
@@ -347,7 +354,7 @@ void Game_Pictures::EraseAll() {
 
 bool Game_Pictures::Picture::Exists() const {
 	// Incompatible with the Yume2kki edge-case that uses empty filenames
-	return !data.name.empty();
+	return !data.name.empty() || !IsNormalPicture();
 }
 
 void Game_Pictures::Picture::CreateSprite() {
@@ -368,6 +375,10 @@ void Game_Pictures::Picture::MakeRequestImportant() const {
 void Game_Pictures::RequestPictureSprite(Picture& pic) {
 	const auto& name = pic.data.name;
 	if (name.empty()) {
+		if (Player::IsPatchManiac()) {
+			pic.LoadCanvas();
+		}
+
 		return;
 	}
 
@@ -454,6 +465,9 @@ void Game_Pictures::Picture::ApplyOrigin(bool is_move) {
 			break;
 	}
 
+	x = std::floor(x);
+	y = std::floor(y);
+
 	if (!is_move) {
 		data.current_x = x;
 		data.current_y = y;
@@ -462,6 +476,9 @@ void Game_Pictures::Picture::ApplyOrigin(bool is_move) {
 	}
 	data.finish_x = x;
 	data.finish_y = y;
+
+	// Origin was applied, prevent applying again in later calls
+	origin = 0;
 }
 
 void Game_Pictures::Picture::OnMapScrolled(int dx16, int dy16) {
@@ -504,8 +521,130 @@ void Game_Pictures::Picture::AttachWindow(const Window_Base& window) {
 	ApplyOrigin(false);
 }
 
+void Game_Pictures::Picture::LoadCanvas() {
+	if (data.maniac_image_data.empty()) {
+		return;
+	}
+
+	// Size is stored in the (unused in later 2k3) current_bot_trans, wtf?
+	std::array<uint32_t, 2> dim;
+	std::memcpy(dim.data(), &data.current_bot_trans, 8);
+
+	// Image data is a compressed buffer (deflate)
+	auto& compressed = data.maniac_image_data;
+	z_stream strm{};
+	strm.next_in = const_cast<Bytef*>(compressed.data());
+	strm.avail_in = static_cast<uInt>(compressed.size());
+
+	if (inflateInit(&strm) != Z_OK) {
+		Output::Warning("LoadCanvas (Pic {}}: inflateInit failed", data.ID);
+		return;
+	}
+
+	std::vector<unsigned char> output;
+	const size_t CHUNK_SIZE = 16384;
+	unsigned char temp[CHUNK_SIZE];
+
+	int ret;
+	do {
+		strm.next_out = temp;
+		strm.avail_out = CHUNK_SIZE;
+
+		ret = inflate(&strm, Z_NO_FLUSH);
+
+		if (ret != Z_OK && ret != Z_STREAM_END) {
+			inflateEnd(&strm);
+			Output::Warning("LoadCanvas (Pic {}}: inflate failed (err={})", data.ID, ret);
+			return;
+		}
+
+		size_t bytes_produced = CHUNK_SIZE - strm.avail_out;
+		output.insert(output.end(), temp, temp + bytes_produced);
+	} while (ret != Z_STREAM_END);
+
+	inflateEnd(&strm);
+
+	if (output.size() != dim[0] * dim[1] * 4) {
+		Output::Warning("LoadCanvas (Pic {}): Wrong buffer size", data.ID);
+		return;
+	}
+
+	// Convert from Maniac Patch format to our screen format
+	auto format = format_B8G8R8A8_a().format();
+	auto bmp = Bitmap::Create(output.data(), dim[0], dim[1], dim[0] * 4, format);
+	CreateSprite();
+	sprite->SetBitmap(Bitmap::Create(*bmp, bmp->GetRect()));
+	data.maniac_image_data = {}; // Save memory
+	data.easyrpg_type = lcf::rpg::SavePicture::EasyRpgType_canvas;
+}
+
+lcf::rpg::SavePicture Game_Pictures::Picture::OnSave() const {
+	auto save_data = data;
+
+	if (IsCanvas()) {
+		// Write compressed image data into the savefile
+		auto& bitmap = *sprite->GetBitmap();
+
+		// Convert from our screen format to Maniac Patch format
+		auto format = format_B8G8R8A8_a().format();
+		auto bmp_out = Bitmap::Create(nullptr, bitmap.width(), bitmap.height(), bitmap.width() * 4, format);
+		bmp_out->Blit(0, 0, bitmap, bitmap.GetRect(), Opacity::Opaque());
+
+		// Compress
+		z_stream strm{};
+		strm.next_in = reinterpret_cast<Bytef*>(bmp_out->pixels());
+		strm.avail_in = static_cast<uInt>(bitmap.pitch() * bitmap.height());
+
+		if (deflateInit(&strm, Z_DEFAULT_COMPRESSION) != Z_OK) {
+			Output::Warning("LoadCanvas (Pic {}}: deflateInit failed", data.ID);
+			return {};
+		}
+
+		std::vector<unsigned char> output;
+		const size_t CHUNK_SIZE = 16384;
+		unsigned char temp[CHUNK_SIZE];
+
+		int ret;
+		do {
+			strm.next_out = temp;
+			strm.avail_out = CHUNK_SIZE;
+
+			ret = deflate(&strm, Z_FINISH);
+
+			if (ret != Z_OK && ret != Z_STREAM_END) {
+				deflateEnd(&strm);
+				Output::Warning("LoadCanvas (Pic {}}: deflate failed", data.ID);
+				return {};
+			}
+
+			size_t bytes_produced = CHUNK_SIZE - strm.avail_out;
+			output.insert(output.end(), temp, temp + bytes_produced);
+		} while (ret != Z_STREAM_END);
+
+		deflateEnd(&strm);
+
+		// Save the data
+		save_data.maniac_image_data = output;
+
+		std::array<uint32_t, 2> dim;
+		dim[0] = bitmap.width();
+		dim[1] = bitmap.height();
+		std::memcpy(&save_data.current_bot_trans, dim.data(), 8);
+	}
+
+	return save_data;
+}
+
+bool Game_Pictures::Picture::IsNormalPicture() const {
+	return data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_default;
+}
+
 bool Game_Pictures::Picture::IsWindowAttached() const {
 	return data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_window;
+}
+
+bool Game_Pictures::Picture::IsCanvas() const {
+	return data.easyrpg_type == lcf::rpg::SavePicture::EasyRpgType_canvas;
 }
 
 void Game_Pictures::Picture::Update(bool is_battle) {
@@ -653,4 +792,77 @@ void Game_Pictures::Picture::SetNonEffectParams(const Params& params, bool set_p
 
 int Game_Pictures::Picture::NumSpriteSheetFrames() const {
 	return data.spritesheet_cols * data.spritesheet_rows;
+}
+
+void Game_Pictures::MovePicture(int src_id, int dst_id) {
+	if (src_id == dst_id) {
+		return;
+	}
+
+	// Delete the destination, then swap
+	if (dst_id > 0) {
+		auto& dst_pic = GetPicture(dst_id);
+		dst_pic.Erase();
+	}
+
+	SwapPicture(src_id, dst_id);
+}
+
+void Game_Pictures::SwapPicture(int id1, int id2) {
+	if (id1 == id2 || (id1 <= 0 && id2 <= 0)) {
+		return;
+	}
+
+	auto max_id = std::max(id1, id2);
+	GetPicture(max_id); // Preallocate to ensure references are stable
+
+	Picture bad_pic{0}; // Sentinel when one of the pictures is invalid
+
+	auto* src_pic = &bad_pic;
+	auto* dst_pic = &bad_pic;
+
+	if (id1 > 0) {
+		src_pic = &GetPicture(id1);
+	} else {
+		bad_pic = Picture(id1);
+	}
+
+	if (id2 > 0) {
+		dst_pic = &GetPicture(id2);
+	} else {
+		bad_pic = Picture(id2);
+	}
+
+	// Handle Window Data (String Pictures)
+	if (src_pic->IsWindowAttached() || dst_pic->IsWindowAttached()) {
+		Main_Data::game_windows->SwapWindow(id1, id2);
+	}
+
+	std::swap(src_pic->data.ID, dst_pic->data.ID);
+	if (src_pic->sprite) {
+		if (id2 <= 0) {
+			src_pic->sprite.reset();
+		} else {
+			src_pic->sprite->SetPictureId(id2);
+		}
+	}
+	if (dst_pic->sprite) {
+		if (id1 <= 0) {
+			dst_pic->sprite.reset();
+		} else {
+			dst_pic->sprite->SetPictureId(id1);
+		}
+	}
+
+	// Cancel pending requests and restart them
+	if (src_pic->IsRequestPending()) {
+		RequestPictureSprite(*src_pic);
+	}
+
+	if (dst_pic->IsRequestPending()) {
+		RequestPictureSprite(*dst_pic);
+	}
+
+	// Must be last (invalidates references)
+	std::swap(*src_pic, *dst_pic);
 }

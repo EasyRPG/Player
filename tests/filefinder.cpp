@@ -114,4 +114,29 @@ TEST_CASE("GetPathAndFilename") {
 	Player::escape_symbol = "";
 }
 
+TEST_CASE("SplitPathPrefixes") {
+	auto components = FileFinder::SplitPathPrefixes("folder/file");
+	CHECK(components[0] == "folder");
+	CHECK(components[1] == "folder/file");
+
+	components = FileFinder::SplitPathPrefixes("/folder/file");
+	CHECK(components[0] == "/folder");
+	CHECK(components[1] == "/folder/file");
+
+	components = FileFinder::SplitPathPrefixes("/folder/file/a/");
+	CHECK(components[0] == "/folder");
+	CHECK(components[1] == "/folder/file");
+	CHECK(components[2] == "/folder/file/a/");
+
+	components = FileFinder::SplitPathPrefixes("c:/a/b");
+	CHECK(components[0] == "c:");
+	CHECK(components[1] == "c:/a");
+	CHECK(components[2] == "c:/a/b");
+
+	components = FileFinder::SplitPathPrefixes("saf://content:%2F%2Fgames/File.zip");
+	CHECK(components[0] == "saf://");
+	CHECK(components[1] == "saf://content:%2F%2Fgames");
+	CHECK(components[2] == "saf://content:%2F%2Fgames/File.zip");
+}
+
 TEST_SUITE_END();

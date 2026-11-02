@@ -850,7 +850,7 @@
 			"name": "android-armeabi-v7a-parent",
 			"cacheVariables": {
 				"CMAKE_ANDROID_ARCH_ABI": "armeabi-v7a",
-				"CMAKE_ANDROID_API": "16"
+				"CMAKE_ANDROID_API": "21"
 			},
 			"inherits": "android-user",
 			"hidden": true
@@ -970,7 +970,7 @@
 			"name": "android-x86-parent",
 			"cacheVariables": {
 				"CMAKE_ANDROID_ARCH_ABI": "x86",
-				"CMAKE_ANDROID_API": "16"
+				"CMAKE_ANDROID_API": "21"
 			},
 			"inherits": "android-user",
 			"hidden": true

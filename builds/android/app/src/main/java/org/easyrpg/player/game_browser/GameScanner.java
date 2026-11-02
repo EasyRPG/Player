@@ -169,7 +169,13 @@ public class GameScanner {
                 myTextView.setText(String.format("%s (%d/%d)", name, j + 1, names.size()));
             });
 
-            Game[] candidates = findGames(fileURIs.get(i).toString(), names.get(i));
+            String fileURI = fileURIs.get(i).toString();
+            int encoded_slash_pos = fileURI.lastIndexOf("%2F");
+            // Encode everything from the last %2F so our native code works properly
+            String toDecode = fileURI.substring(encoded_slash_pos);
+            toDecode = Uri.decode(toDecode);
+
+            Game[] candidates = findGames(fileURI.substring(0, encoded_slash_pos) + toDecode, names.get(i));
 
             if (candidates == null) {
                 continue;

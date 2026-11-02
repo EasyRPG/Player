@@ -18,6 +18,7 @@
 // Headers
 #include "ui.h"
 #include "clock.h"
+#include "filesystem_libretro.h"
 #include "bitmap.h"
 #include "color.h"
 #include "filefinder.h"
@@ -284,7 +285,7 @@ RETRO_API void retro_set_environment(retro_environment_t cb) {
 
 	static retro_frame_time_callback frame_time_definition = {
 		retro_time_update,
-		1000000 / Game_Clock::GetTargetGameFps()
+		1000000 / DEFAULT_FPS
 	};
 
 	static retro_audio_callback audio_callback_definition = {
@@ -316,6 +317,12 @@ RETRO_API void retro_set_environment(retro_environment_t cb) {
 		{ nullptr, nullptr }
 	};
 	cb(RETRO_ENVIRONMENT_SET_VARIABLES, variables);
+
+	struct retro_vfs_interface_info vfs;
+	vfs.required_interface_version = EP_FILESYSTEM_LIBRETRO_REQUIRED_INTERFACE_VERSION;
+	if (cb(RETRO_ENVIRONMENT_GET_VFS_INTERFACE, &vfs)) {
+		LibretroFilesystem::vfs = vfs;
+	}
 }
 
 RETRO_API void retro_set_video_refresh(retro_video_refresh_t cb) {
@@ -387,7 +394,7 @@ RETRO_API void retro_get_system_av_info(struct retro_system_av_info* info) {
 	info->geometry.max_width = fb_max_width;
 	info->geometry.max_height = fb_max_height;
 	info->geometry.aspect_ratio = 0.0f;
-	info->timing.fps = Game_Clock::GetTargetGameFps();
+	info->timing.fps = DEFAULT_FPS;
 	info->timing.sample_rate = AUDIO_SAMPLERATE;
 }
 
@@ -449,9 +456,11 @@ RETRO_API bool retro_load_game(const struct retro_game_info* game) {
 	game_path = Utils::ReplaceAll(game_path, ".easyrpg#", ".easyrpg/");
 	game_path = FileFinder::MakeCanonical(game_path, 0);
 
+	log_cb(RETRO_LOG_INFO, "Loading Game %s\n", game_path.c_str());
 	auto fs = FileFinder::Root().Create(game_path);
 	if (!fs) {
 		std::tie(game_path, std::ignore) = FileFinder::GetPathAndFilename(game_path);
+		log_cb(RETRO_LOG_INFO, "Loading Game %s\n", game_path.c_str());
 		fs = FileFinder::Root().Create(game_path);
 		if (!fs || !FileFinder::IsValidProject(fs)) {
 			log_cb(RETRO_LOG_ERROR, "Unsupported game %s\n", game_path.c_str());

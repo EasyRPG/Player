@@ -56,8 +56,14 @@ namespace Cache {
 	BitmapRef System2(std::string_view filename);
 
 	BitmapRef Tile(std::string_view filename, int tile_id);
-	BitmapRef SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, bool flip_x, bool flip_y, const Tone& tone, const Color& blend);
+	BitmapRef SpriteEffect(const BitmapRef& src_bitmap, const Rect& rect, bool flip_x, bool flip_y, const Tone& tone, const Color& blend, bool invalidate = false);
 
+	/**
+	 * Removes all cached entries of the given section
+	 *
+	 * @param section Cache section to remove
+	 */
+	void Invalidate(std::string_view section);
 	void Clear();
 	void ClearAll();
 

@@ -20,6 +20,7 @@
 #include "fps_overlay.h"
 #include "game_clock.h"
 #include "bitmap.h"
+#include "options.h"
 #include "utils.h"
 #include "input.h"
 #include "font.h"
@@ -39,7 +40,12 @@ FpsOverlay::FpsOverlay() :
 
 void FpsOverlay::UpdateText() {
 	auto fps = Utils::RoundTo<int>(Game_Clock::GetFPS());
-	text = "FPS: " + std::to_string(fps);
+	text = fmt::format("FPS: {}", fps);
+
+	if (Game_Clock::GetTargetGameFps() != DEFAULT_FPS) {
+		text += fmt::format(" | TPS: {}", Game_Clock::GetTargetGameFps());
+	}
+
 	fps_dirty = true;
 }
 

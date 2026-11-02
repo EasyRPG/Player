@@ -87,7 +87,7 @@ private:
 
 	std::unique_ptr<Sprite> title;
 	FileRequestBinding request_id;
-	int input_reset_counter = 0;
+	double input_reset_counter = 0;
 
 	Window_Settings::UiMode mode = Window_Settings::eNone;
 

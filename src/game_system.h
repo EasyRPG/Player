@@ -436,6 +436,19 @@ public:
 	/** @return Whether the game was loaded from a savegame in the current frame */
 	bool IsLoadedThisFrame() const;
 
+	void SetFastForwardText(bool enabled);
+	bool IsFastForwardText() const;
+
+	void SetMessageMouseEnabled(bool disabled);
+	bool IsMessageMouseEnabled() const;
+
+	void SetBattleOrigin(int origin);
+	int GetBattleOrigin() const;
+
+	void SetMessageFaceSize(int width, int height);
+	int GetMessageFaceWidth() const;
+	int GetMessageFaceHeight() const;
+
 private:
 	std::string InelukiReadLink(Filesystem_Stream::InputStream& stream);
 
@@ -453,6 +466,10 @@ private:
 	Color bg_color = Color{ 0, 0, 0, 255 };
 	bool bgm_pending = false;
 	int loaded_frame_count = 0;
+
+	// Game options that are not saved
+	bool maniac_fast_forward_text = false;
+	bool message_mouse = false;
 };
 
 inline bool Game_System::HasSystemGraphic() {
@@ -662,5 +679,41 @@ inline bool Game_System::GetAllowMenu() {
 	return data.menu_allowed;
 }
 
+inline void Game_System::SetFastForwardText(bool enabled) {
+	maniac_fast_forward_text = enabled;
+}
+
+inline bool Game_System::IsFastForwardText() const {
+	return maniac_fast_forward_text;
+}
+
+inline void Game_System::SetMessageMouseEnabled(bool enabled) {
+	message_mouse = enabled;
+}
+
+inline bool Game_System::IsMessageMouseEnabled() const {
+	return message_mouse;
+}
+
+inline void Game_System::SetBattleOrigin(int origin) {
+	data.maniac_battle_origin = origin;
+}
+
+inline int Game_System::GetBattleOrigin() const {
+	return data.maniac_battle_origin;
+}
+
+inline void Game_System::SetMessageFaceSize(int width, int height) {
+	data.maniac_message_face_width = width;
+	data.maniac_message_face_height = height;
+}
+
+inline int Game_System::GetMessageFaceWidth() const {
+	return data.maniac_message_face_width;
+}
+
+inline int Game_System::GetMessageFaceHeight() const {
+	return data.maniac_message_face_height;
+}
 
 #endif

@@ -34,6 +34,15 @@ public:
 	 */
 	Sprite_Picture(int pic_id, Drawable::Flags flags = Drawable::Flags::Default);
 
+	/**
+	 * Synchronize the Picture state with the Sprite state.
+	 * Called by Draw automatically. Use this when an event command requires
+	 * the current state of a Picture without waiting for a repaint.
+	 *
+	 * @return true when the sprite will draw something, false when e.g. not used on the current map
+	 */
+	bool RefreshPictureState();
+
 	void Draw(Bitmap& dst) override;
 
 	void OnPictureShow();
@@ -44,12 +53,25 @@ public:
 	/** @return Height of a single spritesheet frame or the entire width if the picture has no spritesheet */
 	int GetFrameHeight() const;
 
+	int GetPictureId() const;
+
+	void SetPictureId(int pic_id);
+
 private:
 	int last_spritesheet_frame = -1;
-	const int pic_id = 0;
+	int pic_id = 0;
 	const bool feature_spritesheet = false;
 	const bool feature_priority_layers = false;
 	const bool feature_bottom_trans = false;
 };
+
+inline int Sprite_Picture::GetPictureId() const {
+	return pic_id;
+}
+
+inline void Sprite_Picture::SetPictureId(int pic_id) {
+	this->pic_id = pic_id;
+	OnPictureShow();
+}
 
 #endif

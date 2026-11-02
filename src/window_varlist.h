@@ -35,7 +35,8 @@ public:
 		eLevel,
 		eCommonEvent,
 		eMapEvent,
-		eString
+		eString,
+		ePicture
 	};
 
 	/**
@@ -50,7 +51,7 @@ public:
 
 	/**
 	 * UpdateList.
-	 * 
+	 *
 	 * @param first_value starting value.
 	 */
 	void UpdateList(int first_value);
@@ -132,6 +133,8 @@ constexpr std::string_view Window_VarList::GetPrefix(Mode mode) {
 			return "Me";
 		case eString:
 			return "St";
+		case ePicture:
+			return "Pi";
 		default:
 			assert(false);
 			return {};
@@ -141,6 +144,7 @@ constexpr std::string_view Window_VarList::GetPrefix(Mode mode) {
 constexpr int Window_VarList::GetItemCount(Mode mode, bool show_detail) {
 	switch (mode) {
 		case eString:
+
 			if (show_detail) {
 				return 5;
 			}
