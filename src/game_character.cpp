@@ -1123,7 +1123,32 @@ int Game_Character::GetSpriteY() const {
 }
 
 bool Game_Character::IsInPosition(int x, int y) const {
-	return ((GetX() == x) && (GetY() == y));
+	int x1, x2, y1, y2;
+	GetTileOffsets(x1, x2, y1, y2);
+	bool is_expanded = (x1 != 0 || x2 != 0 || y1 != 0 || y2 != 0);
+
+	if (!is_expanded) {
+		// Standard Branch: Exact coordinate match
+		return GetX() == x && GetY() == y;
+	}
+
+	// Extended Branch: Rectangle footprint match
+	if (GetY() + y1 > y || GetY() + y2 < y) {
+		return false;
+	}
+
+	int left_edge = GetX() + x1;
+	int right_edge = GetX() + x2;
+
+	if (Game_Map::LoopHorizontal()) {
+		int map_w = Game_Map::GetTilesX();
+		for (int i = left_edge; i <= right_edge; ++i) {
+			if (Utils::PositiveModulo(i, map_w) == x) return true;
+		}
+		return false;
+	}
+
+	return x >= left_edge && x <= right_edge;
 }
 
 int Game_Character::GetOpacity() const {
@@ -1230,4 +1255,139 @@ void Game_Character::UpdateFacing() {
 	} else {
 		SetFacing(dir);
 	}
+}
+
+void Game_Character::GetTileOffsets(int& min_dx, int& max_dx, int& min_dy, int& max_dy) const {
+	min_dx = 0;
+	max_dx = 0;
+	min_dy = 0;
+	max_dy = 0;
+
+	if (!_data) {
+		return;
+	}
+
+	std::string_view name = _data->sprite_name;
+	if (name.empty()) {
+		return;
+	}
+
+	// --- X-Axis Parsing: {_#ModeBias} ---
+	size_t x_bracket = name.find("{_");
+	if (x_bracket != std::string_view::npos) {
+		size_t close = name.find("}", x_bracket);
+		if (close != std::string_view::npos) {
+			int width = 0;
+			char bias = '\0';
+			char mode = '\0';
+			std::string_view tag = name.substr(x_bracket + 2, close - (x_bracket + 2));
+			for (size_t i = 0; i < tag.length(); ++i) {
+				char c = tag[i];
+				if (c >= '0' && c <= '9') {
+					width = width * 10 + (c - '0');
+				} else if (c == 'L' || c == 'l') {
+					bias = 'L';
+				} else if (c == 'R' || c == 'r') {
+					bias = 'R';
+				} else if (c == '-' || c == '+') {
+					mode = c;
+				}
+			}
+			if (width > 0) {
+				if (mode == '-') {
+					min_dx = -(width - 1);
+					max_dx = 0;
+				} else if (mode == '+') {
+					min_dx = 0;
+					max_dx = (width - 1);
+				} else {
+					if (width > 1 && width % 2 == 0 && bias == '\0') {
+						width--;
+					}
+					if (width > 1 && width % 2 == 0) {
+						int r = (width - 1) / 2;
+						if (bias == 'L') {
+							min_dx = -(r + 1);
+							max_dx = r;
+						} else {
+							min_dx = -r;
+							max_dx = r + 1;
+						}
+					} else {
+						int r = width / 2;
+						min_dx = -r;
+						max_dx = r;
+					}
+				}
+			}
+		}
+	}
+
+	// --- Y-Axis Parsing: {!#ModeBias} ---
+	size_t y_bracket = name.find("{!");
+	if (y_bracket != std::string_view::npos) {
+		size_t close = name.find("}", y_bracket);
+		if (close != std::string_view::npos) {
+			int height = 0;
+			char bias = '\0';
+			char mode = '\0';
+			std::string_view tag = name.substr(y_bracket + 2, close - (y_bracket + 2));
+			for (size_t i = 0; i < tag.length(); ++i) {
+				char c = tag[i];
+				if (c >= '0' && c <= '9') {
+					height = height * 10 + (c - '0');
+				} else if (c == 'U' || c == 'u') {
+					bias = 'U';
+				} else if (c == 'D' || c == 'd') {
+					bias = 'D';
+				} else if (c == '^' || c == 'v' || c == '=') {
+					mode = c;
+				}
+			}
+
+			if (mode == '\0') {
+				mode = '^';
+			}
+
+			if (height > 0) {
+				if (mode == '^') {
+					min_dy = -(height - 1);
+					max_dy = 0;
+				} else if (mode == 'v') {
+					min_dy = 0;
+					max_dy = (height - 1);
+				} else {
+					if (height > 1 && height % 2 == 0 && bias == '\0') {
+						height--;
+					}
+					if (height > 1 && height % 2 == 0) {
+						int r = (height - 1) / 2;
+						if (bias == 'U') {
+							min_dy = -(r + 1);
+							max_dy = r;
+						} else {
+							min_dy = -r;
+							max_dy = r + 1;
+						}
+					} else {
+						int r = height / 2;
+						min_dy = -r;
+						max_dy = r;
+					}
+				}
+			}
+		}
+	}
+}
+
+int Game_Character::GetTileWidth() const {
+	int x1, x2, y1, y2;
+	GetTileOffsets(x1, x2, y1, y2);
+	return (x2 - x1) + 1;
+}
+
+int Game_Character::GetTileHeight() const {
+	int x1, x2, y1, y2;
+	GetTileOffsets(x1, x2, y1, y2);
+	return (y2 - y1) + 1;
 }

@@ -344,9 +344,26 @@ void Game_Player::UpdateNextMovementAction() {
 		Move(move_dir);
 		ResetThrough();
 		if (IsStopping()) {
-			int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
-			int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
-			CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, front_x, front_y, false);
+			int x1, x2, y1, y2;
+			const Game_Character* active_char = IsAboard() ? static_cast<const Game_Character*>(GetVehicle()) : static_cast<const Game_Character*>(this);
+			active_char->GetTileOffsets(x1, x2, y1, y2);
+			bool is_expanded = (x1 != 0 || x2 != 0 || y1 != 0 || y2 != 0);
+
+			if (!is_expanded) {
+				// --- BRANCH: ORIGINAL LOGIC ---
+				int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+				int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+				CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, front_x, front_y, false);
+		} else {
+				// --- BRANCH: EXTENDED BOUNDARIES ---
+				int dir = GetDirection();
+				// Scan the leading edge of the expanded 2D block
+				for (int i = (dir == Up || dir == Down ? x1 : y1); i <= (dir == Up || dir == Down ? x2 : y2); ++i) {
+					int fx = GetX() + (dir == Up || dir == Down ? i : (dir == Left ? x1 - 1 : x2 + 1));
+					int fy = GetY() + (dir == Left || dir == Right ? i : (dir == Up ? y1 - 1 : y2 + 1));
+					CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, Game_Map::RoundX(fx), Game_Map::RoundY(fy), false);
+				}
+			}
 		}
 	}
 
@@ -423,26 +440,69 @@ bool Game_Player::CheckActionEvent() {
 		return false;
 	}
 
-	bool result = false;
-	int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
-	int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
 
-	result |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, front_x, front_y, true);
+	int x1, x2, y1, y2;
+	const Game_Character* active_char = IsAboard() ? static_cast<const Game_Character*>(GetVehicle()) : static_cast<const Game_Character*>(this);
+	active_char->GetTileOffsets(x1, x2, y1, y2);
+	bool player_is_expanded = (x1 != 0 || x2 != 0 || y1 != 0 || y2 != 0);
+
+	if (!player_is_expanded) {
+		// --- BRANCH: ORIGINAL LOGIC ---
+		bool result = false;
+		int front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+		int front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+
+		result |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, front_x, front_y, true);
+		result |= CheckEventTriggerHere({lcf::rpg::EventPage::Trigger_action}, true);
+
+		bool got_action = CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, front_x, front_y, true);
+		for (int i = 0; !got_action && i < 3; ++i) {
+			if (!Game_Map::IsCounter(front_x, front_y)) {
+				break;
+			}
+
+			front_x = Game_Map::XwithDirection(front_x, GetDirection());
+			front_y = Game_Map::YwithDirection(front_y, GetDirection());
+
+			got_action |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, front_x, front_y, true);
+		}
+		return result || got_action;
+	}
+
+	// --- BRANCH: EXTENDED BOUNDARIES ---
+	int dir = GetDirection();
+
+	bool result = false;
+	for (int i = (dir == Up || dir == Down ? x1 : y1); i <= (dir == Up || dir == Down ? x2 : y2); ++i) {
+		int fx = GetX() + (dir == Up || dir == Down ? i : (dir == Left ? x1 - 1 : x2 + 1));
+		int fy = GetY() + (dir == Left || dir == Right ? i : (dir == Up ? y1 - 1 : y2 + 1));
+		result |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_touched, lcf::rpg::EventPage::Trigger_collision}, Game_Map::RoundX(fx), Game_Map::RoundY(fy), true);
+	}
 	result |= CheckEventTriggerHere({lcf::rpg::EventPage::Trigger_action}, true);
 
 	// Counter tile loop stops only if you talk to an action event.
-	bool got_action = CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, front_x, front_y, true);
+	bool got_action = false;
 	// RPG_RT allows maximum of 3 counter tiles
-	for (int i = 0; !got_action && i < 3; ++i) {
-		if (!Game_Map::IsCounter(front_x, front_y)) {
-			break;
+	for (int i = (dir == Up || dir == Down ? x1 : y1); i <= (dir == Up || dir == Down ? x2 : y2); ++i) {
+		int fx = GetX() + (dir == Up || dir == Down ? i : (dir == Left ? x1 - 1 : x2 + 1));
+		int fy = GetY() + (dir == Left || dir == Right ? i : (dir == Up ? y1 - 1 : y2 + 1));
+
+		int cur_fx = Game_Map::RoundX(fx);
+		int cur_fy = Game_Map::RoundY(fy);
+
+		got_action |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, cur_fx, cur_fy, true);
+
+		for (int c = 0; !got_action && c < 3; ++c) {
+			if (!Game_Map::IsCounter(cur_fx, cur_fy)) {
+				break;
+			}
+
+			cur_fx = Game_Map::RoundX(Game_Map::XwithDirection(cur_fx, dir));
+			cur_fy = Game_Map::RoundY(Game_Map::YwithDirection(cur_fy, dir));
+			got_action |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, cur_fx, cur_fy, true);
+			}
 		}
 
-		front_x = Game_Map::XwithDirection(front_x, GetDirection());
-		front_y = Game_Map::YwithDirection(front_y, GetDirection());
-
-		got_action |= CheckEventTriggerThere({lcf::rpg::EventPage::Trigger_action}, front_x, front_y, true);
-	}
 	return result || got_action;
 }
 
@@ -451,18 +511,33 @@ bool Game_Player::CheckEventTriggerHere(TriggerSet triggers, bool triggered_by_d
 		return false;
 	}
 
+int x1, x2, y1, y2;
+	const Game_Character* active_char = IsAboard() ? static_cast<const Game_Character*>(GetVehicle()) : static_cast<const Game_Character*>(this);
+	active_char->GetTileOffsets(x1, x2, y1, y2);
+
 	bool result = false;
 
-	for (auto& ev: Game_Map::GetEvents()) {
-		const auto trigger = ev.GetTrigger();
-		if (ev.IsActive()
-				&& ev.GetX() == GetX()
-				&& ev.GetY() == GetY()
-				&& ev.GetLayer() != lcf::rpg::EventPage::Layers_same
-				&& trigger.has_value()
-				&& triggers[*trigger]) {
-			SetEncounterCalling(false);
-			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player);
+	for (auto& ev : Game_Map::GetEvents()) {
+		auto trigger = ev.GetTrigger();
+		if (!trigger || !ev.IsActive() || ev.GetLayer() == lcf::rpg::EventPage::Layers_same || !triggers[*trigger]) {
+			continue;
+		}
+
+		// Check if any tile in the player/vehicle's expanded footprint overlaps the event's footprint
+		bool overlap = false;
+		for (int dy = y1; dy <= y2 && !overlap; ++dy) {
+			for (int dx = x1; dx <= x2 && !overlap; ++dx) {
+				if (ev.IsInPosition(Game_Map::RoundX(GetX() + dx), Game_Map::RoundY(GetY() + dy))) {
+					overlap = true;
+				}
+			}
+		}
+
+		if (overlap) {
+			if (ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player)) {
+				result = true;
+				SetEncounterCalling(false);
+			}
 		}
 	}
 	return result;
@@ -475,15 +550,16 @@ bool Game_Player::CheckEventTriggerThere(TriggerSet triggers, int x, int y, bool
 	bool result = false;
 
 	for (auto& ev : Game_Map::GetEvents()) {
-		const auto trigger = ev.GetTrigger();
-		if (ev.IsActive()
-				&& ev.GetX() == x
-				&& ev.GetY() == y
+		auto trigger = ev.GetTrigger();
+		if (trigger && ev.IsActive()
+				&& ev.IsInPosition(x, y)
 				&& ev.GetLayer() == lcf::rpg::EventPage::Layers_same
-				&& trigger.has_value()
-				&& triggers[*trigger]) {
-			SetEncounterCalling(false);
-			result |= ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player);
+				&& triggers[*trigger])
+		{
+			if (ev.ScheduleForegroundExecution(triggered_by_decision_key, face_player)) {
+				result = true;
+				SetEncounterCalling(false);
+			}
 		}
 	}
 	return result;
@@ -516,9 +592,49 @@ bool Game_Player::GetOnVehicle() {
 	assert(!IsDirectionDiagonal(GetDirection()));
 	assert(!IsAboard());
 
-	auto* vehicle = Game_Map::GetVehicle(Game_Vehicle::Airship);
+	// 1. Handle Airship Boarding
+	auto* airship = Game_Map::GetVehicle(Game_Vehicle::Airship);
+	if (airship->IsInPosition(GetX(), GetY()) && IsStopping() && airship->IsStopping()) {
+		int x1, x2, y1, y2;
+		airship->GetTileOffsets(x1, x2, y1, y2);
+		bool is_expanded = (x1 != 0 || x2 != 0 || y1 != 0 || y2 != 0);
 
-	if (vehicle->IsInPosition(GetX(), GetY()) && IsStopping() && vehicle->IsStopping()) {
+		// Branch: Only run iterative centering if Airship is expanded
+		if (is_expanded) {
+			int tx = airship->GetX();
+			int ty = airship->GetY();
+
+			while (GetX() != tx || GetY() != ty) {
+				int dx = tx - GetX();
+				int dy = ty - GetY();
+
+				if (Game_Map::LoopHorizontal()) {
+					int w = Game_Map::GetTilesX();
+					if (std::abs(dx) > w / 2) dx = (dx > 0) ? dx - w : dx + w;
+				}
+				if (Game_Map::LoopVertical()) {
+					int h = Game_Map::GetTilesY();
+					if (std::abs(dy) > h / 2) dy = (dy > 0) ? dy - h : dy + h;
+				}
+
+				int move_dir = -1;
+				if (dx != 0)	  move_dir = (dx > 0) ? Right : Left;
+				else if (dy != 0) move_dir = (dy > 0) ? Down : Up;
+
+				if (move_dir == -1) break;
+
+				SetThrough(true);
+				if (std::abs(dx) + std::abs(dy) == 1) {
+					Move(move_dir);
+				} else {
+					SetX(Game_Map::RoundX(GetX() + GetDxFromDirection(move_dir)));
+					SetY(Game_Map::RoundY(GetY() + GetDyFromDirection(move_dir)));
+					Game_Map::SetPositionX(GetSpriteX() - GetPanX());
+					Game_Map::SetPositionY(GetSpriteY() - GetPanY());
+				}
+				ResetThrough();
+			}
+		}
 		data()->vehicle = Game_Vehicle::Airship;
 		data()->aboard = true;
 
@@ -526,35 +642,81 @@ bool Game_Player::GetOnVehicle() {
 		SetFacing(Left);
 
 		data()->preboard_move_speed = GetMoveSpeed();
-		SetMoveSpeed(vehicle->GetMoveSpeed());
-		vehicle->StartAscent();
-		Main_Data::game_player->SetFlying(vehicle->IsFlying());
-	} else {
-		const auto front_x = Game_Map::XwithDirection(GetX(), GetDirection());
-		const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+		SetMoveSpeed(airship->GetMoveSpeed());
+		airship->StartAscent();
+		Main_Data::game_player->SetFlying(airship->IsFlying());
+		Main_Data::game_system->SetBeforeVehicleMusic(Main_Data::game_system->GetCurrentBGM());
+		Main_Data::game_system->BgmPlay(airship->GetBGM());
+		return true;
+	}
 
-		vehicle = Game_Map::GetVehicle(Game_Vehicle::Ship);
-		if (!vehicle->IsInPosition(front_x, front_y)) {
-			vehicle = Game_Map::GetVehicle(Game_Vehicle::Boat);
-			if (!vehicle->IsInPosition(front_x, front_y)) {
-				return false;
+	// 2. Handle Boat/Ship Boarding
+	const auto front_x = Game_Map::RoundX(Game_Map::XwithDirection(GetX(), GetDirection()));
+	const auto front_y = Game_Map::RoundY(Game_Map::YwithDirection(GetY(), GetDirection()));
+
+	Game_Vehicle* vehicle = nullptr;
+	for (auto vid : { Game_Vehicle::Ship, Game_Vehicle::Boat }) {
+		auto* v = Game_Map::GetVehicle(vid);
+		if (v->IsInCurrentMap() && v->IsInPosition(front_x, front_y)) {
+			vehicle = v;
+			break;
+		}
+	}
+
+	if (!vehicle || !Game_Map::CanEmbarkShip(*this, front_x, front_y)) {
+		return false;
+	}
+
+	int x1, x2, y1, y2;
+	vehicle->GetTileOffsets(x1, x2, y1, y2);
+	bool is_expanded = (x1 != 0 || x2 != 0 || y1 != 0 || y2 != 0);
+
+	// Branch: Iterative pathing for large ships, standard one-step for small boats
+	if (is_expanded) {
+		int tx = vehicle->GetX();
+		int ty = vehicle->GetY();
+
+		while (GetX() != tx || GetY() != ty) {
+			int dx = tx - GetX();
+			int dy = ty - GetY();
+
+			if (Game_Map::LoopHorizontal()) {
+				int w = Game_Map::GetTilesX();
+				if (std::abs(dx) > w / 2) dx = (dx > 0) ? dx - w : dx + w;
 			}
-		}
+			if (Game_Map::LoopVertical()) {
+				int h = Game_Map::GetTilesY();
+				if (std::abs(dy) > h / 2) dy = (dy > 0) ? dy - h : dy + h;
+			}
 
-		if (!Game_Map::CanEmbarkShip(*this, front_x, front_y)) {
-			return false;
+			int move_dir = -1;
+			if (dx != 0)	  move_dir = (dx > 0) ? Right : Left;
+			else if (dy != 0) move_dir = (dy > 0) ? Down : Up;
+
+			if (move_dir == -1) break;
+
+			SetThrough(true);
+			if (std::abs(dx) + std::abs(dy) == 1) {
+				Move(move_dir);
+			} else {
+				SetX(Game_Map::RoundX(GetX() + GetDxFromDirection(move_dir)));
+				SetY(Game_Map::RoundY(GetY() + GetDyFromDirection(move_dir)));
+			}
+			ResetThrough();
 		}
+	} else {
+		// Standard Logic
 
 		SetThrough(true);
 		Move(GetDirection());
 		// FIXME: RPG_RT resets through to move_route_through || not visible?
 		ResetThrough();
 
-		data()->vehicle = vehicle->GetVehicleType();
-		data()->preboard_move_speed = GetMoveSpeed();
-		data()->boarding = true;
 	}
 
+	data()->vehicle = vehicle->GetVehicleType();
+	data()->preboard_move_speed = GetMoveSpeed();
+	data()->boarding = true;
 	Main_Data::game_system->SetBeforeVehicleMusic(Main_Data::game_system->GetCurrentBGM());
 	Main_Data::game_system->BgmPlay(vehicle->GetBGM());
 	return true;
@@ -580,21 +742,65 @@ bool Game_Player::GetOffVehicle() {
 		return true;
 	}
 
-	const auto front_x = Game_Map::XwithDirection(GetX(), GetDirection());
-	const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+	int x1, x2, y1, y2;
+	vehicle->GetTileOffsets(x1, x2, y1, y2);
+	bool is_expanded = (x1 != 0 || x2 != 0 || y1 != 0 || y2 != 0);
 
-	if (!Game_Map::CanDisembarkShip(*this, front_x, front_y)) {
-		return false;
+	int dir = GetDirection();
+
+	// Branch: Extended clearing logic for large hitboxes
+	if (is_expanded) {
+		int steps = 0;
+		if (dir == Up)		 steps = std::abs(y1) + 1;
+		else if (dir == Down)  steps = std::abs(y2) + 1;
+		else if (dir == Left)  steps = std::abs(x1) + 1;
+		else if (dir == Right) steps = std::abs(x2) + 1;
+
+		int target_x = GetX();
+		int target_y = GetY();
+		if (dir == Up)		 target_y -= steps;
+		else if (dir == Down)  target_y += steps;
+		else if (dir == Left)  target_x -= steps;
+		else if (dir == Right) target_x += steps;
+
+		target_x = Game_Map::RoundX(target_x);
+		target_y = Game_Map::RoundY(target_y);
+
+		if (!Game_Map::CanDisembarkShip(*this, target_x, target_y)) return false;
+
+		vehicle->SetDefaultDirection();
+		data()->aboard = false;
+		SetMoveSpeed(data()->preboard_move_speed);
+		data()->unboarding = true;
+
+		for (int i = 0; i < steps; ++i) {
+			SetThrough(true);
+			if (i < steps - 1) {
+				SetX(Game_Map::RoundX(GetX() + GetDxFromDirection(dir)));
+				SetY(Game_Map::RoundY(GetY() + GetDyFromDirection(dir)));
+			} else {
+				Move(dir);
+			}
+			ResetThrough();
+		}
+	} else {
+		// Standard Logic
+		const auto front_x = Game_Map::XwithDirection(GetX(), GetDirection());
+		const auto front_y = Game_Map::YwithDirection(GetY(), GetDirection());
+
+		if (!Game_Map::CanDisembarkShip(*this, front_x, front_y)) {
+			return false;
+		}
+
+		vehicle->SetDefaultDirection();
+		data()->aboard = false;
+		SetMoveSpeed(data()->preboard_move_speed);
+		data()->unboarding = true;
+
+		SetThrough(true);
+		Move(GetDirection());
+		ResetThrough();
 	}
-
-	vehicle->SetDefaultDirection();
-	data()->aboard = false;
-	SetMoveSpeed(data()->preboard_move_speed);
-	data()->unboarding = true;
-
-	SetThrough(true);
-	Move(GetDirection());
-	ResetThrough();
 
 	data()->vehicle = 0;
 	Main_Data::game_system->BgmPlay(Main_Data::game_system->GetBeforeVehicleMusic());
@@ -610,6 +816,25 @@ void Game_Player::ForceGetOffVehicle() {
 	auto* vehicle = GetVehicle();
 	vehicle->ForceLand();
 	vehicle->SetDefaultDirection();
+
+	int x1, x2, y1, y2;
+	vehicle->GetTileOffsets(x1, x2, y1, y2);
+	bool is_expanded = (x1 != 0 || x2 != 0 || y1 != 0 || y2 != 0);
+
+	// Branch: Only snap hero to lead edge if vehicle is expanded
+	if (is_expanded && !Game_Map::CanDisembarkShip(*this, GetX(), GetY())) {
+		int dir = GetDirection();
+		int steps = 0;
+		if (dir == Up)		 steps = std::abs(y1);
+		else if (dir == Down)  steps = std::abs(y2);
+		else if (dir == Left)  steps = std::abs(x1);
+		else if (dir == Right) steps = std::abs(x2);
+
+		for (int i = 0; i < steps; ++i) {
+			SetX(Game_Map::RoundX(GetX() + GetDxFromDirection(dir)));
+			SetY(Game_Map::RoundY(GetY() + GetDyFromDirection(dir)));
+		}
+	}
 
 	data()->flying = false;
 	data()->aboard = false;
