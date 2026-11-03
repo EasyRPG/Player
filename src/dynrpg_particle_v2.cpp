@@ -45,8 +45,6 @@
 
 class ParticleEffect;
 
-constexpr double kPi = 3.14159265358979323846;
-
 constexpr double kSinLutStep = 0.1963495408;
 
 using EffectMap = std::map<std::string, std::unique_ptr<ParticleEffect>>;
@@ -136,9 +134,10 @@ ParticleEffect::ParticleEffect() : Drawable(Priority_Weather) {
 ParticleEffect::~ParticleEffect() = default;
 
 void ParticleEffect::SetTexture(const std::string& filename) {
-	FileRequestAsync* req = AsyncHandler::RequestFile("Picture", filename);
+	const std::string name = DynRpg::StripImageExtension(filename);
+	FileRequestAsync* req = AsyncHandler::RequestFile("Picture", name);
 	req->Start();
-	image = Cache::Picture(filename, true);
+	image = Cache::Picture(name, true);
 	has_texture = true;
 }
 
@@ -276,13 +275,10 @@ void ParticleEffect::UpdateColor() {
 
 void ParticleEffect::CreateTrigLut() {
 	for (int i = 0; i < 32; ++i) {
-		sin_lut[i] = static_cast<float>(std::sin(kPi / 16.0 * i));
+		sin_lut[i] = static_cast<float>(std::sin(M_PI / 16.0 * i));
 	}
 }
 
-/**
- * Spawns all particles at once; every burst fades out independently.
- */
 class Burst : public ParticleEffect {
 public:
 	Burst();

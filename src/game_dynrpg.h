@@ -46,6 +46,18 @@ namespace DynRpg {
 	std::string ParseVarArg(std::string_view func_name, dyn_arg_list args, int index, bool& parse_okay);
 	std::string ParseCommand(std::string command, std::vector<std::string>& params);
 
+	/**
+	 * Strips the file extension from a path passed to a plugin.
+	 *
+	 * Plugins load their assets with RPG::Image::loadFromFile, which expects a
+	 * complete file name including the extension, while our FileFinder
+	 * looks the name up without one and adds the extension itself.
+	 *
+	 * @param file_name file name as passed to the plugin
+	 * @return file_name without an image extension
+	 */
+	std::string StripImageExtension(std::string file_name);
+
 	namespace detail {
 		template <typename T>
 		inline bool parse_arg(std::string_view, dyn_arg_list, const int, T&, bool&) {

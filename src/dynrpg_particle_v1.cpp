@@ -25,18 +25,19 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <string_view>
+#include <utility>
 #include <vector>
 
 #include "async_handler.h"
 #include "bitmap.h"
-#include "cache.h"
 #include "drawable.h"
 #include "drawable_mgr.h"
+#include "filefinder.h"
 #include "game_map.h"
+#include "output.h"
 #include "rand.h"
 #include "utils.h"
-
-constexpr double kPi = 3.14159265358979323846;
 
 struct ParticleObj {
 	double size;
@@ -68,7 +69,7 @@ public:
 	double timeout = 30;
 	double delay = 0;
 	double angle_start = 0;
-	double angle_span = 2 * kPi;
+	double angle_span = 2 * M_PI;
 	bool mask = false;
 	std::string filename = "Particle";
 
@@ -93,8 +94,8 @@ public:
 	}
 
 	void SetAngle(double a1, double a2) {
-		angle_start = a1 * kPi / 180.0;
-		angle_span = (a2 - a1) * kPi / 180.0;
+		angle_start = a1 * M_PI / 180.0;
+		angle_span = (a2 - a1) * M_PI / 180.0;
 	}
 
 	void SetGrowth(int s, int new_size) {
@@ -111,38 +112,25 @@ public:
 	}
 
 	void LoadTexture() {
-		std::string name = filename;
+		// A failed load falls back to untextured rectangles, so do not retry it
+		has_texture = true;
 
-		// Handle legacy DynRPG pathing
-		size_t pos = name.find("DynPlugins/");
-		if (pos != std::string::npos) {
-			name.erase(pos, 11);
-		}
-		pos = name.find("DynPlugins\\");
-		if (pos != std::string::npos) {
-			name.erase(pos, 11);
+		const std::string name = DynRpg::StripImageExtension(filename);
+		if (name.empty()) {
+			return;
 		}
 
-		pos = name.find("Picture/");
-		if (pos != std::string::npos) {
-			name.erase(pos, 8);
-		}
-		pos = name.find("Picture\\");
-		if (pos != std::string::npos) {
-			name.erase(pos, 8);
+		// The plugin took a path relative to the game directory, not a picture name
+		FileRequestAsync* req = AsyncHandler::RequestFile(name);
+		req->Start();
+
+		auto stream = FileFinder::OpenImage(".", name);
+		if (!stream) {
+			Output::Warning("DynRPG ParticleV1: Could not load '{}'", filename);
+			return;
 		}
 
-		pos = name.find_last_of('.');
-		if (pos != std::string::npos) {
-			name = name.substr(0, pos);
-		}
-
-		if (!name.empty()) {
-			FileRequestAsync* req = AsyncHandler::RequestFile("Picture", name);
-			req->Start();
-			image = Cache::Picture(name, mask);
-			has_texture = true;
-		}
+		image = Bitmap::Create(std::move(stream), mask);
 	}
 
 	void NewBurst(int x, int y) {
@@ -190,7 +178,7 @@ public:
 
 		for (int i = 0; i < amount; ++i) {
 			double rand_val = static_cast<double>(Rand::GetRandomNumber(0, 32767)) / 32767.0;
-			double angle = rand_val * 2 * kPi;
+			double angle = rand_val * 2 * M_PI;
 
 			ParticleObj pa;
 			pa.x = x;

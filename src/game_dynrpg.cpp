@@ -377,6 +377,17 @@ std::string DynRpg::ParseCommand(std::string command, std::vector<std::string>& 
 	return function_name;
 }
 
+std::string DynRpg::StripImageExtension(std::string file_name) {
+	const std::string lower = Utils::LowerCase(file_name);
+	for (std::string_view ext : FileFinder::IMG_TYPES) {
+		if (lower.size() > ext.size() && lower.compare(lower.size() - ext.size(), ext.size(), ext) == 0) {
+			file_name.erase(file_name.size() - ext.size());
+			break;
+		}
+	}
+	return file_name;
+}
+
 bool Game_DynRpg::Invoke(std::string_view command, Game_Interpreter* interpreter) {
 	InitPlugins();
 
