@@ -23,7 +23,6 @@
 #include <cmath>
 #include <list>
 #include <memory>
-#include <sstream>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -71,7 +70,7 @@ public:
 	double angle_start = 0;
 	double angle_span = 2 * M_PI;
 	bool mask = false;
-	std::string filename = "Particle";
+	std::string filename = "DynPlugins/Particle";
 
 	double dr = 0;
 	double dg = 0;
@@ -229,13 +228,8 @@ public:
 	void Draw(Bitmap& dst) override;
 };
 
-using EffectList = std::vector<std::unique_ptr<ParticleEffectV1>>;
-
-EffectList v1_effects;
-static bool v1_draw = true;
-
 void ParticleEffectV1::Draw(Bitmap& dst) {
-	if (!v1_draw || bursts.empty()) {
+	if (bursts.empty()) {
 		return;
 	}
 
@@ -275,144 +269,164 @@ void ParticleEffectV1::Draw(Bitmap& dst) {
 
 DynRpg::ParticleV1::ParticleV1(Game_DynRpg& instance) : DynRpgPlugin("ParticleSystemV1", instance) {}
 
-DynRpg::ParticleV1::~ParticleV1() = default;
-
 bool DynRpg::ParticleV1::Invoke(std::string_view func, dyn_arg_list args, bool& /*do_yield*/,
 	Game_Interpreter* /*interpreter*/) {
+
 	if (func == "new_effect") {
-		v1_effects.push_back(std::make_unique<ParticleEffectV1>());
+		effects.push_back(std::make_unique<ParticleEffectV1>());
+		effects.back()->SetVisible(do_draw);
 		return true;
 	}
 	if (func == "stop") {
-		v1_draw = false;
+		do_draw = false;
+		for (auto& effect: effects) {
+			effect->SetVisible(false);
+		}
 		return true;
 	}
 	if (func == "start") {
-		v1_draw = true;
+		do_draw = true;
+		for (auto& effect: effects) {
+			effect->SetVisible(true);
+		}
 		return true;
 	}
 
-	if (func == "effect_burst" || func == "effect_heart" || func == "effect_color" ||
-		func == "effect_colorfade" || func == "effect_amount" || func == "effect_random" ||
-		func == "effect_angle" || func == "effect_growth" || func == "effect_speed" ||
-		func == "effect_timeout" || func == "effect_delay" || func == "effect_file" ||
-		func == "effect_kill") {
-		auto get_int = [&](size_t idx, int def) {
-			if (idx >= args.size() || args[idx].empty()) {
-				return def;
-			}
-			std::istringstream iss(args[idx]);
-			int value = 0;
-			if (iss >> value) {
-				return value;
-			}
-			return def;
-		};
+	if (!StartsWith(func, "effect_")) {
+		return false;
+	}
 
-		auto get_double = [&](size_t idx, double def) {
-			if (idx >= args.size() || args[idx].empty()) {
-				return def;
-			}
-			std::istringstream iss(args[idx]);
-			double value = 0.0;
-			if (iss >> value) {
-				return value;
-			}
-			return def;
-		};
+	bool okay;
+	const int index = DynRpg::ParseArg<int>(func, args, 0, &okay);
+	if (!okay) {
+		return true;
+	}
 
-		auto get_string = [&](size_t idx, std::string def) {
-			if (idx >= args.size() || args[idx].empty()) {
-				return def;
-			}
-			return args[idx];
-		};
+	if (index < 0 || index >= static_cast<int>(effects.size())) {
+		return true;
+	}
+	ParticleEffectV1* effect = effects[index].get();
 
-		const int index = get_int(0, -1);
-		if (index < 0 || index >= static_cast<int>(v1_effects.size())) {
-			return true;
-		}
+	if (!effect) {
+		return true;
+	}
 
-		ParticleEffectV1& effect = *v1_effects[index];
-
-		if (func == "effect_burst") {
-			effect.NewBurst(get_int(1, 0), get_int(2, 0));
+	if (func == "effect_burst") {
+		auto [x, y] = DynRpg::ParseArgs<int, int>(func, args, 1, &okay);
+		effect->NewBurst(x, y);
+		return true;
+	}
+	if (func == "effect_heart") {
+		auto [x, y] = DynRpg::ParseArgs<int, int>(func, args, 1, &okay);
+		if (!okay) {
 			return true;
 		}
-		if (func == "effect_heart") {
-			effect.NewHeart(get_int(1, 0), get_int(2, 0));
+		effect->NewHeart(x, y);
+		return true;
+	}
+	if (func == "effect_color") {
+		auto [r, g, b] = DynRpg::ParseArgs<int, int, int>(func, args, 1, &okay);
+		if (!okay) {
 			return true;
 		}
-		if (func == "effect_color") {
-			effect.red = get_int(1, 255);
-			effect.green = get_int(2, 255);
-			effect.blue = get_int(3, 255);
+		effect->red = r;
+		effect->green = g;
+		effect->blue = b;
+		return true;
+	}
+	if (func == "effect_colorfade") {
+		auto [r, g, b] = DynRpg::ParseArgs<int, int, int>(func, args, 1, &okay);
+		if (!okay) {
 			return true;
 		}
-		if (func == "effect_colorfade") {
-			effect.ColorFade(get_int(1, 0), get_int(2, 0), get_int(3, 0));
+		effect->ColorFade(r, g, b);
+		return true;
+	}
+	if (func == "effect_amount") {
+		auto [amount] = DynRpg::ParseArgs<int>(func, args, 1, &okay);
+		if (!okay) {
 			return true;
 		}
-		if (func == "effect_amount") {
-			effect.amount = get_int(1, 50);
+		effect->amount = amount;
+		return true;
+	}
+	if (func == "effect_random") {
+		auto [position_x, position_y] = DynRpg::ParseArgs<int, int>(func, args, 1, &okay);
+		if (!okay) {
 			return true;
 		}
-		if (func == "effect_random") {
-			effect.rand_x = get_int(1, 0);
-			effect.rand_y = get_int(2, 0);
+		effect->rand_x = position_x;
+		effect->rand_y = position_y;
+		return true;
+	}
+	if (func == "effect_angle") {
+		auto [angle_begin, angle_end] = DynRpg::ParseArgs<float, float>(func, args, 1, &okay);
+		if (!okay) {
 			return true;
 		}
-		if (func == "effect_angle") {
-			effect.SetAngle(get_double(1, 0.0), get_double(2, 360.0));
+		effect->SetAngle(angle_begin, angle_end);
+		return true;
+	}
+	if (func == "effect_growth") {
+		auto [size_begin, size_end] = DynRpg::ParseArgs<int, int>(func, args, 1, &okay);
+		if (!okay) {
 			return true;
 		}
-		if (func == "effect_growth") {
-			effect.SetGrowth(get_int(1, 2), get_int(2, 2));
+		effect->SetGrowth(size_begin, size_end);
+		return true;
+	}
+	if (func == "effect_speed") {
+		auto [speed, rand_speed] = DynRpg::ParseArgs<float, float>(func, args, 1, &okay);
+		if (!okay) {
 			return true;
 		}
-		if (func == "effect_speed") {
-			effect.spd = get_double(1, 2.0);
-			effect.rand_spd = get_double(2, 2.0);
+		effect->spd = speed;
+		effect->rand_spd = rand_speed;
+		return true;
+	}
+	if (func == "effect_timeout") {
+		auto [timeout] = DynRpg::ParseArgs<float>(func, args, 1, &okay);
+		if (!okay) {
 			return true;
 		}
-		if (func == "effect_timeout") {
-			effect.SetTimeout(get_double(1, 30.0));
+		effect->SetTimeout(timeout);
+		return true;
+	}
+	if (func == "effect_delay") {
+		auto [delay] = DynRpg::ParseArgs<float>(func, args, 1, &okay);
+		if (!okay) {
 			return true;
 		}
-		if (func == "effect_delay") {
-			effect.delay = get_double(1, 0.0);
+		effect->delay = delay;
+		return true;
+	}
+	if (func == "effect_file") {
+		auto [file, mask] = DynRpg::ParseArgs<std::string, std::string>(func, args, 1, &okay);
+		if (!okay) {
 			return true;
 		}
-		if (func == "effect_file") {
-			effect.filename = get_string(1, "");
-			if (Utils::LowerCase(get_string(2, "")).substr(0, 4) == "true") {
-				effect.mask = true;
-			}
-			effect.has_texture = false;
-			effect.LoadTexture();
-			return true;
+		effect->filename = file;
+		if (Utils::LowerCase(mask).substr(0, 4) == "true") {
+			effect->mask = true;
 		}
-		if (func == "effect_kill") {
-			effect.KillParticles();
-			return true;
-		}
+		effect->has_texture = false;
+		effect->LoadTexture();
+		return true;
+	}
+	if (func == "effect_kill") {
+		effect->KillParticles();
+		return true;
 	}
 
 	return false;
 }
 
 void DynRpg::ParticleV1::Update() {
-	if (!v1_draw) {
+	if (!do_draw) {
 		return;
 	}
 
-	for (auto& pfx : v1_effects) {
+	for (auto& pfx : effects) {
 		pfx->Update();
-	}
-}
-
-void DynRpg::ParticleV1::OnMapChange() {
-	for (auto& pfx : v1_effects) {
-		pfx->KillParticles();
 	}
 }

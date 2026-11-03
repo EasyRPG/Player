@@ -24,15 +24,21 @@
 
 #include "game_dynrpg.h"
 
+class ParticleEffectV1;
+
 namespace DynRpg {
 	class ParticleV1 : public DynRpgPlugin {
 	public:
 		ParticleV1(Game_DynRpg& instance);
-		~ParticleV1() override;
 
 		bool Invoke(std::string_view func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
 		void Update() override;
-		void OnMapChange();
+
+	private:
+		using EffectList = std::vector<std::unique_ptr<ParticleEffectV1>>;
+
+		EffectList effects;
+		bool do_draw = true;
 	};
 }
 

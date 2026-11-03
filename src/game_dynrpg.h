@@ -113,26 +113,48 @@ namespace DynRpg {
 		}
 
 		template <typename Tuple, std::size_t... I>
-		inline void parse_args(std::string_view func_name, dyn_arg_list in, Tuple& value, bool& parse_okay, std::index_sequence<I...>) {
-			(void)std::initializer_list<bool>{parse_arg(func_name, in, I, std::get<I>(value), parse_okay)...};
+		inline void parse_args(std::string_view func_name, dyn_arg_list in, int start_index, Tuple& value, bool& parse_okay, std::index_sequence<I...>) {
+			(void)std::initializer_list<bool>{parse_arg(func_name, in, start_index + static_cast<int>(I), std::get<I>(value), parse_okay)...};
 		}
 	}
 
-
 	template <typename... Targs>
-	std::tuple<Targs...> ParseArgs(std::string_view func_name, dyn_arg_list args, bool* parse_okay = nullptr) {
+	std::tuple<Targs...> ParseArgs(std::string_view func_name, dyn_arg_list args, int start_index, bool* parse_okay = nullptr) {
 		std::tuple<Targs...> t;
-		if (args.size() < sizeof...(Targs)) {
+		const size_t available = (start_index >= 0 && static_cast<size_t>(start_index) <= args.size())
+			? args.size() - static_cast<size_t>(start_index) : 0;
+		if (available < sizeof...(Targs)) {
 			if (parse_okay)
 				*parse_okay = false;
-			Output::Warning("{}: Got {} args (needs {} or more)", func_name, args.size(), sizeof...(Targs));
+			Output::Warning("{}: Got {} args (needs {} or more)", func_name, available, sizeof...(Targs));
 			return t;
 		}
 		bool okay = true;
-		detail::parse_args(func_name, args, t, okay, std::make_index_sequence<sizeof...(Targs)>{});
+		detail::parse_args(func_name, args, start_index, t, okay, std::make_index_sequence<sizeof...(Targs)>{});
 		if (parse_okay)
 			*parse_okay = okay;
 		return t;
+	}
+
+	template <typename... Targs>
+	std::tuple<Targs...> ParseArgs(std::string_view func_name, dyn_arg_list args, bool* parse_okay = nullptr) {
+		return ParseArgs<Targs...>(func_name, args, 0, parse_okay);
+	}
+
+	template <typename Targ>
+	Targ ParseArg(std::string_view func_name, dyn_arg_list args, int index, bool* parse_okay = nullptr) {
+		Targ value{};
+		if (index < 0 || index >= static_cast<int>(args.size())) {
+			Output::Warning("{}: Argument index {} out of range", func_name, index);
+			if (parse_okay)
+				*parse_okay = false;
+			return value;
+		}
+		bool okay = true;
+		detail::parse_arg(func_name, args, index, value, okay);
+		if (parse_okay)
+			*parse_okay = okay;
+		return value;
 	}
 }
 

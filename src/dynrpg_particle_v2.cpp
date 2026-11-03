@@ -24,12 +24,10 @@
 #include <cmath>
 #include <cstdint>
 #include <cstdlib>
-#include <functional>
 #include <map>
 #include <memory>
 #include <string>
 #include <string_view>
-#include <tuple>
 #include <vector>
 
 #include "async_handler.h"
@@ -41,20 +39,21 @@
 #include "game_map.h"
 #include "game_switches.h"
 #include "main_data.h"
+#include "output.h"
 #include "scene.h"
-
-class ParticleEffect;
 
 constexpr double kSinLutStep = 0.1963495408;
 
-using EffectMap = std::map<std::string, std::unique_ptr<ParticleEffect>>;
-
-EffectMap pfx_list;
-
-class ParticleEffect : public Drawable {
+class ParticleEffectV2 : public Drawable {
 public:
-	ParticleEffect();
-	~ParticleEffect() override;
+	enum class Type {
+		Burst,
+		Stream
+	};
+
+	~ParticleEffectV2() override;
+
+	Type GetType() const { return type; }
 
 	virtual void Update() = 0;
 	void Draw(Bitmap& dst) override = 0;
@@ -74,7 +73,7 @@ public:
 	virtual void SetTexture(const std::string& filename);
 	virtual void UnloadTexture();
 	void UseScreenRelative(bool enabled);
-	virtual void SetGeneratingFunction(const std::string& type) {}
+	virtual void SetGeneratingFunction(const std::string&) {}
 	void SetGravityDirection(float angle, float factor);
 	void SetAccelerationPoint(float x, float y, float factor);
 	void SetColor0(uint8_t r, uint8_t g, uint8_t b);
@@ -83,6 +82,8 @@ public:
 	static void CreateTrigLut();
 
 protected:
+	explicit ParticleEffectV2(Type type);
+
 	bool is_screen_relative = false;
 
 	int r0 = 50;
@@ -120,20 +121,23 @@ protected:
 	void UpdateColor();
 
 	static float sin_lut[32];
+
+private:
+	Type type;
 };
 
-float ParticleEffect::sin_lut[32];
+float ParticleEffectV2::sin_lut[32];
 
-ParticleEffect::ParticleEffect() : Drawable(Priority_Weather) {
+ParticleEffectV2::ParticleEffectV2(Type type) : Drawable(Priority_Weather), type(type) {
 	da = 255.0f / fade;
 	image = Bitmap::Create(1, 1, true);
 
 	DrawableMgr::Register(this);
 }
 
-ParticleEffect::~ParticleEffect() = default;
+ParticleEffectV2::~ParticleEffectV2() = default;
 
-void ParticleEffect::SetTexture(const std::string& filename) {
+void ParticleEffectV2::SetTexture(const std::string& filename) {
 	const std::string name = DynRpg::StripImageExtension(filename);
 	FileRequestAsync* req = AsyncHandler::RequestFile("Picture", name);
 	req->Start();
@@ -141,46 +145,46 @@ void ParticleEffect::SetTexture(const std::string& filename) {
 	has_texture = true;
 }
 
-void ParticleEffect::UnloadTexture() {
+void ParticleEffectV2::UnloadTexture() {
 	image = Bitmap::Create(1, 1, true);
 	has_texture = false;
 	UpdateColor();
 }
 
-void ParticleEffect::SetGravityDirection(float angle, float factor) {
+void ParticleEffectV2::SetGravityDirection(float angle, float factor) {
 	angle *= 0.0174532925f;
 	gx = factor * cosf(angle) / 600.0f;
 	gy = factor * sinf(angle) / 600.0f;
 }
 
-void ParticleEffect::SetAccelerationPoint(float x, float y, float factor) {
+void ParticleEffectV2::SetAccelerationPoint(float x, float y, float factor) {
 	afc = factor / 600.0f;
 	ax0 = x;
 	ay0 = y;
 }
 
-void ParticleEffect::SetGrowth(float ini_size, float end_size) {
+void ParticleEffectV2::SetGrowth(float ini_size, float end_size) {
 	s0 = ini_size;
 	s1 = end_size;
 	ds = (fade > 0) ? (s1 - s0) / fade : 0;
 }
 
-void ParticleEffect::UseScreenRelative(bool enabled) {
+void ParticleEffectV2::UseScreenRelative(bool enabled) {
 	is_screen_relative = enabled;
 }
 
-void ParticleEffect::SetAmount(int new_amount) {
+void ParticleEffectV2::SetAmount(int new_amount) {
 	amount = new_amount;
 }
 
-void ParticleEffect::SetAngle(float v1, float v2) {
+void ParticleEffectV2::SetAngle(float v1, float v2) {
 	v1 *= 0.0174532925f;
 	v2 *= 0.0174532925f;
 	beta = (v2 < 0) ? -v2 : v2;
 	alpha = v1 - v2 / 2;
 }
 
-void ParticleEffect::SetSecondaryAngle(float v) {
+void ParticleEffectV2::SetSecondaryAngle(float v) {
 	while (v > 360) {
 		v -= 360;
 	}
@@ -190,28 +194,28 @@ void ParticleEffect::SetSecondaryAngle(float v) {
 	theta = v * 0.0174532925f;
 }
 
-void ParticleEffect::SetSpd(float new_spd) {
+void ParticleEffectV2::SetSpd(float new_spd) {
 	spd = new_spd / 60.0f;
 }
 
-void ParticleEffect::SetRandSpd(float new_rnd_spd) {
+void ParticleEffectV2::SetRandSpd(float new_rnd_spd) {
 	rand_spd = new_rnd_spd / 60.0f;
 }
 
-void ParticleEffect::SetRad(int new_rad) {
+void ParticleEffectV2::SetRad(int new_rad) {
 	r0 = new_rad;
 }
 
-void ParticleEffect::SetRandPos(int new_rnd_x, int new_rnd_y) {
+void ParticleEffectV2::SetRandPos(int new_rnd_x, int new_rnd_y) {
 	rand_x = (new_rnd_x < 0) ? -new_rnd_x : new_rnd_x;
 	rand_y = (new_rnd_y < 0) ? -new_rnd_y : new_rnd_y;
 }
 
-void ParticleEffect::SetRandRad(int new_rnd_rad) {
+void ParticleEffectV2::SetRandRad(int new_rnd_rad) {
 	rand_r = (new_rnd_rad < 0) ? -new_rnd_rad : new_rnd_rad;
 }
 
-void ParticleEffect::SetTimeout(int new_fade, int new_delay) {
+void ParticleEffectV2::SetTimeout(int new_fade, int new_delay) {
 	if (new_fade > 255) {
 		new_fade = 255;
 	} else if (new_fade <= 0) {
@@ -229,17 +233,17 @@ void ParticleEffect::SetTimeout(int new_fade, int new_delay) {
 	UpdateColor();
 }
 
-void ParticleEffect::SetColor0(uint8_t r_val, uint8_t g_val, uint8_t b_val) {
+void ParticleEffectV2::SetColor0(uint8_t r_val, uint8_t g_val, uint8_t b_val) {
 	color0 = static_cast<uint32_t>(r_val) << 16 | static_cast<uint32_t>(g_val) << 8 | b_val;
 	UpdateColor();
 }
 
-void ParticleEffect::SetColor1(uint8_t r_val, uint8_t g_val, uint8_t b_val) {
+void ParticleEffectV2::SetColor1(uint8_t r_val, uint8_t g_val, uint8_t b_val) {
 	color1 = static_cast<uint32_t>(r_val) << 16 | static_cast<uint32_t>(g_val) << 8 | b_val;
 	UpdateColor();
 }
 
-void ParticleEffect::UpdateColor() {
+void ParticleEffectV2::UpdateColor() {
 	float r = static_cast<float>((color0 >> 16) & 0xff);
 	float g = static_cast<float>((color0 >> 8) & 0xff);
 	float b = static_cast<float>(color0 & 0xff);
@@ -273,13 +277,13 @@ void ParticleEffect::UpdateColor() {
 	}
 }
 
-void ParticleEffect::CreateTrigLut() {
+void ParticleEffectV2::CreateTrigLut() {
 	for (int i = 0; i < 32; ++i) {
 		sin_lut[i] = static_cast<float>(std::sin(M_PI / 16.0 * i));
 	}
 }
 
-class Burst : public ParticleEffect {
+class Burst : public ParticleEffectV2 {
 public:
 	Burst();
 	~Burst() override = default;
@@ -310,7 +314,7 @@ private:
 	void InitRadial(int x0, int y0, int a, int b);
 };
 
-Burst::Burst() : init(&Burst::InitBasic) {
+Burst::Burst() : ParticleEffectV2(Type::Burst), init(&Burst::InitBasic) {
 	Reallocate(false);
 	UpdateColor();
 }
@@ -341,7 +345,7 @@ void Burst::SetSimul(int new_simul) {
 }
 
 void Burst::SetTimeout(int new_fade, int new_delay) {
-	ParticleEffect::SetTimeout(new_fade, new_delay);
+	ParticleEffectV2::SetTimeout(new_fade, new_delay);
 	Reallocate(false);
 }
 
@@ -476,7 +480,7 @@ void Burst::Draw(Bitmap& dst) {
 	}
 }
 
-class Stream : public ParticleEffect {
+class Stream : public ParticleEffectV2 {
 public:
 	Stream();
 	~Stream() override = default;
@@ -517,7 +521,7 @@ private:
 	void InitRadial(int a, int b, int idx);
 };
 
-Stream::Stream() : init(&Stream::InitBasic) {
+Stream::Stream() : ParticleEffectV2(Type::Stream), init(&Stream::InitBasic) {
 	amount = 10;
 	Reallocate(false);
 	UpdateColor();
@@ -688,7 +692,7 @@ void Stream::SetSimul(int new_simul) {
 }
 
 void Stream::SetTimeout(int new_fade, int new_delay) {
-	ParticleEffect::SetTimeout(new_fade, new_delay);
+	ParticleEffectV2::SetTimeout(new_fade, new_delay);
 	Reallocate(false);
 }
 
@@ -816,359 +820,265 @@ void Stream::StreamToEnd(uint16_t idx) {
 	std::swap(pfx_ref[simul_cnt], pfx_ref[idx]);
 }
 
-namespace {
-	std::map<std::string_view, std::function<bool(dyn_arg_list)>> function_list;
-
-	ParticleEffect* GetPfx(const std::string& tag) {
-		auto it = pfx_list.find(tag);
-		if (it != pfx_list.end()) {
-			return it->second.get();
-		}
-		Output::Debug("DynParticle: Particle effect with tag '{}' not found.", tag);
-		return nullptr;
-	}
-}
-
-static bool CreateEffect(dyn_arg_list args) {
-	auto func = "pfx_create_effect";
-	bool okay;
-	std::string tag, type;
-	std::tie(tag, type) = DynRpg::ParseArgs<std::string, std::string>(func, args, &okay);
-	if (!okay) {
-		return true;
-	}
-	if (pfx_list.count(tag)) {
-		return true;
-	}
-	std::transform(type.begin(), type.end(), type.begin(), ::tolower);
-	if (!type.compare(0, 5, "burst")) {
-		pfx_list[tag] = std::make_unique<Burst>();
-	} else if (!type.compare(0, 6, "stream")) {
-		pfx_list[tag] = std::make_unique<Stream>();
-	}
-	return true;
-}
-
-static bool DestroyEffect(dyn_arg_list args) {
-	auto func = "pfx_destroy_effect";
-	bool okay;
-	auto [tag] = DynRpg::ParseArgs<std::string>(func, args, &okay);
-	if (!okay) {
-		return true;
-	}
-	pfx_list.erase(tag);
-	return true;
-}
-
-static bool DestroyAll(dyn_arg_list) {
-	pfx_list.clear();
-	return true;
-}
-
-static bool DoesEffectExist(dyn_arg_list args) {
-	auto func = "pfx_does_effect_exist";
-	bool okay;
-	std::string tag;
-	int idx;
-	std::tie(tag, idx) = DynRpg::ParseArgs<std::string, int>(func, args, &okay);
-	if (!okay) {
-		return true;
-	}
-	Main_Data::game_switches->Set(idx, pfx_list.count(tag) > 0);
-	Game_Map::SetNeedRefresh(true);
-	return true;
-}
-
-static bool BurstCmd(dyn_arg_list args) {
-	auto func = "pfx_burst";
-	bool okay;
-	std::string tag;
-	int x, y;
-	std::tie(tag, x, y) = DynRpg::ParseArgs<std::string, int, int>(func, args, &okay);
-	if (!okay) {
-		return true;
-	}
-	if (auto pfx = GetPfx(tag)) {
-		if (auto b = dynamic_cast<Burst*>(pfx)) {
-			b->NewBurst(x, y);
-		}
-	}
-	return true;
-}
-
-static bool StartCmd(dyn_arg_list args) {
-	auto func = "pfx_start";
-	bool okay;
-	std::string tag1, tag2;
-	int x, y;
-	std::tie(tag1, tag2, x, y) = DynRpg::ParseArgs<std::string, std::string, int, int>(func, args, &okay);
-	if (!okay) {
-		return true;
-	}
-	if (auto pfx = GetPfx(tag1)) {
-		if (auto s = dynamic_cast<Stream*>(pfx)) {
-			s->Start(x, y, tag2);
-		}
-	}
-	return true;
-}
-
-static bool StopCmd(dyn_arg_list args) {
-	auto func = "pfx_stop";
-	bool okay;
-	std::string tag1, tag2;
-	std::tie(tag1, tag2) = DynRpg::ParseArgs<std::string, std::string>(func, args, &okay);
-	if (!okay) {
-		return true;
-	}
-	if (auto pfx = GetPfx(tag1)) {
-		if (auto s = dynamic_cast<Stream*>(pfx)) {
-			s->Stop(tag2);
-		}
-	}
-	return true;
-}
-
-static bool StopAllCmd(dyn_arg_list args) {
-	auto func = "pfx_stopall";
-	bool okay;
-	auto [tag] = DynRpg::ParseArgs<std::string>(func, args, &okay);
-	if (!okay) {
-		return true;
-	}
-	if (auto pfx = GetPfx(tag)) {
-		if (auto s = dynamic_cast<Stream*>(pfx)) {
-			s->StopAll();
-		}
-	}
-	return true;
-}
-
-static bool SetPositionCmd(dyn_arg_list args) {
-	auto func = "pfx_set_position";
-	bool okay;
-	std::string tag1, tag2;
-	int x, y;
-	std::tie(tag1, tag2, x, y) = DynRpg::ParseArgs<std::string, std::string, int, int>(func, args, &okay);
-	if (!okay) {
-		return true;
-	}
-	if (auto pfx = GetPfx(tag1)) {
-		if (auto s = dynamic_cast<Stream*>(pfx)) {
-			s->SetPosition(tag2, x, y);
-		}
-	}
-	return true;
-}
-
-static bool LoadEffectCmd(dyn_arg_list) {
-	return true;
-}
-
 DynRpg::ParticleV2::ParticleV2(Game_DynRpg& instance) : DynRpgPlugin("KazeParticles", instance) {
-	ParticleEffect::CreateTrigLut();
-
-	if (!function_list.empty()) {
-		return;
-	}
-
-	function_list["pfx_destroy_all"] = &DestroyAll;
-	function_list["pfx_create_effect"] = &CreateEffect;
-	function_list["pfx_destroy_effect"] = &DestroyEffect;
-	function_list["pfx_does_effect_exist"] = &DoesEffectExist;
-	function_list["pfx_burst"] = &BurstCmd;
-	function_list["pfx_start"] = &StartCmd;
-	function_list["pfx_stop"] = &StopCmd;
-	function_list["pfx_stopall"] = &StopAllCmd;
-	function_list["pfx_set_position"] = &SetPositionCmd;
-	function_list["pfx_load_effect"] = &LoadEffectCmd;
-
-	auto add_setter_1_int = [](std::string_view name, void (ParticleEffect::*setter)(int)) {
-		function_list[name] = [name, setter](dyn_arg_list args) {
-			bool okay;
-			std::string tag;
-			int val;
-			std::tie(tag, val) = DynRpg::ParseArgs<std::string, int>(name, args, &okay);
-			if (!okay) {
-				return true;
-			}
-			if (auto pfx = GetPfx(tag)) {
-				(pfx->*setter)(val);
-			}
-			return true;
-		};
-	};
-	auto add_setter_2_int = [](std::string_view name, void (ParticleEffect::*setter)(int, int)) {
-		function_list[name] = [name, setter](dyn_arg_list args) {
-			bool okay;
-			std::string tag;
-			int val1, val2;
-			std::tie(tag, val1, val2) = DynRpg::ParseArgs<std::string, int, int>(name, args, &okay);
-			if (!okay) {
-				return true;
-			}
-			if (auto pfx = GetPfx(tag)) {
-				(pfx->*setter)(val1, val2);
-			}
-			return true;
-		};
-	};
-	auto add_setter_2_float = [](std::string_view name, void (ParticleEffect::*setter)(float, float)) {
-		function_list[name] = [name, setter](dyn_arg_list args) {
-			bool okay;
-			std::string tag;
-			float val1, val2;
-			std::tie(tag, val1, val2) = DynRpg::ParseArgs<std::string, float, float>(name, args, &okay);
-			if (!okay) {
-				return true;
-			}
-			if (auto pfx = GetPfx(tag)) {
-				(pfx->*setter)(val1, val2);
-			}
-			return true;
-		};
-	};
-	auto add_setter_3_int = [](std::string_view name, void (ParticleEffect::*setter)(uint8_t, uint8_t, uint8_t)) {
-		function_list[name] = [name, setter](dyn_arg_list args) {
-			bool okay;
-			std::string tag;
-			int r, g, b;
-			std::tie(tag, r, g, b) = DynRpg::ParseArgs<std::string, int, int, int>(name, args, &okay);
-			if (!okay) {
-				return true;
-			}
-			if (auto pfx = GetPfx(tag)) {
-				(pfx->*setter)(static_cast<uint8_t>(r), static_cast<uint8_t>(g), static_cast<uint8_t>(b));
-			}
-			return true;
-		};
-	};
-
-	add_setter_1_int("pfx_set_simul_effects", &ParticleEffect::SetSimul);
-	add_setter_1_int("pfx_set_amount", &ParticleEffect::SetAmount);
-	add_setter_2_int("pfx_set_timeout", &ParticleEffect::SetTimeout);
-	add_setter_1_int("pfx_set_random_radius", &ParticleEffect::SetRandRad);
-	add_setter_1_int("pfx_set_radius", &ParticleEffect::SetRad);
-	add_setter_2_int("pfx_set_random_position", &ParticleEffect::SetRandPos);
-	add_setter_3_int("pfx_set_initial_color", &ParticleEffect::SetColor0);
-	add_setter_3_int("pfx_set_final_color", &ParticleEffect::SetColor1);
-	add_setter_2_float("pfx_set_growth", &ParticleEffect::SetGrowth);
-	add_setter_2_float("pfx_set_angle", &ParticleEffect::SetAngle);
-
-	function_list["pfx_set_velocity"] = [](dyn_arg_list args) {
-		bool okay;
-		std::string tag;
-		float speed, rand_speed;
-		std::tie(tag, speed, rand_speed) = DynRpg::ParseArgs<std::string, float, float>("pfx_set_velocity", args, &okay);
-		if (!okay) {
-			return true;
-		}
-		if (auto pfx = GetPfx(tag)) {
-			pfx->SetSpd(speed);
-			pfx->SetRandSpd(rand_speed);
-		}
-		return true;
-	};
-	function_list["pfx_set_texture"] = [](dyn_arg_list args) {
-		bool okay;
-		std::string tag, texture;
-		std::tie(tag, texture) = DynRpg::ParseArgs<std::string, std::string>("pfx_set_texture", args, &okay);
-		if (!okay) {
-			return true;
-		}
-		if (auto pfx = GetPfx(tag)) {
-			pfx->SetTexture(texture);
-		}
-		return true;
-	};
-	function_list["pfx_set_acceleration_point"] = [](dyn_arg_list args) {
-		bool okay;
-		std::string tag;
-		float x, y, force;
-		std::tie(tag, x, y, force) =
-			DynRpg::ParseArgs<std::string, float, float, float>("pfx_set_acceleration_point", args, &okay);
-		if (!okay) {
-			return true;
-		}
-		if (auto pfx = GetPfx(tag)) {
-			pfx->SetAccelerationPoint(x, y, force);
-		}
-		return true;
-	};
-	function_list["pfx_set_gravity_direction"] = [](dyn_arg_list args) {
-		bool okay;
-		std::string tag;
-		float angle, force;
-		std::tie(tag, angle, force) = DynRpg::ParseArgs<std::string, float, float>("pfx_set_gravity_direction", args, &okay);
-		if (!okay) {
-			return true;
-		}
-		if (auto pfx = GetPfx(tag)) {
-			pfx->SetGravityDirection(angle, force);
-		}
-		return true;
-	};
-	function_list["pfx_set_secondary_angle"] = [](dyn_arg_list args) {
-		bool okay;
-		std::string tag;
-		float angle;
-		std::tie(tag, angle) = DynRpg::ParseArgs<std::string, float>("pfx_set_secondary_angle", args, &okay);
-		if (!okay) {
-			return true;
-		}
-		if (auto pfx = GetPfx(tag)) {
-			pfx->SetSecondaryAngle(angle);
-		}
-		return true;
-	};
-	function_list["pfx_set_generating_function"] = [](dyn_arg_list args) {
-		bool okay;
-		std::string tag, type;
-		std::tie(tag, type) = DynRpg::ParseArgs<std::string, std::string>("pfx_set_generating_function", args, &okay);
-		if (!okay) {
-			return true;
-		}
-		if (auto pfx = GetPfx(tag)) {
-			pfx->SetGeneratingFunction(type);
-		}
-		return true;
-	};
-	function_list["pfx_unload_texture"] = [](dyn_arg_list args) {
-		bool okay;
-		std::string tag;
-		std::tie(tag) = DynRpg::ParseArgs<std::string>("pfx_unload_texture", args, &okay);
-		if (!okay) {
-			return true;
-		}
-		if (auto pfx = GetPfx(tag)) {
-			pfx->UnloadTexture();
-		}
-		return true;
-	};
-	function_list["pfx_use_screen_relative"] = [](dyn_arg_list args) {
-		bool okay;
-		std::string tag, val;
-		std::tie(tag, val) = DynRpg::ParseArgs<std::string, std::string>("pfx_use_screen_relative", args, &okay);
-		if (!okay) {
-			return true;
-		}
-		if (auto pfx = GetPfx(tag)) {
-			pfx->UseScreenRelative(!val.empty() && (val[0] == 't' || val[0] == 'T'));
-		}
-		return true;
-	};
-}
-
-DynRpg::ParticleV2::~ParticleV2() {
-	DestroyAll({});
+	ParticleEffectV2::CreateTrigLut();
 }
 
 bool DynRpg::ParticleV2::Invoke(std::string_view func, dyn_arg_list args, bool& /*do_yield*/,
 	Game_Interpreter* /*interpreter*/) {
-	auto it = function_list.find(func);
-	if (it != function_list.end()) {
-		return it->second(args);
+	bool okay;
+
+	if (!StartsWith(func, "pfx_")) {
+		return false;
 	}
+
+	if (func == "pfx_destroy_all") {
+		pfx_list.clear();
+		return true;
+	}
+	if (func == "pfx_load_effect") {
+		return true;
+	}
+	if (func == "pfx_create_effect") {
+		auto [tag, type] = DynRpg::ParseArgs<std::string, std::string>(func, args, &okay);
+		if (!okay) {
+			return true;
+		}
+		if (pfx_list.count(tag)) {
+			return true;
+		}
+		std::string kind = type;
+		std::transform(kind.begin(), kind.end(), kind.begin(), ::tolower);
+		if (!kind.compare(0, 5, "burst")) {
+			pfx_list[tag] = std::make_unique<Burst>();
+		} else if (!kind.compare(0, 6, "stream")) {
+			pfx_list[tag] = std::make_unique<Stream>();
+		}
+		return true;
+	}
+	if (func == "pfx_destroy_effect") {
+		const std::string tag = DynRpg::ParseArg<std::string>(func, args, 0, &okay);
+		if (!okay) {
+			return true;
+		}
+		pfx_list.erase(tag);
+		return true;
+	}
+	if (func == "pfx_does_effect_exist") {
+		auto [tag, switch_id] = DynRpg::ParseArgs<std::string, int>(func, args, &okay);
+		if (!okay) {
+			return true;
+		}
+		Main_Data::game_switches->Set(switch_id, pfx_list.count(tag) > 0);
+		Game_Map::SetNeedRefreshForSwitchChange(switch_id);
+		return true;
+	}
+
+	const std::string tag = DynRpg::ParseArg<std::string>(func, args, 0, &okay);
+	if (!okay) {
+		return true;
+	}
+
+	ParticleEffectV2* effect = nullptr;
+
+	auto it = pfx_list.find(tag);
+	if (it != pfx_list.end()) {
+		effect = it->second.get();
+	}
+
+	if (!effect) {
+		Output::Debug("DynParticle: Particle effect with tag '{}' not found.", tag);
+		return true;
+	}
+
+	if (func == "pfx_burst") {
+		auto [x, y] = DynRpg::ParseArgs<int, int>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		if (effect->GetType() == ParticleEffectV2::Type::Burst) {
+			static_cast<Burst*>(effect)->NewBurst(x, y);
+		}
+		return true;
+	}
+	if (func == "pfx_start") {
+		auto [stream_tag, x, y] = DynRpg::ParseArgs<std::string, int, int>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		if (effect->GetType() == ParticleEffectV2::Type::Stream) {
+			static_cast<Stream*>(effect)->Start(x, y, stream_tag);
+		}
+		return true;
+	}
+	if (func == "pfx_stop") {
+		const std::string stream_tag = DynRpg::ParseArg<std::string>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		if (effect->GetType() == ParticleEffectV2::Type::Stream) {
+			static_cast<Stream*>(effect)->Stop(stream_tag);
+		}
+		return true;
+	}
+	if (func == "pfx_stopall") {
+		if (effect->GetType() == ParticleEffectV2::Type::Stream) {
+			static_cast<Stream*>(effect)->StopAll();
+		}
+		return true;
+	}
+	if (func == "pfx_set_simul_effects") {
+		const int count = DynRpg::ParseArg<int>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetSimul(count);
+		return true;
+	}
+	if (func == "pfx_set_amount") {
+		const int count = DynRpg::ParseArg<int>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetAmount(count);
+		return true;
+	}
+	if (func == "pfx_set_timeout") {
+		auto [fade, delay] = DynRpg::ParseArgs<int, int>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetTimeout(fade, delay);
+		return true;
+	}
+	if (func == "pfx_set_initial_color") {
+		auto [r, g, b] = DynRpg::ParseArgs<int, int, int>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetColor0(static_cast<uint8_t>(r), static_cast<uint8_t>(g), static_cast<uint8_t>(b));
+		return true;
+	}
+	if (func == "pfx_set_final_color") {
+		auto [r, g, b] = DynRpg::ParseArgs<int, int, int>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetColor1(static_cast<uint8_t>(r), static_cast<uint8_t>(g), static_cast<uint8_t>(b));
+		return true;
+	}
+	if (func == "pfx_set_growth") {
+		auto [ini_size, end_size] = DynRpg::ParseArgs<float, float>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetGrowth(ini_size, end_size);
+		return true;
+	}
+	if (func == "pfx_set_position") {
+		auto [stream_tag, x, y] = DynRpg::ParseArgs<std::string, int, int>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		if (effect->GetType() == ParticleEffectV2::Type::Stream) {
+			static_cast<Stream*>(effect)->SetPosition(stream_tag, x, y);
+		}
+		return true;
+	}
+	if (func == "pfx_set_random_position") {
+		auto [rand_x, rand_y] = DynRpg::ParseArgs<int, int>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetRandPos(rand_x, rand_y);
+		return true;
+	}
+	if (func == "pfx_set_random_radius") {
+		const int rand_rad = DynRpg::ParseArg<int>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetRandRad(rand_rad);
+		return true;
+	}
+	if (func == "pfx_set_radius") {
+		const int rad = DynRpg::ParseArg<int>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetRad(rad);
+		return true;
+	}
+	if (func == "pfx_set_texture") {
+		const std::string file = DynRpg::ParseArg<std::string>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetTexture(file);
+		return true;
+	}
+	if (func == "pfx_set_acceleration_point") {
+		auto [x, y, force] = DynRpg::ParseArgs<float, float, float>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetAccelerationPoint(x, y, force);
+		return true;
+	}
+	if (func == "pfx_set_gravity_direction") {
+		auto [angle, force] = DynRpg::ParseArgs<float, float>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetGravityDirection(angle, force);
+		return true;
+	}
+	if (func == "pfx_set_velocity") {
+		auto [speed, rand_speed] = DynRpg::ParseArgs<float, float>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetSpd(speed);
+		effect->SetRandSpd(rand_speed);
+		return true;
+	}
+	if (func == "pfx_set_angle") {
+		auto [v1, v2] = DynRpg::ParseArgs<float, float>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetAngle(v1, v2);
+		return true;
+	}
+	if (func == "pfx_set_secondary_angle") {
+		const float angle = DynRpg::ParseArg<float>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetSecondaryAngle(angle);
+		return true;
+	}
+	if (func == "pfx_set_generating_function") {
+		const std::string type = DynRpg::ParseArg<std::string>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->SetGeneratingFunction(type);
+		return true;
+	}
+	if (func == "pfx_use_screen_relative") {
+		const std::string value = DynRpg::ParseArg<std::string>(func, args, 1, &okay);
+		if (!okay) {
+			return true;
+		}
+		effect->UseScreenRelative(!value.empty() && (value[0] == 't' || value[0] == 'T'));
+		return true;
+	}
+	if (func == "pfx_unload_texture") {
+		effect->UnloadTexture();
+		return true;
+	}
+
 	return false;
 }
 
@@ -1180,11 +1090,5 @@ void DynRpg::ParticleV2::Update() {
 		for (auto& entry : pfx_list) {
 			entry.second->Update();
 		}
-	}
-}
-
-void DynRpg::ParticleV2::OnMapChange() {
-	for (auto& entry : pfx_list) {
-		entry.second->Clear();
 	}
 }

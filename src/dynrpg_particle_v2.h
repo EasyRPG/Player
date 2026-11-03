@@ -19,18 +19,24 @@
 #define EP_DYNRPG_PARTICLE_V2_H
 
 #include <string_view>
+#include <map>
 
 #include "game_dynrpg.h"
+
+class ParticleEffectV2;
 
 namespace DynRpg {
 	class ParticleV2 : public DynRpgPlugin {
 	public:
 		explicit ParticleV2(Game_DynRpg& instance);
-		~ParticleV2() override;
 
 		bool Invoke(std::string_view func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
 		void Update() override;
-		void OnMapChange();
+
+	private:
+		using EffectMap = std::map<std::string, std::unique_ptr<ParticleEffectV2>>;
+
+		EffectMap pfx_list;
 	};
 }
 
