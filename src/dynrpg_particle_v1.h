@@ -13,11 +13,14 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
- * Based on DynRPG Particle Effects V1 by Kazesui. (MIT license)
  */
 
-#ifndef EP_DYNRPG_PARTICLE_V1_H_
-#define EP_DYNRPG_PARTICLE_V1_H_
+// Ported from DynRPG Particle Effects V1 by Kazesui (MIT license).
+
+#ifndef EP_DYNRPG_PARTICLE_V1_H
+#define EP_DYNRPG_PARTICLE_V1_H
+
+#include <string_view>
 
 #include "game_dynrpg.h"
 

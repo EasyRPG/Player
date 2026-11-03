@@ -192,7 +192,7 @@ void Game_DynRpg::InitPlugins() {
 	}
 
 	if (Player::IsPatchDynRpg()) {
-		plugins.emplace_back(new DynRpg::Particle(*this));
+		plugins.emplace_back(new DynRpg::ParticleV2(*this));
 	}
 
 

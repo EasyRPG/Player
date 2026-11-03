@@ -15,20 +15,21 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef EP_DYNRPG_PARTICLE_H_
-#define EP_DYNRPG_PARTICLE_H_
+#ifndef EP_DYNRPG_PARTICLE_V2_H
+#define EP_DYNRPG_PARTICLE_V2_H
+
+#include <string_view>
 
 #include "game_dynrpg.h"
 
 namespace DynRpg {
-	class Particle : public DynRpgPlugin {
+	class ParticleV2 : public DynRpgPlugin {
 	public:
-		Particle(Game_DynRpg& instance);
-		~Particle() override;
+		explicit ParticleV2(Game_DynRpg& instance);
+		~ParticleV2() override;
 
 		bool Invoke(std::string_view func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
 		void Update() override;
-
 		void OnMapChange();
 	};
 }

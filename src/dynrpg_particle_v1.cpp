@@ -13,33 +13,30 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
- * Based on DynRPG Particle Effects V1 by Kazesui. (MIT license)
  */
+
+// Ported from DynRPG Particle Effects V1 by Kazesui (MIT license).
 
 #include "dynrpg_particle_v1.h"
 
-#include <cmath>
-#include <vector>
-#include <string>
 #include <algorithm>
-#include <tuple>
+#include <cmath>
 #include <list>
+#include <memory>
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include "async_handler.h"
-#include "drawable.h"
-#include "drawable_mgr.h"
 #include "bitmap.h"
 #include "cache.h"
-#include "game_screen.h"
+#include "drawable.h"
+#include "drawable_mgr.h"
 #include "game_map.h"
-#include "main_data.h"
 #include "rand.h"
-#include "output.h"
 #include "utils.h"
 
-constexpr double PI = 3.14159265358979323846;
-
-namespace {
+constexpr double kPi = 3.14159265358979323846;
 
 struct ParticleObj {
 	double size;
@@ -53,119 +50,126 @@ struct BurstObj {
 
 class ParticleEffectV1 : public Drawable {
 public:
-	int amount, size;
-	int red, green, blue;
-	int rndX, rndY;
-	double spd, rndSpd;
-	double timeout, delay;
-	double angleS, angleE;
-	bool mask;
-	std::string filename;
-
-	double dr, dg, db, ds, dA;
-
-	std::list<BurstObj> bursts;
-	BitmapRef image;
-	bool hasTexture;
-
 	ParticleEffectV1() : Drawable(Priority_Weather) {
-		dr = dg = db = ds = 0;
-		red = green = blue = 255;
-		timeout = 30;
-		amount = 50;
-		delay = 0;
-		size = 2;
-		dA = 8.5;
-		spd = 2;
-		rndSpd = 2;
-		rndX = rndY = 0;
-		angleS = 0;
-		angleE = 2 * PI;
-		mask = false;
-		filename = "Particle";
-		hasTexture = false;
-
 		DrawableMgr::Register(this);
 	}
 
-	~ParticleEffectV1() override {}
+	~ParticleEffectV1() override = default;
 
-	void setTimeout(double t) {
+	int amount = 50;
+	int size = 2;
+	int red = 255;
+	int green = 255;
+	int blue = 255;
+	int rand_x = 0;
+	int rand_y = 0;
+	double spd = 2;
+	double rand_spd = 2;
+	double timeout = 30;
+	double delay = 0;
+	double angle_start = 0;
+	double angle_span = 2 * kPi;
+	bool mask = false;
+	std::string filename = "Particle";
+
+	double dr = 0;
+	double dg = 0;
+	double db = 0;
+	double ds = 0;
+	double da = 8.5;
+
+	std::list<BurstObj> bursts;
+	BitmapRef image;
+	bool has_texture = false;
+
+	void SetTimeout(double t) {
 		double time_diff = t - delay;
-		if (time_diff <= 0) time_diff = 1.0;
+		if (time_diff <= 0) {
+			time_diff = 1.0;
+		}
 
-		dA = 255.0 / time_diff;
+		da = 255.0 / time_diff;
 		timeout = t;
 	}
 
-	void setAngle(double a1, double a2) {
-		angleS = a1 * PI / 180.0;
-		angleE = (a2 - a1) * PI / 180.0;
+	void SetAngle(double a1, double a2) {
+		angle_start = a1 * kPi / 180.0;
+		angle_span = (a2 - a1) * kPi / 180.0;
 	}
 
-	void setGrowth(int s, int newSize) {
+	void SetGrowth(int s, int new_size) {
 		size = s;
 		double t = (timeout > 0) ? timeout : 1.0;
-		ds = (newSize - size) / t;
+		ds = (new_size - size) / t;
 	}
 
-	void colorFade(int r = 0, int g = 0, int b = 0) {
+	void ColorFade(int r = 0, int g = 0, int b = 0) {
 		double t = (timeout > 0) ? timeout : 1.0;
-		dr = ((double)r - red) / t;
-		dg = ((double)g - green) / t;
-		db = ((double)b - blue) / t;
+		dr = (static_cast<double>(r) - red) / t;
+		dg = (static_cast<double>(g) - green) / t;
+		db = (static_cast<double>(b) - blue) / t;
 	}
 
-	void loadTexture() {
+	void LoadTexture() {
 		std::string name = filename;
 
 		// Handle legacy DynRPG pathing
 		size_t pos = name.find("DynPlugins/");
-		if (pos != std::string::npos) name.erase(pos, 11);
+		if (pos != std::string::npos) {
+			name.erase(pos, 11);
+		}
 		pos = name.find("DynPlugins\\");
-		if (pos != std::string::npos) name.erase(pos, 11);
+		if (pos != std::string::npos) {
+			name.erase(pos, 11);
+		}
 
 		pos = name.find("Picture/");
-		if (pos != std::string::npos) name.erase(pos, 8);
+		if (pos != std::string::npos) {
+			name.erase(pos, 8);
+		}
 		pos = name.find("Picture\\");
-		if (pos != std::string::npos) name.erase(pos, 8);
+		if (pos != std::string::npos) {
+			name.erase(pos, 8);
+		}
 
-		pos = name.find_last_of(".");
-		if (pos != std::string::npos) name = name.substr(0, pos);
+		pos = name.find_last_of('.');
+		if (pos != std::string::npos) {
+			name = name.substr(0, pos);
+		}
 
 		if (!name.empty()) {
 			FileRequestAsync* req = AsyncHandler::RequestFile("Picture", name);
 			req->Start();
 			image = Cache::Picture(name, mask);
-			hasTexture = true;
+			has_texture = true;
 		}
 	}
 
-	void newBurst(int x, int y) {
+	void NewBurst(int x, int y) {
 		BurstObj burst;
 		burst.r = red;
 		burst.g = green;
 		burst.b = blue;
 		burst.alpha = 255.0;
 
-		if (!hasTexture && !filename.empty()) {
-			loadTexture();
+		if (!has_texture && !filename.empty()) {
+			LoadTexture();
 		}
 
-		for (int i = 0; i < amount; i++) {
-			double rand_val1 = (double)Rand::GetRandomNumber(0, 32767) / 32767.0;
-			double rand_val2 = (double)Rand::GetRandomNumber(0, 32767) / 32767.0;
-			double rand_val3 = (double)Rand::GetRandomNumber(0, 32767) / 32767.0;
-			double rand_val4 = (double)Rand::GetRandomNumber(0, 32767) / 32767.0;
+		for (int i = 0; i < amount; ++i) {
+			double rand_val1 = static_cast<double>(Rand::GetRandomNumber(0, 32767)) / 32767.0;
+			double rand_val2 = static_cast<double>(Rand::GetRandomNumber(0, 32767)) / 32767.0;
+			double rand_val3 = static_cast<double>(Rand::GetRandomNumber(0, 32767)) / 32767.0;
+			double rand_val4 = static_cast<double>(Rand::GetRandomNumber(0, 32767)) / 32767.0;
 
-			double rnd = angleS + rand_val1 * angleE;
-			double newSpd = (spd + rndSpd * rand_val2);
+			double angle = angle_start + rand_val1 * angle_span;
+			double new_spd = spd + rand_spd * rand_val2;
 
 			ParticleObj pa;
-			pa.x = x + 2 * rndX * rand_val3 - rndX;
-			pa.y = y + 2 * rndY * rand_val4 - rndY;
-			pa.dx = newSpd * std::cos(rnd);
-			pa.dy = newSpd * std::sin(rnd);
+			pa.x = x + 2 * rand_x * rand_val3 - rand_x;
+			pa.y = y + 2 * rand_y * rand_val4 - rand_y;
+			pa.dx = new_spd * std::cos(angle);
+			pa.dy = new_spd * std::sin(angle);
 			pa.size = size;
 
 			burst.particles.push_back(pa);
@@ -173,26 +177,26 @@ public:
 		bursts.push_back(burst);
 	}
 
-	void newHeart(int x, int y) {
+	void NewHeart(int x, int y) {
 		BurstObj burst;
 		burst.r = red;
 		burst.g = green;
 		burst.b = blue;
 		burst.alpha = 255.0;
 
-		if (!hasTexture && !filename.empty()) {
-			loadTexture();
+		if (!has_texture && !filename.empty()) {
+			LoadTexture();
 		}
 
-		for (int i = 0; i < amount; i++) {
-			double rand_val = (double)Rand::GetRandomNumber(0, 32767) / 32767.0;
-			double rnd = rand_val * 2 * PI;
+		for (int i = 0; i < amount; ++i) {
+			double rand_val = static_cast<double>(Rand::GetRandomNumber(0, 32767)) / 32767.0;
+			double angle = rand_val * 2 * kPi;
 
 			ParticleObj pa;
 			pa.x = x;
 			pa.y = y;
-			pa.dx = spd * (16 * std::pow(std::sin(rnd), 3));
-			pa.dy = -spd * (13 * std::cos(rnd) - 5 * std::cos(2 * rnd) - 2 * std::cos(3 * rnd) - std::cos(4 * rnd));
+			pa.dx = spd * (16 * std::pow(std::sin(angle), 3));
+			pa.dy = -spd * (13 * std::cos(angle) - 5 * std::cos(2 * angle) - 2 * std::cos(3 * angle) - std::cos(4 * angle));
 			pa.size = size;
 
 			burst.particles.push_back(pa);
@@ -200,76 +204,77 @@ public:
 		bursts.push_back(burst);
 	}
 
-	void killParticles() {
+	void KillParticles() {
 		bursts.clear();
 	}
 
 	void Update() {
-		if (bursts.empty()) return;
+		if (bursts.empty()) {
+			return;
+		}
 
-		auto burstItr = bursts.begin();
-		while (burstItr != bursts.end()) {
-			// Physics updates tied to logical frames for accelerator keys synchronization
-			burstItr->r += dr;
-			burstItr->g += dg;
-			burstItr->b += db;
+		auto burst_itr = bursts.begin();
+		while (burst_itr != bursts.end()) {
+			burst_itr->r += dr;
+			burst_itr->g += dg;
+			burst_itr->b += db;
 
-			if (this->delay <= 0) {
-				burstItr->alpha -= dA;
-				if (burstItr->alpha <= 0) {
-					burstItr = bursts.erase(burstItr);
+			if (delay <= 0) {
+				burst_itr->alpha -= da;
+				if (burst_itr->alpha <= 0) {
+					burst_itr = bursts.erase(burst_itr);
 					continue;
 				}
 			} else {
-				this->delay--;
+				--delay;
 			}
 
-			auto partItr = burstItr->particles.begin();
-			while (partItr != burstItr->particles.end()) {
-				partItr->x += partItr->dx;
-				partItr->y += partItr->dy;
-				partItr->size += ds;
-				partItr++;
+			for (auto& particle : burst_itr->particles) {
+				particle.x += particle.dx;
+				particle.y += particle.dy;
+				particle.size += ds;
 			}
-			burstItr++;
+			++burst_itr;
 		}
 	}
 
 	void Draw(Bitmap& dst) override;
 };
 
-std::vector<ParticleEffectV1*> v1_effects;
-bool v1_draw = true;
+using EffectList = std::vector<std::unique_ptr<ParticleEffectV1>>;
 
-} // anonymous namespace
-
+EffectList v1_effects;
+static bool v1_draw = true;
 
 void ParticleEffectV1::Draw(Bitmap& dst) {
-	if (!v1_draw || bursts.empty()) return;
+	if (!v1_draw || bursts.empty()) {
+		return;
+	}
 
-	int cam_x = Game_Map::GetDisplayX() / 16;
-	int cam_y = Game_Map::GetDisplayY() / 16;
+	const int cam_x = Game_Map::GetDisplayX() / 16;
+	const int cam_y = Game_Map::GetDisplayY() / 16;
 
 	for (auto& burst : bursts) {
-		int draw_alpha = std::clamp((int)burst.alpha, 0, 255);
-		int cur_r = std::clamp((int)burst.r, 0, 255);
-		int cur_g = std::clamp((int)burst.g, 0, 255);
-		int cur_b = std::clamp((int)burst.b, 0, 255);
+		const int draw_alpha = std::clamp(static_cast<int>(burst.alpha), 0, 255);
+		const int cur_r = std::clamp(static_cast<int>(burst.r), 0, 255);
+		const int cur_g = std::clamp(static_cast<int>(burst.g), 0, 255);
+		const int cur_b = std::clamp(static_cast<int>(burst.b), 0, 255);
 
 		BitmapRef colored_image;
-		if (hasTexture && image) {
+		if (has_texture && image) {
 			colored_image = Bitmap::Create(image->GetWidth(), image->GetHeight(), true);
 			colored_image->Clear();
-			Tone tone(cur_r * 128 / 100, cur_g * 128 / 100, cur_b * 128 / 100, 128);
+			const Tone tone(cur_r * 128 / 100, cur_g * 128 / 100, cur_b * 128 / 100, 128);
 			colored_image->ToneBlit(0, 0, *image, image->GetRect(), tone, Opacity::Opaque());
 		}
 
 		for (auto& particle : burst.particles) {
-			float draw_size = (float)particle.size;
-			float draw_x = (float)particle.x - cam_x - draw_size / 2.0f;
-			float draw_y = (float)particle.y - cam_y - draw_size / 2.0f;
+			const float draw_size = static_cast<float>(particle.size);
+			const float draw_x = static_cast<float>(particle.x) - cam_x - draw_size / 2.0f;
+			const float draw_y = static_cast<float>(particle.y) - cam_y - draw_size / 2.0f;
+			const int rect_size = static_cast<int>(std::max(1.0f, draw_size));
 
-			Rect dst_rect((int)draw_x, (int)draw_y, (int)std::max(1.0f, draw_size), (int)std::max(1.0f, draw_size));
+			const Rect dst_rect(static_cast<int>(draw_x), static_cast<int>(draw_y), rect_size, rect_size);
 
 			if (colored_image) {
 				dst.StretchBlit(dst_rect, *colored_image, colored_image->GetRect(), Opacity(draw_alpha));
@@ -282,17 +287,12 @@ void ParticleEffectV1::Draw(Bitmap& dst) {
 
 DynRpg::ParticleV1::ParticleV1(Game_DynRpg& instance) : DynRpgPlugin("ParticleSystemV1", instance) {}
 
-DynRpg::ParticleV1::~ParticleV1() {
-	for (auto* pfx : v1_effects) {
-		delete pfx;
-	}
-	v1_effects.clear();
-}
+DynRpg::ParticleV1::~ParticleV1() = default;
 
-bool DynRpg::ParticleV1::Invoke(std::string_view func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) {
-
+bool DynRpg::ParticleV1::Invoke(std::string_view func, dyn_arg_list args, bool& /*do_yield*/,
+	Game_Interpreter* /*interpreter*/) {
 	if (func == "new_effect") {
-		v1_effects.push_back(new ParticleEffectV1());
+		v1_effects.push_back(std::make_unique<ParticleEffectV1>());
 		return true;
 	}
 	if (func == "stop") {
@@ -309,88 +309,103 @@ bool DynRpg::ParticleV1::Invoke(std::string_view func, dyn_arg_list args, bool& 
 		func == "effect_angle" || func == "effect_growth" || func == "effect_speed" ||
 		func == "effect_timeout" || func == "effect_delay" || func == "effect_file" ||
 		func == "effect_kill") {
-
-		auto get_int = [&](size_t idx, int def = 0) {
-			if (idx < args.size() && !args[idx].empty()) {
-				try { return std::stoi(args[idx]); } catch (...) {}
+		auto get_int = [&](size_t idx, int def) {
+			if (idx >= args.size() || args[idx].empty()) {
+				return def;
+			}
+			std::istringstream iss(args[idx]);
+			int value = 0;
+			if (iss >> value) {
+				return value;
 			}
 			return def;
 		};
 
-		auto get_double = [&](size_t idx, double def = 0.0) {
-			if (idx < args.size() && !args[idx].empty()) {
-				try { return std::stod(args[idx]); } catch (...) {}
+		auto get_double = [&](size_t idx, double def) {
+			if (idx >= args.size() || args[idx].empty()) {
+				return def;
+			}
+			std::istringstream iss(args[idx]);
+			double value = 0.0;
+			if (iss >> value) {
+				return value;
 			}
 			return def;
 		};
 
-		auto get_string = [&](size_t idx, std::string def = "") {
-			if (idx < args.size() && !args[idx].empty()) return args[idx];
-			return def;
+		auto get_string = [&](size_t idx, std::string def) {
+			if (idx >= args.size() || args[idx].empty()) {
+				return def;
+			}
+			return args[idx];
 		};
 
-		int index = get_int(0, -1);
-		if (index < 0 || index >= (int)v1_effects.size()) return true;
+		const int index = get_int(0, -1);
+		if (index < 0 || index >= static_cast<int>(v1_effects.size())) {
+			return true;
+		}
+
+		ParticleEffectV1& effect = *v1_effects[index];
 
 		if (func == "effect_burst") {
-			v1_effects[index]->newBurst(get_int(1, 0), get_int(2, 0));
+			effect.NewBurst(get_int(1, 0), get_int(2, 0));
 			return true;
 		}
 		if (func == "effect_heart") {
-			v1_effects[index]->newHeart(get_int(1, 0), get_int(2, 0));
+			effect.NewHeart(get_int(1, 0), get_int(2, 0));
 			return true;
 		}
 		if (func == "effect_color") {
-			v1_effects[index]->red = get_int(1, 255);
-			v1_effects[index]->green = get_int(2, 255);
-			v1_effects[index]->blue = get_int(3, 255);
+			effect.red = get_int(1, 255);
+			effect.green = get_int(2, 255);
+			effect.blue = get_int(3, 255);
 			return true;
 		}
 		if (func == "effect_colorfade") {
-			v1_effects[index]->colorFade(get_int(1, 0), get_int(2, 0), get_int(3, 0));
+			effect.ColorFade(get_int(1, 0), get_int(2, 0), get_int(3, 0));
 			return true;
 		}
 		if (func == "effect_amount") {
-			v1_effects[index]->amount = get_int(1, 50);
+			effect.amount = get_int(1, 50);
 			return true;
 		}
 		if (func == "effect_random") {
-			v1_effects[index]->rndX = get_int(1, 0);
-			v1_effects[index]->rndY = get_int(2, 0);
+			effect.rand_x = get_int(1, 0);
+			effect.rand_y = get_int(2, 0);
 			return true;
 		}
 		if (func == "effect_angle") {
-			v1_effects[index]->setAngle(get_double(1, 0.0), get_double(2, 360.0));
+			effect.SetAngle(get_double(1, 0.0), get_double(2, 360.0));
 			return true;
 		}
 		if (func == "effect_growth") {
-			v1_effects[index]->setGrowth(get_int(1, 2), get_int(2, 2));
+			effect.SetGrowth(get_int(1, 2), get_int(2, 2));
 			return true;
 		}
 		if (func == "effect_speed") {
-			v1_effects[index]->spd = get_double(1, 2.0);
-			v1_effects[index]->rndSpd = get_double(2, 2.0);
+			effect.spd = get_double(1, 2.0);
+			effect.rand_spd = get_double(2, 2.0);
 			return true;
 		}
 		if (func == "effect_timeout") {
-			v1_effects[index]->setTimeout(get_double(1, 30.0));
+			effect.SetTimeout(get_double(1, 30.0));
 			return true;
 		}
 		if (func == "effect_delay") {
-			v1_effects[index]->delay = get_double(1, 0.0);
+			effect.delay = get_double(1, 0.0);
 			return true;
 		}
 		if (func == "effect_file") {
-			v1_effects[index]->filename = get_string(1, "");
+			effect.filename = get_string(1, "");
 			if (Utils::LowerCase(get_string(2, "")).substr(0, 4) == "true") {
-				v1_effects[index]->mask = true;
+				effect.mask = true;
 			}
-			v1_effects[index]->hasTexture = false;
-			v1_effects[index]->loadTexture();
+			effect.has_texture = false;
+			effect.LoadTexture();
 			return true;
 		}
 		if (func == "effect_kill") {
-			v1_effects[index]->killParticles();
+			effect.KillParticles();
 			return true;
 		}
 	}
@@ -399,10 +414,17 @@ bool DynRpg::ParticleV1::Invoke(std::string_view func, dyn_arg_list args, bool& 
 }
 
 void DynRpg::ParticleV1::Update() {
-	if (!v1_draw) return;
-	for (auto* pfx : v1_effects) pfx->Update();
+	if (!v1_draw) {
+		return;
+	}
+
+	for (auto& pfx : v1_effects) {
+		pfx->Update();
+	}
 }
 
 void DynRpg::ParticleV1::OnMapChange() {
-	for (auto* pfx : v1_effects) pfx->killParticles();
+	for (auto& pfx : v1_effects) {
+		pfx->KillParticles();
+	}
 }
