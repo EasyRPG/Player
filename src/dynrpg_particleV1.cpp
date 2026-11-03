@@ -53,12 +53,6 @@ struct BurstObj {
 
 class ParticleEffectV1 : public Drawable {
 public:
-	enum class RenderPlane {
-		Screen, // Normal 2D overlay
-		Map,	// Flat on the map ground in Mode 7
-		Sprite  // Upright like an event sprite (billboard) in Mode 7
-	};
-
 	int amount, size;
 	int red, green, blue;
 	int rndX, rndY;
@@ -69,11 +63,6 @@ public:
 	std::string filename;
 
 	double dr, dg, db, ds, dA;
-
-	// Mode 7 / 3D Scene Properties
-	RenderPlane renderPlane = RenderPlane::Screen;
-	int z_offset = 0;
-	Drawable::Z_t base_z = Priority_Weather;
 
 	std::list<BurstObj> bursts;
 	BitmapRef image;
@@ -260,7 +249,6 @@ void ParticleEffectV1::Draw(Bitmap& dst) {
 
 	int cam_x = Game_Map::GetDisplayX() / 16;
 	int cam_y = Game_Map::GetDisplayY() / 16;
-	bool is_mode7 = Game_Map::GetIsMode7() && renderPlane != RenderPlane::Screen;
 
 	for (auto& burst : bursts) {
 		int draw_alpha = std::clamp((int)burst.alpha, 0, 255);
@@ -277,38 +265,9 @@ void ParticleEffectV1::Draw(Bitmap& dst) {
 		}
 
 		for (auto& particle : burst.particles) {
-			float draw_x, draw_y, draw_size;
-
-			if (is_mode7) {
-				// Perspective projection logic for Mode 7
-				int screen_x = (int)particle.x - cam_x;
-				int screen_y = (int)particle.y - cam_y;
-				auto transform = Game_Map::TransformToMode7(screen_x, screen_y);
-
-				if (transform.zoom <= 0) continue; // Behind horizon
-
-				draw_size = (float)particle.size * transform.zoom;
-				draw_x = (float)transform.screen_x - draw_size / 2.0f;
-
-				if (renderPlane == RenderPlane::Sprite) {
-					// Sprite Plane (Billboard) - anchored at bottom, applies Z-altitude
-					draw_y = (float)transform.screen_y - draw_size - (z_offset * transform.zoom);
-
-					// Dynamic Z sorting based on screen Y to fit into 3D scene correctly
-					Drawable::Z_t z = base_z + ((static_cast<Drawable::Z_t>(transform.screen_y) + 0x8000) << 32);
-					SetZ(z + z_offset);
-				} else {
-					// Map Plane (Flat) - anchored at center, applies Z-altitude
-					draw_y = (float)transform.screen_y - draw_size / 2.0f - (z_offset * transform.zoom);
-					SetZ(base_z + z_offset);
-				}
-			} else {
-				// Standard 2D rendering logic
-				SetZ(Priority_BattleAnimation + z_offset);
-				draw_size = (float)particle.size;
-				draw_x = (float)particle.x - cam_x - draw_size / 2.0f;
-				draw_y = (float)particle.y - cam_y - draw_size / 2.0f - z_offset;
-			}
+			float draw_size = (float)particle.size;
+			float draw_x = (float)particle.x - cam_x - draw_size / 2.0f;
+			float draw_y = (float)particle.y - cam_y - draw_size / 2.0f;
 
 			Rect dst_rect((int)draw_x, (int)draw_y, (int)std::max(1.0f, draw_size), (int)std::max(1.0f, draw_size));
 
@@ -349,7 +308,7 @@ bool DynRpg::ParticleV1::Invoke(std::string_view func, dyn_arg_list args, bool& 
 		func == "effect_colorfade" || func == "effect_amount" || func == "effect_random" ||
 		func == "effect_angle" || func == "effect_growth" || func == "effect_speed" ||
 		func == "effect_timeout" || func == "effect_delay" || func == "effect_file" ||
-		func == "effect_kill" || func == "effect_render_plane" || func == "effect_z_offset") {
+		func == "effect_kill") {
 
 		auto get_int = [&](size_t idx, int def = 0) {
 			if (idx < args.size() && !args[idx].empty()) {
@@ -421,22 +380,17 @@ bool DynRpg::ParticleV1::Invoke(std::string_view func, dyn_arg_list args, bool& 
 			v1_effects[index]->delay = get_double(1, 0.0);
 			return true;
 		}
-		if (func == "effect_file") m.substr(0, 4) == "TRUE");
+		if (func == "effect_file") {
+			v1_effects[index]->filename = get_string(1, "");
+			if (Utils::LowerCase(get_string(2, "")).substr(0, 4) == "true") {
+				v1_effects[index]->mask = true;
+			}
+			v1_effects[index]->hasTexture = false;
 			v1_effects[index]->loadTexture();
 			return true;
+		}
 		if (func == "effect_kill") {
 			v1_effects[index]->killParticles();
-			return true;
-		}
-		if (func == "effect_render_plane") {
-			std::string plane = Utils::LowerCase(get_string(1, "screen"));
-			if (plane == "map") v1_effects[index]->renderPlane = ParticleEffectV1::RenderPlane::Map;
-			else if (plane == "sprite") v1_effects[index]->renderPlane = ParticleEffectV1::RenderPlane::Sprite;
-			else v1_effects[index]->renderPlane = ParticleEffectV1::RenderPlane::Screen;
-			return true;
-		}
-		if (func == "effect_z_offset") {
-			v1_effects[index]->z_offset = get_int(1, 0);
 			return true;
 		}
 	}

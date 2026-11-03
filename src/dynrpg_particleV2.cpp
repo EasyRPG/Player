@@ -39,8 +39,6 @@
 #include "scene.h"
 #include "rand.h"
 
-constexpr Drawable::Z_t default_priority = Priority_Weather;
-
 class ParticleEffect;
 
 namespace {
@@ -52,19 +50,11 @@ void linear_fade(ParticleEffect* effect, uint32_t color0, uint32_t color1, int f
 
 class ParticleEffect : public Drawable {
 public:
-	enum class RenderType {
-		Screen, // 2D Screen Space (Overlay)
-		Map,    // Mode7 World Space (Flat on ground)
-		Sprite  // Mode7 World Space (Billboard/Upright)
-	};
-
 	ParticleEffect();
 	~ParticleEffect() override;
 
 	virtual void Update() = 0;
 	void Draw(Bitmap& dst) override = 0;
-
-	bool isScreenSpaceEffect;
 
 	virtual void clear() = 0;
 	virtual void setSimul(int newSimul) = 0;
@@ -78,7 +68,6 @@ public:
 	void setRandRad(int new_rnd_rad);
 	void setRandSpd(float new_rnd_spd);
 	void setRandPos(int new_rnd_x, int new_rnd_y);
-	void setInterval(uint32_t new_interval);
 	virtual void setTexture(std::string filename);
 	virtual void unloadTexture();
 	void useScreenRelative(bool enabled);
@@ -87,9 +76,6 @@ public:
 	void setAccelerationPoint(float x, float y, float factor);
 	void setColor0(uint8_t r, uint8_t g, uint8_t b);
 	void setColor1(uint8_t r, uint8_t g, uint8_t b);
-	void setRenderType(RenderType type);
-	void setZOffset(int offset);
-	void setLayer(int layer);
 
 	static void create_trig_lut();
 
@@ -97,9 +83,6 @@ public:
 
 protected:
 	bool isScreenRelative;
-	RenderType renderType;
-	int z_offset;
-	Drawable::Z_t base_z;
 
 	int r0, rand_r, rand_x, rand_y;
 	float spd, rand_spd, s0, s1, ds, da;
@@ -112,8 +95,6 @@ protected:
 	uint8_t fade, delay;
 	uint16_t amount;
 	uint32_t color0, color1;
-	uint32_t interval = 1;
-	uint32_t cur_interval = 1;
 
 	void update_color();
 	static float sin_lut[32];
@@ -152,12 +133,9 @@ void linear_fade(ParticleEffect* effect, uint32_t color0, uint32_t color1, int f
 
 float ParticleEffect::sin_lut[32];
 
-ParticleEffect::ParticleEffect() : Drawable(0), isScreenSpaceEffect(false), isScreenRelative(false), renderType(RenderType::Map), z_offset(0), r0(50), rand_r(0), rand_x(0), rand_y(0), spd(0.5), rand_spd(0.5),
+ParticleEffect::ParticleEffect() : Drawable(Priority_Weather), isScreenRelative(false), r0(50), rand_r(0), rand_x(0), rand_y(0), spd(0.5), rand_spd(0.5),
 s0(1), s1(1), ds(0), gx(0), gy(0), ax0(0), ay0(0), afc(0), beta(6.2832),
 alpha(0), theta(0), fade(30), delay(0), amount(50) {
-	base_z = default_priority;
-	SetZ(base_z);
-
 	da = 255.0f / fade;
 	color0 = 0x00ffffff;
 	color1 = 0x00ffffff;
@@ -213,7 +191,6 @@ void ParticleEffect::setAngle(float v1, float v2) {
 	v2 *= 0.0174532925;
 	beta = (v2 < 0) ? -v2 : v2;
 	alpha = v1 - v2 / 2;
-	if (beta == 0.0f) isScreenSpaceEffect = true;
 }
 
 void ParticleEffect::setSecondaryAngle(float v) {
@@ -263,28 +240,6 @@ void ParticleEffect::setColor0(uint8_t r_val, uint8_t g_val, uint8_t b_val) {
 void ParticleEffect::setColor1(uint8_t r_val, uint8_t g_val, uint8_t b_val) {
 	color1 = (r_val << 16) | (g_val << 8) | b_val;
 	update_color();
-}
-
-void ParticleEffect::setInterval(uint32_t new_interval) {
-	if (new_interval < 1) return;
-	cur_interval = new_interval;
-	interval = new_interval;
-}
-
-void ParticleEffect::setRenderType(RenderType type) {
-	renderType = type;
-}
-
-void ParticleEffect::setZOffset(int offset) {
-	z_offset = offset;
-}
-
-void ParticleEffect::setLayer(int layer) {
-	if (Game_Battle::IsBattleRunning()) {
-		base_z = Drawable::GetPriorityForBattleLayer(layer);
-	} else {
-		base_z = Drawable::GetPriorityForMapLayer(layer);
-	}
 }
 
 void ParticleEffect::update_color() {
@@ -375,14 +330,10 @@ void Burst::setGeneratingFunction(std::string type) {
 	std::transform(type.begin(), type.end(), type.begin(), ::tolower);
 	if (!type.substr(0, 8).compare("standard")) {
 		init = &Burst::init_basic;
-		isScreenSpaceEffect = false;
-		renderType = RenderType::Map;
 		return;
 	}
 	if (!type.substr(0, 6).compare("radial")) {
 		init = &Burst::init_radial;
-		isScreenSpaceEffect = true;
-		renderType = RenderType::Screen;
 		return;
 	}
 }
@@ -481,8 +432,6 @@ void Burst::Draw(Bitmap& dst) {
 	int cam_x = (isScreenRelative) ? 0 : Game_Map::GetDisplayX() / 16;
 	int cam_y = (isScreenRelative) ? 0 : Game_Map::GetDisplayY() / 16;
 
-	SetZ(base_z + z_offset);
-
 	for (int i = 0; i < simulCnt; i++) {
 		int age = itr[i];
 		if (age >= fade) continue;
@@ -491,7 +440,7 @@ void Burst::Draw(Bitmap& dst) {
 		Color color = palette[age];
 
 		for (int j = i * amount; j < (i + 1) * amount; j++) {
-			Rect dst_rect(x[j] - cam_x - s[j] / 2, y[j] - cam_y - s[j] / 2 - z_offset, s[j], s[j]);
+			Rect dst_rect(x[j] - cam_x - s[j] / 2, y[j] - cam_y - s[j] / 2, s[j], s[j]);
 
 			if (hasTexture) {
 				dst.StretchBlit(dst_rect, *image, image->GetRect(), Opacity(alpha));
@@ -640,14 +589,10 @@ void Stream::setGeneratingFunction(std::string type) {
 	std::transform(type.begin(), type.end(), type.begin(), ::tolower);
 	if (!type.substr(0, 8).compare("standard")) {
 		init = &Stream::init_basic;
-		isScreenSpaceEffect = false;
-		renderType = RenderType::Map;
 		return;
 	}
 	if (!type.substr(0, 6).compare("radial")) {
 		init = &Stream::init_radial;
-		isScreenSpaceEffect = true;
-		renderType = RenderType::Screen;
 		return;
 	}
 }
@@ -739,17 +684,6 @@ void Stream::Update() {
 		}
 	}
 
-	// --- Spawning Section ---
-	--cur_interval;
-	if (cur_interval == 0) {
-		for (int i = simulBeg; i < simulRun; i++) {
-			uint16_t idx = pfx_ref[i];
-			uint8_t z = fade - itr[idx] - 1;
-			(this->*init)(z * amount + idx * block_size, (z + 1) * amount + idx * block_size, idx);
-		}
-		cur_interval = interval;
-	}
-
 	// --- State Update Section ---
 	// Starting
 	for (int i = 0; i < simulBeg; i++) {
@@ -767,7 +701,9 @@ void Stream::Update() {
 	// Streaming
 	for (int i = simulBeg; i < simulRun; i++) {
 		uint16_t idx = pfx_ref[i];
+		uint8_t z = fade - itr[idx] - 1;
 		itr[idx] = (itr[idx] + 1) % fade;
+		(this->*init)(z * amount + idx * block_size, (z + 1) * amount + idx * block_size, idx);
 	}
 
 	// Stopping
@@ -788,8 +724,6 @@ void Stream::Draw(Bitmap& dst) {
 	int cam_y = (isScreenRelative) ? 0 : Game_Map::GetDisplayY() / 16;
 	int block_size = amount * fade;
 
-	SetZ(base_z + z_offset);
-
 	auto draw_block = [&](uint16_t idx, uint8_t n, uint8_t z, uint8_t c0) {
 		for (uint8_t i = 0; i < n; i++) {
 			int age = i + c0;
@@ -802,7 +736,7 @@ void Stream::Draw(Bitmap& dst) {
 			for (int j = 0; j < amount; j++) {
 				int p_idx = block_start_idx + j;
 				float size = s[p_idx];
-				Rect dst_rect(x[p_idx] - cam_x - size / 2.0f, y[p_idx] - cam_y - size / 2.0f - z_offset, size, size);
+				Rect dst_rect(x[p_idx] - cam_x - size / 2.0f, y[p_idx] - cam_y - size / 2.0f, size, size);
 
 				if (hasTexture) {
 					dst.StretchBlit(dst_rect, *image, image->GetRect(), Opacity(alpha));
@@ -980,46 +914,7 @@ static bool set_position(dyn_arg_list args) {
 	return true;
 }
 
-static bool set_interval(dyn_arg_list args) {
-	auto func = "pfx_set_interval";
-	bool okay;
-	std::string tag;
-	int interval;
-	std::tie(tag, interval) = DynRpg::ParseArgs<std::string, int>(func, args, &okay);
-	if (!okay) return true;
-	if (auto pfx = GetPfx(tag)) {
-		pfx->setInterval(interval);
-	}
-	return true;
-}
-
 static bool load_effect(dyn_arg_list) {
-	return true;
-}
-
-static bool SetZ(dyn_arg_list args) {
-	auto func = "pfx_set_z_offset";
-	bool okay;
-	std::string tag;
-	int z;
-	std::tie(tag, z) = DynRpg::ParseArgs<std::string, int>(func, args, &okay);
-	if (!okay) return true;
-	if (auto pfx = GetPfx(tag)) {
-		pfx->setZOffset(z);
-	}
-	return true;
-}
-
-static bool SetLayer(dyn_arg_list args) {
-	auto func = "pfx_set_layer";
-	bool okay;
-	std::string tag;
-	int layer;
-	std::tie(tag, layer) = DynRpg::ParseArgs<std::string, int>(func, args, &okay);
-	if (!okay) return true;
-	if (auto pfx = GetPfx(tag)) {
-		pfx->setLayer(layer);
-	}
 	return true;
 }
 
@@ -1129,28 +1024,7 @@ DynRpg::Particle::Particle(Game_DynRpg& instance) : DynRpgPlugin("KazeParticles"
 			return true;
 		};
 		function_list["pfx_set_position"] = &set_position;
-		function_list["pfx_set_interval"] = &set_interval;
 		function_list["pfx_load_effect"] = &load_effect;
-		function_list["pfx_set_z_offset"] = &SetZ;
-		function_list["pfx_set_layer"] = &SetLayer;
-		function_list["pfx_set_render_plane"] =[](dyn_arg_list args) {
-			bool okay; std::string tag, plane;
-			std::tie(tag, plane) = DynRpg::ParseArgs<std::string, std::string>("pfx_set_render_plane", args, &okay);
-			if (okay) {
-				if (auto pfx = GetPfx(tag)) {
-					std::transform(plane.begin(), plane.end(), plane.begin(), ::tolower);
-					if (plane == "screen") {
-						pfx->setRenderType(ParticleEffect::RenderType::Screen);
-						pfx->isScreenSpaceEffect = true;
-					} else if (plane == "sprite" || plane == "event") {
-						pfx->setRenderType(ParticleEffect::RenderType::Sprite);
-					} else {
-						pfx->setRenderType(ParticleEffect::RenderType::Map);
-					}
-				}
-			}
-			return true;
-		};
 	}
 }
 
