@@ -128,7 +128,7 @@ private:
 
 float ParticleEffectV2::sin_lut[32];
 
-ParticleEffectV2::ParticleEffectV2(Type type) : Drawable(Priority_Weather), type(type) {
+ParticleEffectV2::ParticleEffectV2(Type type) : Drawable(Priority_Frame + 1), type(type) {
 	da = 255.0f / fade;
 	image = Bitmap::Create(1, 1, true);
 

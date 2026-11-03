@@ -50,7 +50,7 @@ struct BurstObj {
 
 class ParticleEffectV1 : public Drawable {
 public:
-	ParticleEffectV1() : Drawable(Priority_Weather) {
+	ParticleEffectV1() : Drawable(Priority_Frame + 1) {
 		DrawableMgr::Register(this);
 	}
 

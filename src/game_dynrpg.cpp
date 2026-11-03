@@ -184,18 +184,13 @@ void Game_DynRpg::InitPlugins() {
 
 	if (Player::IsPatchDynRpg() || Player::HasEasyRpgExtensions()) {
 		plugins.emplace_back(new DynRpg::EasyRpgPlugin(*this));
-		plugins.emplace_back(new DynRpg::ParticleV1(*this));
 	}
 
 	if (Player::IsPatchDynRpg()) {
 		plugins.emplace_back(new DynRpg::TextPlugin(*this));
-	}
-
-	if (Player::IsPatchDynRpg()) {
+		plugins.emplace_back(new DynRpg::ParticleV1(*this));
 		plugins.emplace_back(new DynRpg::ParticleV2(*this));
 	}
-
-
 
 	plugins_loaded = true;
 }
