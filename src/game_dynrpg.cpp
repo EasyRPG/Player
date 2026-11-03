@@ -30,8 +30,8 @@
 
 #include "dynrpg_easyrpg.h"
 #include "dynrpg_textplugin.h"
-#include "dynrpg_particleV1.h"
-#include "dynrpg_particleV2.h"
+#include "dynrpg_particle_v1.h"
+#include "dynrpg_particle_v2.h"
 
 
 enum DynRpg_ParseMode {

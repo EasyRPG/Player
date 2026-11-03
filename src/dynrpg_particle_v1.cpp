@@ -16,7 +16,7 @@
  * Based on DynRPG Particle Effects V1 by Kazesui. (MIT license)
  */
 
-#include "dynrpg_particleV1.h"
+#include "dynrpg_particle_v1.h"
 
 #include <cmath>
 #include <vector>

@@ -16,7 +16,7 @@
  */
 
 // Headers
-#include "dynrpg_particleV2.h"
+#include "dynrpg_particle_v2.h"
 #include <array>
 #include <cmath>
 #include <map>
