@@ -283,7 +283,7 @@ void Output::ErrorStr(std::string const& err) {
 	} else {
 		// Fallback to Console if the display is not ready yet
 		std::cout << error << std::endl;
-#if defined (PLAYER_NINTENDO) || defined(__vita__)
+#if defined (PLAYER_NINTENDO) || defined(__vita__) || defined(PLAYER_PSP)
 		// stdin is non-blocking
 		Game_Clock::SleepFor(5s);
 #elif defined (__EMSCRIPTEN__)

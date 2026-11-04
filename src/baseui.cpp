@@ -32,6 +32,8 @@
 #  include "platform/3ds/ui.h"
 #elif defined(__vita__)
 #  include "platform/psvita/ui.h"
+#elif defined(PLAYER_PSP)
+#  include "platform/psp/ui.h"
 #elif defined(__SWITCH__)
 #  include "platform/switch/ui.h"
 #endif

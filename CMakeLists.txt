@@ -495,7 +495,6 @@ add_library(${PROJECT_NAME} OBJECT
 
 # These are actually unused when building in CMake
 #	src/platform/opendingux/opendingux_input_buttons.cpp
-#	src/platform/psp/psp_input_buttons.cpp
 
 # Include directories
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
@@ -544,6 +543,8 @@ elseif(NINTENDO_SWITCH)
 	set(PLAYER_TARGET_PLATFORM "switch" CACHE STRING "Platform to compile for.")
 elseif(VITA)
 	set(PLAYER_TARGET_PLATFORM "psvita" CACHE STRING "Platform to compile for.")
+elseif(PSP)
+	set(PLAYER_TARGET_PLATFORM "psp" CACHE STRING "Platform to compile for.")
 elseif(NINTENDO_WII)
 	set(PLAYER_TARGET_PLATFORM "SDL2" CACHE STRING "Platform to compile for. Options: SDL2 SDL1")
 	set_property(CACHE PLAYER_TARGET_PLATFORM PROPERTY STRINGS SDL2 SDL1)
@@ -689,6 +690,15 @@ elseif(PLAYER_TARGET_PLATFORM STREQUAL "psvita")
 		src/platform/psvita/input_buttons.cpp
 		src/platform/psvita/ui.cpp
 		src/platform/psvita/ui.h)
+elseif(PLAYER_TARGET_PLATFORM STREQUAL "psp")
+	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=PspUi PLAYER_PSP)
+	target_sources(${PROJECT_NAME} PRIVATE
+		src/platform/psp/audio.cpp
+		src/platform/psp/audio.h
+		src/platform/psp/clock.h
+		src/platform/psp/psp_input_buttons.cpp
+		src/platform/psp/ui.cpp
+		src/platform/psp/ui.h)
 elseif(PLAYER_TARGET_PLATFORM STREQUAL "switch")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=NxUi PLAYER_NINTENDO)
 	find_package(OpenGL CONFIG REQUIRED)
@@ -771,7 +781,7 @@ if(NOT PLAYER_AUDIO_BACKEND IN_LIST AUDIO_PROP)
 endif()
 
 # Shared by homebrew platforms
-if(NINTENDO_3DS OR NINTENDO_WII OR NINTENDO_WIIU OR NINTENDO_WIIU OR NINTENDO_SWITCH OR VITA OR PS4)
+if(NINTENDO_3DS OR NINTENDO_WII OR NINTENDO_WIIU OR NINTENDO_WIIU OR NINTENDO_SWITCH OR VITA OR PSP OR PS4)
 	target_compile_options(${PROJECT_NAME} PUBLIC -fno-exceptions -fno-rtti)
 	if(VITA)
 		# This optimisation is unstable on Vita (crashes at the end of MainLoop)
@@ -1393,6 +1403,30 @@ elseif(PLAYER_CONSOLE_PORT AND NOT PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 			FILE "${CMAKE_CURRENT_SOURCE_DIR}/resources/psvita/touch_ui.png" touch_ui.png)
 		install(FILES ${CMAKE_CURRENT_BINARY_DIR}/EasyRPG-Player.vpk
 			DESTINATION . COMPONENT psvita)
+	elseif(PSP)
+		set(CMAKE_EXECUTABLE_SUFFIX .elf)
+		add_executable(easyrpg-player src/platform/psp/main.cpp)
+		target_link_libraries(easyrpg-player
+			${PROJECT_NAME}
+			-lpspdisplay
+			-lpspctrl
+			-lpspaudio
+			-lpsppower
+			-lpsprtc
+			-lpspkernel
+			-lpspsdk)
+		# Turn the ELF into an EBOOT.PBP that the PSP can start (tools from the pspdev toolchain)
+		set(PSP_EBOOT_DIR "${CMAKE_CURRENT_BINARY_DIR}/psp")
+		add_custom_command(TARGET easyrpg-player POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E make_directory "${PSP_EBOOT_DIR}"
+			COMMAND psp-fixup-imports $<TARGET_FILE:easyrpg-player>
+			COMMAND psp-prxgen $<TARGET_FILE:easyrpg-player> "${PSP_EBOOT_DIR}/easyrpg-player.prx"
+			COMMAND mksfoex -d MEMSIZE=1 "EasyRPG Player ${PLAYER_VERSION_FULL}" "${PSP_EBOOT_DIR}/PARAM.SFO"
+			COMMAND pack-pbp "${PSP_EBOOT_DIR}/EBOOT.PBP" "${PSP_EBOOT_DIR}/PARAM.SFO"
+				"${CMAKE_CURRENT_SOURCE_DIR}/resources/psp/ICON0.PNG" NULL NULL NULL NULL
+				"${PSP_EBOOT_DIR}/easyrpg-player.prx" NULL
+			VERBATIM)
+		install(FILES "${PSP_EBOOT_DIR}/EBOOT.PBP" DESTINATION . COMPONENT psp)
 	elseif(PS4)
 
 		add_executable(easyrpg-player "src/platform/ps4/main.cpp")

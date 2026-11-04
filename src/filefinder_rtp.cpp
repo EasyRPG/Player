@@ -119,7 +119,7 @@ FileFinder_RTP::FileFinder_RTP(bool no_rtp, bool no_rtp_warnings, std::string rt
 	AddPath("/data/rtp/" + version_str);
 #endif
 
-#if (defined(PLAYER_NINTENDO) || defined(__vita__) || defined(__ANDROID__))
+#if (defined(PLAYER_NINTENDO) || defined(__vita__) || defined(PLAYER_PSP) || defined(__ANDROID__))
 	// skip environment paths
 	return;
 #endif

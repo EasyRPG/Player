@@ -57,6 +57,10 @@
 #  define SUPPORT_JOYSTICK
 #  define SUPPORT_JOYSTICK_AXIS
 #  define USE_CUSTOM_FILEBUF 4 * 1024
+#elif defined(PLAYER_PSP)
+#  define SUPPORT_JOYSTICK
+#  define SUPPORT_JOYSTICK_AXIS
+#  define USE_CUSTOM_FILEBUF 4 * 1024
 #elif defined(__wii__)
 #  include <cstdint>
 #  define SUPPORT_JOYSTICK

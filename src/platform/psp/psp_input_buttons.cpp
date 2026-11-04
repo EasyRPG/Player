@@ -15,7 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
-#if defined(PSP)
+#if defined(PLAYER_PSP)
 
 // Headers
 #include "input_buttons.h"
@@ -31,6 +31,8 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{N1, Keys::JOY_SHOULDER_LEFT}, // Left trigger
 		{N2, Keys::JOY_SHOULDER_RIGHT}, // Right trigger
 
+		{SETTINGS_MENU, Keys::JOY_START}, // Start
+
 		{DOWN, Keys::JOY_DPAD_DOWN}, // Down
 		{LEFT, Keys::JOY_DPAD_LEFT}, // Left
 		{UP, Keys::JOY_DPAD_UP}, // Up
@@ -39,7 +41,20 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 }
 
 Input::KeyNamesArray Input::GetInputKeyNames() {
-	return {};
+	return {
+		{Keys::JOY_A, "Cross"},
+		{Keys::JOY_B, "Circle"},
+		{Keys::JOY_X, "Square"},
+		{Keys::JOY_Y, "Triangle"},
+		{Keys::JOY_SHOULDER_LEFT, "L Trigger"},
+		{Keys::JOY_SHOULDER_RIGHT, "R Trigger"},
+		{Keys::JOY_START, "Start"},
+		{Keys::JOY_BACK, "Select"},
+		{Keys::JOY_DPAD_UP, "D-Pad Up"},
+		{Keys::JOY_DPAD_DOWN, "D-Pad Down"},
+		{Keys::JOY_DPAD_LEFT, "D-Pad Left"},
+		{Keys::JOY_DPAD_RIGHT, "D-Pad Right"},
+	};
 }
 
 void Input::GetSupportedConfig(Game_ConfigInput& cfg) {

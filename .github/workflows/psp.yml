@@ -1,0 +1,70 @@
+name: PSP Release
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      git-ref:
+        description: Git Ref (Optional)
+        required: false
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  psp:
+    name: PlayStation Portable (pspdev)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # needed to attach the zip to a release on tags
+
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@v7
+        if: github.event.inputs.git-ref == ''
+      - name: Clone Repository (with custom ref)
+        uses: actions/checkout@v7
+        if: github.event.inputs.git-ref != ''
+        with:
+          ref: ${{ github.event.inputs.git-ref }}
+
+      # The PSP toolchain (gcc for MIPS Allegrex, PSPSDK, the EBOOT tools) lives in the
+      # pspdev image. The whole build runs in it with the checkout mounted.
+      - name: Build EBOOT and release zip
+        env:
+          PSP_RELEASE_TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
+          PSP_GIT_SHA: ${{ github.sha }}
+        run: |
+          docker run --rm \
+            -e PSP_RELEASE_TAG -e PSP_GIT_SHA -e JOBS \
+            -v "$GITHUB_WORKSPACE:/src" -w /src \
+            ghcr.io/pspdev/pspdev:latest \
+            bash -c 'export DEBIAN_FRONTEND=noninteractive; \
+              apt-get update -qq && \
+              apt-get install -yqq --no-install-recommends \
+                ca-certificates curl git cmake ninja-build meson zip tar >/dev/null && \
+              builds/psp/build-release.sh'
+
+      - name: Show artifacts
+        run: |
+          ls -l dist/
+          unzip -l dist/*.zip
+
+      - name: Upload release zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: EasyRPG-Player-psp
+          path: dist/*.zip
+          if-no-files-found: error
+
+      - name: Attach to GitHub release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.zip

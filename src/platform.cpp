@@ -48,6 +48,9 @@ bool Platform::File::Exists() const {
 #elif defined(__vita__)
 	struct SceIoStat sb;
 	return (::sceIoGetstat(filename.c_str(), &sb) >= 0);
+#elif defined(PLAYER_PSP)
+	struct stat sb = {};
+	return ::stat(filename.c_str(), &sb) == 0;
 #else
 	return ::access(filename.c_str(), F_OK) != -1;
 #endif

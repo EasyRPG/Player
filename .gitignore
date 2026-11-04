@@ -123,3 +123,8 @@ eboot.bin
 *.pem
 *.keystore
 *.jks
+
+# PSP build outputs
+/build-psp/
+/psp-deps/
+/dist/

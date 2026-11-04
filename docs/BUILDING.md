@@ -87,6 +87,25 @@ Switch, Wii U and 3DS support shipping games, use these parameters:
 
     -DPLAYER_BUNDLE=ON -DPLAYER_BUNDLE_PATH=path/to/myGame
 
+## PlayStation Portable (PSP)
+
+Requires the [pspdev] toolchain. Set `PSPDEV` to its install prefix, then:
+
+    builds/psp/build-deps.sh       # zlib, libpng, pixman, fmt, inih, liblcf into $PSPDEV/psp
+    cmake -S . -B build-psp -G Ninja \
+        -DCMAKE_TOOLCHAIN_FILE=builds/psp/PspToolchain.cmake \
+        -DBUILD_SHARED_LIBS=OFF -DPLAYER_BUILD_LIBLCF=OFF \
+        -DPLAYER_WITH_FREETYPE=OFF -DPLAYER_WITH_HARFBUZZ=OFF -DPLAYER_WITH_LHASA=OFF \
+        -DPLAYER_WITH_NLOHMANN_JSON=OFF -DPLAYER_WITH_BAEKMUK=OFF -DPLAYER_WITH_WQY=OFF
+    cmake --build build-psp
+
+The build produces `build-psp/psp/EBOOT.PBP`. Put it in a folder named
+`EasyRPG` under `ms0:/PSP/GAME/` together with the game data. The
+`builds/psp/build-release.sh` script runs all of this inside the pspdev
+container and creates the release zip (see `.github/workflows/psp.yml`).
+
+[pspdev]: https://github.com/pspdev/pspdev
+
 
 [buildscripts]: https://github.com/EasyRPG/buildscripts
 [liblcf]: https://github.com/EasyRPG/liblcf
