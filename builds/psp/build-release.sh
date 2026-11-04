@@ -29,7 +29,12 @@ if [[ "${PSP_DEPS_BUILD:-1}" == "1" ]]; then
 	"${ROOT}/builds/psp/build-deps.sh"
 fi
 
-cmake -S "${ROOT}" -B "${BUILD_DIR}" -G Ninja \
+GENERATOR=()
+if command -v ninja >/dev/null 2>&1; then
+	GENERATOR=(-G Ninja)
+fi
+
+cmake -S "${ROOT}" -B "${BUILD_DIR}" "${GENERATOR[@]}" \
 	-DCMAKE_TOOLCHAIN_FILE="${TOOLCHAIN}" \
 	-DCMAKE_BUILD_TYPE=Release \
 	-DCMAKE_INSTALL_PREFIX="${PSPDEV}/psp" \
@@ -109,7 +114,12 @@ EOF
 (
 	cd "${BUILD_DIR}/package"
 	rm -f "${DIST_DIR}/${NAME}.zip"
-	zip -r -9 "${DIST_DIR}/${NAME}.zip" EasyRPG
+	if command -v zip >/dev/null 2>&1; then
+		zip -r -9 "${DIST_DIR}/${NAME}.zip" EasyRPG
+	else
+		echo "zip is required to create the release archive" >&2
+		exit 1
+	fi
 )
 
 echo "Release package: ${DIST_DIR}/${NAME}.zip"

@@ -45,11 +45,8 @@ jobs:
             -e PSP_RELEASE_TAG -e PSP_GIT_SHA -e JOBS \
             -v "$GITHUB_WORKSPACE:/src" -w /src \
             ghcr.io/pspdev/pspdev:latest \
-            bash -c 'export DEBIAN_FRONTEND=noninteractive; \
-              apt-get update -qq && \
-              apt-get install -yqq --no-install-recommends \
-                ca-certificates curl git cmake ninja-build meson zip tar >/dev/null && \
-              builds/psp/build-release.sh'
+            sh -c 'apk add --no-cache bash git cmake ninja meson zip curl tar >/dev/null && \
+              bash builds/psp/build-release.sh'
 
       - name: Show artifacts
         run: |

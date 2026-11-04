@@ -19,6 +19,7 @@
 
 // Headers
 #include "input_buttons.h"
+#include "game_config.h"
 #include "keys.h"
 
 Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
@@ -37,7 +38,7 @@ Input::ButtonMappingArray Input::GetDefaultButtonMappings() {
 		{LEFT, Keys::JOY_DPAD_LEFT}, // Left
 		{UP, Keys::JOY_DPAD_UP}, // Up
 		{RIGHT, Keys::JOY_DPAD_RIGHT}, // Right
-	}
+	};
 }
 
 Input::KeyNamesArray Input::GetInputKeyNames() {
