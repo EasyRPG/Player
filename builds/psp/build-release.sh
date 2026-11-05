@@ -9,6 +9,7 @@
 #   PSP_DEPS_BUILD   set to 0 to skip building the dependencies (default: 1)
 #   PSP_RELEASE_TAG  tag name used in the zip name; empty for dev builds
 #   PSP_GIT_SHA      commit id appended to the zip name of dev builds
+#   PSP_CMAKE_ARGS   extra CMake arguments, e.g. -DPLAYER_PSP_AUDIO_STATS=ON
 
 set -euo pipefail
 
@@ -53,7 +54,8 @@ cmake -S "${ROOT}" -B "${BUILD_DIR}" "${GENERATOR[@]}" \
 	-DPLAYER_WITH_XMP=OFF \
 	-DPLAYER_WITH_BAEKMUK=OFF \
 	-DPLAYER_WITH_WQY=OFF \
-	-DPLAYER_VERSIONED_PACKAGES=OFF
+	-DPLAYER_VERSIONED_PACKAGES=OFF \
+	${PSP_CMAKE_ARGS:-}
 
 cmake --build "${BUILD_DIR}" --parallel "${JOBS}"
 

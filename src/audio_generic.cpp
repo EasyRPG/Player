@@ -302,6 +302,32 @@ bool GenericAudio::PlayOnChannel(SeChannel& chan, std::unique_ptr<AudioSeCache> 
 	return true;
 }
 
+namespace {
+	/**
+	 * Mixes the frames of one channel into the (interleaved) mixer buffer.
+	 * Runs for every sample. All constants are float on purpose: CPUs with a single precision FPU
+	 * (e.g. the PSP) emulate double operations in software, which is slower by two orders of magnitude.
+	 *
+	 * @param convert Returns the sample with the given index of the source as float in [-1, 1)
+	 */
+	template <typename Convert>
+	void MixFrames(float* mix, int out_channels, unsigned frames, int channels, float vleft, float vright, bool first, Convert convert) {
+		for (unsigned ii = 0; ii < frames; ii++) {
+			float* out = mix + ii * out_channels;
+			float vall = vleft * convert(ii * channels);
+
+			if (first) {
+				out[0] = vall;
+				out[1] = channels > 1 ? vright * convert(ii * channels + 1) : vall;
+			} else {
+				out[0] += vall;
+				// A mono source copies the sum of the left channel to the right (kept from the original mixer)
+				out[1] = channels > 1 ? out[1] + vright * convert(ii * channels + 1) : out[0];
+			}
+		}
+	}
+}
+
 void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 	bool channel_active = false;
 	float total_volume = 0;
@@ -413,83 +439,64 @@ void GenericAudio::Decode(uint8_t* output_buffer, int buffer_length) {
 		//--------------------------------------------------------------------------------------------------------------------//
 
 		if (channel_used) {
-			for (unsigned ii = 0; ii < (unsigned)(read_bytes / (samplesize * channels)); ii++) {
+			const unsigned frames = (unsigned)(read_bytes / (samplesize * channels));
+			const uint8_t* data = scrap_buffer.data();
+			float* mix = mixer_buffer.data();
+			const int out_channels = output_format.channels;
 
-				float vall = vleft;
-				float valr = vright;
-
-				// Convert to floating point
-				switch (sampleformat) {
-					case AudioDecoder::Format::S8:
-						vall *= (((int8_t *) scrap_buffer.data())[ii * channels] / 128.0);
-						valr *= (((int8_t *) scrap_buffer.data())[ii * channels + 1] / 128.0);
-						break;
-					case AudioDecoder::Format::U8:
-						vall *= (((uint8_t *) scrap_buffer.data())[ii * channels] / 128.0 - 1.0);
-						valr *= (((uint8_t *) scrap_buffer.data())[ii * channels + 1] / 128.0 - 1.0);
-						break;
-					case AudioDecoder::Format::S16:
-						vall *= (((int16_t *) scrap_buffer.data())[ii * channels] / 32768.0);
-						valr *= (((int16_t *) scrap_buffer.data())[ii * channels + 1] / 32768.0);
-						break;
-					case AudioDecoder::Format::U16:
-						vall *= (((uint16_t *) scrap_buffer.data())[ii * channels] / 32768.0 - 1.0);
-						valr *= (((uint16_t *) scrap_buffer.data())[ii * channels + 1] / 32768.0 - 1.0);
-						break;
-					case AudioDecoder::Format::S32:
-						vall *= (((int32_t *) scrap_buffer.data())[ii * channels] / 2147483648.0);
-						valr *= (((int32_t *) scrap_buffer.data())[ii * channels + 1] / 2147483648.0);
-						break;
-					case AudioDecoder::Format::U32:
-						vall *= (((uint32_t *) scrap_buffer.data())[ii * channels] / 2147483648.0 - 1.0);
-						valr *= (((uint32_t *) scrap_buffer.data())[ii * channels + 1] / 2147483648.0 - 1.0);
-						break;
-					case AudioDecoder::Format::F32:
-						vall *= (((float *) scrap_buffer.data())[ii * channels]);
-						valr *= (((float *) scrap_buffer.data())[ii * channels + 1]);
-						break;
-				}
-
-				if (!channel_active) {
-					// first channel
-					mixer_buffer[ii * output_format.channels] = vall;
-					if (channels > 1) {
-						mixer_buffer[ii * output_format.channels + 1] = valr;
-					} else {
-						mixer_buffer[ii * output_format.channels + 1] = mixer_buffer[ii * output_format.channels];
-					}
-				} else {
-					mixer_buffer[ii * output_format.channels] += vall;
-					if (channels > 1) {
-						mixer_buffer[ii * output_format.channels + 1] += valr;
-					} else {
-						mixer_buffer[ii * output_format.channels + 1] = mixer_buffer[ii * output_format.channels];
-					}
-				}
-
+			// Convert to floating point
+			switch (sampleformat) {
+				case AudioDecoder::Format::S8:
+					MixFrames(mix, out_channels, frames, channels, vleft, vright, !channel_active,
+						[data](unsigned i) { return ((const int8_t*)data)[i] * (1.0f / 128.0f); });
+					break;
+				case AudioDecoder::Format::U8:
+					MixFrames(mix, out_channels, frames, channels, vleft, vright, !channel_active,
+						[data](unsigned i) { return ((const uint8_t*)data)[i] * (1.0f / 128.0f) - 1.0f; });
+					break;
+				case AudioDecoder::Format::S16:
+					MixFrames(mix, out_channels, frames, channels, vleft, vright, !channel_active,
+						[data](unsigned i) { return ((const int16_t*)data)[i] * (1.0f / 32768.0f); });
+					break;
+				case AudioDecoder::Format::U16:
+					MixFrames(mix, out_channels, frames, channels, vleft, vright, !channel_active,
+						[data](unsigned i) { return ((const uint16_t*)data)[i] * (1.0f / 32768.0f) - 1.0f; });
+					break;
+				case AudioDecoder::Format::S32:
+					MixFrames(mix, out_channels, frames, channels, vleft, vright, !channel_active,
+						[data](unsigned i) { return ((const int32_t*)data)[i] * (1.0f / 2147483648.0f); });
+					break;
+				case AudioDecoder::Format::U32:
+					MixFrames(mix, out_channels, frames, channels, vleft, vright, !channel_active,
+						[data](unsigned i) { return ((const uint32_t*)data)[i] * (1.0f / 2147483648.0f) - 1.0f; });
+					break;
+				case AudioDecoder::Format::F32:
+					MixFrames(mix, out_channels, frames, channels, vleft, vright, !channel_active,
+						[data](unsigned i) { return ((const float*)data)[i]; });
+					break;
 			}
 			channel_active = true;
 		}
 	}
 
 	if (channel_active) {
-		if (total_volume > 1.0) {
-			float threshold = 0.8f;
+		if (total_volume > 1.0f) {
+			const float threshold = 0.8f;
 			for (unsigned i = 0; i < (unsigned)(samples_per_frame * 2); i++) {
 				float sample = mixer_buffer[i];
-				float sign = (sample < 0) ? -1.0 : 1.0;
-				sample /= sign;
+				float sign = (sample < 0) ? -1.0f : 1.0f;
+				sample *= sign; // |sample|
 				//dynamic range compression
 				if (sample > threshold) {
-					sample_buffer[i] = sign * 32768.0 * (threshold + (1.0 - threshold) * (sample - threshold) / (total_volume - threshold));
+					sample_buffer[i] = sign * 32768.0f * (threshold + (1.0f - threshold) * (sample - threshold) / (total_volume - threshold));
 				} else {
-					sample_buffer[i] = sign * sample * 32768.0;
+					sample_buffer[i] = sign * sample * 32768.0f;
 				}
 			}
 		} else {
 			//No dynamic range compression necessary
 			for (unsigned i = 0; i < (unsigned)(samples_per_frame * 2); i++) {
-				sample_buffer[i] = mixer_buffer[i] * 32768.0;
+				sample_buffer[i] = mixer_buffer[i] * 32768.0f;
 			}
 		}
 

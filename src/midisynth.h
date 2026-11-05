@@ -287,6 +287,7 @@ namespace midisynth{
         float rate;
         float hold;
         float freeze;
+        bool rate_set;
         void update_parameters();
     };
 

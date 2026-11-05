@@ -104,6 +104,11 @@ The build produces `build-psp/psp/EBOOT.PBP`. Put it in a folder named
 `builds/psp/build-release.sh` script runs all of this inside the pspdev
 container and creates the release zip (see `.github/workflows/psp.yml`).
 
+Pass `-DPLAYER_PSP_AUDIO_STATS=ON` to log how long mixing takes per audio block
+(and how often the output ran dry) to `audio-stats.txt` next to the EBOOT.
+The build also keeps an unstripped `build-psp/psp/easyrpg-player-symbols.elf`
+for profiling and crash analysis.
+
 [pspdev]: https://github.com/pspdev/pspdev
 
 

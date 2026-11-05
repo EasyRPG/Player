@@ -67,7 +67,13 @@ namespace midisynth{
     // Synthesizes sound notes.
     int channel::synthesize(int_least32_t* out, std::size_t samples, float rate, int_least32_t master_volume, int master_balance)
     {
-        double volume = mute ? 0.0 : std::pow(static_cast<double>(master_volume) * this->volume * expression / (16383.0 * 16383.0 * 16383.0), 2) * 16383.0;
+        // Single precision on purpose: platforms like the PSP only have a single precision FPU and
+        // evaluate every double operation in software. This runs once per note and block.
+        float volume = 0.0f;
+        if(!mute){
+            float level = static_cast<float>(master_volume) * this->volume * expression * (1.0f / (16383.0f * 16383.0f * 16383.0f));
+            volume = level * level * 16383.0f;
+        }
         int num_notes = 0;
         std::vector<NOTE>::iterator i = notes.begin();
         while(i != notes.end()){
@@ -83,8 +89,9 @@ namespace midisynth{
             }else{
                 panpot = panpot * (16384 - master_balance) / 8192 + (master_balance - 8192) * 2;
             }
-            int_least32_t left = static_cast<int_least32_t>(volume * std::cos(std::max<int_least32_t>(0, panpot - 1) * (M_PI / 2 / 16382)));
-            int_least32_t right = static_cast<int_least32_t>(volume * std::sin(std::max<int_least32_t>(0, panpot - 1) * (M_PI / 2 / 16382)));
+            const float pan_angle = static_cast<float>(std::max<int_least32_t>(0, panpot - 1)) * static_cast<float>(M_PI / 2 / 16382);
+            int_least32_t left = static_cast<int_least32_t>(volume * std::cos(pan_angle));
+            int_least32_t right = static_cast<int_least32_t>(volume * std::sin(pan_angle));
             bool ret = note->synthesize(out, samples, rate, left, right);
             if(ret){
                 ++i;
@@ -757,7 +764,7 @@ namespace midisynth{
     // Envelope generator constructor.
     envelope_generator::envelope_generator(int AR_, int DR_, int SR_, int RR_, int SL, int TL_):
         state(ATTACK), AR(AR_), DR(DR_), SR(SR_), RR(RR_), TL(TL_),
-        current(0), rate(1), hold(0), freeze(0)
+        current(0), rate(1), hold(0), freeze(0), rate_set(false)
     {
         if(AR >= 63) AR = 63;
         if(DR >= 63) DR = 63;
@@ -783,7 +790,15 @@ namespace midisynth{
     // Set the playback rate.
     inline void envelope_generator::set_rate(float rate)
     {
-        this->rate = rate ? rate : 1;
+        rate = rate ? rate : 1;
+        // Pitch changes call this for every operator of every note. The parameters only depend on
+        // rate, hold and freeze (the setters of the latter two update them), so there is nothing
+        // to do when the rate did not change. Recalculating them is expensive without a double FPU.
+        if(rate_set && this->rate == rate){
+            return;
+        }
+        this->rate = rate;
+        rate_set = true;
         update_parameters();
     }
     // Sets the hold (damper and sostenuto).

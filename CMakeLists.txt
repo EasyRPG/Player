@@ -692,6 +692,10 @@ elseif(PLAYER_TARGET_PLATFORM STREQUAL "psvita")
 		src/platform/psvita/ui.h)
 elseif(PLAYER_TARGET_PLATFORM STREQUAL "psp")
 	target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_UI=PspUi PLAYER_PSP)
+	option(PLAYER_PSP_AUDIO_STATS "Log how long mixing takes per block to ms0:/PSP/GAME/EasyRPG/audio-stats.txt" OFF)
+	if(PLAYER_PSP_AUDIO_STATS)
+		target_compile_definitions(${PROJECT_NAME} PUBLIC PLAYER_PSP_AUDIO_STATS)
+	endif()
 	target_sources(${PROJECT_NAME} PRIVATE
 		src/platform/psp/audio.cpp
 		src/platform/psp/audio.h
@@ -1417,6 +1421,12 @@ elseif(PLAYER_CONSOLE_PORT AND NOT PLAYER_TARGET_PLATFORM STREQUAL "libretro")
 			-lpspsdk)
 		# Turn the ELF into an EBOOT.PBP that the PSP can start (create_pbp_file comes from pspdev)
 		set(PSP_EBOOT_DIR "${CMAKE_CURRENT_BINARY_DIR}/psp")
+		# create_pbp_file strips the ELF in place. Keep a copy with symbols for profiling and
+		# crash analysis; this step has to be registered first to run first.
+		add_custom_command(TARGET easyrpg-player POST_BUILD
+			COMMAND ${CMAKE_COMMAND} -E make_directory "${PSP_EBOOT_DIR}"
+			COMMAND ${CMAKE_COMMAND} -E copy "$<TARGET_FILE:easyrpg-player>" "${PSP_EBOOT_DIR}/easyrpg-player-symbols.elf"
+			VERBATIM)
 		create_pbp_file(
 			TARGET easyrpg-player
 			TITLE "EasyRPG Player"

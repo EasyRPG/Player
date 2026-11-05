@@ -25,8 +25,13 @@
 /**
  * PspAudio class.
  *
- * Mixes the audio with GenericAudio::Decode on a dedicated thread and sends
- * the result to the PSP's hardware resampler (44.1 kHz, 16 bit, stereo).
+ * Two threads share the work:
+ * - The mixer thread runs GenericAudio::Decode and fills a short ring of PCM blocks. Decoding may
+ *   take longer than a block lasts now and then (e.g. when many MIDI notes play or the game
+ *   holds the audio lock to open a file), the ring hides that.
+ * - The output thread copies each block into one of several exclusive DMA buffers and hands it to
+ *   the PSP's hardware resampler (44.1 kHz, 16 bit, stereo). It runs at a higher priority than the
+ *   game so it never misses a deadline.
  */
 class PspAudio : public GenericAudio {
 public:
@@ -39,8 +44,9 @@ public:
 	volatile bool termStream = false;
 
 private:
-	SceUID audio_mutex;
-	SceUID audio_thread;
+	SceUID audio_mutex = -1;
+	SceUID mixer_thread = -1;
+	SceUID output_thread = -1;
 }; // class PspAudio
 
 #endif
