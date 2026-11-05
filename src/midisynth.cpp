@@ -958,6 +958,88 @@ namespace midisynth{
         }
     }
 
+    // Generates n envelope values at once. The result is exactly what n calls of get_next() return,
+    // but runs inside one state are done in tight loops. The state changes are left to get_next().
+    void envelope_generator::fill(int_least32_t* out, std::size_t n)
+    {
+        while(n){
+            uint_least32_t current = this->current;
+            switch(state){
+            case ATTACK:
+            case ATTACK_RELEASE:
+                while(n && current < fTL){
+                    current += fAR;
+                    *out++ = static_cast<int_least32_t>(current);
+                    --n;
+                }
+                break;
+            case DECAY:
+                while(n && current > fSS){
+                    current -= fDR;
+                    *out++ = log_table.get(current / 65536);
+                    --n;
+                }
+                break;
+            case DECAY_RELEASE:
+                while(n && current > fDSS){
+                    current -= fDRR;
+                    *out++ = log_table.get(current / 65536);
+                    --n;
+                }
+                break;
+            case SASTAIN:
+                while(n && current > fSR){
+                    uint_least32_t next = current - fSR;
+                    int v = log_table.get(next / 65536);
+                    if(v <= 1){
+                        break;
+                    }
+                    current = next;
+                    *out++ = v;
+                    --n;
+                }
+                break;
+            case RELEASE:
+                while(n && current > fRR){
+                    uint_least32_t next = current - fRR;
+                    int v = log_table.get(next / 65536);
+                    if(v <= SOUNDOFF_LEVEL){
+                        break;
+                    }
+                    current = next;
+                    *out++ = v;
+                    --n;
+                }
+                break;
+            case SOUNDOFF:
+                while(n && current > fOR){
+                    uint_least32_t next = current - fOR;
+                    int v = log_table.get(next / 65536);
+                    if(v <= 1){
+                        break;
+                    }
+                    current = next;
+                    *out++ = v;
+                    --n;
+                }
+                break;
+            default:
+                // finished
+                while(n){
+                    *out++ = 0;
+                    --n;
+                }
+                return;
+            }
+            this->current = current;
+            if(n){
+                // Next sample changes the state (or the run is over), let get_next() handle it.
+                *out++ = get_next();
+                --n;
+            }
+        }
+    }
+
     namespace{
         // Key scaling table
         const int keyscale_table[4][128] = {
@@ -1070,7 +1152,8 @@ namespace midisynth{
            SR * 2 + keyscale_table[KS][key],
            RR * 4 + keyscale_table[KS][key] + 2,
            SL,
-           TL)
+           TL),
+        env(nullptr)
     {
         assert(AR >= 0 && AR <= 31);
         assert(DR >= 0 && DR <= 31);
@@ -1109,15 +1192,15 @@ namespace midisynth{
     // Gets the next sample.
     inline int fm_operator::get_next()
     {
-        return static_cast<int_least32_t>(swg.get_next()) * eg.get_next() >> 15;
+        return static_cast<int_least32_t>(swg.get_next()) * *env++ >> 15;
     }
     inline int fm_operator::get_next(int modulate)
     {
-        return static_cast<int_least32_t>(swg.get_next(modulate)) * eg.get_next() >> 15;
+        return static_cast<int_least32_t>(swg.get_next(modulate)) * *env++ >> 15;
     }
     inline int fm_operator::get_next(int ams, int modulate)
     {
-        return (static_cast<int_least32_t>(swg.get_next(modulate)) * eg.get_next() >> 15) * (ams * ams_factor + ams_bias) >> 15;
+        return (static_cast<int_least32_t>(swg.get_next(modulate)) * *env++ >> 15) * (ams * ams_factor + ams_bias) >> 15;
     }
 
     // Vibrato table.
@@ -1377,10 +1460,18 @@ namespace midisynth{
         left = (left * velocity) >> 7;
         right = (right * velocity) >> 7;
         fm.set_rate(rate);
-        for(std::size_t i = 0; i < samples; ++i){
-            int_least32_t sample = fm.get_next();
-            buf[i * 2 + 0] += (sample * left) >> 14;
-            buf[i * 2 + 1] += (sample * right) >> 14;
+        // Envelopes are generated for a chunk of samples at a time, which is faster than one by one
+        enum{ CHUNK = 256 };
+        int_least32_t env[4][CHUNK];
+        for(std::size_t done = 0; done < samples; ){
+            const std::size_t n = std::min<std::size_t>(CHUNK, samples - done);
+            fm.prepare(env[0], env[1], env[2], env[3], n);
+            for(std::size_t i = done; i < done + n; ++i){
+                int_least32_t sample = fm.get_next();
+                buf[i * 2 + 0] += (sample * left) >> 14;
+                buf[i * 2 + 1] += (sample * right) >> 14;
+            }
+            done += n;
         }
         return !fm.is_finished();
     }

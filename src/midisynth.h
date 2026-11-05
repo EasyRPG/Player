@@ -279,6 +279,7 @@ namespace midisynth{
         void sound_off();
         bool is_finished()const{ return state == FINISHED; }
         int get_next();
+        void fill(int_least32_t* out, std::size_t n);
     private:
         enum{ ATTACK, ATTACK_RELEASE, DECAY, DECAY_RELEASE, SASTAIN, RELEASE, SOUNDOFF, FINISHED }state;
         int AR, DR, SR, RR, TL;
@@ -302,6 +303,8 @@ namespace midisynth{
         void key_off(){ eg.key_off(); }
         void sound_off(){ eg.sound_off(); }
         bool is_finished()const{ return eg.is_finished(); }
+        // Generates the envelope of the next n samples. get_next must be called exactly n times afterwards.
+        void prepare(int_least32_t* buffer, std::size_t n){ eg.fill(buffer, n); env = buffer; }
         int get_next();
         int get_next(int modulate);
         int get_next(int lfo, int modulate);
@@ -311,6 +314,7 @@ namespace midisynth{
     private:
         sine_wave_generator swg;
         envelope_generator eg;
+        const int_least32_t* env;
         float ML;
         float DT;
         int_least32_t ams_factor;
@@ -343,6 +347,10 @@ namespace midisynth{
         void key_off();
         void sound_off();
         bool is_finished()const;
+        // Generates the envelopes of the next n samples. get_next must be called exactly n times afterwards.
+        void prepare(int_least32_t* e1, int_least32_t* e2, int_least32_t* e3, int_least32_t* e4, std::size_t n){
+            op1.prepare(e1, n); op2.prepare(e2, n); op3.prepare(e3, n); op4.prepare(e4, n);
+        }
         int get_next();
     private:
         fm_operator op1;
