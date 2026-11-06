@@ -80,39 +80,36 @@ allprojects {
 }
 
 dependencies {
-    implementation files("SDL3-${sdlVersion}.aar")
-    implementation 'androidx.appcompat:appcompat:1.7.1'
+    implementation files(fetchSdlAar())
+    implementation 'androidx.appcompat:appcompat:1.8.0'
     implementation "androidx.activity:activity:1.13.0"
-    implementation 'com.google.android.material:material:1.13.0'
+    implementation 'com.google.android.material:material:1.14.0'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.2'
     implementation 'androidx.documentfile:documentfile:1.1.0'
     implementation 'org.ini4j:ini4j:0.5.4'
 }
 
-afterEvaluate {
-    preBuild.dependsOn downloadSdlAar
-}
-
-tasks.register('downloadSdlAar') {
-    doLast {
-        def sdlAarDest = file("SDL3-${sdlVersion}.aar")
-        if (!sdlAarDest.exists()) {
-            println "Downloading SDL ${sdlVersion} AAR..."
-            def sdlZipDest = layout.buildDirectory.file("sdl3.zip").get().asFile
-            sdlZipDest.parentFile.mkdirs()
-            new URL("https://github.com/libsdl-org/SDL/releases/download/release-${sdlVersion}/SDL3-devel-${sdlVersion}-android.zip")
-                .withInputStream { i -> sdlZipDest.withOutputStream { it << i } }
-            copy {
-                from zipTree(sdlZipDest)
-                into projectDir
-                include "**/*.aar"
-                eachFile { FileCopyDetails fcp ->
-                    fcp.relativePath = new RelativePath(true, fcp.file.name)
-                }
-                includeEmptyDirs = false
-            }
-        }
+def fetchSdlAar() {
+    def sdlAarFile = layout.projectDirectory.file("SDL3-${sdlVersion}.aar").asFile
+    if (sdlAarFile.exists()) {
+        return sdlAarFile
     }
+
+    def sdlZipFile = layout.buildDirectory.file("SDL3-devel-${sdlVersion}-android.zip").get().asFile
+    sdlZipFile.parentFile.mkdirs()
+    println "Downloading SDL ${sdlVersion} AAR..."
+    new URL("https://github.com/libsdl-org/SDL/releases/download/release-${sdlVersion}/SDL3-devel-${sdlVersion}-android.zip")
+        .withInputStream { i -> sdlZipFile.withOutputStream { it << i } }
+    copy {
+        from zipTree(sdlZipFile)
+        into sdlAarFile.parentFile
+        include '**/*.aar'
+        eachFile { fcp ->
+            fcp.relativePath = new RelativePath(true, "SDL3-${sdlVersion}.aar")
+        }
+        includeEmptyDirs = false
+    }
+    return sdlAarFile
 }

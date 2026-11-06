@@ -52,6 +52,7 @@ obj/
 
 # Gradle
 .gradle
+SDL3-*.aar
 
 # immediate files and libraries
 app/src/main/assets
