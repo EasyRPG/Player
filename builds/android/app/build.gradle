@@ -1,17 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "org.easyrpg.player"
-    ndkVersion "28.2.13676358"
+    namespace = "org.easyrpg.player"
+    ndkVersion = "28.2.13676358"
     assetPacks = [":assets"]
     buildFeatures {
-        prefab true
+        prefab = true
     }
     defaultConfig {
         applicationId "org.easyrpg.player"
-        compileSdkVersion 36
+        compileSdkVersion 37
         minSdkVersion 23
-        targetSdkVersion 36
+        targetSdkVersion 37
         versionName VERSION_NAME
         versionCode Integer.parseInt(VERSION_CODE)
     }
@@ -36,18 +36,18 @@ android {
                 abiFilters.addAll(ABI_FILTERS_RELEASE.split(','))
             }
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.txt'
+            signingConfig = signingConfigs.release
         }
     }
     externalNativeBuild {
         cmake {
             path "../../../CMakeLists.txt"
-            version "3.22.1"
+            version = "3.22.1"
         }
     }
     lint {
-        abortOnError false
+        abortOnError = false
         disable 'MissingTranslation'
     }
     defaultConfig {
@@ -74,7 +74,7 @@ android {
 allprojects {
     repositories {
         maven {
-            url 'https://maven.google.com'
+            url = 'https://maven.google.com'
         }
     }
 }
