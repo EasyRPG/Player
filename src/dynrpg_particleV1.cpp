@@ -144,13 +144,24 @@ public:
 		pos = name.find_last_of(".");
 		if (pos != std::string::npos) name = name.substr(0, pos);
 
-		if (!name.empty()) {
-			FileRequestAsync* req = AsyncHandler::RequestFile("Picture", name);
+			if (!name.empty()) {
+			std::string folder = "Picture";
+			std::string cache_name = name;
+
+			if (FileFinder::FindImage(folder, name).empty() && !FileFinder::FindImage("DynPlugins", name).empty()) {
+				folder = "DynPlugins";
+				cache_name = "../DynPlugins/" + name;
+			}
+
+			FileRequestAsync* req = AsyncHandler::RequestFile(folder, name);
 			req->Start();
-			image = Cache::Picture(name, mask);
+			image = Cache::Picture(cache_name, mask);
 			hasTexture = true;
 		}
 	}
+
+
+
 
 	void newBurst(int x, int y) {
 		BurstObj burst;
