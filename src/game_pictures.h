@@ -68,6 +68,8 @@ public:
 		int spritesheet_cols = 1;
 		int spritesheet_rows = 1;
 		int spritesheet_frame = 0;
+		int spritesheet_start = 0;
+		int spritesheet_end = 0;
 		int spritesheet_speed = 0;
 		int map_layer = 7;
 		int battle_layer = 0;
