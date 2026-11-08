@@ -53,6 +53,10 @@ Scene_Battle_Rpg2k::~Scene_Battle_Rpg2k() {
 
 void Scene_Battle_Rpg2k::Start() {
 	Scene_Battle::Start();
+	if (!Game_Battle::IsBattleRunning()) {
+		// Invalid troop, battle was already ended
+		return;
+	}
 	CreateEnemySprites();
 }
 
