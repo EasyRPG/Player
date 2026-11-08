@@ -581,7 +581,7 @@ std::vector<int> Process(std::vector<int32_t>::iterator& it, std::vector<int32_t
 			auto [first, second] = eval2();
 			if (execute) {
 				return {
-					ControlVariables::Random(first, second)
+					ControlVariables::Random(second, first)
 				};
 			}
 			return { 0 };
@@ -590,35 +590,35 @@ std::vector<int> Process(std::vector<int32_t>::iterator& it, std::vector<int32_t
 			if (argc != 2) { return { 0 }; }
 			auto [first, second] = eval2();
 			return {
-				ControlVariables::Item(first, second)
+				ControlVariables::Item(second, first)
 			};
 		}
 		case Fn::Event: {
 			if (argc != 2) { return { 0 }; }
 			auto [first, second] = eval2();
 			return {
-				ControlVariables::Event(first, second, ip)
+				ControlVariables::Event(second, first, ip)
 			};
 		}
 		case Fn::Actor: {
 			if (argc != 2) { return { 0 }; }
 			auto [first, second] = eval2();
 			return {
-				ControlVariables::Actor(first, second)
+				ControlVariables::Actor(second, first)
 			};
 		}
 		case Fn::Party: {
 			if (argc != 2) { return { 0 }; }
 			auto [first, second] = eval2();
 			return {
-				ControlVariables::Party(first, second)
+				ControlVariables::Party(second, first)
 			};
 		}
 		case Fn::Enemy: {
 			if (argc != 2) { return { 0 }; }
 			auto [first, second] = eval2();
 			return {
-				ControlVariables::Enemy(first, second)
+				ControlVariables::Enemy(second, first)
 			};
 		}
 		case Fn::Misc: {
