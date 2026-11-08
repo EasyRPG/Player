@@ -375,15 +375,27 @@ bool DynRpg::ParticleV1::Invoke(std::string_view func, dyn_arg_list args, bool& 
 		effect->SetGrowth(size_begin, size_end);
 		return true;
 	}
+
 	if (func == "effect_speed") {
-		auto [speed, rand_speed] = DynRpg::ParseArgs<float, float>(func, args, 1, &okay);
-		if (!okay) {
+		bool spd_okay = false;
+		auto speed = DynRpg::ParseArg<float>(func, args, 1, &spd_okay);
+		if (!spd_okay) {
 			return true;
 		}
 		effect->spd = speed;
-		effect->rand_spd = rand_speed;
+
+		// Check if a second argument (rand_spd) was provided; otherwise keep/default it safely
+		if (args.size() > 2) {
+			bool rand_okay = false;
+			auto rand_speed = DynRpg::ParseArg<float>(func, args, 2, &rand_okay);
+			if (rand_okay) {
+				effect->rand_spd = rand_speed;
+			}
+		}
 		return true;
 	}
+
+
 	if (func == "effect_timeout") {
 		auto [timeout] = DynRpg::ParseArgs<float>(func, args, 1, &okay);
 		if (!okay) {
