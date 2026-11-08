@@ -627,7 +627,6 @@ void Game_Variables::SwapArray(int first_id_a, int last_id_a, int first_id_b) {
 
 void Game_Variables::DerefArray(int first_id_a, int last_id_a, int first_id_b) {
 	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] = deref(var[{},{}])!");
-	// FIXME? This gives different results than Maniacs but not sure why
 	const Var_t minv = _min;
 	const Var_t maxv = _max;
 	auto& vv = _variables;
