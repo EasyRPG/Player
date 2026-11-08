@@ -598,8 +598,9 @@ void Game_Variables::BitShiftRightArray(int first_id_a, int last_id_a, int first
 }
 
 void Game_Variables::SwapArray(int first_id_a, int last_id_a, int first_id_b) {
-	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] <-> var[{},{}]!");
-	auto& vv = _variables;
+ 	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] <-> var[{},{}]!");
+	// Swap Array behaves incorrectly when swapping overlapping ranges
+ 	auto& vv = _variables;
 	int id_b = first_id_b;
 	for (int id_a = first_id_a; id_a <= last_id_a; ++id_a, ++id_b) {
 		Var_t val_a = Get(id_a);
@@ -635,12 +636,12 @@ void Game_Variables::SortSyncRange(int first_id, int last_id, int sync_id, bool 
 	if (asc) {
 		std::stable_sort(pairs.begin(), pairs.end(), [](const auto& a, const auto& b) {
 			return a.first < b.first;
-			});
+		});
 	}
 	else {
 		std::stable_sort(pairs.begin(), pairs.end(), [](const auto& a, const auto& b) {
 			return a.first > b.first;
-			});
+		});
 	}
 
 	for (int i = 0; i < steps; ++i) {
