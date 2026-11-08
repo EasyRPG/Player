@@ -185,6 +185,7 @@ protected:
 	void NextTurn(Game_Battler* battler);
 	bool CheckBattleEndAndScheduleEvents(EventTriggerType tt, Game_Battler* source);
 	bool CheckBattleEndConditions();
+	bool ScheduleDefeatEvents();
 
 	void SetBattleActionState(BattleActionState state);
 
@@ -238,6 +239,7 @@ protected:
 	bool first_strike = false;
 	bool running_away = false;
 	bool resume_from_debug_scene = false;
+	bool defeat_event_running = false;
 	bool auto_battle = false;
 
 	// CBA stuff
