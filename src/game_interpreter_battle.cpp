@@ -496,10 +496,12 @@ bool Game_Interpreter_Battle::CommandShowBattleAnimation(lcf::rpg::EventCommand 
 		Game_Battler* battler_target = nullptr;
 
 		if (allies) {
-			// Allies counted from 1
-			target -= 1;
-			if (target >= 0 && target < Main_Data::game_party->GetBattlerCount()) {
-				battler_target = &(*Main_Data::game_party)[target];
+			// RPG_RT: The target is the ID of a hero (RPG Maker 2003 lists the heroes of the database),
+			// the animation is only shown when the hero is in the party
+			for (auto* actor: Main_Data::game_party->GetActors()) {
+				if (actor->GetId() == target) {
+					battler_target = actor;
+				}
 			}
 		}
 		else {
