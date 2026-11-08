@@ -23,7 +23,7 @@
 namespace DynRpg {
 	class TextPlugin : public DynRpgPlugin {
 	public:
-		TextPlugin(Game_DynRpg& instance) : DynRpgPlugin("DynTextPlugin", instance) {}
+		TextPlugin(Game_DynRpg& instance);
 		~TextPlugin() override;
 
 		bool Invoke(std::string_view func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
