@@ -544,8 +544,3 @@ std::optional<lcf::rpg::EventCommand> Game_DynRpg::OnEventCommand(const Game_Int
 	return original;
 }
 
-void Game_DynRpg::OnFramesReset(const Game_Interpreter* interpreter, int first_frame) {
-	for (auto& plugin : plugins) {
-		plugin->OnFramesReset(interpreter, first_frame);
-	}
-}

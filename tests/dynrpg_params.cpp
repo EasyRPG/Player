@@ -130,45 +130,33 @@ TEST_CASE("Comments are read as a whole") {
 	CHECK(Main_Data::game_variables->Get(2) == 6);
 }
 
-TEST_CASE("State belongs to the script") {
+TEST_CASE("State is global") {
 	const MockGame mg(MockMap::ePass40x30);
 	DynRpgGuard g;
 	TestInterpreter a, b;
 
-	a.Push({MakeCommand(Cmd::ControlVars, set_v1)});
-	b.Push({MakeCommand(Cmd::ControlVars, set_v1)});
-
-	g.dyn().Invoke("@dynparams_add_param 6, 9", &a);
-	g.dyn().Invoke("@dynparams_overwrite_next", &a);
-
-	// Another interpreter is unaffected
-	CHECK(!g.dyn().OnEventCommand(b, b.GetFrame()));
-
-	// So is a frame called by the script
-	a.Push({MakeCommand(Cmd::ControlVars, set_v1)});
+	a.Push({
+		Comment("@dynparams_message_line_append_number 1, 7"),
+		Comment("@dynparams_message_line_append_string 1, \" slimes!\""),
+		Comment("@dynparams_overwrite_next"),
+	});
+	a.RunTo(3);
+	// The script ends: its END is skipped
 	CHECK(!g.dyn().OnEventCommand(a, a.GetFrame()));
 
-	// Back in the script that built the overwrite
-	a.Pop();
-	auto original = g.dyn().OnEventCommand(a, a.GetFrame());
+	// The next command of another event is overwritten
+	b.Push({
+		MakeCommand(Cmd::ShowMessage, {}, "THIS LINE GETS OVERWRITTEN"),
+		MakeCommand(Cmd::ControlVars, set_v1),
+	});
+	auto original = g.dyn().OnEventCommand(b, b.GetFrame());
 	REQUIRE(original);
-	CHECK(original->parameters[5] == 5);
-	CHECK(a.GetFrame().commands[0].parameters[5] == 9);
-}
+	CHECK(original->string == "THIS LINE GETS OVERWRITTEN");
+	CHECK(b.GetFrame().commands[0].string == "7 slimes!");
 
-TEST_CASE("Pushing a frame drops the state left at that depth") {
-	const MockGame mg(MockMap::ePass40x30);
-	DynRpgGuard g;
-	TestInterpreter a;
-
-	a.Push({MakeCommand(Cmd::ControlVars, set_v1)});
-	a.Push({MakeCommand(Cmd::ControlVars, set_v1)});
-	g.dyn().Invoke("@dynparams_add_param 6, 9", &a);
-	g.dyn().Invoke("@dynparams_overwrite_next", &a);
-
-	a.Pop();
-	a.Push({MakeCommand(Cmd::ControlVars, set_v1)});
-	CHECK(!g.dyn().OnEventCommand(a, a.GetFrame()));
+	// Applying resets everything
+	b.GetFrame().current_command = 1;
+	CHECK(!g.dyn().OnEventCommand(b, b.GetFrame()));
 }
 
 TEST_CASE("Parameters out of range are ignored") {

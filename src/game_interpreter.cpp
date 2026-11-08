@@ -91,7 +91,6 @@ Game_Interpreter::Game_Interpreter(bool _main_flag) {
 }
 
 Game_Interpreter::~Game_Interpreter() {
-	ResetDynRpgFrames(0);
 }
 
 // Clear.
@@ -646,9 +645,6 @@ void Game_Interpreter::RestoreDynRpgCommand() {
 void Game_Interpreter::ResetDynRpgFrames(int first_frame) {
 	if (_dynrpg_restore && _dynrpg_restore->frame >= first_frame) {
 		_dynrpg_restore.reset();
-	}
-	if (Main_Data::game_dynrpg) {
-		Main_Data::game_dynrpg->OnFramesReset(this, first_frame);
 	}
 }
 

@@ -22,7 +22,6 @@
 #include <map>
 #include <optional>
 #include <string>
-#include <utility>
 #include "game_dynrpg.h"
 #include "filesystem_stream.h"
 
@@ -49,8 +48,8 @@ namespace DynRpg {
 	 * The next command skips END lines and block closers. Applying resets
 	 * everything, including the index.
 	 *
-	 * Like DynParams.dll (which keys it by RPG::EventScriptData), the state
-	 * belongs to the running script: each frame of each interpreter has its own.
+	 * Like DynParams.dll, the state is global: comments run by one event
+	 * rewrite the next command of whichever event runs one next.
 	 * The rewritten command is restored once executed (DynRPG does that), but
 	 * the message lines and choices that follow it stay rewritten.
 	 *
@@ -63,14 +62,13 @@ namespace DynRpg {
 
 		bool Invoke(std::string_view func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) override;
 		std::optional<lcf::rpg::EventCommand> OnEventCommand(const Game_Interpreter& interpreter, lcf::rpg::SaveEventExecFrame& frame) override;
-		void OnFramesReset(const Game_Interpreter* interpreter, int first_frame) override;
 
 	private:
 		static constexpr int default_index = 5;
 		static constexpr int message_lines = 4;
 
-		/** Overwrite orders built by the comment commands of one script */
-		struct Script {
+		/** Overwrite orders built by the comment commands */
+		struct State {
 			std::map<int, int> params;
 			std::string text;
 			bool text_set = false;
@@ -81,16 +79,12 @@ namespace DynRpg {
 			bool overwrite = false;
 		};
 
-		/** Script of an interpreter's frame (nullptr: comments invoked without an interpreter) */
-		using ScriptKey = std::pair<const Game_Interpreter*, int>;
-
-		static ScriptKey KeyOf(const Game_Interpreter* interpreter);
-		void Apply(Script& script, lcf::rpg::EventCommand& com, lcf::rpg::SaveEventExecFrame& frame);
-		void List(const Script& script) const;
+		void Apply( lcf::rpg::EventCommand& com, lcf::rpg::SaveEventExecFrame& frame);
+		void List() const;
 		void Record(const lcf::rpg::EventCommand& com);
 		void Log(std::string_view text) const;
 
-		std::map<ScriptKey, Script> scripts;
+		State state;
 		bool debug_log = false;
 		bool record = false;
 		Filesystem_Stream::OutputStream record_file;

@@ -149,16 +149,6 @@ public:
 	 */
 	std::optional<lcf::rpg::EventCommand> OnEventCommand(const Game_Interpreter& interpreter, lcf::rpg::SaveEventExecFrame& frame);
 
-	/**
-	 * The frames of an interpreter from first_frame on are replaced
-	 * (a frame is pushed at first_frame, the stack is cleared or the
-	 * interpreter destroyed): plugins drop the state of those scripts.
-	 *
-	 * @param interpreter the interpreter
-	 * @param first_frame index of the first replaced frame
-	 */
-	void OnFramesReset(const Game_Interpreter* interpreter, int first_frame);
-
 	/** @return raw text of the DynRPG comment being invoked (e.g. "@func 1, 2") */
 	std::string_view GetCurrentComment() const { return current_comment; }
 
@@ -199,8 +189,6 @@ public:
 	 * @return the rewritten command, none to leave it unchanged
 	 */
 	virtual std::optional<lcf::rpg::EventCommand> OnEventCommand(const Game_Interpreter&, lcf::rpg::SaveEventExecFrame&) { return {}; }
-	/** See Game_DynRpg::OnFramesReset */
-	virtual void OnFramesReset(const Game_Interpreter*, int) {}
 
 protected:
 	Game_DynRpg& instance;

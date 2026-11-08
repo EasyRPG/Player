@@ -72,13 +72,6 @@ DynRpg::ParamsPlugin::ParamsPlugin(Game_DynRpg& instance) : DynRpgPlugin("DynPar
 	}
 }
 
-DynRpg::ParamsPlugin::ScriptKey DynRpg::ParamsPlugin::KeyOf(const Game_Interpreter* interpreter) {
-	if (!interpreter) {
-		return {nullptr, 0};
-	}
-	return {interpreter, static_cast<int>(interpreter->GetState().stack.size()) - 1};
-}
-
 bool DynRpg::ParamsPlugin::Invoke(std::string_view func, dyn_arg_list args, bool&, Game_Interpreter* interpreter) {
 	if (func == "dynparams_start_record") {
 		record = true;
@@ -89,19 +82,17 @@ bool DynRpg::ParamsPlugin::Invoke(std::string_view func, dyn_arg_list args, bool
 		return true;
 	}
 
-	auto& script = scripts[KeyOf(interpreter)];
-
 	if (func == "dynparams_add_param") {
 		if (args.size() == 1) {
-			script.params[script.index] = ArgToInt(func, args, 0);
-			++script.index;
+			state.params[state.index] = ArgToInt(func, args, 0);
+			++state.index;
 		} else {
-			script.params[ArgToInt(func, args, 0)] = ArgToInt(func, args, 1);
+			state.params[ArgToInt(func, args, 0)] = ArgToInt(func, args, 1);
 		}
 		return true;
 	}
 	if (func == "dynparams_set_index") {
-		script.index = ArgToInt(func, args, 0);
+		state.index = ArgToInt(func, args, 0);
 		return true;
 	}
 	if (func == "dynparams_append_string") {
@@ -109,14 +100,14 @@ bool DynRpg::ParamsPlugin::Invoke(std::string_view func, dyn_arg_list args, bool
 		std::string_view comment = instance.GetCurrentComment();
 		constexpr size_t prefix = sizeof("@dynparams_append_string ") - 1;
 		if (comment.size() > prefix) {
-			script.text += std::string(comment.substr(prefix));
+			state.text += std::string(comment.substr(prefix));
 		}
-		script.text_set = true;
+		state.text_set = true;
 		return true;
 	}
 	if (func == "dynparams_append_number") {
-		script.text += std::to_string(ArgToInt(func, args, 0));
-		script.text_set = true;
+		state.text += std::to_string(ArgToInt(func, args, 0));
+		state.text_set = true;
 		return true;
 	}
 	if (func == "dynparams_message_line_append_string" || func == "dynparams_message_line_append_number") {
@@ -126,8 +117,8 @@ bool DynRpg::ParamsPlugin::Invoke(std::string_view func, dyn_arg_list args, bool
 			return true;
 		}
 		bool number = func == "dynparams_message_line_append_number";
-		script.lines[line - 1] += number ? std::to_string(ArgToInt(func, args, 1)) : ArgToString(args, 1);
-		script.lines_set = true;
+		state.lines[line - 1] += number ? std::to_string(ArgToInt(func, args, 1)) : ArgToString(args, 1);
+		state.lines_set = true;
 		return true;
 	}
 	if (func == "dynparams_choice_case_append_string" || func == "dynparams_choice_case_append_number") {
@@ -137,11 +128,11 @@ bool DynRpg::ParamsPlugin::Invoke(std::string_view func, dyn_arg_list args, bool
 			return true;
 		}
 		bool number = func == "dynparams_choice_case_append_number";
-		script.choices[choice - 1] += number ? std::to_string(ArgToInt(func, args, 1)) : ArgToString(args, 1);
+		state.choices[choice - 1] += number ? std::to_string(ArgToInt(func, args, 1)) : ArgToString(args, 1);
 		return true;
 	}
 	if (func == "dynparams_overwrite_next") {
-		script.overwrite = true;
+		state.overwrite = true;
 		if (debug_log) {
 			const auto* frame = interpreter && !interpreter->GetState().stack.empty() ? &interpreter->GetState().stack.back() : nullptr;
 			Log(fmt::format("Setting overwrite next flag to true: event {}, line {}",
@@ -150,26 +141,25 @@ bool DynRpg::ParamsPlugin::Invoke(std::string_view func, dyn_arg_list args, bool
 		return true;
 	}
 	if (func == "dynparams_clear_params") {
-		script = {};
+		state = {};
 		return true;
 	}
 	if (func == "dynparams_list_params") {
-		List(script);
+		List();
 		return true;
 	}
 	return false;
 }
 
-std::optional<lcf::rpg::EventCommand> DynRpg::ParamsPlugin::OnEventCommand(const Game_Interpreter& interpreter, lcf::rpg::SaveEventExecFrame& frame) {
+std::optional<lcf::rpg::EventCommand> DynRpg::ParamsPlugin::OnEventCommand(const Game_Interpreter&, lcf::rpg::SaveEventExecFrame& frame) {
 	const auto& com = frame.commands[frame.current_command];
 	std::optional<lcf::rpg::EventCommand> rewritten;
 
-	auto it = scripts.find(KeyOf(&interpreter));
-	if (it != scripts.end() && it->second.overwrite && !IsSkipped(com.code)) {
+	if (state.overwrite && !IsSkipped(com.code)) {
 		rewritten = com;
-		Apply(it->second, *rewritten, frame);
+		Apply(*rewritten, frame);
 		// Applying resets everything
-		scripts.erase(it);
+		state = {};
 	}
 
 	if (record) {
@@ -178,38 +168,31 @@ std::optional<lcf::rpg::EventCommand> DynRpg::ParamsPlugin::OnEventCommand(const
 	return rewritten;
 }
 
-void DynRpg::ParamsPlugin::OnFramesReset(const Game_Interpreter* interpreter, int first_frame) {
-	auto it = scripts.lower_bound({interpreter, first_frame});
-	while (it != scripts.end() && it->first.first == interpreter) {
-		it = scripts.erase(it);
-	}
-}
-
-void DynRpg::ParamsPlugin::Apply(Script& script, lcf::rpg::EventCommand& com, lcf::rpg::SaveEventExecFrame& frame) {
+void DynRpg::ParamsPlugin::Apply(lcf::rpg::EventCommand& com, lcf::rpg::SaveEventExecFrame& frame) {
 	auto& commands = frame.commands;
 	const size_t current = frame.current_command;
 	Log(fmt::format("Overwriting event line: command {}, event {}, line {}", com.code, frame.event_id, current));
 
-	if (script.text_set) {
-		Log(fmt::format("Overwriting main string parameter with: '{}'", script.text));
-		com.string = lcf::DBString(script.text);
+	if (state.text_set) {
+		Log(fmt::format("Overwriting main string parameter with: '{}'", state.text));
+		com.string = lcf::DBString(state.text);
 	}
 
-	if (script.lines_set) {
+	if (state.lines_set) {
 		// The first line, then the message lines that follow (not restored after execution)
 		Log("Overwriting message line string parameters");
-		com.string = lcf::DBString(script.lines[0]);
+		com.string = lcf::DBString(state.lines[0]);
 		for (int line = 1; line < message_lines; ++line) {
 			size_t i = current + line;
 			if (i >= commands.size() || commands[i].code != static_cast<int>(Cmd::ShowMessage_2)) {
 				break;
 			}
-			Log(fmt::format("Line {}: '{}'", line, script.lines[line]));
-			commands[i].string = lcf::DBString(script.lines[line]);
+			Log(fmt::format("Line {}: '{}'", line, state.lines[line]));
+			commands[i].string = lcf::DBString(state.lines[line]);
 		}
 	}
 
-	if (!script.choices.empty()) {
+	if (!state.choices.empty()) {
 		Log("Overwriting choice case string parameters");
 		// The choices of this Show Choices, or of the one right after this message
 		size_t i = current;
@@ -232,8 +215,8 @@ void DynRpg::ParamsPlugin::Apply(Script& script, lcf::rpg::EventCommand& com, lc
 					}
 					--nesting;
 				} else if (line.code == static_cast<int>(Cmd::ShowChoiceOption) && nesting == 0) {
-					auto text = script.choices.find(choice);
-					if (text != script.choices.end()) {
+					auto text = state.choices.find(choice);
+					if (text != state.choices.end()) {
 						Log(fmt::format("Choice case {}: '{}'", choice + 1, text->second));
 						line.string = lcf::DBString(text->second);
 					}
@@ -243,10 +226,10 @@ void DynRpg::ParamsPlugin::Apply(Script& script, lcf::rpg::EventCommand& com, lc
 		}
 	}
 
-	if (!script.params.empty()) {
+	if (!state.params.empty()) {
 		Log("Overwriting number parameters");
 	}
-	for (const auto& [i, value] : script.params) {
+	for (const auto& [i, value] : state.params) {
 		// DynParams.dll writes out of bounds (RPG_RT crashes or corrupts memory)
 		if (i < 1 || static_cast<size_t>(i) > com.parameters.size()) {
 			Output::Warning("DynParams: Command {} has no parameter {} (it has {})", com.code, i, com.parameters.size());
@@ -258,16 +241,16 @@ void DynRpg::ParamsPlugin::Apply(Script& script, lcf::rpg::EventCommand& com, lc
 	Log("Overwriting of event line completed");
 }
 
-void DynRpg::ParamsPlugin::List(const Script& script) const {
+void DynRpg::ParamsPlugin::List() const {
 	// DynParams.dll shows this in a message box
-	for (const auto& [i, value] : script.params) {
+	for (const auto& [i, value] : state.params) {
 		Output::Info("DynParams: Integer parameter {}: {}", i, value);
 	}
-	Output::Info("DynParams: String parameter: \"{}\"", script.text);
+	Output::Info("DynParams: String parameter: \"{}\"", state.text);
 	for (int line = 0; line < message_lines; ++line) {
-		Output::Info("DynParams: Message line {} parameter: \"{}\"", line + 1, script.lines[line]);
+		Output::Info("DynParams: Message line {} parameter: \"{}\"", line + 1, state.lines[line]);
 	}
-	for (const auto& [choice, text] : script.choices) {
+	for (const auto& [choice, text] : state.choices) {
 		Output::Info("DynParams: Choice case {} parameter: \"{}\"", choice + 1, text);
 	}
 }
