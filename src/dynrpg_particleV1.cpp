@@ -407,9 +407,12 @@ bool DynRpg::ParticleV1::Invoke(std::string_view func, dyn_arg_list args, bool& 
 			v1_effects[index]->delay = get_double(1, 0.0);
 			return true;
 		}
-//		if (func == "effect_file") m.substr(0, 4) == "TRUE");
-//			v1_effects[index]->loadTexture();
-//			return true;
+		if (func == "effect_file") {
+			std::string m = get_string(1, "");
+			if (m.substr(0, 4) == "TRUE");
+			v1_effects[index]->loadTexture();
+			return true;
+		}
 		if (func == "effect_kill") {
 			v1_effects[index]->killParticles();
 			return true;
