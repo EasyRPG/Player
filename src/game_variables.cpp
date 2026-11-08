@@ -22,6 +22,7 @@
 #include <lcf/data.h>
 #include "utils.h"
 #include "rand.h"
+#include <algorithm>
 #include <cmath>
 #include <lcf/span.h>
 
@@ -192,21 +193,27 @@ void Game_Variables::PrepareArray(const int first_id_a, const int last_id_a, con
 
 template <typename V, typename F>
 void Game_Variables::WriteRange(const int first_id, const int last_id, V&& value, F&& op) {
+	// Copy the limits into locals: Prevents reloading _min and _max every loop
+	// due to aliasing rules
+	const Var_t minv = _min;
+	const Var_t maxv = _max;
 	auto& vv = _variables;
 	for (int i = std::max(0, first_id - 1); i < last_id; ++i) {
 		auto& v = vv[i];
-		v = Utils::Clamp(op(v, value()), _min, _max);
+		v = Utils::Clamp(op(v, value()), minv, maxv);
 	}
 }
 
 template <typename F>
 void Game_Variables::WriteArray(const int first_id_a, const int last_id_a, const int first_id_b, F&& op) {
+	const Var_t minv = _min;
+	const Var_t maxv = _max;
 	auto& vv = _variables;
-	int out_b = std::max(0, first_id_b - 1);
-	for (int i = std::max(0, first_id_a - 1); i < last_id_a; ++i) {
-		auto& v_a = vv[i];
-		auto v_b = vv[out_b++];
-		v_a = Utils::Clamp(op(v_a, v_b), _min, _max);
+	int id_b = first_id_b;
+	for (int id_a = first_id_a; id_a <= last_id_a; ++id_a, ++id_b) {
+		if (id_a > 0 && id_a <= static_cast<int>(vv.size())) {
+			vv[id_a - 1] = Utils::Clamp(op(vv[id_a - 1], Get(id_b)), minv, maxv);
+		}
 	}
 }
 
@@ -266,7 +273,13 @@ Game_Variables::Var_t Game_Variables::BitShiftRight(int variable_id, Var_t value
 
 void Game_Variables::SetRange(int first_id, int last_id, Var_t value) {
 	PrepareRange(first_id, last_id, "Invalid write var[{},{}] = {}!", value);
-	WriteRange(first_id, last_id, [value](){ return value; }, VarSet);
+	// Use much faster std::fill instead of WriteRange as the value is constant
+	// and must be only clamped once
+	const int first = std::max(0, first_id - 1);
+	if (first < last_id) {
+		std::fill(_variables.begin() + first, _variables.begin() + last_id,
+			Utils::Clamp(value, _min, _max));
+	}
 }
 
 void Game_Variables::AddRange(int first_id, int last_id, Var_t value) {
@@ -533,15 +546,18 @@ void Game_Variables::SetArray(int first_id_a, int last_id_a, int first_id_b) {
 	// This ensures overlapping areas are copied properly
 	if (first_id_a < first_id_b) {
 		WriteArray(first_id_a, last_id_a, first_id_b, VarSet);
-	} else {
+	}
+	else {
+		const Var_t minv = _min;
+		const Var_t maxv = _max;
 		auto& vv = _variables;
 		const int steps = std::max(0, last_id_a - first_id_a + 1);
-		int out_b = std::max(0, first_id_b + steps - 2);
-		int out_a = std::max(0, last_id_a - 1);
-		for (int i = 0; i < steps; ++i) {
-			auto& v_a = vv[out_a--];
-			auto v_b = vv[out_b--];
-			v_a = Utils::Clamp(VarSet(v_a, v_b), _min, _max);
+		int id_a = last_id_a;
+		int id_b = first_id_b + steps - 1;
+		for (int i = 0; i < steps; ++i, --id_a, --id_b) {
+			if (id_a > 0 && id_a <= static_cast<int>(vv.size())) {
+				vv[id_a - 1] = Utils::Clamp(Get(id_b), minv, maxv);
+			}
 		}
 	}
 }
@@ -597,13 +613,99 @@ void Game_Variables::BitShiftRightArray(int first_id_a, int last_id_a, int first
 }
 
 void Game_Variables::SwapArray(int first_id_a, int last_id_a, int first_id_b) {
-	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] <-> var[{},{}]!");
+ 	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] <-> var[{},{}]!");
+	// Swap Array behaves incorrectly when swapping overlapping ranges
+ 	auto& vv = _variables;
+	int id_b = first_id_b;
+	for (int id_a = first_id_a; id_a <= last_id_a; ++id_a, ++id_b) {
+		Var_t val_a = Get(id_a);
+		Var_t val_b = Get(id_b);
+		if (id_a > 0 && id_a <= static_cast<int>(vv.size())) vv[id_a - 1] = val_b;
+		if (id_b > 0 && id_b <= static_cast<int>(vv.size())) vv[id_b - 1] = val_a;
+	}
+}
+
+void Game_Variables::DerefArray(int first_id_a, int last_id_a, int first_id_b) {
+	PrepareArray(first_id_a, last_id_a, first_id_b, "Invalid write var[{},{}] = deref(var[{},{}])!");
+	const Var_t minv = _min;
+	const Var_t maxv = _max;
 	auto& vv = _variables;
-	const int steps = std::max(0, last_id_a - first_id_a + 1);
-	int out_b = std::max(0, first_id_b + steps - 2);
-	int out_a = std::max(0, last_id_a - 1);
+	int id_b = first_id_b;
+	for (int id_a = first_id_a; id_a <= last_id_a; ++id_a, ++id_b) {
+		if (id_a > 0 && id_a <= static_cast<int>(vv.size())) {
+			vv[id_a - 1] = Utils::Clamp(GetIndirect(id_b), minv, maxv);
+		}
+	}
+}
+
+void Game_Variables::SortSyncRange(int first_id, int last_id, int sync_id, bool asc) {
+	PrepareArray(first_id, last_id, sync_id, "Invalid write sort_sync(var[{},{}], var[{},{}])!");
+	auto& vv = _variables;
+	int steps = last_id - first_id + 1;
+	if (steps <= 1) return;
+
+	std::vector<std::pair<Var_t, Var_t>> pairs;
+	pairs.reserve(steps);
 	for (int i = 0; i < steps; ++i) {
-		std::swap(vv[out_a--], vv[out_b--]);
+		pairs.emplace_back(Get(first_id + i), Get(sync_id + i));
+	}
+
+	if (asc) {
+		std::stable_sort(pairs.begin(), pairs.end(), [](const auto& a, const auto& b) {
+			return a.first < b.first;
+		});
+	}
+	else {
+		std::stable_sort(pairs.begin(), pairs.end(), [](const auto& a, const auto& b) {
+			return a.first > b.first;
+		});
+	}
+
+	for (int i = 0; i < steps; ++i) {
+		int id_a = first_id + i;
+		int id_b = sync_id + i;
+		if (id_a > 0 && id_a <= static_cast<int>(vv.size())) vv[id_a - 1] = pairs[i].first;
+		if (id_b > 0 && id_b <= static_cast<int>(vv.size())) vv[id_b - 1] = pairs[i].second;
+	}
+}
+
+void Game_Variables::ShuffleSyncRange(int first_id, int last_id, int sync_id) {
+	PrepareArray(first_id, last_id, sync_id, "Invalid write shuffle_sync(var[{},{}], var[{},{}])!");
+	auto& vv = _variables;
+	int steps = last_id - first_id + 1;
+	if (steps <= 1) return;
+
+	int offset_b = sync_id - first_id;
+	for (int id_a = first_id; id_a <= last_id; ++id_a) {
+		int rnd_id = Rand::GetRandomNumber(first_id, last_id);
+
+		Var_t val_a1 = Get(id_a);
+		Var_t val_a2 = Get(rnd_id);
+		Var_t val_b1 = Get(id_a + offset_b);
+		Var_t val_b2 = Get(rnd_id + offset_b);
+
+		if (id_a > 0 && id_a <= static_cast<int>(vv.size())) vv[id_a - 1] = val_a2;
+		if (rnd_id > 0 && rnd_id <= static_cast<int>(vv.size())) vv[rnd_id - 1] = val_a1;
+
+		if (id_a + offset_b > 0 && id_a + offset_b <= static_cast<int>(vv.size())) vv[id_a + offset_b - 1] = val_b2;
+		if (rnd_id + offset_b > 0 && rnd_id + offset_b <= static_cast<int>(vv.size())) vv[rnd_id + offset_b - 1] = val_b1;
+	}
+}
+
+void Game_Variables::ReverseRange(int first_id, int last_id) {
+	PrepareRange(first_id, last_id, "Invalid write reverse(var[{},{}])!");
+	auto& vv = _variables;
+	int steps = last_id - first_id + 1;
+	if (steps <= 1) return;
+
+	int half_steps = steps / 2;
+	for (int i = 0; i < half_steps; ++i) {
+		int id_a = first_id + i;
+		int id_b = last_id - i;
+		Var_t val_a = Get(id_a);
+		Var_t val_b = Get(id_b);
+		if (id_a > 0 && id_a <= static_cast<int>(vv.size())) vv[id_a - 1] = val_b;
+		if (id_b > 0 && id_b <= static_cast<int>(vv.size())) vv[id_b - 1] = val_a;
 	}
 }
 
