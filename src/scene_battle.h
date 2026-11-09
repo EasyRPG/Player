@@ -81,6 +81,9 @@ public:
 
 	void CreateOptions();
 
+	/** @return whether the battle allows escape, as set by the Enemy Encounter command */
+	bool IsEscapeAllowed() const;
+
 	void UpdateScreen();
 	void UpdateBattlers();
 	void UpdateUi();
@@ -141,7 +144,6 @@ protected:
 	virtual void SetState(Scene_Battle::State new_state) = 0;
 
 	bool IsWindowMoving();
-	bool IsEscapeAllowed() const;
 
 	virtual Game_Enemy* EnemySelected();
 	virtual Game_Actor* AllySelected();
