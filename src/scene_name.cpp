@@ -15,6 +15,7 @@
  * along with EasyRPG Player. If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <algorithm>
 #include <cassert>
 
 #include "scene_name.h"
@@ -80,6 +81,13 @@ void Scene_Name::Start() {
 	layouts.push_back(Window_Keyboard::Letter);
 	layouts.push_back(Window_Keyboard::Symbol);
 	kbd_window.reset(new Window_Keyboard(Player::menu_offset_x + margin_x, Player::menu_offset_y + window_face_height + margin_y, window_keyboard_width, window_keyboard_height, done));
+
+	const int max_index = static_cast<int>(layouts.size()) - 1;
+	if (layout_index < 0 || layout_index > max_index) {
+		int capped_index = std::clamp(layout_index, 0, max_index);
+		Output::Warning("EnterHeroName: Invalid keyboard page {}, using page {}", layout_index, capped_index);
+		layout_index = capped_index;
+	}
 
 	auto next_index = layout_index + 1;
 	if (next_index >= static_cast<int>(layouts.size())) {
