@@ -103,4 +103,37 @@ TEST_CASE("StringIsAscii") {
 	REQUIRE_FALSE(Utils::StringIsAscii("　")); // Full-Width-Space
 }
 
+TEST_CASE("ResizeLegacyWidth") {
+	SUBCASE("double byte") {
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("Lv", 2, true), "Lv");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("L", 2, true), "L ");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("", 2, true), "  ");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("Level", 2, true), "Le");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("級", 2, true), "級");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("†", 2, true), "†");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("ＬＶ", 2, true), "Ｌ");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("ää", 2, true), "ä");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("ﾚﾍﾞﾙ", 2, true), "ﾚﾍ"); // half-width katakana
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("ﾚv", 2, true), "ﾚv");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("L級", 2, true), "L ");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("級L", 2, true), "級");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("体力", 2, true), "体");
+	}
+
+	SUBCASE("single byte") {
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("Lv", 2, false), "Lv");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("L", 2, false), "L ");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("", 2, false), "  ");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("Level", 2, false), "Le");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("ää", 2, false), "ää");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("Уровень", 2, false), "Ур");
+	}
+
+	SUBCASE("other widths") {
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("級", 3, true), "級 ");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("級", 1, true), " ");
+		REQUIRE_EQ(Utils::ResizeLegacyWidth("Lv", 0, true), "");
+	}
+}
+
 TEST_SUITE_END();

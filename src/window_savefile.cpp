@@ -25,6 +25,7 @@
 #include "bitmap.h"
 #include "font.h"
 #include "player.h"
+#include "utils.h"
 
 Window_SaveFile::Window_SaveFile(int ix, int iy, int iwidth, int iheight) :
 	Window_Base(ix, iy, iwidth, iheight) {
@@ -123,10 +124,8 @@ void Window_SaveFile::Refresh() {
 		contents->TextDraw(4, 16 + 2, fc, data.hero_name);
 	}
 
-	auto lvl_short = ToString(lcf::Data::terms.lvl_short);
-	if (lvl_short.size() != 2) {
-		lvl_short.resize(2, ' ');
-	}
+	// RPG_RT shows 2 bytes of these terms in the legacy encoding
+	auto lvl_short = Utils::ResizeLegacyWidth(lcf::Data::terms.lvl_short, 2, Player::IsCJK());
 
 	contents->TextDraw(4, 32 + 2, 1, lvl_short);
 
@@ -135,10 +134,7 @@ void Window_SaveFile::Refresh() {
 	out << std::setw(2) << std::setfill(' ') << data.hero_level;
 	contents->TextDraw(4 + lx, 32 + 2, fc, out.str());
 
-	auto hp_short = ToString(lcf::Data::terms.hp_short);
-	if (hp_short.size() != 2) {
-		hp_short.resize(2, ' ');
-	}
+	auto hp_short = Utils::ResizeLegacyWidth(lcf::Data::terms.hp_short, 2, Player::IsCJK());
 
 	contents->TextDraw(46, 32 + 2, 1, hp_short);
 

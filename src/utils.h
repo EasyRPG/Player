@@ -148,6 +148,21 @@ namespace Utils {
 	 */
 	int UTF8Length(std::string_view str);
 
+	/**
+	 * Cuts a UTF-8 string to a fixed width and pads it with spaces.
+	 * The width is counted in bytes of the game's legacy encoding, like
+	 * RPG_RT does: in double-byte encodings (CJK) every character except
+	 * ASCII and half-width katakana takes 2, in single-byte encodings
+	 * every character takes 1.
+	 * Characters are never cut in half.
+	 *
+	 * @param str UTF-8 string
+	 * @param width target width in half-width units
+	 * @param double_byte true when the game uses a double-byte encoding
+	 * @return the string, cut and padded to exactly width units
+	 */
+	std::string ResizeLegacyWidth(std::string_view str, int width, bool double_byte);
+
 	// Please report an issue when you get a compile error here because your toolchain is broken and lacks wchar_t
 	/**
 	 * Converts UTF-8 string to std::wstring.

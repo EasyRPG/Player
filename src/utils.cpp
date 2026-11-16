@@ -409,6 +409,36 @@ int Utils::UTF8Length(std::string_view str) {
 	return len;
 }
 
+std::string Utils::ResizeLegacyWidth(std::string_view str, int width, bool double_byte) {
+	std::u32string out;
+	int used = 0;
+
+	const char* iter = str.data();
+	const char* const e = str.data() + str.size();
+	while (iter < e) {
+		auto ret = Utils::UTF8Next(iter, e);
+		if (!ret) {
+			break;
+		}
+		iter = ret.next;
+
+		// ASCII and half-width katakana are one byte in Shift-JIS
+		bool half = !double_byte || ret.ch < 0x80 || (ret.ch >= 0xFF61 && ret.ch <= 0xFF9F);
+		int w = half ? 1 : 2;
+		if (used + w > width) {
+			break;
+		}
+		out.push_back(ret.ch);
+		used += w;
+	}
+
+	if (used < width) {
+		out.append(width - used, U' ');
+	}
+
+	return Utils::EncodeUTF(out);
+}
+
 Utils::ExFontRet Utils::ExFontNext(const char* iter, const char* end) {
 	ExFontRet ret;
 	if (end - iter < 2 || *iter != '$') {
