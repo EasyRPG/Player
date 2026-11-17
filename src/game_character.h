@@ -24,6 +24,7 @@
 #include <unordered_set>
 #include "color.h"
 #include "flash.h"
+#include "game_interpreter.h"
 #include <lcf/rpg/moveroute.h>
 #include <lcf/rpg/eventpage.h>
 #include <lcf/rpg/savemapeventbase.h>
@@ -809,12 +810,49 @@ public:
 	int GetDistanceYfromCharacter(const Game_Character& target) const;
 
 	/**
+	 * Calculates the relative tile offsets based on filename tags.
+	 * min_dx/max_dx handle horizontal ({_#}) and min_dy/max_dy handle vertical ({!#}).
+	 */
+	void GetTileOffsets(int& min_dx, int& max_dx, int& min_dy, int& max_dy) const;
+
+	/** Returns the total width of the character in 16px tiles. */
+	int GetTileWidth() const;
+
+	/** Returns the total height of the character in 16px tiles. */
+	int GetTileHeight() const;
+
+	/** Returns the collision radius in units (1.0 = 16px) for pixel movement. */
+	float GetHitboxRadius() const;
+
+	/** Returns the absolute X center of the expanded hitbox in logical units. */
+	float GetHitboxCenterX() const;
+
+	/** Returns the absolute Y center of the expanded hitbox in logical units. */
+	float GetHitboxCenterY() const;
+
+	/** Change an event's hitbox at runtime */
+	struct CustomHitbox {
+	int width = 0, height = 0;
+	int x_bias = 0, y_bias = 0; // 0=Center, 1=Left/Up, 2=Right/Down
+	};
+
+	void SetCustomHitbox(int width, int height, int x_bias, int y_bias) {
+		custom_hitbox = {width, height, x_bias, y_bias};
+	}
+	/** Display an event's hitbox at runtime */
+	bool IsCollisionDebugEnabled() const { return debug_collision_box; }
+	void SetCollisionDebugEnabled(bool enabled) { debug_collision_box = enabled; }
+
+	/**
 	 * Tests if the character is currently on the tile at x/y or moving
 	 * towards it.
 	 *
 	 * @param x X tile position
 	 * @param y Y tile position
 	 * @return If on tile or moving towards
+	 * Checks if the character footprint overlaps the given tile coordinates.
+	 * Overrides the standard 1-to-1 coordinate check.
+
 	 */
 	virtual bool IsInPosition(int x, int y) const;
 
@@ -943,6 +981,9 @@ protected:
 	void IncAnimFrame();
 	void UpdateFlash();
 	bool BeginMoveRouteJump(int32_t& current_index, const lcf::rpg::MoveRoute& current_route);
+
+	CustomHitbox custom_hitbox = {0, 0, 0, 0};
+	bool debug_collision_box = false;
 
 	lcf::rpg::SaveMapEventBase* data();
 	const lcf::rpg::SaveMapEventBase* data() const;

@@ -88,6 +88,73 @@ static bool EasyAdd(dyn_arg_list args) {
 	return true;
 }
 
+// Helper to convert collision strings to our enum/int values
+int ParseCollisionBias(std::string_view bias_str, bool is_x_axis) {
+	std::string s = Utils::LowerCase(ToString(bias_str));
+
+	// Check if it's a numeric string
+	if (s == "0" || s == "center") return 0;
+
+	if (is_x_axis) {
+		if (s == "1" || s == "left") return 1;
+		if (s == "2" || s == "right") return 2;
+	} else {
+		if (s == "1" || s == "up") return 1;
+		if (s == "2" || s == "down") return 2;
+	}
+	return 0; // Default to center
+}
+
+static bool EasySetCollision(dyn_arg_list args, Game_Interpreter* interpreter) {
+	const char* func = "easyrpg_set_collision";
+
+	// We parse all arguments as strings first to handle the interchangeability
+	if (args.size() < 5) return true;
+
+	int event_id = atoi(args[0].c_str());
+	int width    = atoi(args[1].c_str());
+	int height   = atoi(args[2].c_str());
+
+	int x_bias = ParseCollisionBias(args[3], true);
+	int y_bias = ParseCollisionBias(args[4], false);
+
+	Game_Character* chara = interpreter->GetCharacter(event_id, func);
+	if (chara) {
+		chara->SetCustomHitbox(width, height, x_bias, y_bias);
+	}
+
+	return true;
+}
+
+static bool EasyResetCollision(dyn_arg_list args, Game_Interpreter* interpreter) {
+	int event_id = atoi(args[0].c_str());
+	Game_Character* chara = interpreter->GetCharacter(event_id, "easyrpg_reset_collision");
+	if (chara) {
+		// Reset the hitbox values to 0, causing GetTileOffsets
+		// to fall through to the filename tag parser next time it's called.
+		chara->SetCustomHitbox(0, 0, 0, 0);
+	}
+	return true;
+}
+
+static bool EasyShowCollision(dyn_arg_list args, Game_Interpreter* interpreter) {
+	int event_id = atoi(args[0].c_str());
+	Game_Character* chara = interpreter->GetCharacter(event_id, "easyrpg_show_collision");
+	if (chara) {
+		chara->SetCollisionDebugEnabled(true);
+	}
+	return true;
+}
+
+static bool EasyHideCollision(dyn_arg_list args, Game_Interpreter* interpreter) {
+	int event_id = atoi(args[0].c_str());
+	Game_Character* chara = interpreter->GetCharacter(event_id, "easyrpg_hide_collision");
+	if (chara) {
+		chara->SetCollisionDebugEnabled(false);
+	}
+	return true;
+}
+
 bool DynRpg::EasyRpgPlugin::Invoke(std::string_view func, dyn_arg_list args, bool& do_yield, Game_Interpreter* interpreter) {
 	if (func == "call") {
 		return EasyCall(args, do_yield, interpreter);
@@ -95,6 +162,14 @@ bool DynRpg::EasyRpgPlugin::Invoke(std::string_view func, dyn_arg_list args, boo
 		return EasyOput(args);
 	} else if (func == "easyrpg_add") {
 		return EasyAdd(args);
+	} else if (func == "easyrpg_set_collision") {
+		return EasySetCollision(args, interpreter);
+	} else if (func == "easyrpg_reset_collision") {
+		return EasyResetCollision(args, interpreter);
+	} else if (func == "easyrpg_show_collision") {
+		return EasyShowCollision(args, interpreter);
+	} else if (func == "easyrpg_hide_collision") {
+		return EasyHideCollision(args, interpreter);
 	}
 	return false;
 }

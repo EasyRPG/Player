@@ -54,6 +54,33 @@ void Sprite_Character::Draw(Bitmap &dst) {
 	SetBushDepth(bush_split > 3 ? 0 : GetHeight() / bush_split);
 
 	Sprite::Draw(dst);
+
+	// --- DEBUG COLLISION BOX OVERLAY ---
+	if (character && character->IsCollisionDebugEnabled()) {
+		int min_dx, max_dx, min_dy, max_dy;
+		character->GetTileOffsets(min_dx, max_dx, min_dy, max_dy);
+
+		int box_w = (max_dx - min_dx + 1) * TILE_SIZE;
+		int box_h = (max_dy - min_dy + 1) * TILE_SIZE;
+
+		// character->GetScreenX() and character->GetScreenY() align to the bottom-center of the base tile (16x16).
+		// Bottom-center minus (TILE_SIZE / 2, TILE_SIZE) gives the top-left corner of the base tile.
+		int base_tile_screen_x = character->GetScreenX() - (TILE_SIZE / 2);
+		int base_tile_screen_y = character->GetScreenY() - TILE_SIZE;
+
+		// Add min offsets directly
+		int screen_x = base_tile_screen_x + (min_dx * TILE_SIZE);
+		int screen_y = base_tile_screen_y + (min_dy * TILE_SIZE);
+
+		Rect box_rect(screen_x, screen_y, box_w, box_h);
+
+		// Draw translucent red interior and solid white border outline
+		dst.FillRect(box_rect, Color(255, 0, 0, 80));
+		dst.FillRect(Rect(box_rect.x, box_rect.y, box_rect.width, 1), Color(255, 255, 255, 255)); // Top
+		dst.FillRect(Rect(box_rect.x, box_rect.y + box_rect.height - 1, box_rect.width, 1), Color(255, 255, 255, 255)); // Bottom
+		dst.FillRect(Rect(box_rect.x, box_rect.y, 1, box_rect.height), Color(255, 255, 255, 255)); // Left
+		dst.FillRect(Rect(box_rect.x + box_rect.width - 1, box_rect.y, 1, box_rect.height), Color(255, 255, 255, 255)); // Right
+	}
 }
 
 void Sprite_Character::Update() {
