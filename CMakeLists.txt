@@ -111,6 +111,10 @@ add_library(${PROJECT_NAME} OBJECT
 	src/drawable_mgr.h
 	src/dynrpg_easyrpg.cpp
 	src/dynrpg_easyrpg.h
+	src/dynrpg_particle_v1.cpp
+	src/dynrpg_particle_v1.h
+	src/dynrpg_particle_v2.cpp
+	src/dynrpg_particle_v2.h
 	src/dynrpg_textplugin.cpp
 	src/dynrpg_textplugin.h
 	src/enemyai.cpp
