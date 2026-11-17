@@ -193,7 +193,7 @@ struct ProcessAssignmentRet {
 		std::vector<int> new_vals;
 		new_vals.reserve(current.size());
 		for (size_t i = 0; i < current.size(); ++i) {
-			int val = (i < rhs.size()) ? rhs[i] : (rhs.empty() ? 0 : rhs.back());
+			int val = (i < rhs.size()) ? rhs[i] : 0;
 			new_vals.push_back(fn(current[i], val));
 		}
 		return assign(new_vals);

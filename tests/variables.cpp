@@ -1,5 +1,6 @@
 #include "game_variables.h"
 #include "doctest.h"
+#include <algorithm>
 
 TEST_SUITE_BEGIN("Variables");
 
@@ -50,6 +51,47 @@ TEST_CASE("Set") {
 		REQUIRE_EQ(s.Get(i), 42 + i);
 	}
 	REQUIRE_EQ(s.Get(n + 1), 0);
+}
+
+TEST_CASE("GetIndirect") {
+	auto s = make();
+
+	s.Set(1, 5);
+	s.Set(5, 42);
+	REQUIRE_EQ(s.GetIndirect(1), 42);
+
+	// var[2] points at var[0], which is invalid
+	s.Set(2, 0);
+	REQUIRE_EQ(s.GetIndirect(2), 0);
+
+	// var[3] points outside of the array
+	s.Set(3, 42);
+	REQUIRE_EQ(s.GetIndirect(3), 0);
+
+	// Negative ids are invalid as well
+	s.Set(4, -5);
+	REQUIRE_EQ(s.GetIndirect(4), 0);
+}
+
+TEST_CASE("GetRange") {
+	auto s = make();
+	s.EnumerateRange(1, 5, 10);
+
+	auto all = s.GetRange(1, 5);
+	REQUIRE_EQ(static_cast<int>(all.size()), 5);
+	for (int i = 0; i < 5; ++i) {
+		REQUIRE_EQ(all[i], 10 + i);
+	}
+
+	// Reads beyond the end of the array return zero
+	auto tail = s.GetRange(4, 4);
+	REQUIRE_EQ(static_cast<int>(tail.size()), 4);
+	REQUIRE_EQ(tail[0], 13);
+	REQUIRE_EQ(tail[1], 14);
+	REQUIRE_EQ(tail[2], 0);
+	REQUIRE_EQ(tail[3], 0);
+
+	REQUIRE(s.GetRange(1, 0).empty());
 }
 
 TEST_CASE("SetRange") {
@@ -571,15 +613,32 @@ TEST_CASE("Swap") {
 
 	s.EnumerateRange(1, 9, 1);
 
+	s.SwapArray(2, 4, 7);
+
+	REQUIRE_EQ(s.Get(1), 1);
+	REQUIRE_EQ(s.Get(2), 7);
+	REQUIRE_EQ(s.Get(3), 8);
+	REQUIRE_EQ(s.Get(4), 9);
+	REQUIRE_EQ(s.Get(5), 5);
+	REQUIRE_EQ(s.Get(6), 6);
+	REQUIRE_EQ(s.Get(7), 2);
+	REQUIRE_EQ(s.Get(8), 3);
+	REQUIRE_EQ(s.Get(9), 4);
+
+	s.EnumerateRange(1, 9, 1);
+
+	// Overlapping ranges are swapped element by element, which produces a
+	// different result than a block swap
 	s.SwapArray(2, 6, 4);
 
-	REQUIRE_EQ(s.Get(2), 8);
-	REQUIRE_EQ(s.Get(3), 7);
-	REQUIRE_EQ(s.Get(4), 2);
-	REQUIRE_EQ(s.Get(5), 3);
-	REQUIRE_EQ(s.Get(6), 4);
-	REQUIRE_EQ(s.Get(7), 5);
-	REQUIRE_EQ(s.Get(8), 6);
+	REQUIRE_EQ(s.Get(1), 1);
+	REQUIRE_EQ(s.Get(2), 4);
+	REQUIRE_EQ(s.Get(3), 5);
+	REQUIRE_EQ(s.Get(4), 6);
+	REQUIRE_EQ(s.Get(5), 7);
+	REQUIRE_EQ(s.Get(6), 8);
+	REQUIRE_EQ(s.Get(7), 3);
+	REQUIRE_EQ(s.Get(8), 2);
 	REQUIRE_EQ(s.Get(9), 9);
 }
 
@@ -605,6 +664,154 @@ TEST_CASE("Sort") {
 	REQUIRE_EQ(s.Get(2), 6);
 	REQUIRE_EQ(s.Get(3), 5);
 	REQUIRE_EQ(s.Get(4), 4);
+}
+
+TEST_CASE("Shuffle") {
+	auto s = make();
+	s.EnumerateRange(1, 9, 1);
+
+	s.ShuffleRange(1, 9);
+
+	// The values are reordered but must stay a permutation of the original range
+	auto range = s.GetRange(1, 9);
+	std::vector<Game_Variables::Var_t> vals(range.begin(), range.end());
+	std::sort(vals.begin(), vals.end());
+	for (int i = 0; i < 9; ++i) {
+		REQUIRE_EQ(vals[i], i + 1);
+	}
+	REQUIRE_EQ(s.Get(10), 0);
+
+	// A range with a single element is a no-op
+	s.Set(3, 42);
+	s.ShuffleRange(3, 3);
+	REQUIRE_EQ(s.Get(3), 42);
+}
+
+TEST_CASE("Deref") {
+	auto s = make();
+
+	s.Set(1, 100);
+	s.Set(2, 200);
+	s.Set(3, 300);
+
+	// var[7..9] hold the ids 1, 2 and 3
+	s.Set(7, 1);
+	s.Set(8, 2);
+	s.Set(9, 3);
+
+	s.DerefArray(4, 6, 7);
+
+	REQUIRE_EQ(s.Get(4), 100);
+	REQUIRE_EQ(s.Get(5), 200);
+	REQUIRE_EQ(s.Get(6), 300);
+
+	// The referenced ids are not modified
+	REQUIRE_EQ(s.Get(7), 1);
+	REQUIRE_EQ(s.Get(8), 2);
+	REQUIRE_EQ(s.Get(9), 3);
+
+	// An invalid id reads as zero
+	s.Set(7, 0);
+	s.Set(8, 0);
+	s.Set(9, 0);
+	s.DerefArray(4, 6, 7);
+
+	REQUIRE_EQ(s.Get(4), 0);
+	REQUIRE_EQ(s.Get(5), 0);
+	REQUIRE_EQ(s.Get(6), 0);
+}
+
+TEST_CASE("SortSync") {
+	auto s = make();
+
+	s.Set(2, 4);
+	s.Set(3, 6);
+	s.Set(4, 5);
+	s.Set(7, 40);
+	s.Set(8, 60);
+	s.Set(9, 50);
+
+	// The sync data does not have to be adjacent to the sorted range
+	s.SortSyncRange(2, 4, 7, true);
+
+	REQUIRE_EQ(s.Get(2), 4);
+	REQUIRE_EQ(s.Get(3), 5);
+	REQUIRE_EQ(s.Get(4), 6);
+	REQUIRE_EQ(s.Get(7), 40);
+	REQUIRE_EQ(s.Get(8), 50);
+	REQUIRE_EQ(s.Get(9), 60);
+
+	s.Set(2, 4);
+	s.Set(3, 6);
+	s.Set(4, 5);
+	s.Set(7, 40);
+	s.Set(8, 60);
+	s.Set(9, 50);
+
+	s.SortSyncRange(2, 4, 7, false);
+
+	REQUIRE_EQ(s.Get(2), 6);
+	REQUIRE_EQ(s.Get(3), 5);
+	REQUIRE_EQ(s.Get(4), 4);
+	REQUIRE_EQ(s.Get(7), 60);
+	REQUIRE_EQ(s.Get(8), 50);
+	REQUIRE_EQ(s.Get(9), 40);
+
+	// A range with a single element is a no-op
+	s.Set(2, 1);
+	s.Set(7, 2);
+	s.SortSyncRange(2, 2, 7, true);
+	REQUIRE_EQ(s.Get(2), 1);
+	REQUIRE_EQ(s.Get(7), 2);
+}
+
+TEST_CASE("ShuffleSync") {
+	auto s = make();
+
+	// var[1..5] and var[6..10] are shuffled together, keeping the pairs aligned
+	s.EnumerateRange(1, 5, 1);
+	s.EnumerateRange(6, 10, 101);
+
+	s.ShuffleSyncRange(1, 5, 6);
+
+	for (int i = 0; i < 5; ++i) {
+		REQUIRE_EQ(s.Get(6 + i), s.Get(1 + i) + 100);
+	}
+
+	// The values are reordered but must stay a permutation of the original range
+	auto range = s.GetRange(1, 5);
+	std::vector<Game_Variables::Var_t> keys(range.begin(), range.end());
+	std::sort(keys.begin(), keys.end());
+	for (int i = 0; i < 5; ++i) {
+		REQUIRE_EQ(keys[i], i + 1);
+	}
+}
+
+TEST_CASE("Reverse") {
+	auto s = make();
+
+	s.EnumerateRange(1, 9, 1);
+	s.ReverseRange(1, 9);
+
+	for (int i = 1; i <= 9; ++i) {
+		REQUIRE_EQ(s.Get(i), 10 - i);
+	}
+
+	// Even number of elements
+	s.EnumerateRange(2, 5, 1);
+	s.ReverseRange(2, 5);
+
+	REQUIRE_EQ(s.Get(1), 9);
+	REQUIRE_EQ(s.Get(2), 4);
+	REQUIRE_EQ(s.Get(3), 3);
+	REQUIRE_EQ(s.Get(4), 2);
+	REQUIRE_EQ(s.Get(5), 1);
+	REQUIRE_EQ(s.Get(6), 4);
+
+	// A range with a single element is a no-op
+	s.Set(3, 42);
+	s.ReverseRange(3, 3);
+	REQUIRE_EQ(s.Get(3), 42);
 }
 
 TEST_SUITE_END();
