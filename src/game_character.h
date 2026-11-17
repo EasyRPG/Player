@@ -924,6 +924,9 @@ public:
 	static constexpr int GetDxFromDirection(int dir);
 	static constexpr int GetDyFromDirection(int dir);
 
+	void SetCustomAnimationSequence(const std::vector<int>& sequence);
+	void ClearCustomAnimationSequence();
+
 protected:
 	explicit Game_Character(Type type, lcf::rpg::SaveMapEventBase* d);
 	/** Check for and fix incorrect data after loading save game */
@@ -946,6 +949,10 @@ protected:
 
 	lcf::rpg::SaveMapEventBase* data();
 	const lcf::rpg::SaveMapEventBase* data() const;
+
+	bool is_custom_anim = false;
+	std::vector<int> custom_sequence;
+	int sequence_index = 0;
 
 	int original_move_frequency = 2;
 	// contains if any movement (<= step_forward) of a forced move route was successful
