@@ -61,6 +61,10 @@ Scene_Battle_Rpg2k3::Scene_Battle_Rpg2k3(const BattleArgs& args) :
 
 void Scene_Battle_Rpg2k3::Start() {
 	Scene_Battle::Start();
+	if (!Game_Battle::IsBattleRunning()) {
+		// Invalid troop, battle was already ended
+		return;
+	}
 	Game_Interpreter_Battle::InitBattle();
 	InitBattleCondition(Game_Battle::GetBattleCondition());
 	CreateEnemySprites();

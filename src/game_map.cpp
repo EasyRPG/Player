@@ -1642,6 +1642,11 @@ bool Game_Map::PrepareEncounter(BattleArgs& args) {
 
 	args.troop_id = encounters[Rand::GetRandomNumber(0, encounters.size() - 1)];
 
+	if (!lcf::ReaderUtil::GetElement(lcf::Data::troops, args.troop_id)) {
+		Output::Warning("PrepareEncounter: Invalid Monster Party ID {}", args.troop_id);
+		return false;
+	}
+
 	if (RuntimePatches::EncounterRandomnessAlert::HandleEncounter(args.troop_id)) {
 		//Cancel the battle setup
 		return false;
