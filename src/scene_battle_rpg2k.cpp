@@ -224,6 +224,7 @@ void Scene_Battle_Rpg2k::vUpdate() {
 		}
 	}
 
+	UpdateCommonEvents();
 	Game_Battle::UpdateGraphics();
 }
 
@@ -238,6 +239,10 @@ void Scene_Battle_Rpg2k::NextTurn() {
 
 bool Scene_Battle_Rpg2k::CheckBattleEndAndScheduleEvents() {
 	if (CheckBattleEndConditions()) {
+		return false;
+	}
+
+	if (ScheduleNextBattleBeginCommonEvent()) {
 		return false;
 	}
 

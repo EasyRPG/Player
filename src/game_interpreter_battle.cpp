@@ -77,8 +77,8 @@ Game_Interpreter_Battle::Game_Interpreter_Battle(Span<const lcf::rpg::TroopPage>
 	maniac_interpreter.reset(new Game_Interpreter_Battle());
 }
 
-Game_Interpreter_Battle::Game_Interpreter_Battle()
-	: Game_Interpreter(true)
+Game_Interpreter_Battle::Game_Interpreter_Battle(bool main_flag)
+	: Game_Interpreter(main_flag)
 {
 }
 
