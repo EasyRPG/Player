@@ -62,6 +62,9 @@ NOTE: For games that only use ASCII (English games) use '1252'.
    - 'rpg2k3v105'  - RPG Maker 2003 (v1.05 - v1.09a)
    - 'rpg2k3e'     - RPG Maker 2003 RPG Maker 2003 (English release, v1.12)
 
+*--engine-path* _FILE_::
+  Path to the executable to use for the automatic patch detection.
+
 *--font1* _FILE_::
   Path to a font to use for the first font. The system graphic of the game
   determines whether font 1 or 2 is used. When no font is selected or the
@@ -124,6 +127,36 @@ NOTE: For games that only use ASCII (English games) use '1252'.
 *--patch-easyrpg*::
   Enable EasyRPG extensions such as support for 32 bit images and large charsets.
 
+*--patch-encounter-alert* _ARG_ _VAR_::
+  Variable or Switch to set when a random encounter occurs. If an EncounterAlert
+  property is set, random encounters will no longer start battles.
+  Feature from the Encounter Randomness Alert Patch by KotatsuAkira.
+  See also: https://dev.makerpendium.de/docs/patch_db/main-en.htm?page=encounter_alert
+  https://dev.makerpendium.de/docs/patch_db/main-en.htm?page=encounter_alert_mepr
+    Values for ARG:
+   - -sw: Switch to set ON when a random encounter is triggered
+   - -var: Variable that receives the ID of the troop when a random encounter
+     is triggered
+
+*--patch-explus* _VAR_::
+  When using Conditional Branch: Actor is in the party, variable to retrieve the
+  actor position in the party. Feature from the EXPlus [+] Patch by bugmenot.
+  See also: https://dev.makerpendium.de/docs/patch_db/main-en.htm?page=explus_plus
+
+*--patch-explusplus* _VAR_::
+  Feature from the EXPlus [+] Patch by bugmenot.
+  The selected variable and the 3 variables after set the EXP boost to gain during
+  battles for the party members. Feature from the EXPlus [+] Patch by bugmenot.
+
+*--patch-guardrevamp* _ARG_ _VAL_::
+  Feature from the GuardRevamp Patch by bugmenot.
+  See also: https://dev.makerpendium.de/docs/patch_db/main-en.htm?page=guard_revamp
+  Values for ARG:
+   - -normal: When a target with a normal defense is attacked, alter the damage by the
+  percentage value set instead of halving damage.
+   - -strong: When a target with a strong defense is attacked, alter the damage by the
+  percentage value set instead of dividing damage by 4.
+
 *--patch-key-patch*::
   Enable support for the Key Patch by Ineluki.
 
@@ -136,9 +169,34 @@ NOTE: For games that only use ASCII (English games) use '1252'.
   Not adjusting the variable ranges is useful if you are adding the patch to an
   existing game, as this reduces the likelihood that the game will stop working.
 
+*--patch-monsca* _ARG_ _VAR_::
+  Feature from the MonSca Patch by bugmenot.
+  See also: https://dev.makerpendium.de/docs/patch_db/main-en.htm?page=mon_sca
+  Values for ARG:
+   - -maxhp: Use the value of the variable to scale the Max HP stat of the enemy.
+   - -maxsp: Use the value of the variable to scale the Max MP stat of the enemy.
+   - -atk: Use the value of the variable to scale the Attack stat of the enemy.
+   - -def: Use the value of the variable to scale the Defense stat of the enemy.
+   - -spi: Use the value of the variable to scale the Mind stat of the enemy.
+   - -agi: Use the value of the variable to scale the Agility stat of the enemy.
+   - -exp: Use the value of the variable to scale the experience received after
+     beating an enemy.
+   - -gold:  Use the value of the variable to scale the money received after beating
+     an enemy.
+   - -item: Use the value of the variable to scale the item ID dropped by an enemy.
+   - -droprate: Use the value of the variable to scale the item drop rate of an enemy.
+   - -levelscaling: If the Switch ID is set to ON, use the alternative scaling formula
+     for enemy battle stats.
+   - -plus: If set, Variables used for enemy scaling will be offset by the troop
+     ID. Does not take a variable argument.
+
 *--patch-pic-unlock*::
   Picture movement is not interrupted by messages in any version of the engine.
-  By default, this behaviour is only enabled for RPG Maker 2003 v1.12.
+  By default, this behaviour is only enabled for RPG Maker 2000 v1.61 and RPG Maker 2003 v1.12.
+
+*--patch-powermode*::
+  Enable support for the PowerMode 2003 Patch by firesta.
+  See also: https://www.makerpendium.de/index.php?title=PowerMode_2003
 
 *--patch-rpg2k3-cmds*::
   Support all RPG Maker 2003 event commands in any version of the engine.
@@ -357,6 +415,9 @@ Options in section 'Patch' (see also options starting with *--patch*):
 *CommonThisEvent*=_1_::
   Same as *--patch-common-this*.
 
+*Destiny*=_1_::
+  Enables support for the Destiny Patch (stub, not currently supported).
+
 *DirectMenu*=_VAR_::
   Same as *--patch-direct-menu* 'VAR'.
 
@@ -366,14 +427,71 @@ Options in section 'Patch' (see also options starting with *--patch*):
 *EasyRPG*=_1_::
   Same as *--patch-easyrpg*.
 
+*EncounterAlert.Switch*=_SW_::
+  Same as *--patch-encounter-alert -sw* 'SW'.
+
+*EncounterAlert.Var*=_VAR_::
+  Same as *--patch-encounter-alert -var* 'VAR'.
+
+*EXPlus.VarActorInParty*=_VAR_::
+  Same as *--patch-explusplus -var* 'VAR'.
+  
+*EXPlus.VarExpBoost*=_VAR_::
+  Same as *--patch-explus -var* 'VAR'.
+
+*GuardRevamp.NormalDefense*=_VAL_::
+  Same as *--patch-guardrevamp -normal* 'VAL'.
+  
+*GuardRevamp.StrongDefense*=_VAL_::
+  Same as *--patch-guardrevamp -strong* 'VAL'.
+
 *KeyPatch*=_1_::
   Same as *--patch-key-patch*.
 
 *Maniac*=_[N]_::
   Same as *--patch-maniac* 'N'.
 
+*MonSca.MaxHP*=_VAR_::
+  Same as *--patch-monsca -maxhp* 'VAR'.
+
+*MonSca.MaxSP*=_VAR_::
+  Same as *--patch-monsca -maxsp* 'VAR'.
+
+*MonSca.Attack*=_VAR_::
+  Same as *--patch-monsca -atk* 'VAR'.
+
+*MonSca.Defense*=_VAR_::
+  Same as *--patch-monsca -def* 'VAR'.
+
+*MonSca.Spirit*=_VAR_::
+  Same as *--patch-monsca -spi* 'VAR'.
+
+*MonSca.Agility*=_VAR_::
+  Same as *--patch-monsca -agi* 'VAR'.
+
+*MonSca.Experience*=_VAR_::
+  Same as *--patch-monsca -exp* 'VAR'.
+
+*MonSca.Money*=_VAR_::
+  Same as *--patch-monsca -gold* 'VAR'.
+
+*MonSca.ItemId*=_VAR_::
+  Same as *--patch-monsca -item* 'VAR'.
+
+*MonSca.ItemDropRate*=_VAR_::
+  Same as *--patch-monsca -droprate* 'VAR'.
+
+*MonSca.LevelScaling*=_SW_::
+  Same as *--patch-monsca -levelscaling* 'SW'.
+
+*MonSca.Plus*=_1_::
+  Same as *--patch-monsca -plus*.
+
 *PicUnlock*=_1_::
   Same as *--patch-pic-unlock*.
+
+*PowerMode2003*=_1_::
+  Same as *--patch-powermode*.
 
 *RPG2k3Commands*=_1_::
   Same as *--patch-rpg2k3-commands*.
