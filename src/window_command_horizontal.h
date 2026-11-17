@@ -46,6 +46,7 @@ public:
 	void ReplaceCommands(std::vector<std::string> commands);
 
 protected:
+	void ClearItem(int index) override;
 	void DrawItem(int index, Font::SystemColor color) override;
 };
 
