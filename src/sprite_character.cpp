@@ -144,7 +144,24 @@ Rect Sprite_Character::GetCharacterRect(std::string_view name, int index, const 
 			rect.width = bitmap_rect.width * (TILE_SIZE / 16) / 4;
 			rect.height = bitmap_rect.height * (TILE_SIZE / 16) / 2;
 		}
+		} else if (!name.empty() && name.front() == '%') {
+			if (name.size() < 5) {
+			return Rect();
+		}
+			// CharExpand-Patch: %XXYY<name> specifies single-frame width/4 and height/4
+		auto parse_two_digits = [](std::string_view sv) {
+			int d0 = (sv[0] >= '0' && sv[0] <= '9') ? (sv[0] - '0') : 0;
+			int d1 = (sv[1] >= '0' && sv[1] <= '9') ? (sv[1] - '0') : 0;
+			return d0 * 10 + d1;
+		};
+
+		int frame_w = parse_two_digits(name.substr(1, 2)) * 4;
+		int frame_h = parse_two_digits(name.substr(3, 2)) * 4;
+
+		rect.width = frame_w * (TILE_SIZE / 16) * 3;
+		rect.height = frame_h * (TILE_SIZE / 16) * 4;
 	}
+
 	rect.x = (index % 4) * rect.width;
 	rect.y = (index / 4) * rect.height;
 	return rect;

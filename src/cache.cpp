@@ -321,6 +321,12 @@ namespace {
 				h = min_h;
 			}
 
+			// CharExpand-Patch adds support for custom-sized charsets; size is spoofed to ignore the error
+			if (!filename.empty() && filename.front() == '%' && T == Material::Charset) {
+				w = min_w;
+				h = min_h;
+			}
+
 			// Maniac Patch adds support for more colors; size is spoofed to ignore the error
 			if (T == Material::System && Player::IsPatchManiac()) {
 				w = min_w;
