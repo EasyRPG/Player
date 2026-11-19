@@ -118,6 +118,12 @@ void Game_Enemy::Transform(int new_enemy_id) {
 		enemy = &dummy;
 	}
 
+	// The enemy is not healed and the HP is clamped to the one of the new enemy
+	SetHp(GetHp());
+
+	// The SP are filled when the new enemy has more but never reduced
+	SetSp(std::max<int>(GetSp(), enemy->max_sp));
+
 	auto* sprite = GetEnemyBattleSprite();
 	if (sprite) {
 		sprite->Refresh();
