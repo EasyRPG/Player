@@ -123,29 +123,18 @@ void Window_SaveFile::Refresh() {
 		contents->TextDraw(4, 16 + 2, fc, data.hero_name);
 	}
 
-	auto lvl_short = ToString(lcf::Data::terms.lvl_short);
-	if (lvl_short.size() != 2) {
-		lvl_short.resize(2, ' ');
-	}
+	// RPG_RT draws terms uncut, when they don't fit they will overdraw each other
+	contents->TextDraw(4, 32 + 2, 1, lcf::Data::terms.lvl_short);
 
-	contents->TextDraw(4, 32 + 2, 1, lvl_short);
-
-	int lx = Text::GetSize(*Font::Default(), lvl_short).width;
 	out.str("");
 	out << std::setw(2) << std::setfill(' ') << data.hero_level;
-	contents->TextDraw(4 + lx, 32 + 2, fc, out.str());
+	contents->TextDraw(16, 32 + 2, fc, out.str());
 
-	auto hp_short = ToString(lcf::Data::terms.hp_short);
-	if (hp_short.size() != 2) {
-		hp_short.resize(2, ' ');
-	}
+	contents->TextDraw(46, 32 + 2, 1, lcf::Data::terms.hp_short);
 
-	contents->TextDraw(46, 32 + 2, 1, hp_short);
-
-	int hx = Text::GetSize(*Font::Default(), hp_short).width;
 	out.str("");
 	out << std::setw(Player::IsRPG2k3() ? 4 : 3) << std::setfill(' ') << data.hero_hp;
-	contents->TextDraw(46 + hx, 32 + 2, fc, out.str());
+	contents->TextDraw(58, 32 + 2, fc, out.str());
 
 	int i = 0;
 	DrawFace(data.face1_name, data.face1_id, 92 + i++ * 56, 0, false);
