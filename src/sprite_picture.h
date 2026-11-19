@@ -57,6 +57,9 @@ public:
 
 	void SetPictureId(int pic_id);
 
+	void UpdateBattleZ();
+	void UpdateMapZ();
+
 private:
 	int last_spritesheet_frame = -1;
 	int pic_id = 0;

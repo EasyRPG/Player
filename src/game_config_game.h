@@ -74,6 +74,8 @@ struct Game_ConfigGame {
 
 	ConfigParam<int> patch_powermode{ "Power Mode 2003", "", "Patch", "PowerMode2003", 0 };
 
+	ConfigParam<int> patch_pics_in_battle{ "PatchPicsInBattle", "Show pictures during battle using variable N for layer", "Patch", "PicsInBattle", 0 };
+
 	// Command line only
 	BoolConfigParam patch_support{ "Support patches", "When OFF all patch support is disabled", "", "", true };
 
