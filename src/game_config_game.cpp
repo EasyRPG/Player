@@ -172,6 +172,20 @@ void Game_ConfigGame::LoadFromArgs(CmdlineParser& cp) {
 			patch_override = true;
 			continue;
 		}
+
+		if (cp.ParseNext(arg, 1, {"--patch-pics-in-battle", "--no-patch-pics-in-battle"})) {
+			if (arg.ArgIsOn()) {
+				patch_pics_in_battle.Set(5000);
+				if (arg.ParseValue(0, li_value)) {
+					patch_pics_in_battle.Set(li_value);
+				}
+			} else {
+				patch_pics_in_battle.Set(0);
+			}
+			patch_override = true;
+			continue;
+		}
+
 		if (RuntimePatches::ParseFromCommandLine(cp)) {
 			patch_override = true;
 			continue;
@@ -255,7 +269,9 @@ void Game_ConfigGame::LoadFromStream(Filesystem_Stream::InputStream& is) {
 	if (patch_powermode.FromIni(ini)) {
 		patch_override = true;
 	}
-
+	if (patch_pics_in_battle.FromIni(ini)) {
+		patch_override = true;
+	}
 	if (RuntimePatches::ParseFromIni(ini)) {
 		patch_override = true;
 	}
@@ -287,6 +303,7 @@ void Game_ConfigGame::PrintActivePatches() {
 	add_int(patch_maniac);
 	add_int(patch_anti_lag_switch);
 	add_int(patch_direct_menu);
+	add_int(patch_pics_in_battle);
 
 	RuntimePatches::DetermineActivePatches(patches);
 

@@ -648,8 +648,23 @@ bool Game_Pictures::Picture::IsCanvas() const {
 }
 
 void Game_Pictures::Picture::Update(bool is_battle) {
-	if ((is_battle && !IsOnBattle()) || (!is_battle && !IsOnMap())) {
+	const int pib_var = Player::game_config.patch_pics_in_battle.Get();
+	const bool pics_in_battle = (pib_var > 0);
+
+	if (is_battle) {
+		if (!IsOnBattle() && !(pics_in_battle && IsOnMap())) {
+			return;
+		}
+	} else if (!IsOnMap()) {
 		return;
+	}
+
+	if (sprite && pics_in_battle && !IsOnBattle()) {
+		if (is_battle) {
+			sprite->UpdateBattleZ();
+		} else {
+			sprite->UpdateMapZ();
+		}
 	}
 
 	if (Player::IsRPG2k3ECommands()) {

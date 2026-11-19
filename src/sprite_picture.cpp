@@ -25,6 +25,7 @@
 #include "player.h"
 #include "bitmap.h"
 #include "game_map.h"
+#include "game_variables.h"
 
 Sprite_Picture::Sprite_Picture(int pic_id, Drawable::Flags flags)
 	: Sprite(flags),
@@ -45,6 +46,11 @@ void Sprite_Picture::OnPictureShow() {
 	const bool is_battle = Game_Battle::IsBattleRunning();
 	const auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
 
+	if (is_battle && Player::game_config.patch_pics_in_battle.Get() > 0 && pic.data.battle_layer == 0) {
+		UpdateBattleZ();
+		return;
+	}
+
 	if (feature_priority_layers) {
 		// Battle Animations are above pictures
 		Drawable::Z_t priority;
@@ -59,6 +65,50 @@ void Sprite_Picture::OnPictureShow() {
 			SetZ(priority + pic_id * 10);
 		}
 	}
+}
+
+void Sprite_Picture::UpdateBattleZ() {
+	const int pib_var = Player::game_config.patch_pics_in_battle.Get();
+	if (pib_var <= 0) {
+		return;
+	}
+
+	int layer = Main_Data::game_variables->Get(pib_var);
+	Drawable::Z_t priority = 0;
+	switch (layer) {
+		case 0:
+			// Above Backdrop, below Heroes/Monsters
+			priority = Drawable::GetPriorityForBattleLayer(lcf::rpg::SavePicture::BattleLayer_background);
+			break;
+		case 1:
+			// Above Battle Animations, below Weather
+			priority = Priority_BattleAnimation;
+			break;
+		case 2:
+			// Above Windows/Status, below Timers
+			priority = Drawable::GetPriorityForBattleLayer(lcf::rpg::SavePicture::BattleLayer_windows_and_status);
+			break;
+		default:
+			return;
+	}
+
+	if (priority > 0) {
+		SetZ(priority + pic_id * 10);
+	}
+}
+
+void Sprite_Picture::UpdateMapZ() {
+	const auto& pic = Main_Data::game_pictures->GetPicture(pic_id);
+
+	if (feature_priority_layers) {
+		Drawable::Z_t priority = Drawable::GetPriorityForMapLayer(pic.data.map_layer);
+		if (priority > 0) {
+			SetZ(priority + pic_id * 10);
+			return;
+		}
+	}
+
+	SetZ(Priority_PictureOld + pic_id);
 }
 
 bool Sprite_Picture::RefreshPictureState() {
@@ -79,7 +129,21 @@ bool Sprite_Picture::RefreshPictureState() {
 
 	const bool is_battle = Game_Battle::IsBattleRunning();
 
-	if (is_battle ? !pic.IsOnBattle() : !pic.IsOnMap()) {
+	const int pib_var = Player::game_config.patch_pics_in_battle.Get();
+	const bool pics_in_battle = (pib_var > 0);
+
+	if (is_battle) {
+		if (!pic.IsOnBattle()) {
+			if (!pics_in_battle || !pic.IsOnMap()) {
+				return false;
+			}
+			// PicsInBattle hides battle pictures if the layer variable is not 0, 1, or 2
+			int battle_layer_var = Main_Data::game_variables->Get(pib_var);
+			if (battle_layer_var < 0 || battle_layer_var > 2) {
+				return false;
+			}
+		}
+	} else if (!pic.IsOnMap()) {
 		return false;
 	}
 
@@ -106,7 +170,7 @@ bool Sprite_Picture::RefreshPictureState() {
 	}
 
 	if (Player::game_config.fake_resolution.Get()) {
-		if (data.fixed_to_map) {
+		if (data.fixed_to_map && !is_battle) {
 			// If the picture scrolls with the map, apply the black border if the map is too small
 			int offset_x = 0;
 			int map_width = Game_Map::GetTilesX() * TILE_SIZE;
