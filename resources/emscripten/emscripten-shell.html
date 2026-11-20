@@ -1037,6 +1037,8 @@
       async function uploadToSlot(slot) {
         const success = await easyrpgPlayer.api.uploadSavegame(slot);
         if (success) {
+          // An upload is not an in-game save, so it must not trigger the backup hint.
+          saveSlotBaseline?.set(slot, readSaveSlots().get(slot));
           renderSaveSlots();
         }
       }
