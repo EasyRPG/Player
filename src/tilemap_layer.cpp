@@ -454,7 +454,7 @@ void TilemapLayer::CreateTileCacheAt(int x, int y, int tile_id) {
 					tile.ID >= BLOCK_D ? (tile.ID - BLOCK_D) / 50 + 6 :
 					tile.ID >= BLOCK_C ? (tile.ID - BLOCK_C) / 50 + 3 :
 					tile.ID / 1000;
-			if ((passable[chip_index] & (Passable::Wall | Passable::Above)) != 0)
+			if ((passable[chip_index] & (Passable::Above)) != 0)
 				tile.z = TileAbove; // Upper sublayer
 			else
 				tile.z = TileBelow; // Lower sublayer
