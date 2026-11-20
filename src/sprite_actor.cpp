@@ -135,29 +135,8 @@ void Sprite_Actor::Update() {
 	SetFlipX(battler->IsDirectionFlipped());
 }
 
-static bool HasExtendedBattleAnimations() {
-	for (const auto& anim : lcf::Data::battleranimations) {
-		if (anim.poses.size() > 32) {
-			return true;
-		}
-	}
-	return false;
-}
-
 void Sprite_Actor::SetAnimationState(int state, LoopState loop, int animation_id) {
-	if (HasExtendedBattleAnimations()) {
-		// Extended pose mode (256 poses): default value is 300 (called with val+1)
-		// 300 maps all states to "Bad state" (7)
-		if (state == 301) {
-			state = 7;
-		}
-	} else {
-		// Default value is 100 (function called with val+1)
-		// 100 maps all states to "Bad state" (7)
-		if (state == 101) {
-			state = 7;
-		}
-	}
+
 
 	anim_state = state;
 
@@ -279,15 +258,6 @@ void Sprite_Actor::DoIdleAnimation() {
 		idling_anim = state ? state->battler_animation_id + 1 : AnimationState_Idle;
 	}
 
-	if (HasExtendedBattleAnimations()) {
-		if (idling_anim == 301) {
-			idling_anim = 7;
-		}
-	} else {
-		if (idling_anim == 101) {
-			idling_anim = 7;
-		}
-	}
 
 	if (idling_anim != anim_state || loop_state == LoopState_DefaultAnimationAfterFinish)
 		SetAnimationState(idling_anim, idling_anim == AnimationState_Dead ? LoopState_WaitAfterFinish : LoopState_LoopAnimation);
