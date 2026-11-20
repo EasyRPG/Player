@@ -50,22 +50,16 @@ bool Emscripten_Interface::DownloadSavegame(int slot) {
 	return true;
 }
 
-void Emscripten_Interface::UploadSavegame(int slot) {
-	EM_ASM_INT({
-		Module.api_private.uploadSavegame_js($0);
-	}, slot);
+emscripten::val Emscripten_Interface::UploadSavegame(int slot) {
+	return emscripten::val::module_property("api_private").call<emscripten::val>("uploadSavegame_js", slot);
 }
 
-void Emscripten_Interface::UploadSoundfont() {
-	EM_ASM_INT({
-		Module.api_private.uploadSoundfont_js($0);
-	});
+emscripten::val Emscripten_Interface::UploadSoundfont() {
+	return emscripten::val::module_property("api_private").call<emscripten::val>("uploadSoundfont_js");
 }
 
-void Emscripten_Interface::UploadFont() {
-	EM_ASM_INT({
-	   Module.api_private.uploadFont_js($0);
-   });
+emscripten::val Emscripten_Interface::UploadFont() {
+	return emscripten::val::module_property("api_private").call<emscripten::val>("uploadFont_js");
 }
 
 void Emscripten_Interface::RefreshScene() {
