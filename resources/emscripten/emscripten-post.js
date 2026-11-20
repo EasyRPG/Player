@@ -8,10 +8,12 @@ Module.initApi = function() {
     link.remove();
   }
 
-  Module.api_private.createInputElement_js = function (id, event) {
+  Module.api_private.createInputElement_js = function (id, event, accept = '') {
     return new Promise((resolve) => {
       const file = document.createElement('input');
       file.type = 'file';
+      // Without a type filter, mobile browsers offer the camera next to the files.
+      file.accept = accept;
       file.id = id;
       file.style.display = 'none';
 
@@ -41,6 +43,9 @@ Module.initApi = function() {
   }
 
   Module.api_private.uploadSavegame_js = function (slot) {
+    // iOS drops extensions it has no MIME type for, so `.lsd` alone would still show the camera there.
+    // The MIME type lets desktop pickers list more than `.lsd`; the engine rejects what it can't load.
+    const savegameTypes = '.lsd,application/octet-stream';
     return Module.api_private.createInputElement_js('easyrpg_saveFile', function (file) {
       const result = new Uint8Array(file.currentTarget.result);
       const buf = Module._malloc(result.length);
@@ -51,7 +56,7 @@ Module.initApi = function() {
         Module.api.refreshScene();
       }
       return success;
-    });
+    }, savegameTypes);
   }
 
   Module.api_private.uploadSoundfont_js = function () {
