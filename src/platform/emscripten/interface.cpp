@@ -27,6 +27,8 @@
 #include "baseui.h"
 #include "filefinder.h"
 #include "filesystem_stream.h"
+#include "game_constants.h"
+#include "main_data.h"
 #include "player.h"
 #include "scene_save.h"
 #include "output.h"
@@ -52,6 +54,14 @@ bool Emscripten_Interface::DownloadSavegame(int slot) {
 
 emscripten::val Emscripten_Interface::UploadSavegame(int slot) {
 	return emscripten::val::module_property("api_private").call<emscripten::val>("uploadSavegame_js", slot);
+}
+
+int Emscripten_Interface::GetMaxSaveFiles() {
+	// No game is loaded yet in the game browser.
+	if (!Main_Data::game_constants) {
+		return Game_Constants().MaxSaveFiles();
+	}
+	return Main_Data::game_constants->MaxSaveFiles();
 }
 
 emscripten::val Emscripten_Interface::UploadSoundfont() {
@@ -171,6 +181,7 @@ EMSCRIPTEN_BINDINGS(player_interface) {
 		.class_function("requestReset", &Emscripten_Interface::Reset)
 		.class_function("downloadSavegame", &Emscripten_Interface::DownloadSavegame)
 		.class_function("uploadSavegame", &Emscripten_Interface::UploadSavegame)
+		.class_function("getMaxSaveFiles", &Emscripten_Interface::GetMaxSaveFiles)
 #if defined(HAVE_FLUIDSYNTH) || defined(HAVE_FLUIDLITE)
 		.class_function("uploadSoundfont", &Emscripten_Interface::UploadSoundfont)
 #endif

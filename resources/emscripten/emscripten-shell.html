@@ -122,12 +122,12 @@
       }
 
       @media (hover: none), (pointer: coarse) {
-        #controls button,
-        .save-button {
+        #controls button {
           min-block-size: 44px;
         }
 
-        .save-button-icon {
+        .save-button {
+          min-block-size: 44px;
           min-inline-size: 44px;
         }
 
@@ -322,6 +322,8 @@
       }
 
       #save-list {
+        max-height: 60vh;
+        overflow-y: auto;
         padding: 0.1rem 0.6rem;
         background: var(--save-fill);
         border-radius: 0.5rem;
@@ -355,58 +357,26 @@
         content: " · ";
       }
 
-      .save-empty {
-        margin: 0.4rem 0.1rem;
-        font-size: 0.9375rem;
-        color: var(--color-gray);
-      }
-
       .save-button {
         display: inline-flex;
         align-items: center;
-        gap: 0.6rem;
+        justify-content: center;
+        padding: 0.45rem;
         color: white;
         background: transparent;
         border: 0;
         border-radius: 0.5rem;
         cursor: pointer;
-        font: inherit;
-        font-size: 0.9375rem;
-        transition:
-          background-color 120ms ease,
-          opacity 120ms ease;
+        transition: background-color 120ms ease;
       }
 
-      .save-button:hover:not(:disabled),
+      .save-button:hover,
       .save-button:focus-visible {
         background: var(--save-fill-hover);
       }
 
-      .save-button:disabled {
-        opacity: 0.4;
-        cursor: default;
-      }
-
       .save-button svg {
         flex: none;
-      }
-
-      .save-button-icon {
-        justify-content: center;
-        padding: 0.45rem;
-      }
-
-      .save-button-block {
-        width: 100%;
-        padding: 0.6rem 0.65rem;
-        text-align: left;
-      }
-
-      .save-actions {
-        display: flex;
-        flex-direction: column;
-        gap: 0.15rem;
-        margin-top: 0.6rem;
       }
 
       #save-toast {
@@ -576,7 +546,7 @@
           <h2 id="save-title" class="save-title">Saves</h2>
           <button
             id="save-close"
-            class="save-button save-button-icon"
+            class="save-button"
             type="button"
             aria-label="Close"
           >
@@ -587,19 +557,6 @@
         </div>
 
         <div id="save-list"></div>
-
-        <div class="save-actions">
-          <button
-            id="save-import"
-            class="save-button save-button-block"
-            type="button"
-          >
-            <svg width="18" height="18" aria-hidden="true">
-              <use href="#icon-upload" />
-            </svg>
-            Import save file…
-          </button>
-        </div>
       </dialog>
 
       <button id="save-toast" type="button">
@@ -909,8 +866,6 @@
         } catch {}
       }
 
-      // RPG Maker 2000/2003 caps save games at 15 slots (Save01..Save15.lsd)
-      const saveSlotCount = 15;
       const saveHintStorageKey = "easyrpg-player-save-hint-seen";
       const iconDownload = `<svg width="18" height="18" aria-hidden="true"><use href="#icon-download"/></svg>`;
       const iconUpload = `<svg width="18" height="18" aria-hidden="true"><use href="#icon-upload"/></svg>`;
@@ -987,48 +942,22 @@
         return slots;
       }
 
-      /**
-       * Rebuild the slot list: a download/replace row per existing save,
-       * with the import button pointed at the lowest free slot
-       */
       function renderSaveSlots() {
         const slots = readSaveSlots();
-        const usedSlots = [...slots.keys()].sort((a, b) => a - b);
         const saveList = document.getElementById("save-list");
         saveList.replaceChildren();
-
-        if (usedSlots.length === 0) {
-          const emptyMessage = document.createElement("p");
-          emptyMessage.className = "save-empty";
-          emptyMessage.textContent =
-            "No saves yet. Save inside the game first.";
-          saveList.append(emptyMessage);
-        } else {
-          for (const slot of usedSlots) {
-            saveList.append(createSaveRow(slot, slots.get(slot)));
-          }
+        const slotCount = easyrpgPlayer.api.getMaxSaveFiles();
+        for (let slot = 1; slot <= slotCount; slot++) {
+          saveList.append(createSaveRow(slot, slots.get(slot)));
         }
-
-        const freeSlot = firstFreeSlot(usedSlots);
-        const importButton = document.getElementById("save-import");
-        importButton.disabled = freeSlot === undefined;
-        importButton.title =
-          freeSlot === undefined
-            ? "All 15 slots are full – replace one instead"
-            : `Import into file ${freeSlot}`;
-        // Reassigned, not addEventListener: this runs on every open, and the
-        // import button persists across renders, so listeners would stack up
-        importButton.onclick =
-          freeSlot === undefined ? null : () => uploadToSlot(freeSlot);
       }
 
       /**
-       * Build one slot row with download and replace controls
-       *
        * @param {number} slot 1-based save slot
-       * @param {number} modifiedAt Slot modification time in ms
+       * @param {number | undefined} modifiedAt Slot modification time in ms
        */
       function createSaveRow(slot, modifiedAt) {
+        const isEmpty = modifiedAt === undefined;
         const row = document.createElement("div");
         row.className = "save-row";
 
@@ -1038,16 +967,22 @@
 
         const age = document.createElement("span");
         age.className = "save-age";
-        age.textContent = formatSaveAge(modifiedAt);
+        age.textContent = isEmpty ? "empty" : formatSaveAge(modifiedAt);
         name.append(age);
+        row.append(name);
 
+        if (!isEmpty) {
+          row.append(
+            createSaveButton(iconDownload, `Download file ${slot}`, () =>
+              easyrpgPlayer.api.downloadSavegame(slot),
+            ),
+          );
+        }
         row.append(
-          name,
-          createSaveButton(iconDownload, `Download file ${slot}`, () =>
-            easyrpgPlayer.api.downloadSavegame(slot),
-          ),
-          createSaveButton(iconUpload, `Replace file ${slot}`, () =>
-            uploadToSlot(slot),
+          createSaveButton(
+            iconUpload,
+            `${isEmpty ? "Upload into" : "Replace"} file ${slot}`,
+            () => uploadToSlot(slot),
           ),
         );
         return row;
@@ -1059,25 +994,12 @@
       function createSaveButton(icon, label, onClick) {
         const button = document.createElement("button");
         button.type = "button";
-        button.className = "save-button save-button-icon";
+        button.className = "save-button";
         button.setAttribute("aria-label", label);
         button.title = label;
         button.innerHTML = icon;
         button.addEventListener("click", onClick);
         return button;
-      }
-
-      /**
-       * Lowest unoccupied slot, or `undefined` when every slot is taken
-       *
-       * @param {number[]} usedSlots Occupied slot numbers
-       * @returns {number | undefined}
-       */
-      function firstFreeSlot(usedSlots) {
-        for (let slot = 1; slot <= saveSlotCount; slot++) {
-          if (!usedSlots.includes(slot)) return slot;
-        }
-        return undefined;
       }
 
       /**

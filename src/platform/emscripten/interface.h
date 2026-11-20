@@ -25,6 +25,7 @@ class Emscripten_Interface {
 public:
 	static bool DownloadSavegame(int slot);
 	static emscripten::val UploadSavegame(int slot);
+	static int GetMaxSaveFiles();
 	static emscripten::val UploadSoundfont();
 	static emscripten::val UploadFont();
 	static void RefreshScene();
