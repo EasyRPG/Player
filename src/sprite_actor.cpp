@@ -136,11 +136,7 @@ void Sprite_Actor::Update() {
 }
 
 void Sprite_Actor::SetAnimationState(int state, LoopState loop, int animation_id) {
-	// Default value is 100 (function called with val+1)
-	// 100 maps all states to "Bad state" (7)
-	if (state == 101) {
-		state = 7;
-	}
+
 
 	anim_state = state;
 
@@ -262,8 +258,6 @@ void Sprite_Actor::DoIdleAnimation() {
 		idling_anim = state ? state->battler_animation_id + 1 : AnimationState_Idle;
 	}
 
-	if (idling_anim == 101)
-		idling_anim = 7;
 
 	if (idling_anim != anim_state || loop_state == LoopState_DefaultAnimationAfterFinish)
 		SetAnimationState(idling_anim, idling_anim == AnimationState_Dead ? LoopState_WaitAfterFinish : LoopState_LoopAnimation);
