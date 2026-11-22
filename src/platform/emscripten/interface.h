@@ -19,14 +19,16 @@
 #define EP_EMSCRIPTEN_INTERFACE_H
 
 #include <string>
+#include <emscripten/val.h>
 
 class Emscripten_Interface {
 public:
 	static bool DownloadSavegame(int slot);
-	static void UploadSavegame(int slot);
-    static void UploadSoundfont();
-    static void UploadFont();
-    static void RefreshScene();
+	static emscripten::val UploadSavegame(int slot);
+	static int GetMaxSaveFiles();
+	static emscripten::val UploadSoundfont();
+	static emscripten::val UploadFont();
+	static void RefreshScene();
 	static void TakeScreenshot(bool is_auto_screenshot = false);
 	static void Reset();
 	static bool ResetCanvas();
