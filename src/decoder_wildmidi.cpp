@@ -52,10 +52,13 @@ static void WildMidiDecoder_deinit() {
 
 #if LIBWILDMIDI_VERSION >= 1027 // at least 0.4.3
 static void* vio_allocate_file_func(const char* filename, uint32_t* size) {
-	auto stream = FileFinder::Root().OpenInputStream(filename);
+	auto stream = FileFinder::Game().OpenInputStream(filename);
 	if (!stream) {
-		Output::Warning("WildMidi: vio_allocate_file_func failed for {}", filename);
-		return nullptr;
+		stream = FileFinder::Root().OpenInputStream(filename);
+		if (!stream) {
+			Output::Warning("WildMidi: vio_allocate_file_func failed for {}", filename);
+			return nullptr;
+		}
 	}
 
 	auto buf = Utils::ReadStream(stream);
@@ -96,194 +99,204 @@ bool WildMidiDecoder::Initialize(std::string& status_message) {
 	/* find the configuration file in different paths on different platforms
 	 * FIXME: move this logic into some configuration class
 	 */
+	// Prefer wildmidi in the game directory
+	bool game_dir = false;
+	if (FileFinder::Game().Exists("wildmidi.cfg")) {
+		config_file = "wildmidi.cfg";
+		found = true;
+		game_dir = true;
+	}
+
+	if (!found) {
 #if defined(USE_LIBRETRO)
-	const char *dir = NULL;
+		const char *dir = NULL;
 
-	// Game directory
-	if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
-		config_file = std::string(dir) + "/wildmidi.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-
-	// Content downloader
-	if (!found) {
-		if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_CORE_ASSETS_DIRECTORY, &dir) && dir) {
-			config_file = std::string(dir) + "/wildmidi/wildmidi.cfg";
+		// Game directory
+		if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_SYSTEM_DIRECTORY, &dir) && dir) {
+			config_file = std::string(dir) + "/wildmidi.cfg";
 			found = FileFinder::Root().Exists(config_file);
 		}
-	}
+
+		// Content downloader
+		if (!found) {
+			if (LibretroUi::environ_cb(RETRO_ENVIRONMENT_GET_CORE_ASSETS_DIRECTORY, &dir) && dir) {
+				config_file = std::string(dir) + "/wildmidi/wildmidi.cfg";
+				found = FileFinder::Root().Exists(config_file);
+			}
+		}
 #elif defined(__wii__)
-	// preferred under /data
-	config_file = "usb:/data/wildmidi/wildmidi.cfg";
-	found = FileFinder::Root().Exists(config_file);
-	if (!found) {
-		config_file = "sd:/data/wildmidi/wildmidi.cfg";
+		// preferred under /data
+		config_file = "usb:/data/wildmidi/wildmidi.cfg";
 		found = FileFinder::Root().Exists(config_file);
-	}
-
-	// app directory
-	if (!found) {
-		config_file = "wildmidi.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-
-	// same, but legacy from SDL_mixer's timidity
-	if (!found) {
-		config_file = "usb:/data/timidity/timidity.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-	if (!found) {
-		config_file = "sd:/data/timidity/timidity.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-	if (!found) {
-		config_file = "timidity.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-#elif defined(__WIIU__)
-	// preferred SD card directory
-	config_file = "fs:/vol/external01/wiiu/data/easyrpg-player/wildmidi.cfg";
-	found = FileFinder::Root().Exists(config_file);
-
-	// shipped
-	if (!found) {
-		config_file = "fs:/vol/content/wildmidi.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-	// Current directory
-	if (!found) {
-		config_file = "wildmidi.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-#elif defined(__3DS__)
-	// Only wildmidi paths, no timidity because there was never timidity used on 3DS
-
-	// Shipped in a romfs (for CIA and newer 3dsx files)
-	config_file = "romfs:/wildmidi.cfg";
-	found = FileFinder::Root().Exists(config_file);
-
-	// preferred SD card directory
-	if (!found) {
-		config_file = "sdmc:/3ds/easyrpg-player/wildmidi.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-
-	// Current directory
-	if (!found) {
-		config_file = "wildmidi.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-#elif defined(__SWITCH__)
-	// Only wildmidi paths, no timidity because it was never used on Switch
-	config_file = "./wildmidi.cfg";
-	found = FileFinder::Root().Exists(config_file);
-	if (!found) {
-		config_file = "/switch/easyrpg-player/wildmidi.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-#elif defined(__vita__)
-	// Only wildmidi paths, no timidity because it was never used on PSVita
-
-	// Shipped
-	config_file = "app0:/wildmidi.cfg";
-	found = FileFinder::Root().Exists(config_file);
-
-	// Preferred global directory
-	if (!found) {
-		config_file = "ux0:/data/easyrpg-player/wildmidi.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-
-	// Current directory
-	if (!found) {
-		config_file = "wildmidi.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-#elif defined(__MORPHOS__)
-	// Shipped with library
-	config_file = "LIBS:timidity/timidity.cfg";
-	found = FileFinder::Root().Exists(config_file);
-
-	// Current directory
-	if (!found) {
-		config_file = "wildmidi.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-#else
-	// Prefer wildmidi in current directory
-	config_file = "wildmidi.cfg";
-	found = FileFinder::Root().Exists(config_file);
-
-	// wildmidi command line player default config
-	if (!found) {
-		config_file = "/etc/wildmidi/wildmidi.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-
-	// Use Timidity strategy used in SDL mixer
-
-	// Environment variable
-	if (!found) {
-		const char *env = getenv("TIMIDITY_CFG");
-		if (env) {
-			config_file = env;
+		if (!found) {
+			config_file = "sd:/data/wildmidi/wildmidi.cfg";
 			found = FileFinder::Root().Exists(config_file);
 		}
-	}
 
-	if (!found) {
-		config_file = "timidity.cfg";
+		// app directory
+		if (!found) {
+			config_file = "wildmidi.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
+
+		// same, but legacy from SDL_mixer's timidity
+		if (!found) {
+			config_file = "usb:/data/timidity/timidity.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
+		if (!found) {
+			config_file = "sd:/data/timidity/timidity.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
+		if (!found) {
+			config_file = "timidity.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
+#elif defined(__WIIU__)
+		// preferred SD card directory
+		config_file = "fs:/vol/external01/wiiu/data/easyrpg-player/wildmidi.cfg";
 		found = FileFinder::Root().Exists(config_file);
-	}
+
+		// shipped
+		if (!found) {
+			config_file = "fs:/vol/content/wildmidi.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
+		// Current directory
+		if (!found) {
+			config_file = "wildmidi.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
+#elif defined(__3DS__)
+		// Only wildmidi paths, no timidity because there was never timidity used on 3DS
+
+		// Shipped in a romfs (for CIA and newer 3dsx files)
+		config_file = "romfs:/wildmidi.cfg";
+		found = FileFinder::Root().Exists(config_file);
+
+		// preferred SD card directory
+		if (!found) {
+			config_file = "sdmc:/3ds/easyrpg-player/wildmidi.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
+
+		// Current directory
+		if (!found) {
+			config_file = "wildmidi.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
+#elif defined(__SWITCH__)
+		// Only wildmidi paths, no timidity because it was never used on Switch
+		config_file = "./wildmidi.cfg";
+		found = FileFinder::Root().Exists(config_file);
+		if (!found) {
+			config_file = "/switch/easyrpg-player/wildmidi.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
+#elif defined(__vita__)
+		// Only wildmidi paths, no timidity because it was never used on PSVita
+
+		// Shipped
+		config_file = "app0:/wildmidi.cfg";
+		found = FileFinder::Root().Exists(config_file);
+
+		// Preferred global directory
+		if (!found) {
+			config_file = "ux0:/data/easyrpg-player/wildmidi.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
+
+		// Current directory
+		if (!found) {
+			config_file = "wildmidi.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
+#elif defined(__MORPHOS__)
+		// Shipped with library
+		config_file = "LIBS:timidity/timidity.cfg";
+		found = FileFinder::Root().Exists(config_file);
+
+		// Current directory
+		if (!found) {
+			config_file = "wildmidi.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
+#else
+		// Prefer wildmidi in current directory
+		config_file = "wildmidi.cfg";
+		found = FileFinder::Root().Exists(config_file);
+
+		// wildmidi command line player default config
+		if (!found) {
+			config_file = "/etc/wildmidi/wildmidi.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
+
+		// Use Timidity strategy used in SDL mixer
+
+		// Environment variable
+		if (!found) {
+			const char *env = getenv("TIMIDITY_CFG");
+			if (env) {
+				config_file = env;
+				found = FileFinder::Root().Exists(config_file);
+			}
+		}
+
+		if (!found) {
+			config_file = "timidity.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
 
 #  ifdef _WIN32
-	// Probably not too useful
-	if (!found) {
-		config_file = "C:\\TIMIDITY\\timidity.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
+		// Probably not too useful
+		if (!found) {
+			config_file = "C:\\TIMIDITY\\timidity.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
 
-	// TODO: We need some installer which creates registry keys for wildmidi
+		// TODO: We need some installer which creates registry keys for wildmidi
 
 #  elif defined(PLAYER_AMIGA)
-	if (!found) {
-		config_file = "timidity/timidity.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
+		if (!found) {
+			config_file = "timidity/timidity.cfg";
+			found = FileFinder::Root().Exists(config_file);
+		}
 #  else
-	if (!found) {
-		config_file = "/etc/timidity.cfg";
-		found = FileFinder::Root().Exists(config_file);
-	}
-
-	if (!found) {
-		// Folders used in timidity code
-		const std::vector<std::string> folders = {
-				"/etc/timidity",
-				"/usr/share/timidity",
-				"/usr/local/share/timidity",
-				"/usr/local/lib/timidity"
-		};
-
-		for (const std::string& s : folders) {
-			config_file = s + "/timidity.cfg";
+		if (!found) {
+			config_file = "/etc/timidity.cfg";
 			found = FileFinder::Root().Exists(config_file);
+		}
 
-			if (found) {
-				break;
-			}
+		if (!found) {
+			// Folders used in timidity code
+			const std::vector<std::string> folders = {
+					"/etc/timidity",
+					"/usr/share/timidity",
+					"/usr/local/share/timidity",
+					"/usr/local/lib/timidity"
+			};
 
-			// Some distributions have it in timidity++
-			config_file = s + "++/timidity.cfg";
-			found = FileFinder::Root().Exists(config_file);
+			for (const std::string& s : folders) {
+				config_file = s + "/timidity.cfg";
+				found = FileFinder::Root().Exists(config_file);
 
-			if (found) {
-				break;
+				if (found) {
+					break;
+				}
+
+				// Some distributions have it in timidity++
+				config_file = s + "++/timidity.cfg";
+				found = FileFinder::Root().Exists(config_file);
+
+				if (found) {
+					break;
+				}
 			}
 		}
-	}
 #  endif
 #endif
+	}
 
 	// bail, if nothing found
 	if (!found) {
@@ -291,7 +304,7 @@ bool WildMidiDecoder::Initialize(std::string& status_message) {
 		return false;
 	}
 
-	status_message = fmt::format("Using {} as configuration file...", config_file);
+	status_message = fmt::format("Using {} as configuration file{}", config_file, game_dir ? " (Bundled)" : "");
 
 #if LIBWILDMIDI_VERSION >= 1027 // at least 0.4.3
 	init = (WildMidi_InitVIO(&vio, config_file.c_str(), EP_MIDI_FREQ, WILDMIDI_OPTS) == 0);
