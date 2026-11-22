@@ -158,6 +158,10 @@ bool Game_System::BgmPlayedOnce() {
 	return false;
 }
 
+int Game_System::BgmGetTicks() {
+	return Audio().BGM_GetTicks();
+}
+
 void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {
 	if (se.name.empty()) {
 		return;

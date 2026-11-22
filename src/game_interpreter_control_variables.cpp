@@ -254,7 +254,7 @@ int ControlVariables::Other(int op) {
 			if (Player::IsPatchKeyPatch()) {
 				return Main_Data::game_ineluki->GetMidiTicks();
 			} else {
-				return Audio().BGM_GetTicks();
+				return Main_Data::game_system->BgmGetTicks();
 			}
 			break;
 		case 9:

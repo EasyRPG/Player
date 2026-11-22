@@ -26,6 +26,8 @@
 #include "player.h"
 #include "system.h"
 #include "game_runtime_patches.h"
+#include "game_system.h"
+#include "main_data.h"
 
 #include <lcf/inireader.h>
 
@@ -324,7 +326,7 @@ bool Game_Ineluki::Parse(std::string_view ini_file) {
 
 int Game_Ineluki::GetMidiTicks() {
 	if (output_mode == OutputMode::Original) {
-		return Audio().BGM_GetTicks();
+		return Main_Data::game_system->BgmGetTicks();
 	} else {
 		int val = -1;
 		if (!output_list.empty()) {
