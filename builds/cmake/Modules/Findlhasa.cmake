@@ -28,11 +28,22 @@ find_package(PkgConfig QUIET)
 
 pkg_check_modules(PC_LHASA QUIET liblhasa)
 
+# The include directory contains the version number (e.g. liblhasa-0.6.0),
+# search for all matching directories
+set(_LHASA_SEARCH_PREFIXES ${CMAKE_PREFIX_PATH} ${CMAKE_SYSTEM_PREFIX_PATH})
+set(_LHASA_VERSIONED_DIRS "")
+foreach(_prefix IN LISTS _LHASA_SEARCH_PREFIXES)
+	file(GLOB _dirs LIST_DIRECTORIES true "${_prefix}/include/liblhasa*")
+	list(APPEND _LHASA_VERSIONED_DIRS ${_dirs})
+endforeach()
+# Prefer the newest version
+list(SORT _LHASA_VERSIONED_DIRS COMPARE NATURAL ORDER DESCENDING)
+
 # Look for the header file.
 find_path(LHASA_INCLUDE_DIR
 	NAMES lhasa.h
-	PATH_SUFFIXES liblhasa-1.0 liblhasa
-	HINTS ${PC_LHASA_INCLUDE_DIRS})
+	PATH_SUFFIXES liblhasa
+	HINTS ${PC_LHASA_INCLUDE_DIRS} ${_LHASA_VERSIONED_DIRS})
 
 # Look for the library.
 # Allow LHASA_LIBRARY to be set manually, as the location of the lhasa library
@@ -50,7 +61,7 @@ if(LHASA_FOUND)
 	set(LHASA_INCLUDE_DIRS ${LHASA_INCLUDE_DIR})
 
 	if(NOT LHASA_LIBRARIES)
-		set(LHASA_LIBRARIES ${LHASA_LIBRARIES})
+		set(LHASA_LIBRARIES ${LHASA_LIBRARY})
 	endif()
 
 	if(NOT TARGET LHASA::liblhasa)
