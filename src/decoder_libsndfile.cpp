@@ -171,7 +171,7 @@ int LibsndfileDecoder::GetTicks() const {
 		return 0;
 	}
 
-	return decoded_samples / (soundinfo.samplerate * soundinfo.channels);
+	return decoded_samples / soundinfo.channels;
 }
 
 #endif

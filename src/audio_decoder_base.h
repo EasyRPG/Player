@@ -217,6 +217,16 @@ public:
 	virtual void GetFormat(int& frequency, Format& format, int& channels) const = 0;
 
 	/**
+	 * Like GetFormat but reports the format of the source file, ignoring the
+	 * resampler.
+	 *
+	 * @param frequency Filled with the audio frequency
+	 * @param format Filled with the audio format
+	 * @param channels Filled with the amount of channels
+	 */
+	virtual void GetSourceFormat(int& frequency, Format& format, int& channels) const;
+
+	/**
 	 * Requests a preferred format from the audio decoder. Not all decoders
 	 * support everything and it's recommended to use the audio hardware
 	 * for audio processing.
@@ -257,11 +267,14 @@ public:
 	virtual std::streampos Tell() const;
 
 	/**
-	 * Returns a value suitable for the GetMidiTicks command.
-	 * For MIDI this is the amount of MIDI ticks, for other
-	 * formats usually the playback position in seconds.
+	 * Returns the current position of the decoder.
+	 * For MIDI this is the amount of MIDI ticks, for all other formats
+	 * the amount of sample frames (per channel) at the sample rate of the
+	 * source file.
 	 *
-	 * @return Amount of MIDI ticks or position in seconds
+	 * Note that the decoding position is ahead by the amount of buffered audio.
+	 *
+	 * @return Amount of MIDI ticks or sample frames
 	 */
 	virtual int GetTicks() const = 0;
 

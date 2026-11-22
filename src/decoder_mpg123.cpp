@@ -198,12 +198,7 @@ bool Mpg123Decoder::SetFormat(int freq, AudioDecoder::Format fmt, int channels) 
 }
 
 int Mpg123Decoder::GetTicks() const {
-	if (samplerate == 0) {
-		return 0;
-	}
-
-	off_t pos = mpg123_tell(handle.get());
-	return pos / samplerate;
+	return static_cast<int>(mpg123_tell(handle.get()));
 }
 
 bool Mpg123Decoder::IsMp3(Filesystem_Stream::InputStream& stream) {

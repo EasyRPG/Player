@@ -121,6 +121,13 @@ public:
 	bool BgmPlayedOnce();
 
 	/**
+	 * Returns the playback position of the BGM in the unit the game expects.
+	 *
+	 * @return position of the BGM
+	 */
+	int BgmGetTicks();
+
+	/**
 	 * Plays a Sound.
 	 *
 	 * @param se sound data.

@@ -89,6 +89,11 @@ std::string AudioDecoderBase::GetError() const {
 	return error_message;
 }
 
+void AudioDecoderBase::GetSourceFormat(int& frequency, Format& format, int& channels) const {
+	// Simple forwarder when not resampling
+	GetFormat(frequency, format, channels);
+}
+
 std::string AudioDecoderBase::GetType() const {
 	return music_type;
 }

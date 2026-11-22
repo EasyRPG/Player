@@ -164,8 +164,7 @@ int OpusAudioDecoder::GetTicks() const {
 		return 0;
 	}
 
-	// According to the docs it is number of samples at 48 kHz
-	return op_pcm_tell(oof) / 48000;
+	return static_cast<int>(op_pcm_tell(oof));
 }
 
 int OpusAudioDecoder::FillBuffer(uint8_t* buffer, int length) {

@@ -34,6 +34,9 @@ AudioInterface& Audio() {
 	return default_;
 }
 
+// Frequency reported by the fake BGM position of EmptyAudio
+static constexpr int FAKE_FREQUENCY = 44100;
+
 void EmptyAudio::BGM_Play(Filesystem_Stream::InputStream, int, int, int, int) {
 	bgm_starttick = Player::GetFrames();
 	playing = true;
@@ -48,8 +51,15 @@ int EmptyAudio::BGM_GetTicks() const {
 		return 0;
 	}
 
-	// Time since BGM_Play was called, works for everything except MIDI
-	return (Player::GetFrames() - bgm_starttick + 1) / DEFAULT_FPS;
+	// Time since BGM_Play was called as samples at the fake frequency, works for everything except MIDI
+	return static_cast<int>(static_cast<int64_t>(Player::GetFrames() - bgm_starttick + 1) * FAKE_FREQUENCY / DEFAULT_FPS);
+}
+
+bool EmptyAudio::BGM_GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
+	frequency = FAKE_FREQUENCY;
+	format = AudioDecoder::Format::S16;
+	channels = 1;
+	return true;
 }
 
 void EmptyAudio::vGetConfig(Game_ConfigAudio&) const {
@@ -58,7 +68,7 @@ void EmptyAudio::vGetConfig(Game_ConfigAudio&) const {
 
 bool EmptyAudio::BGM_PlayedOnce() const {
 	// 5 seconds, arbitrary
-	return BGM_GetTicks() > (DEFAULT_FPS * 5);
+	return BGM_GetTicks() > (FAKE_FREQUENCY * 5);
 }
 
 EmptyAudio::EmptyAudio(const Game_ConfigAudio& cfg) : AudioInterface(cfg) {

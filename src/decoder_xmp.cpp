@@ -166,7 +166,7 @@ int XMPDecoder::GetTicks() const {
 	xmp_frame_info info;
 	xmp_get_frame_info(ctx, &info);
 
-	return info.time / 1000;
+	return static_cast<int>(static_cast<int64_t>(info.time) * frequency / 1000);
 }
 
 bool XMPDecoder::IsModule(Filesystem_Stream::InputStream& stream) {

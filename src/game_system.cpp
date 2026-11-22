@@ -148,14 +148,52 @@ void Game_System::BgmFade(int duration, bool clear_current_music) {
 
 bool Game_System::BgmPlayedOnce() {
 	if (Audio().BGM_PlayedOnce()) {
+		if (Player::HasEasyRpgExtensions()) {
+			// Support it for everything when EasyRPG Mode is active
+			return true;
+		}
+
 		if (Audio().BGM_GetType() == "wav") {
 			// RPG_RT does not report looping for WAV
 			return false;
 		}
+
+		if (Audio().BGM_GetType() == "ogg" && Player::game_config.patch_maniac.Get() >= 210519) {
+			// Maniac Patch regression: Loop not supported anymore
+			return false;
+		}
+
 		return true;
 	}
 
 	return false;
+}
+
+int Game_System::BgmGetTicks() {
+	int ticks = Audio().BGM_GetTicks();
+	std::string type = Audio().BGM_GetType();
+
+	// Ticks for MIDI
+	if (type == "midi") {
+		return ticks;
+	}
+
+	// Samples for OGG when using Maniacs
+	// In EasyRPG Mode return seconds for consistency
+	if (Player::IsPatchManiac() && !Player::HasEasyRpgExtensions() && type == "ogg") {
+		return ticks;
+	}
+
+	// Other formats report seconds
+	int frequency = 0;
+	AudioDecoder::Format format;
+	int channels;
+
+	if (!Audio().BGM_GetFormat(frequency, format, channels) || frequency <= 0) {
+		return 0;
+	}
+
+	return ticks / frequency;
 }
 
 void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {

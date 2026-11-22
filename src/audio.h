@@ -83,10 +83,23 @@ struct AudioInterface {
 	virtual bool BGM_IsPlaying() const = 0;
 
 	/**
-	 * Returns the current MIDI tick of the background music.
-	 * Only useful when the BGM is a MIDI track.
+	 * Returns the current position of the background music.
+	 * For MIDI this is the MIDI tick, otherwise the amount of sample frames at
+	 * the frequency returned by BGM_GetFormat.
+	 * Use Game_System::BgmGetTicks to get the value expected by games.
 	 */
 	virtual int BGM_GetTicks() const = 0;
+
+	/**
+	 * Gets the original format of currently playing background (not the format
+	 * of the resampler).
+	 *
+	 * @param frequency Filled with the audio frequency
+	 * @param format Filled with the audio format
+	 * @param channels Filled with the amount of channels
+	 * @return false when no (non-MIDI) BGM is playing, outputs are untouched
+	 */
+	virtual bool BGM_GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const = 0;
 
 	/**
 	 * Does a fade out of the background music.
@@ -176,6 +189,7 @@ public:
 	bool BGM_PlayedOnce() const override;
 	bool BGM_IsPlaying() const override { return false; }
 	int BGM_GetTicks() const override;
+	bool BGM_GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
 	void BGM_Fade(int) override {}
 	void BGM_Volume(int) override {}
 	void BGM_Pitch(int) override {};

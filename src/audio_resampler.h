@@ -165,7 +165,7 @@ public:
 	/**
 	 * Wraps the GetTicks Function of the contained decoder
 	 *
-	 * @return Amount of MIDI ticks.
+	 * @return Amount of MIDI ticks or sample frames.
 	 */
 	int GetTicks() const override;
 
@@ -184,13 +184,24 @@ public:
 	void Update(std::chrono::microseconds delta) override;
 
 	/**
-	 * Retrieves the format of the audio decoder.
+	 * Retrieves the format of the resampler. Use GetSourceFormat for the
+	 * format of the original decoder.
 	 *
 	 * @param frequency Filled with the audio frequency
 	 * @param format Filled with the audio format
 	 * @param channels Filled with the amount of channels
 	 */
 	void GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
+
+	/**
+	 * Like GetFormat but reports the format of the source file, ignoring the
+	 * resampler.
+	 *
+	 * @param frequency Filled with the audio frequency
+	 * @param format Filled with the audio format
+	 * @param channels Filled with the amount of channels
+	 */
+	void GetSourceFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
 
 	/**
 	 * Requests a certain frame format from the resampler.
