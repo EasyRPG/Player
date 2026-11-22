@@ -500,7 +500,7 @@ int AudioDecoderMidi::MidiTempoData::GetSamples(std::chrono::microseconds mtime_
 
 void AudioDecoderMidi::ApplyLogVolume() {
 	if (!mididec->SupportsMidiMessages()) {
-		float base_gain = AdjustVolume(volume);
+		float base_gain = AdjustVolume(volume * 100.0f);
 		int balance = GetBalance();
 		float left_gain = 1.f, right_gain = 1.f;
 		constexpr float pan_exp = 0.5012f;
