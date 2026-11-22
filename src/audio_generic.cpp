@@ -127,6 +127,18 @@ int GenericAudio::BGM_GetTicks() const {
 	return ticks;
 }
 
+bool GenericAudio::BGM_GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
+	bool found = false;
+	LockMutex();
+	for (auto& BGM_Channel : BGM_Channels) {
+		if (BGM_Channel.GetFormat(frequency, format, channels)) {
+			found = true;
+		}
+	}
+	UnlockMutex();
+	return found;
+}
+
 void GenericAudio::BGM_Fade(int fade) {
 	LockMutex();
 	for (auto& BGM_Channel : BGM_Channels) {
@@ -528,6 +540,15 @@ int GenericAudio::BgmChannel::GetTicks() const {
 		return decoder->GetTicks();
 	}
 	return -1;
+}
+
+bool GenericAudio::BgmChannel::GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
+	// Unsupported when MidiOut is used (is a device that receives MIDI messages)
+	if (!midi_out_used && decoder) {
+		decoder->GetSourceFormat(frequency, format, channels);
+		return true;
+	}
+	return false;
 }
 
 void GenericAudio::BgmChannel::SetFade(int fade) {

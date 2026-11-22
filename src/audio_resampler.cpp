@@ -340,6 +340,12 @@ int AudioResampler::GetTicks() const {
 	return wrapped_decoder->GetTicks();
 }
 
+void AudioResampler::GetSourceFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
+	frequency = input_rate;
+	format = input_format;
+	channels = nr_of_channels;
+}
+
 bool AudioResampler::IsFinished() const {
 	return finished;
 }

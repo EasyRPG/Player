@@ -159,7 +159,22 @@ bool Game_System::BgmPlayedOnce() {
 }
 
 int Game_System::BgmGetTicks() {
-	return Audio().BGM_GetTicks();
+	int ticks = Audio().BGM_GetTicks();
+	std::string type = Audio().BGM_GetType();
+
+	// Ticks for MIDI
+	if (type == "midi") {
+		return ticks;
+	}
+
+	// Other formats report seconds
+	int frequency = 0;
+	AudioDecoder::Format format;
+	int channels;
+	if (!Audio().BGM_GetFormat(frequency, format, channels) || frequency <= 0) {
+		return 0;
+	}
+	return ticks / frequency;
 }
 
 void Game_System::SePlay(const lcf::rpg::Sound& se, bool stop_sounds) {

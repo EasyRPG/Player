@@ -186,6 +186,14 @@ int CtrAudio::BGM_GetTicks() const {
 	return bgm.decoder->GetTicks();
 }
 
+bool CtrAudio::BGM_GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const {
+	if (!bgm.decoder)
+		return false;
+
+	bgm.decoder->GetSourceFormat(frequency, format, channels);
+	return true;
+}
+
 void CtrAudio::BGM_Fade(int fade) {
 	if (!bgm.decoder)
 		return;

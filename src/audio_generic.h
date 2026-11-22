@@ -50,6 +50,7 @@ public:
 	bool BGM_PlayedOnce() const override;
 	bool BGM_IsPlaying() const override;
 	int BGM_GetTicks() const override;
+	bool BGM_GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const override;
 	void BGM_Fade(int fade) override;
 	void BGM_Volume(int volume) override;
 	void BGM_Pitch(int pitch) override;
@@ -82,6 +83,7 @@ private:
 		void Stop();
 		void SetPaused(bool newPaused);
 		int GetTicks() const;
+		bool GetFormat(int& frequency, AudioDecoder::Format& format, int& channels) const;
 		void SetFade(int fade);
 		void SetVolume(int volume);
 		void SetPitch(int pitch);

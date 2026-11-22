@@ -100,7 +100,7 @@ int DrWavDecoder::GetTicks() const {
 		return 0;
 	}
 
-	return decoded_samples / handle.sampleRate;
+	return decoded_samples;
 }
 
 int DrWavDecoder::FillBuffer(uint8_t* buffer, int length) {

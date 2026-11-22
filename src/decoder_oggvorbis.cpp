@@ -187,7 +187,7 @@ int OggVorbisDecoder::GetTicks() const {
 		return 0;
 	}
 
-	return (int)ov_time_tell(ovf);
+	return static_cast<int>(ov_pcm_tell(ovf));
 }
 
 int OggVorbisDecoder::FillBuffer(uint8_t* buffer, int length) {
