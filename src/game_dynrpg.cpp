@@ -30,6 +30,7 @@
 
 #include "dynrpg_easyrpg.h"
 #include "dynrpg_textplugin.h"
+#include "dynrpg_keyboard_mouse_input.h"
 
 enum DynRpg_ParseMode {
 	ParseMode_Function,
@@ -185,6 +186,10 @@ void Game_DynRpg::InitPlugins() {
 
 	if (Player::IsPatchDynRpg()) {
 		plugins.emplace_back(new DynRpg::TextPlugin(*this));
+	}
+
+	if (Player::IsPatchDynRpg()) {
+		plugins.emplace_back(new DynRpg::KeyboardMouseInput(*this));
 	}
 
 	plugins_loaded = true;
@@ -513,6 +518,13 @@ void Game_DynRpg::Save(int slot) {
 }
 
 void Game_DynRpg::Update() {
+
+	if (!Player::IsPatchDynRpg() && !Player::HasEasyRpgExtensions()) {
+		return;
+	}
+
+	InitPlugins();
+
 	for (auto& plugin : plugins) {
 		plugin->Update();
 	}
