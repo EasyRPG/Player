@@ -545,7 +545,7 @@ void Window_Settings::RefreshLicense() {
 	AddOption(MenuItem("libpng", "For reading and writing PNG image files", "zlib"), [](){});
 	AddOption(MenuItem("zlib", "Implements deflate used in ZIP archives and PNG images", "zlib"), [](){});
 	AddOption(MenuItem("Pixman", "Pixel-manipulation library", "MIT"), [](){});
-	AddOption(MenuItem("fmtlib", "Text formatting library", "BSD"), [](){});
+	AddOption(MenuItem("fmtlib", "Text formatting library", "MIT"), [](){});
 	// No way to detect them - Used by liblcf
 	AddOption(MenuItem("expat", "XML parser", "MIT"), [](){});
 	AddOption(MenuItem("ICU", "Unicode library", "ICU"), [](){});

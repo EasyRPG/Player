@@ -59,6 +59,8 @@ public:
 	FileFinder::FsEntry GetFilesystemEntry() const;
 
 private:
+	static bool ExcludeFromListing(std::string_view filename);
+
 	FilesystemView base_fs;
 	std::vector<FileFinder::GameEntry> game_entries;
 

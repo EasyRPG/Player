@@ -378,6 +378,22 @@ void Game_Map::SetupCommon() {
 	}
 	SetNeedRefresh(true);
 
+	// Sanitize invalid tiles by mapping them to the first tile of the layer.
+	// RPG_RT will read out of bounds here:
+	// The memory layout is lower_layer followed directly by upper_layer which
+	// is the reason why it is possible (by manually editing the map) to get
+	// lower layer tiles rendered on the upper layer (not implemented)
+	for (auto& tile: map->lower_layer) {
+		if (tile < 0 || tile >= BLOCK_E_END) {
+			tile = BLOCK_E;
+		}
+	}
+	for (auto& tile: map->upper_layer) {
+		if (tile < BLOCK_F || tile >= BLOCK_F_END) {
+			tile = BLOCK_F;
+		}
+	}
+
 	PrintPathToMap();
 
 	if (translation_changed) {
