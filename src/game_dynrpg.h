@@ -20,6 +20,7 @@
 
 #include <cstdint>
 #include <locale>
+#include <optional>
 #include <vector>
 #include <sstream>
 #include <string>
@@ -27,10 +28,11 @@
 #include <unordered_map>
 #include "output.h"
 #include "utils.h"
+#include <lcf/rpg/eventcommand.h>
 
 // Headers
 namespace lcf::rpg {
-	class EventCommand;
+	class SaveEventExecFrame;
 }
 
 class DynRpgPlugin;
@@ -134,8 +136,26 @@ public:
 	void Load(int slot);
 	void Save(int slot);
 
+	/**
+	 * DynRPG onEventCommand: called before each event command is executed.
+	 * Plugins (e.g. DynParams) may rewrite the command, like DynRPG plugins
+	 * rewrite the script line in RPG_RT. The rewritten command replaces the
+	 * current command of the frame.
+	 *
+	 * @param interpreter interpreter running the command
+	 * @param frame its current frame, at the command about to be executed
+	 * @return the command as it was before a plugin rewrote it, none when
+	 *   unchanged. DynRPG restores it once the command was executed.
+	 */
+	std::optional<lcf::rpg::EventCommand> OnEventCommand(const Game_Interpreter& interpreter, lcf::rpg::SaveEventExecFrame& frame);
+
+	/** @return raw text of the DynRPG comment being invoked (e.g. "@func 1, 2") */
+	std::string_view GetCurrentComment() const { return current_comment; }
+
 private:
 	friend DynRpg::EasyRpgPlugin;
+
+	std::string current_comment;
 
 	bool Invoke(std::string_view func, dyn_arg_list args, Game_Interpreter* interpreter = nullptr);
 	void InitPlugins();
@@ -163,6 +183,12 @@ public:
 	virtual void Update() {}
 	virtual void Load(const std::vector<uint8_t>&) {}
 	virtual std::vector<uint8_t> Save() { return {}; }
+	/**
+	 * DynRPG onEventCommand, see Game_DynRpg::OnEventCommand
+	 *
+	 * @return the rewritten command, none to leave it unchanged
+	 */
+	virtual std::optional<lcf::rpg::EventCommand> OnEventCommand(const Game_Interpreter&, lcf::rpg::SaveEventExecFrame&) { return {}; }
 
 protected:
 	Game_DynRpg& instance;
