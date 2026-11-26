@@ -4662,6 +4662,8 @@ bool Game_Interpreter::CommandManiacShowStringPicture(lcf::rpg::EventCommand con
 	params.position_y = ValueOrVariableBitfield(com.parameters[0], 1, com.parameters[3]);
 	params.magnify_width = ValueOrVariableBitfield(com.parameters[0], 2, com.parameters[4]);
 	params.top_trans = ValueOrVariableBitfield(com.parameters[0], 3, com.parameters[5]);
+	// one transparency for the whole picture: the lower half stayed opaque
+	params.bottom_trans = params.top_trans;
 	params.red = com.parameters[6];
 	params.green = com.parameters[7];
 	params.blue = com.parameters[8];
